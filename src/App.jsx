@@ -4,6 +4,8 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Login from "./pages/auth/Login";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
+import Dashboard from "./pages/Admin/Dashboard";
+import Subscription from "./pages/Admin/Subscription";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
 
       <Route path="/admin" element={<DashboardLayout />}>
       </Route>
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/subscriptions" element={<Subscription />} />
 
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />
