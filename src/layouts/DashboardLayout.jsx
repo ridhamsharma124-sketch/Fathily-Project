@@ -48,9 +48,16 @@ const NAV_GROUPS = [
       label: "Daily",
       icon: PiCalendarBlank,
       children: [
-        { id: "daily-verse", label: "Daily Verse" },
-        { id: "daily-reflection", label: "Daily Reflection" },
-      ],
+  {
+    id: "daily-verse",
+    label: "Daily Verse",
+    path: "/admin/dailyverse",
+  },
+  {
+    id: "daily-reflection",
+    label: "Daily Reflection",
+  },
+],
     },
     { id: "pray", label: "Pray with Me", icon: PiHandsPraying },
     { id: "audio", label: "Audio Library", icon: PiHeadphones },
@@ -368,7 +375,7 @@ export default function DashboardLayout() {
       />
       <div className="flex min-w-0 flex-1 flex-col">
         <Navbar collapsed={collapsed} onMenuClick={() => setMobileOpen(true)} />
-        <main className="flex-1 p-4 sm:p-6">
+        <main className="flex-1 ">
           <Outlet />
         </main>
       </div>
