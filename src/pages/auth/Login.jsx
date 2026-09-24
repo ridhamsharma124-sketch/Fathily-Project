@@ -6,7 +6,7 @@ import Button from "../../components/auth/Button";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,34 +14,40 @@ export default function Login() {
   };
 
   return (
-    <AuthCard title="Admin Login" subtitle="Welcome back! Please sign in to continue.">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <AuthCard
+      title="Admin Login"
+      subtitle="Please enter your credentials to access the admin dashboard."
+    >
+      <form onSubmit={handleSubmit}>
         <Input
           id="email"
-          label="Username / Email"
+          label="Username or Email"
           type="email"
-          placeholder="Enter your email"
+          placeholder="Username or email"
           required
         />
         <Input
           id="password"
-          label="Password"
+          label="Username or Email"
           type="password"
-          placeholder="Enter your password"
+          placeholder="Password"
           required
         />
 
-        <div className="flex items-center justify-between text-[13px]">
-          <label className="flex cursor-pointer items-center gap-2 text-subtext">
+        <div className="mt-[12px] flex items-center justify-between">
+          <label className="flex cursor-pointer items-center gap-[6px] text-[11px] text-[#5B5F8C]">
             <input
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              className="h-4 w-4 accent-navy"
+              className="h-[14px] w-[14px] accent-[#0B1F7A]"
             />
             Remember me
           </label>
-          <Link to="/forgot-password" className="font-medium text-navy transition hover:underline">
+          <Link
+            to="/forgot-password"
+            className="text-[11px] font-semibold text-[#0B1250] transition hover:underline"
+          >
             Forgot Password?
           </Link>
         </div>

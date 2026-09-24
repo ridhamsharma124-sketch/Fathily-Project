@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthCard from "../../components/auth/AuthCard";
 import Input from "../../components/auth/Input";
 import Button from "../../components/auth/Button";
@@ -21,14 +21,14 @@ export default function ResetPassword() {
   return (
     <AuthCard
       title="Reset Password"
-      subtitle="Set a new password for your account to regain access."
+      subtitle="Don't worry! It happens. Please enter the email address associated with your account."
     >
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit}>
         <Input
           id="new-password"
           label="New Password"
           type="password"
-          placeholder="Enter new password"
+          placeholder="Password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           required
@@ -37,17 +37,12 @@ export default function ResetPassword() {
           id="confirm-password"
           label="Confirm Password"
           type="password"
-          placeholder="Re-enter new password"
+          placeholder="Confirm Password"
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           required
         />
         <Button type="submit">Save</Button>
-        <p className="text-center text-[13px] text-subtext">
-          <Link to="/login" className="font-medium text-navy transition hover:underline">
-            Back to login
-          </Link>
-        </p>
       </form>
     </AuthCard>
   );

@@ -17,9 +17,15 @@ function App() {
       </Route>
 
       <Route path="/admin" element={<DashboardLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="subscriptions" element={<Subscription />} />
       </Route>
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/subscriptions" element={<Subscription />} />
+      <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
+      <Route
+        path="/subscriptions"
+        element={<Navigate to="/admin/subscriptions" replace />}
+      />
 
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

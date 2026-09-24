@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
   PiArrowUpRight,
   PiArrowsLeftRight,
@@ -17,6 +17,7 @@ import {
   PiHeadset,
   PiHouse,
   PiIdentificationCard,
+  PiList,
   PiQuestion,
   PiSignOut,
   PiSparkle,
@@ -25,15 +26,22 @@ import {
   PiUserCircle,
   PiUserGear,
   PiUsers,
+  PiX,
 } from "react-icons/pi";
 import Logo from "../components/shared/Logo";
-import ChatFab from "../components/shared/ChatFab";
 
 /* ---------------- Sidebar ---------------- */
 
 const NAV_GROUPS = [
-  [{ id: "dashboard", label: "Dashboard", icon: PiHouse }],
-  [{ id: "subscription", label: "Subscription", icon: PiIdentificationCard }],
+  [{ id: "dashboard", label: "Dashboard", icon: PiHouse, path: "/admin" }],
+  [
+    {
+      id: "subscription",
+      label: "Subscription",
+      icon: PiIdentificationCard,
+      path: "/admin/subscriptions",
+    },
+  ],
   [
     {
       id: "daily",
@@ -101,7 +109,7 @@ function NavItem({ item, active, collapsed, onNavigate }) {
 
   const handleClick = () => {
     if (hasChildren) setOpen((v) => !v);
-    onNavigate(item.id);
+    onNavigate(item);
   };
 
   if (collapsed) {
@@ -138,7 +146,7 @@ function NavItem({ item, active, collapsed, onNavigate }) {
           {item.children.map((child) => (
             <button
               key={child.id}
-              onClick={() => onNavigate(child.id)}
+              onClick={() => onNavigate(child)}
               className={`flex h-9 w-full items-center rounded-md px-2 text-[13px] transition ${
                 active === child.id ? "font-semibold text-white" : "text-[#a8b3d8] hover:text-white"
               }`}
@@ -152,40 +160,50 @@ function NavItem({ item, active, collapsed, onNavigate }) {
   );
 }
 
-function Sidebar({ collapsed, onToggle, active, onNavigate }) {
+function Sidebar({ collapsed, mobileOpen, onToggle, onClose, active, onNavigate }) {
   return (
     <aside
-      className={`sticky top-0 flex h-screen shrink-0 flex-col bg-[#16235c] transition-all duration-200 ${
-        collapsed ? "w-[72px]" : "w-[250px]"
-      }`}
+      className={`fixed inset-y-0 left-0 z-50 flex h-[100dvh] w-[250px] shrink-0 flex-col bg-[#16235c] transition-all duration-200 lg:sticky lg:top-0 lg:bottom-auto lg:z-auto lg:translate-x-0 ${
+        mobileOpen ? "translate-x-0" : "-translate-x-full"
+      } ${collapsed ? "lg:w-[72px]" : "lg:w-[250px]"}`}
     >
       <div
-        className={`flex h-[70px] items-center border-b border-white/10 ${
-          collapsed ? "justify-center px-2" : "px-4"
+        className={`relative flex shrink-0 items-center border-b border-white/10 ${
+          collapsed ? "h-[88px] flex-col justify-center gap-[6px]" : "h-[108px] justify-start px-[24px]"
         }`}
       >
-        {collapsed && (
+        <Logo
+          className={`object-contain object-left ${
+            collapsed ? "h-[40px] w-auto" : "h-[92px] w-[209px]"
+          }`}
+        />
+
+        {!collapsed && (
+          <button
+            onClick={onClose}
+            title="Close sidebar"
+            className="absolute right-[16px] top-[16px] z-20 flex h-7 w-7 items-center justify-center rounded-md text-muted transition hover:bg-navy-hover/50 hover:text-white lg:hidden"
+          >
+            <PiX size={16} />
+          </button>
+        )}
+
+        {collapsed ? (
           <button
             onClick={onToggle}
             title="Expand sidebar"
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-navy-hover/60 text-gold transition hover:bg-navy-hover hover:text-white"
+            className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition hover:bg-navy-hover/50 hover:text-white"
           >
             <PiCaretRight size={14} />
           </button>
-        )}
-        {!collapsed && (
-          <>
-            <span className="flex flex-1 justify-center">
-              <Logo className="h-6" />
-            </span>
-            <button
-              onClick={onToggle}
-              title="Collapse sidebar"
-              className="flex h-7 w-7 items-center justify-center rounded-md text-muted transition hover:bg-navy-hover/50 hover:text-white"
-            >
-              <PiCaretRight size={14} className="rotate-180" />
-            </button>
-          </>
+        ) : (
+          <button
+            onClick={onToggle}
+            title="Collapse sidebar"
+            className="absolute -right-[10px] top-1/2 z-20 hidden h-5 w-5 -translate-y-1/2 items-center justify-center rounded-full border border-line bg-white text-navy shadow-sm transition hover:bg-surface lg:flex"
+          >
+            <PiCaretRight size={11} />
+          </button>
         )}
       </div>
 
@@ -238,23 +256,43 @@ function Sidebar({ collapsed, onToggle, active, onNavigate }) {
 
 /* ---------------- Navbar ---------------- */
 
-function Navbar({ collapsed }) {
+function Navbar({ collapsed, onMenuClick }) {
   return (
     <header
-      className={`flex h-[70px] shrink-0 items-center justify-between gap-4 bg-surface px-6 ${
+      className={`flex min-h-[64px] shrink-0 items-center justify-between gap-4 whitespace-nowrap bg-surface px-4 py-3 sm:px-6 ${
         collapsed ? "lg:pl-4 lg:pr-6" : ""
       }`}
     >
-      <div>
-        <h1 className="text-[20px] font-bold text-navy">Hello, Admin! 👋</h1>
-        <p className="text-[13px] text-subtext">Welcome back, Admin</p>
+      <div className="flex min-w-0 items-center gap-3">
+        <button
+          onClick={onMenuClick}
+          aria-label="Open sidebar"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-white text-navy transition hover:border-navy/40 lg:hidden"
+        >
+          <PiList size={20} />
+        </button>
+
+        <div className="min-w-0">
+          <h1 className="truncate text-[16px] font-bold text-navy sm:text-[20px]">
+            Hello, Admin! 👋
+          </h1>
+          <p className="truncate text-[12px] text-subtext sm:text-[13px]">
+            Welcome back, Admin
+          </p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        <button className="flex h-10 items-center gap-2 rounded-lg border border-line bg-white px-3.5 text-[13px] font-medium text-navy transition hover:border-navy/40">
+      <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+        <button className="flex h-10 items-center gap-2 rounded-lg border border-line bg-white px-3 text-[13px] font-medium text-navy transition hover:border-navy/40 sm:px-3.5">
           <PiGlobeSimple size={16} className="text-subtext" />
-          English
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <span className="hidden sm:inline">English</span>
+          <svg
+            className="hidden sm:block"
+            width="10"
+            height="6"
+            viewBox="0 0 10 6"
+            fill="none"
+          >
             <path
               d="M1 1l4 4 4-4"
               stroke="currentColor"
@@ -266,7 +304,7 @@ function Navbar({ collapsed }) {
         </button>
 
         <button
-          className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-white text-navy transition hover:border-navy/40"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-white text-navy transition hover:border-navy/40"
           aria-label="Notifications"
         >
           <PiBell size={18} />
@@ -275,8 +313,8 @@ function Navbar({ collapsed }) {
           </span>
         </button>
 
-        <button className="flex h-10 items-center gap-1.5 rounded-lg border border-navy bg-white px-4 text-[13px] font-semibold text-navy transition hover:bg-navy hover:text-white">
-          View Website
+        <button className="flex h-10 items-center gap-1.5 rounded-lg border border-navy bg-white px-3 text-[13px] font-semibold text-navy transition hover:bg-navy hover:text-white sm:px-4">
+          <span className="hidden sm:inline">View Website</span>
           <PiArrowUpRight size={15} />
         </button>
       </div>
@@ -288,23 +326,52 @@ function Navbar({ collapsed }) {
 
 export default function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 1024px)").matches,
+  );
   const [active, setActive] = useState("dashboard");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const handler = (e) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const handleNavigate = (item) => {
+    setActive(item.id);
+    if (item.path) navigate(item.path);
+    setMobileOpen(false);
+  };
 
   return (
-    <div className="flex min-h-screen bg-surface">
+    <div className="flex min-h-screen overflow-x-clip bg-surface">
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden
+        />
+      )}
+
       <Sidebar
-        collapsed={collapsed}
+        collapsed={isDesktop && collapsed}
+        mobileOpen={mobileOpen}
         onToggle={() => setCollapsed((v) => !v)}
+        onClose={() => setMobileOpen(false)}
         active={active}
-        onNavigate={setActive}
+        onNavigate={handleNavigate}
       />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Navbar collapsed={collapsed} />
-        <main className="flex-1 p-6">
+        <Navbar collapsed={collapsed} onMenuClick={() => setMobileOpen(true)} />
+        <main className="flex-1 p-4 sm:p-6">
           <Outlet />
         </main>
       </div>
-      <ChatFab />
     </div>
   );
 }

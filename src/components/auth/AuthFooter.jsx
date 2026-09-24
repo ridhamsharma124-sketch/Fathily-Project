@@ -1,15 +1,17 @@
 export default function AuthFooter() {
   return (
-    <footer className="relative z-10 flex flex-col items-center justify-between gap-2 bg-navy px-6 py-3 text-[12px] text-muted md:flex-row">
-      <span>© 2026. VPeters Initiative</span>
-      <div className="flex gap-4">
-        <a href="#" className="transition hover:text-white">
+    <footer className="flex h-[40px] shrink-0 items-center justify-between bg-[#0A2463] px-[24px] text-[11px] font-normal italic text-white">
+      <span>© 2026, VPeters Initiative</span>
+      <div className="flex items-center">
+        <a href="#" className="transition hover:text-white/80">
           Privacy Policy
         </a>
-        <a href="#" className="transition hover:text-white">
+        <span className="mx-[16px] h-[14px] border-l border-white/40" />
+        <a href="#" className="transition hover:text-white/80">
           Terms of Service
         </a>
-        <a href="#" className="transition hover:text-white">
+        <span className="mx-[16px] h-[14px] border-l border-white/40" />
+        <a href="#" className="transition hover:text-white/80">
           Contact Us
         </a>
       </div>
