@@ -1,13 +1,26 @@
-import './App.css'
-import { PiHandWaving } from "react-icons/pi";
+import { Navigate, Route, Routes } from "react-router-dom";
+import AuthLayout from "./layouts/AuthLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+import Login from "./pages/auth/Login";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 function App() {
   return (
-    <div className="flex items-center gap-2 text-5xl font-bold ">
-      <PiHandWaving size={40} />
-      <span className='text-red-500'>Hello, Vite!</span>
-    </div>
-  )
+    <Routes>
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Route>
+
+      <Route path="/admin" element={<DashboardLayout />}>
+      </Route>
+
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
+  );
 }
 
 export default App
