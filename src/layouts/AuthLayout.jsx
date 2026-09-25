@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Logo from "../components/shared/Logo";
 import AuthFooter from "../components/auth/AuthFooter";
+import bgImage from "../assets/bgimg.png";
 
 export default function AuthLayout() {
   return (
     <div className="h-screen w-full flex flex-col overflow-hidden">
       <main className="relative flex flex-1 min-h-0 items-center justify-end overflow-hidden px-[24px] lg:pr-[70px]">
-        {/* Background - unchanged */}
+        {/* Background */}
         <img
-          src="/bgimg.png"
+          src={bgImage}
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full object-fill"

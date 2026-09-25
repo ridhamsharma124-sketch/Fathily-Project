@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import {
-  PiArrowUpRight,
   PiArrowsLeftRight,
+  PiArrowSquareOut,
   PiBell,
   PiBookOpenText,
   PiCalendarBlank,
@@ -11,13 +11,13 @@ import {
   PiChartBar,
   PiDotsThreeCircle,
   PiGear,
-  PiGlobeSimple,
   PiHandsPraying,
   PiHeadphones,
   PiHeadset,
   PiHouse,
   PiIdentificationCard,
   PiList,
+  PiMagnifyingGlass,
   PiQuestion,
   PiSignOut,
   PiSparkle,
@@ -56,6 +56,7 @@ const NAV_GROUPS = [
   {
     id: "daily-reflection",
     label: "Daily Reflection",
+    path: "/admin/dailyreflection",
   },
 ],
     },
@@ -266,11 +267,11 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onClose, active, onNavigate 
 function Navbar({ collapsed, onMenuClick }) {
   return (
     <header
-      className={`flex min-h-[64px] shrink-0 items-center justify-between gap-4 whitespace-nowrap bg-surface px-4 py-3 sm:px-6 ${
+      className={`flex h-[64px] shrink-0 items-center justify-between gap-3 whitespace-nowrap border-b border-[#E8ECF4] bg-white px-4 sm:px-6 ${
         collapsed ? "lg:pl-4 lg:pr-6" : ""
       }`}
     >
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           onClick={onMenuClick}
           aria-label="Open sidebar"
@@ -279,19 +280,22 @@ function Navbar({ collapsed, onMenuClick }) {
           <PiList size={20} />
         </button>
 
-        <div className="min-w-0">
-          <h1 className="truncate text-[16px] font-bold text-navy sm:text-[20px]">
-            Hello, Admin! 👋
-          </h1>
-          <p className="truncate text-[12px] text-subtext sm:text-[13px]">
-            Welcome back, Admin
-          </p>
+        <div className="relative min-w-0 max-w-[280px] flex-1">
+          <PiMagnifyingGlass
+            size={16}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtext"
+          />
+          <input
+            type="text"
+            placeholder="Search anything..."
+            className="h-[36px] w-full rounded-[8px] border border-[#E5E7EB] bg-white pl-9 pr-3 text-[12px] text-navy outline-none transition placeholder:text-[#9AA0B4] focus:border-navy/40"
+          />
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-        <button className="flex h-10 items-center gap-2 rounded-lg border border-line bg-white px-3 text-[13px] font-medium text-navy transition hover:border-navy/40 sm:px-3.5">
-          <PiGlobeSimple size={16} className="text-subtext" />
+      <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+        <button className="flex h-[32px] items-center gap-1.5 rounded-[8px] border border-[#E5E7EB] bg-white px-2.5 text-[12px] font-medium text-navy transition hover:border-navy/40">
+          <span className="text-[14px] leading-none">🇬🇧</span>
           <span className="hidden sm:inline">English</span>
           <svg
             className="hidden sm:block"
@@ -310,19 +314,19 @@ function Navbar({ collapsed, onMenuClick }) {
           </svg>
         </button>
 
+        <span className="h-4 w-px bg-[#E8ECF4]" aria-hidden />
+
         <button
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-line bg-white text-navy transition hover:border-navy/40"
+          className="relative flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-navy transition hover:border-navy/40"
           aria-label="Notifications"
         >
-          <PiBell size={18} />
-          <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-semibold text-white">
-            1
-          </span>
+          <PiBell size={16} />
+          <span className="absolute right-[7px] top-[7px] h-[6px] w-[6px] rounded-full bg-red-500" />
         </button>
 
-        <button className="flex h-10 items-center gap-1.5 rounded-lg border border-navy bg-white px-3 text-[13px] font-semibold text-navy transition hover:bg-navy hover:text-white sm:px-4">
+        <button className="flex h-[32px] items-center gap-1.5 rounded-[8px] border border-navy bg-white px-2.5 text-[12px] font-semibold text-navy transition hover:bg-navy hover:text-white sm:px-3">
           <span className="hidden sm:inline">View Website</span>
-          <PiArrowUpRight size={15} />
+          <PiArrowSquareOut size={14} />
         </button>
       </div>
     </header>

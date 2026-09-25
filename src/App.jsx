@@ -8,6 +8,8 @@ import Dashboard from "./pages/Admin/Dashboard";
 import Subscription from "./pages/Admin/Subscription";
 import DailyVersesPage from "./pages/Admin/DailyVerse/DailyVerse";
 import AddDailyVerseWizard from "./pages/Admin/DailyVerse/AddDailyVerse";
+import DailyReflectionList from "./pages/Admin/DailyVerse/DailyReflectionList";
+import AddHistoricalStory from "./pages/Admin/DailyVerse/AddHistoricalStory";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
         <Route path="subscriptions" element={<Subscription />} />
         <Route path="dailyverse" element={<DailyVersesPage />} />
         <Route path="dailyverse/add" element={<AddDailyVerseWizard />} />
+        <Route path="dailyreflection" element={<DailyReflectionList />} />
+        <Route path="dailyreflection/add" element={<AddHistoricalStory />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route

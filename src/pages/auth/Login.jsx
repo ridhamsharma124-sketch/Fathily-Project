@@ -28,7 +28,7 @@ export default function Login() {
         />
         <Input
           id="password"
-          label="Username or Email"
+          label="Password"
           type="password"
           placeholder="Password"
           required

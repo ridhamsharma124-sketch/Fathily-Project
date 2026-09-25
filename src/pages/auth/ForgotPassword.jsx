@@ -13,14 +13,14 @@ export default function ForgotPassword() {
 
   return (
     <AuthCard
-      title="Forgot Password ?"
-      subtitle="Don't worry! It happens. Please enter the email address associated with your account."
+      title="Forgot Password"
+      subtitle="Enter the email address associated with your account to receive a password reset link."
     >
       <form onSubmit={handleSubmit}>
         <Input
           id="email"
-          label="Email/Mobile Number"
-          placeholder="Email/Mobile Number"
+          label="Email or Mobile Number"
+          placeholder="Email or Mobile Number"
           required
         />
         <Button type="submit">Submit</Button>

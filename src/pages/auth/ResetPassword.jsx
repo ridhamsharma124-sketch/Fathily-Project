@@ -21,7 +21,7 @@ export default function ResetPassword() {
   return (
     <AuthCard
       title="Reset Password"
-      subtitle="Don't worry! It happens. Please enter the email address associated with your account."
+      subtitle="Enter and confirm your new password to regain access to your account."
     >
       <form onSubmit={handleSubmit}>
         <Input
@@ -42,7 +42,7 @@ export default function ResetPassword() {
           onChange={(e) => setConfirm(e.target.value)}
           required
         />
-        <Button type="submit">Save</Button>
+        <Button type="submit">Reset Password</Button>
       </form>
     </AuthCard>
   );
