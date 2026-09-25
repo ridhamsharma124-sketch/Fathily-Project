@@ -279,12 +279,12 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
         {/* User Growth */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] shadow-sm p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] p-6 flex flex-col justify-between">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-[#0A0847] text-base">
               User Growth
             </h3>
-            <select className="text-xs bg-[#F3F7FD] border border-[#E2DFFC] rounded-lg px-3 py-1.5 font-medium text-[#001984] outline-none">
+            <select className="text-xs bg-[#F3F7FD] border border-[#E2DFFC] rounded-lg px-3 py-2 font-medium text-[#001984] outline-none">
               <option>Last 6 Months</option>
             </select>
           </div>
@@ -341,7 +341,7 @@ export default function Dashboard() {
                   content={({ active, payload, label }) => {
                     if (!active || !payload || !payload.length) return null;
                     return (
-                      <div className="bg-white border border-[#E2DFFC] rounded-lg shadow-md px-3 py-2 text-sm">
+                      <div className="bg-white border border-[#E2DFFC] rounded-lg px-3 py-2 text-sm">
                         <p className="font-semibold text-[#0A0847]">{label}</p>
                         <p className="text-[#001984] font-medium">
                           Users: {payload[0].value.toLocaleString()}
@@ -376,7 +376,7 @@ export default function Dashboard() {
         </div>
 
         {/* Devices By Platform */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] shadow-sm font-[Inter] overflow-hidden flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] overflow-hidden flex flex-col justify-between">
           <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC]">
             <h3 className="font-semibold text-base text-[#0A0847]">
               Devices By Platform
@@ -440,7 +440,7 @@ export default function Dashboard() {
       {/* Tools & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 font-[Inter]">
         {/* Tools & Services */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden flex flex-col">
           {/* Header */}
           <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC]">
             <h3 className="font-bold text-base text-[#0A0847]">
@@ -485,7 +485,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-white rounded-lg border border-[#E2DFFC] shadow-sm overflow-hidden flex flex-col">
+        <div className="lg:col-span-2 bg-white rounded-lg border border-[#E2DFFC] overflow-hidden flex flex-col">
           {/* Header */}
           <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC] flex items-center justify-between">
             <h3 className="font-bold text-base text-[#0A0847]">
@@ -532,7 +532,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quote banner */}
-      <div className="relative rounded-lg overflow-hidden border border-[#E2DFFC] shadow-sm font-[Inter]">
+      <div className="relative rounded-lg overflow-hidden border border-[#E2DFFC] font-[Inter]">
         {/* Background Image */}
         <img
           src={adminDashboardImage}
@@ -545,7 +545,7 @@ export default function Dashboard() {
           <p className="text-xl md:text-2xl font-bold text-[#0A0847]">
             "Trust in the Lord with all your heart."
           </p>
-          <p className="text-sm md:text-base font-bold italic text-[#001984] mt-1.5">
+          <p className="text-sm md:text-base font-semibold italic text-[#001984] mt-1.5">
             – Proverbs 3:5
           </p>
         </div>

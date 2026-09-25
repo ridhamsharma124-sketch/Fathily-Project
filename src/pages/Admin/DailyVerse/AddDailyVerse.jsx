@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   FiSave,
   FiEye,
@@ -24,6 +24,10 @@ import {
   FiUsers,
   FiShare2,
   FiXCircle,
+  FiChevronDown,
+  FiX,
+  FiUploadCloud,
+  FiInfo
 } from "react-icons/fi";
 import {
   BsBook,
@@ -34,6 +38,7 @@ import {
   BsShare,
   BsSend,
   BsFillInfoCircleFill,
+  BsCheckCircleFill
 } from "react-icons/bs";
 
 /* ==========================================================================
@@ -43,7 +48,7 @@ import {
 /** Reusable Input Styling */
 const Input = ({ className = "", ...props }) => (
   <input
-    className={`w-full border border-[#E2DFFC] rounded-lg px-3 py-2 text-xs font-medium text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] focus:ring-1 focus:ring-[#001984] transition-all ${className}`}
+    className={`w-full border border-[#E2DFFC] rounded-lg px-3 py-2.5 text-sm font-medium text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] focus:ring-1 focus:ring-[#001984] transition-all ${className}`}
     {...props}
   />
 );
@@ -51,7 +56,7 @@ const Input = ({ className = "", ...props }) => (
 /** Reusable Select Styling */
 const Select = ({ children, className = "", ...props }) => (
   <select
-    className={`w-full border border-[#E2DFFC] rounded-lg px-3 py-2 text-xs font-semibold text-[#0A0847] bg-white outline-none focus:border-[#001984] focus:ring-1 focus:ring-[#001984] transition-all cursor-pointer ${className}`}
+    className={`w-full border border-[#E2DFFC] rounded-lg px-3 py-3 text-xs font-semibold text-[#0A0847] bg-white outline-none focus:border-[#001984] focus:ring-1 focus:ring-[#001984] transition-all cursor-pointer ${className}`}
     {...props}
   >
     {children}
@@ -60,7 +65,7 @@ const Select = ({ children, className = "", ...props }) => (
 
 /** Label Component */
 const Label = ({ children, required }) => (
-  <label className="block text-xs font-semibold text-[#0A0847] mb-1.5">
+  <label className="block text-xs font-semibold text-[#0A0847CC] mb-1.5">
     {children} {required && <span className="text-red-500">*</span>}
   </label>
 );
@@ -85,59 +90,162 @@ const Toggle = ({ checked, onChange, label }) => (
 );
 
 /** Time Picker Dropdowns (Hour and Minute Selectors) */
-const TimePicker = ({ value, onChange }) => {
+const TimePickerPopover = ({ value, onChange, placeholder = "Select time" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const popoverRef = useRef(null);
+
+  // Parse existing value or set defaults
   const [hour, minute, ampm] = value ? value.split(/:| /) : ["06", "00", "AM"];
 
-  const update = (h, m, a) => {
-    onChange(`${h}:${m} ${a}`);
+  // Close popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const updateTime = (newH, newM, newA) => {
+    onChange(`${newH}:${newM} ${newA}`);
   };
 
-  const hours = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
-  const minutes = ["00", "15", "30", "45"];
+  const handleClear = (e) => {
+    e.stopPropagation();
+    onChange("");
+  };
+
+  const hoursList = Array.from({ length: 12 }, (_, i) =>
+    String(i + 1).padStart(2, "0")
+  );
+  const minutesList = ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"];
 
   return (
-    <div className="flex items-center gap-1">
-      <Select value={hour} onChange={(e) => update(e.target.value, minute, ampm)}>
-        {hours.map((h) => (
-          <option key={h} value={h}>
-            {h}
-          </option>
-        ))}
-      </Select>
-      <span className="text-xs font-bold text-gray-400">:</span>
-      <Select value={minute} onChange={(e) => update(hour, e.target.value, ampm)}>
-        {minutes.map((m) => (
-          <option key={m} value={m}>
-            {m}
-          </option>
-        ))}
-      </Select>
-      <Select value={ampm} onChange={(e) => update(hour, minute, e.target.value)}>
-        <option value="AM">AM</option>
-        <option value="PM">PM</option>
-      </Select>
+    <div className="relative inline-block w-full" ref={popoverRef}>
+      {/* Time Input Pill (Matches Screenshot UI) */}
+      <div
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between h-10 bg-white border border-[#E2DFFC] rounded-md px-3.5 cursor-pointer hover:border-[#001984] transition-colors"
+      >
+        <div className="flex items-center gap-2.5">
+          <FiClock size={16} className="text-[#001984] shrink-0" />
+          <span className={`text-xs font-semibold ${value ? "text-[#0A0847]" : "text-gray-400"}`}>
+            {value || placeholder}
+          </span>
+        </div>
+
+        {value && (
+          <button
+            type="button"
+            onClick={handleClear}
+            className="text-gray-400 hover:text-gray-600 p-0.5 rounded-full transition-colors"
+          >
+            <FiX size={14} />
+          </button>
+        )}
+      </div>
+
+      {/* Popover Dialogue for Hours, Minutes, AM/PM Selection */}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-2 z-50 bg-white border border-[#E2DFFC] rounded-md p-4 w-64 space-y-3">
+          <div className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+            Select Time
+          </div>
+
+          <div className="grid grid-cols-3 gap-2 text-center">
+            {/* Hours Column */}
+            <div>
+              <p className="text-[10px] font-bold text-[#0A084799] mb-1">Hours</p>
+              <div className="h-36 overflow-y-auto space-y-1 border-r border-gray-100 pr-1 scrollbar-thin">
+                {hoursList.map((h) => (
+                  <button
+                    key={h}
+                    type="button"
+                    onClick={() => updateTime(h, minute, ampm)}
+                    className={`w-full py-1 text-xs font-semibold rounded-lg transition-colors ${
+                      hour === h
+                        ? "bg-[#001984] text-white"
+                        : "text-[#0A0847] hover:bg-gray-100"
+                    }`}
+                  >
+                    {h}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Minutes Column */}
+            <div>
+              <p className="text-[10px] font-bold text-[#0A084799] mb-1">Minutes</p>
+              <div className="h-36 overflow-y-auto space-y-1 border-r border-gray-100 pr-1 scrollbar-thin">
+                {minutesList.map((m) => (
+                  <button
+                    key={m}
+                    type="button"
+                    onClick={() => updateTime(hour, m, ampm)}
+                    className={`w-full py-1 text-xs font-semibold rounded-lg transition-colors ${
+                      minute === m
+                        ? "bg-[#001984] text-white"
+                        : "text-[#0A0847] hover:bg-gray-100"
+                    }`}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* AM / PM Column */}
+            <div>
+              <p className="text-[10px] font-bold text-[#0A084799] mb-1">Period</p>
+              <div className="space-y-1">
+                {["AM", "PM"].map((period) => (
+                  <button
+                    key={period}
+                    type="button"
+                    onClick={() => updateTime(hour, minute, period)}
+                    className={`w-full py-1.5 text-xs font-bold rounded-lg transition-colors ${
+                      ampm === period
+                        ? "bg-[#001984] text-white"
+                        : "text-[#0A0847] hover:bg-gray-100"
+                    }`}
+                  >
+                    {period}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 /** Section Header Block */
-const SectionHeader = ({ icon: Icon, title, subtitle, iconBg = "bg-[#EEF2FF] text-[#001984]" }) => (
+const SectionHeader = ({ icon: Icon, title, subtitle, iconBg = "bg-[#3231DB1A] text-[#3231DB]" }) => (
   <div className="flex items-center gap-3 mb-5">
-    <div className={`w-10 h-10 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
+    <div className={`w-10 h-10 rounded-lg ${iconBg} flex items-center justify-center shrink-0`}>
       <Icon size={20} />
     </div>
     <div>
-      <h3 className="font-bold text-sm text-[#0A0847]">{title}</h3>
-      {subtitle && <p className="text-[11px] text-[#0A084799] font-medium">{subtitle}</p>}
+      <h3 className="font-semibold text-sm text-[#0A0847]">{title}</h3>
+      {subtitle && <p className="text-[11px] text-[#0A084799] italic font-medium">{subtitle}</p>}
     </div>
   </div>
 );
+
+const audioBtn = "h-11 w-full px-6 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 border transition-colors cursor-pointer";
+
 
 /* ==========================================================================
    MAIN ADD DAILY VERSE FORM COMPONENT
    ========================================================================== */
 export default function AddDailyVerseWizard({ onCancel }) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [imgError, setImgError] = useState(false);
 
   // Hidden File Inputs Refs
   const bgImageRef = useRef(null);
@@ -221,11 +329,12 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
   // Upload Handlers
   const handleBgImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      updateField("backgroundImage", URL.createObjectURL(file));
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    setImgError(false);
+    updateField("backgroundImage", URL.createObjectURL(file));
+  }
+};
 
   const handleAudioUpload = (e) => {
     const file = e.target.files[0];
@@ -261,7 +370,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-bold text-[#0A0847]">Add Daily Verse</h1>
-          <p className="text-xs text-[#0A084799] font-medium mt-1">
+          <p className="text-sm text-[#0A084799] font-medium mt-2">
             Create and customize your daily verse experience
           </p>
         </div>
@@ -270,25 +379,25 @@ export default function AddDailyVerseWizard({ onCancel }) {
             onClick={() => handleSave("Draft Saved")}
             className="px-4 py-2 bg-white border border-[#E2DFFC] rounded-lg text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <FiSave size={14} /> Save draft
+            <FiSave size={18} /> Save draft
           </button>
           <button
             onClick={() => handleSave("Preview 3 Screens")}
             className="px-4 py-2 bg-white border border-[#E2DFFC] rounded-lg text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <FiEye size={14} /> Preview All 3 Screens
+            <FiEye size={14} /> Preview All 2 Screens
           </button>
           {currentStep === 1 ? (
             <button
               onClick={() => setCurrentStep(2)}
-              className="px-4 py-2 bg-[#001984] text-white rounded-lg text-xs font-bold hover:bg-[#001266] flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-4 py-2 bg-[#001984] text-white rounded-lg text-xs font-semibold hover:bg-[#001266] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              Next <FiArrowRight size={14} />
+              Next <FiArrowRight size={18} />
             </button>
           ) : (
             <button
               onClick={() => handleSave("Schedule / Published")}
-              className="px-4 py-2 bg-[#001984] text-white rounded-lg text-xs font-bold hover:bg-[#001266] flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-4 py-2 bg-[#001984] text-white rounded-lg text-xs font-semibold hover:bg-[#001266] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               Schedule Now
             </button>
@@ -297,7 +406,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
       </div>
 
       {/* Stepper Navigation Indicator */}
-      <div className="flex items-center gap-6 border-b border-[#E2DFFC] pb-4">
+      <div className="flex items-center gap-6 pb-2">
         <div
           onClick={() => setCurrentStep(1)}
           className={`flex items-center gap-2 cursor-pointer ${
@@ -339,137 +448,163 @@ export default function AddDailyVerseWizard({ onCancel }) {
       {currentStep === 1 && (
         <div className="space-y-6">
           {/* Card 1: Schedule & Display */}
-          <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
-            <SectionHeader
-              icon={FiCalendar}
-              title="Schedule & Display"
-              subtitle="Set when and how your verse will be displayed"
-            />
+<div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
+  <SectionHeader
+    icon={FiCalendar}
+    title="Schedule & Display"
+    subtitle="Set when and how your verse will be displayed"
+  />
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-5">
-              <div>
-                <Label>Display Date</Label>
-                <Input
-                  type="date"
-                  value={formData.displayDate}
-                  onChange={(e) => updateField("displayDate", e.target.value)}
-                />
-              </div>
-              <div>
-                <Label>Start Time</Label>
-                <TimePicker
-                  value={formData.startTime}
-                  onChange={(val) => updateField("startTime", val)}
-                />
-              </div>
-              <div>
-                <Label>End Time</Label>
-                <TimePicker
-                  value={formData.endTime}
-                  onChange={(val) => updateField("endTime", val)}
-                />
-              </div>
-              <div>
-                <Label>Time Zone</Label>
-                <Select
-                  value={formData.timeZone}
-                  onChange={(e) => updateField("timeZone", e.target.value)}
-                >
-                  <option>(UTC-04:00) US/Eastern Time</option>
-                  <option>(UTC+00:00) GMT</option>
-                  <option>(UTC+05:30) India Standard Time</option>
-                </Select>
-              </div>
-            </div>
+  <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
+    {/* Display Date */}
+    <div className="w-full sm:w-56">
+      <Label>Display Date</Label>
+      <div className="relative">
+        <input
+          type="date"
+          placeholder="mm/dd/yyyy"
+          value={formData.displayDate}
+          onChange={(e) => updateField("displayDate", e.target.value)}
+className="w-full h-10 bg-white border border-[#E2DFFC] rounded-md px-3.5 text-xs font-medium text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"        />
+        <FiCalendar
+          size={14}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+        />
+      </div>
+    </div>
 
-            <div className="flex flex-wrap items-center gap-8 pt-2">
-              <Toggle
-                label="Show on first login only"
-                checked={formData.showOnFirstLogin}
-                onChange={(val) => updateField("showOnFirstLogin", val)}
-              />
-              <Toggle
-                label="Allow users to close"
-                checked={formData.allowClose}
-                onChange={(val) => updateField("allowClose", val)}
-              />
-              <Toggle
-                label="Keep accessible from Home"
-                checked={formData.keepAccessible}
-                onChange={(val) => updateField("keepAccessible", val)}
-              />
-            </div>
-          </div>
+    {/* Start Time */}
+    <div className="w-44">
+      <Label>Start Time</Label>
+      <TimePickerPopover
+        value={formData.startTime}
+        onChange={(val) => updateField("startTime", val)}
+      />
+    </div>
+
+    {/* End Time */}
+    <div className="w-44">
+      <Label>End Time</Label>
+      <TimePickerPopover
+        value={formData.endTime}
+        onChange={(val) => updateField("endTime", val)}
+      />
+    </div>
+
+    {/* Time Zone */}
+    <div className="flex-1 w-[240px]">
+  <Label>Time Zone</Label>
+  <div className="relative inline-block">
+    <select
+      value={formData.timeZone}
+      onChange={(e) => updateField("timeZone", e.target.value)}
+ className="h-10 appearance-none bg-white border border-[#E2DFFC] rounded-md px-3.5 pr-8 text-xs font-semibold text-[#0A0847] outline-none focus:border-[#001984] cursor-pointer"
+     >
+      <option value="America/New_York">(UTC-04:00) US/Eastern Time</option>
+      <option value="GMT">(UTC+00:00) GMT</option>
+      <option value="Asia/Kolkata">(UTC+05:30) India Standard Time</option>
+    </select>
+    <FiChevronDown
+      size={14}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+    />
+  </div>
+</div>
+  </div>
+
+  {/* Toggles Row */}
+  <div className="flex flex-wrap items-center gap-8 pt-2">
+    <Toggle
+      label="Show on first login only"
+      checked={formData.showOnFirstLogin}
+      onChange={(val) => updateField("showOnFirstLogin", val)}
+    />
+    <Toggle
+      label="Allow users to close"
+      checked={formData.allowClose}
+      onChange={(val) => updateField("allowClose", val)}
+    />
+    <Toggle
+      label="Keep accessible from Home"
+      checked={formData.keepAccessible}
+      onChange={(val) => updateField("keepAccessible", val)}
+    />
+  </div>
+</div>
 
           {/* Card 2: Background Image */}
-          <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
             <SectionHeader
               icon={FiImage}
               title="Background Image"
               subtitle="Add a visually inspiring background"
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-              <div>
-                <Label>Attach Your Files</Label>
-                <input
-                  type="file"
-                  ref={bgImageRef}
-                  onChange={handleBgImageUpload}
-                  accept="image/*"
-                  className="hidden"
-                />
-                <div
-                  onClick={() => bgImageRef.current?.click()}
-                  className="border-2 border-dashed border-[#E2DFFC] rounded-2xl p-8 flex flex-col items-center justify-center gap-3 bg-[#F8FAFC] hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  <div className="w-12 h-12 rounded-full bg-[#EEF2FF] text-[#001984] flex items-center justify-center">
-                    <FiUpload size={22} />
-                  </div>
-                  <span className="text-xs font-bold text-[#001984]">
-                    Upload / Replace Image
-                  </span>
-                  <span className="text-[11px] text-gray-400 font-medium">
-                    Recommended: 1920 × 600 px
-                  </span>
-                </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+  <div>
+      <label className="block text-base font-bold text-[#0A0847] mb-3">Attach Your Files</label>
+    <input
+      type="file"
+      ref={bgImageRef}
+      onChange={handleBgImageUpload}
+      accept="image/*"
+      className="hidden"
+    />
+    <div
+      onClick={() => bgImageRef.current?.click()}
+      className="border border-dashed border-[#001984] h-32 flex items-center justify-center gap-3 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+    >
+      <FiUploadCloud size={36} className="text-[#001984]" />
+      <span className="text-sm font-semibold text-[#0A0847]">
+        Upload / Replace Image
+      </span>
+    </div>
+    <p className="text-xs font-semibold text-[#0A0847] mt-3">
+      Recommended: 1920 × 600 px
+    </p>
 
-                <div className="mt-4">
-                  <Label>Image Alt Text</Label>
-                  <Input
-                    placeholder="Enter image alt text (e.g., Sunrise over mountains with cross)"
-                    value={formData.imageAltText}
-                    onChange={(e) => updateField("imageAltText", e.target.value)}
-                  />
-                </div>
-              </div>
+    <div className="mt-4">
+      <Label>Image Alt Text</Label>
+      <Input
+        placeholder="Sunrise over mountains with cross"
+        value={formData.imageAltText}
+        onChange={(e) => updateField("imageAltText", e.target.value)}
+      />
+    </div>
+  </div>
 
               {/* Preview Banner */}
-              <div className="relative rounded-2xl overflow-hidden border border-[#E2DFFC] group bg-gray-100 h-56 flex items-center justify-center">
-                {formData.backgroundImage ? (
+              <div className="relative rounded-lg overflow-hidden border border-[#E2DFFC] group bg-gray-100 h-full min-h-56 flex items-center justify-center">
+                {formData.backgroundImage && !imgError ? (
                   <>
                     <img
                       src={formData.backgroundImage}
                       alt="Background preview"
+                       onError={() => setImgError(true)}
                       className="w-full h-full object-cover"
                     />
                     <button
                       type="button"
                       onClick={() => bgImageRef.current?.click()}
-                      className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-[#0A0847] shadow-md transition-colors cursor-pointer"
+                      className="absolute top-3 right-3 p-2 rounded-full bg-[#001984] hover:bg-[#001266] text-white shadow-md transition-colors cursor-pointer"
                     >
                       <FiEdit2 size={14} />
                     </button>
                   </>
                 ) : (
-                  <span className="text-xs text-gray-400">No Image Uploaded</span>
+                  <div className="flex flex-col items-center gap-2 text-gray-400">
+    <FiImage size={28} />
+    <span className="text-xs font-medium">
+      Please select an image first to view
+    </span>
+  </div>
                 )}
               </div>
             </div>
           </div>
 
           {/* Card 3: Today's Verse */}
-          <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
             <SectionHeader
               icon={BsBook}
               title="Today's Verse"
@@ -506,37 +641,41 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 placeholder="Enter full verse text..."
                 value={formData.verseText}
                 onChange={(e) => updateField("verseText", e.target.value)}
-                className="w-full border border-[#E2DFFC] rounded-lg p-3 text-xs font-medium text-[#0A0847] placeholder-gray-400 outline-none resize-none focus:border-[#001984]"
+                className="w-full border border-[#E2DFFC] rounded-lg p-3 text-sm font-medium text-[#0A0847] placeholder-gray-400 outline-none resize-none focus:border-[#001984]"
               />
             </div>
 
             <div className="mb-4">
               <Label>Translations</Label>
-              <div className="flex items-center gap-3">
-                {["KJV", "NIV", "NLT"].map((lang) => {
-                  const isSelected = formData.activeTranslations.includes(lang);
-                  return (
-                    <button
-                      key={lang}
-                      type="button"
-                      onClick={() => {
-                        const next = isSelected
-                          ? formData.activeTranslations.filter((l) => l !== lang)
-                          : [...formData.activeTranslations, lang];
-                        updateField("activeTranslations", next);
-                      }}
-                      className={`px-4 py-2 rounded-lg text-xs font-bold flex items-center gap-2 border transition-colors cursor-pointer ${
-                        isSelected
-                          ? "border-[#10B981] bg-[#ECFDF5] text-[#059669]"
-                          : "border-[#E2DFFC] bg-white text-[#0A0847]"
-                      }`}
-                    >
-                      <FiGlobe size={14} /> {lang}
-                      {isSelected && <FiCheck size={14} />}
-                    </button>
-                  );
-                })}
-              </div>
+      <div className="flex items-center gap-3 sm:gap-3">
+  {["KJV", "NIV", "NLT"].map((lang) => {
+    const isSelected = formData.activeTranslations.includes(lang);
+    return (
+      <button
+        key={lang}
+        type="button"
+        onClick={() => {
+          const next = isSelected
+            ? formData.activeTranslations.filter((l) => l !== lang)
+            : [...formData.activeTranslations, lang];
+          updateField("activeTranslations", next);
+        }}
+        className={`px-4 sm:px-6 py-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-3 border transition-colors cursor-pointer ${
+          isSelected
+            ? "border-[#CBC6F8] bg-[#F1F2F9] text-[#0A0847]"
+            : "border-[#E2DFFC] bg-white text-[#0A0847] hover:bg-gray-50"
+        }`}
+      >
+        {isSelected ? (
+          <BsCheckCircleFill size={18} className="text-[#21AC1C]" />
+        ) : (
+          <FiGlobe size={18} className="text-[#4B4A8A]" />
+        )}
+        {lang}
+      </button>
+    );
+  })}
+</div>
             </div>
 
             <div>
@@ -550,7 +689,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           </div>
 
           {/* Card 4: Verse Audio & Accessibility */}
-          <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 shadow-sm">
             <SectionHeader
               icon={BsVolumeUp}
               title="Verse Audio & Accessibility"
@@ -567,41 +706,41 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
             <div className="mb-4">
               <Label>Audio File</Label>
-              <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => audioFileRef.current?.click()}
-                  className="px-4 py-2 bg-[#EEF2FF] text-[#001984] font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-[#E2DFFC] transition-colors cursor-pointer"
-                >
-                  <FiUpload size={14} /> Upload Audio
-                </button>
-                <button
-                  type="button"
-                  onClick={() =>
-                    alert(formData.audioFileName ? `Playing ${formData.audioFileName}` : "No audio loaded.")
-                  }
-                  className="px-4 py-2 bg-white border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  <FiPlay size={14} /> Preview
-                </button>
-                <button
-                  type="button"
-                  onClick={() => audioFileRef.current?.click()}
-                  className="px-4 py-2 bg-white border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  <FiRefreshCw size={14} /> Replace
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    updateField("audioFile", null);
-                    updateField("audioFileName", "");
-                  }}
-                  className="px-4 py-2 bg-[#FEF2F2] text-[#EF4444] font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-red-100 transition-colors cursor-pointer"
-                >
-                  <FiTrash2 size={14} /> Remove
-                </button>
-              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-[repeat(4,160px)] lg:grid-cols-[repeat(4,180px)] gap-3">
+  <button
+    type="button"
+    onClick={() => audioFileRef.current?.click()}
+    className={`${audioBtn} border-[#E2DFFC] bg-[#F5F5FF] text-[#0A0847] hover:bg-[#EEEEFF]`}
+  >
+    <FiUpload size={16} /> Upload Audio
+  </button>
+  <button
+    type="button"
+    onClick={() =>
+      alert(formData.audioFileName ? `Playing ${formData.audioFileName}` : "No audio loaded.")
+    }
+    className={`${audioBtn} border-[#E2DFFC] bg-white text-[#0A0847CC] hover:bg-gray-50`}
+  >
+    <FiPlay size={16} /> Preview
+  </button>
+  <button
+    type="button"
+    onClick={() => audioFileRef.current?.click()}
+    className={`${audioBtn} border-[#E2DFFC] bg-white text-[#0A0847CC] hover:bg-gray-50`}
+  >
+    <FiRefreshCw size={16} /> Replace
+  </button>
+  <button
+    type="button"
+    onClick={() => {
+      updateField("audioFile", null);
+      updateField("audioFileName", "");
+    }}
+    className={`${audioBtn} border-[#FECACA] bg-[#FEF2F2] text-[#EF4444] hover:bg-red-100`}
+  >
+    <FiTrash2 size={16} /> Remove
+  </button>
+</div>
               {formData.audioFileName && (
                 <p className="text-xs text-[#059669] font-medium mt-2">
                   Loaded Audio: {formData.audioFileName}
@@ -609,33 +748,61 @@ export default function AddDailyVerseWizard({ onCancel }) {
               )}
             </div>
 
+            <div className="mb-6">
+  <Label>Daily Takeaway</Label>
+  <Input
+    placeholder="Let God guide your steps today."
+    value={formData.dailyTakeaway}
+    onChange={(e) => updateField("dailyTakeaway", e.target.value)}
+  />
+</div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-              <Toggle
-                label="Transcript / Captions Enabled"
-                checked={formData.transcriptEnabled}
-                onChange={(val) => updateField("transcriptEnabled", val)}
-              />
-              <div>
-                <Label>Playback Speed</Label>
-                <Select
-                  value={formData.playbackSpeed}
-                  onChange={(e) => updateField("playbackSpeed", e.target.value)}
-                >
-                  <option>0.75x</option>
-                  <option>1.0x</option>
-                  <option>1.25x</option>
-                </Select>
-              </div>
-              <Toggle
-                label="Highlight Words"
-                checked={formData.highlightWords}
-                onChange={(val) => updateField("highlightWords", val)}
-              />
-            </div>
+  <div>
+    <Label>Transcript / Captions</Label>
+    <div className="h-11 flex items-center">
+      <Toggle
+        label={formData.transcriptEnabled ? "Enabled" : "Disabled"}
+        checked={formData.transcriptEnabled}
+        onChange={(val) => updateField("transcriptEnabled", val)}
+      />
+    </div>
+  </div>
+
+  <div>
+    <Label>Playback Speed</Label>
+    <div className="relative">
+      <Select
+        value={formData.playbackSpeed}
+        onChange={(e) => updateField("playbackSpeed", e.target.value)}
+        className="appearance-none pr-8 h-11"
+      >
+        <option>0.75x</option>
+        <option>1.0x</option>
+        <option>1.25x</option>
+      </Select>
+      <FiChevronDown
+        size={14}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+      />
+    </div>
+  </div>
+
+  <div>
+    <Label>Highlight Words</Label>
+    <div className="h-11 flex items-center">
+      <Toggle
+        label={formData.highlightWords ? "Enabled" : "Disabled"}
+        checked={formData.highlightWords}
+        onChange={(val) => updateField("highlightWords", val)}
+      />
+    </div>
+  </div>
+</div>
           </div>
 
           {/* Card 5: Verse Actions */}
-          <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 shadow-sm">
             <SectionHeader
               icon={BsShare}
               title="Verse Actions"
@@ -677,38 +844,38 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 checked={formData.enableShare}
                 onChange={(val) => updateField("enableShare", val)}
               />
-              <button className="px-4 py-2 border border-[#E2DFFC] text-[#001984] font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer">
+              <button className="px-4 py-2 border border-[#001984] text-[#001984] font-bold text-xs rounded-lg flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer">
                 <FiShare2 size={14} /> Preview Share Card
               </button>
             </div>
           </div>
 
           {/* Step 1 Footer Action Bar */}
-          <div className="flex items-center justify-between pt-4 border-t border-[#E2DFFC]">
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-            >
-              Cancel
-            </button>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleSave("Draft Saved")}
-                className="px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-bold text-xs rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
-              >
-                <FiSave size={14} /> Save draft
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrentStep(2)}
-                className="px-6 py-2.5 bg-[#001984] text-white font-bold text-xs rounded-lg hover:bg-[#001266] flex items-center gap-2 transition-colors cursor-pointer"
-              >
-                Next: Reflection & Prayer <FiArrowRight size={14} />
-              </button>
-            </div>
-          </div>
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
+  <button
+    type="button"
+    onClick={onCancel}
+    className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+  >
+    Cancel
+  </button>
+  <div className="flex flex-col-reverse sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+    <button
+      type="button"
+      onClick={() => handleSave("Draft Saved")}
+      className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-bold text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+    >
+      <FiSave size={14} /> Save draft
+    </button>
+    <button
+      type="button"
+      onClick={() => setCurrentStep(2)}
+      className="w-full sm:w-auto px-6 py-2.5 bg-[#001984] text-white font-semibold text-xs rounded-lg hover:bg-[#001266] flex items-center justify-center gap-2 whitespace-nowrap transition-colors cursor-pointer"
+    >
+      Next: Reflection & Prayer <FiArrowRight size={14} />
+    </button>
+  </div>
+</div>
         </div>
       )}
 
@@ -720,7 +887,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* LEFT COLUMN */}
           <div className="lg:col-span-7 space-y-6">
             {/* Card 1: Today's Verse Rotation */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
               <SectionHeader
                 icon={BsBook}
                 title="Today's Verse"
@@ -755,37 +922,49 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   </Select>
 
                   {/* Radio Group Items */}
-                  <div className="space-y-2">
-                    {[
-                      { id: "A", label: "Psalm 23:1" },
-                      { id: "B", label: "Psalm 23:2" },
-                      { id: "C", label: "Psalm 23:3" },
-                      { id: "D", label: "Psalm 23:4" },
-                    ].map((item) => (
-                      <div
-                        key={item.id}
-                        onClick={() => updateField("selectedRotation", item.label)}
-                        className={`flex items-center justify-between p-3 rounded-xl border text-xs font-semibold transition-colors cursor-pointer ${
-                          formData.selectedRotation === item.label
-                            ? "bg-[#ECFDF5] border-[#10B981] text-[#0A0847]"
-                            : "bg-white border-[#E2DFFC] text-[#0A0847]"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className="w-4 h-4 rounded-full border border-gray-400 flex items-center justify-center text-[10px]">
-                            {item.id}
-                          </span>
-                          <span>{item.label}</span>
-                        </div>
-                        {formData.selectedRotation === item.label && (
-                          <div className="flex items-center gap-1.5 text-[#059669] font-bold">
-                            <span className="text-[11px]">Use today</span>
-                            <FiCheck size={14} />
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+               <div className="space-y-2">
+  {[
+    { id: "A", label: "Psalm 23:1" },
+    { id: "B", label: "Psalm 23:2" },
+    { id: "C", label: "Psalm 23:3" },
+    { id: "D", label: "Psalm 23:4" },
+  ].map((item) => {
+    const isSelected = formData.selectedRotation === item.label;
+    return (
+      <div
+        key={item.id}
+        onClick={() => updateField("selectedRotation", item.label)}
+        className={`flex items-center justify-between px-2 py-1.5 rounded-lg border text-xs font-semibold transition-colors cursor-pointer ${
+          isSelected
+            ? "bg-[#F4FFF3] border-[#B2E0AE] text-[#1BA155]"
+            : "bg-white border-transparent text-[#0A0847] hover:bg-gray-50"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          {/* Radio circle */}
+          <span
+            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+              isSelected ? "border-[#21AC1C]" : "border-[#4B4A8A]"
+            }`}
+          >
+            {isSelected && <span className="w-2.5 h-2.5 rounded-full bg-[#21AC1C]" />}
+          </span>
+          <span>{item.id}</span>
+          <span>{item.label}</span>
+        </div>
+
+        {isSelected && (
+          <div className="flex items-center gap-3">
+            <span className="px-3 py-2 rounded-full bg-[#21AC1C1A] text-[#21AC1C] text-sm font-semibold">
+              Use today
+            </span>
+            <BsCheckCircleFill size={18} className="text-[#21AC1C]" />
+          </div>
+        )}
+      </div>
+    );
+  })}
+</div>
                 </div>
 
                 <div>
@@ -816,8 +995,8 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   />
                 </div>
 
-                <button className="w-full py-2.5 border border-[#001984] text-[#001984] font-bold text-xs rounded-lg hover:bg-[#EEF2FF] flex items-center justify-center gap-2 transition-colors cursor-pointer">
-                  <FiPlus size={16} /> Add Another Question
+                <button className="w-full py-2.5 border border-[#001984] text-[#001984] font-semibold text-sm rounded-lg hover:bg-[#EEF2FF] flex items-center justify-center gap-2 transition-colors cursor-pointer">
+                  <FiPlus size={20} /> Add Another Question
                 </button>
                 <p className="text-[11px] text-center text-gray-400 font-medium">
                   Add more questions to show more rotation options.
@@ -826,7 +1005,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             </div>
 
             {/* Card 2: Let's Pray */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <h3 className="font-bold text-sm text-[#0A0847]">Let's Pray</h3>
 
               <div>
@@ -910,36 +1089,36 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   onChange={handleApplyMediaUpload}
                   className="hidden"
                 />
-                <div className="flex flex-wrap items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => mediaFileRef.current?.click()}
-                    className="px-4 py-2 border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <FiUpload size={14} /> Upload
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => mediaFileRef.current?.click()}
-                    className="px-4 py-2 border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <FiImage size={14} /> Photo
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => mediaFileRef.current?.click()}
-                    className="px-4 py-2 border border-[#E2DFFC] text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <FiVideo size={14} /> Video
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateField("appliedMedia", [])}
-                    className="px-4 py-2 bg-[#FEF2F2] text-[#EF4444] font-bold text-xs rounded-lg hover:bg-red-100 flex items-center gap-2 transition-colors cursor-pointer"
-                  >
-                    <FiTrash2 size={14} /> Remove All
-                  </button>
-                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+  <button
+    type="button"
+    onClick={() => mediaFileRef.current?.click()}
+    className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-sm rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+  >
+    <FiUpload size={18} /> Upload
+  </button>
+  <button
+    type="button"
+    onClick={() => mediaFileRef.current?.click()}
+    className="h-11 w-full border border-[#E2DFFC] bg-[#F5F5FF] text-[#001984] font-semibold text-sm rounded-lg hover:bg-[#EEEEFF] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+  >
+    <FiImage size={18} /> Photo
+  </button>
+  <button
+    type="button"
+    onClick={() => mediaFileRef.current?.click()}
+    className="h-11 w-full border border-[#E2DFFC] bg-[#F5F5FF] text-[#001984] font-semibold text-sm rounded-lg hover:bg-[#EEEEFF] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+  >
+    <FiVideo size={18} /> Video
+  </button>
+  <button
+    type="button"
+    onClick={() => updateField("appliedMedia", [])}
+    className="h-11 w-full border border-[#FECACA] bg-[#FEF2F2] text-[#DE2128] font-semibold text-sm rounded-lg hover:bg-red-100 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+  >
+    <FiTrash2 size={18} /> Remove
+  </button>
+</div>
 
                 {formData.appliedMedia.length > 0 && (
                   <div className="flex flex-wrap gap-2 mt-3">
@@ -954,14 +1133,14 @@ export default function AddDailyVerseWizard({ onCancel }) {
             </div>
 
             {/* Card 3: Scriptures & Media with Working Remove Button */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <h3 className="font-bold text-sm text-[#0A0847]">Scriptures & Media</h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {formData.scriptureMediaList.map((item) => (
                   <div
                     key={item.id}
-                    className="border border-[#E2DFFC] rounded-xl p-2 flex items-center justify-between bg-white"
+                    className="border border-[#E2DFFC] rounded-md p-2 flex items-center justify-between bg-white"
                   >
                     <div className="flex items-center gap-3">
                       <img
@@ -1004,57 +1183,68 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* RIGHT COLUMN */}
           <div className="lg:col-span-5 space-y-6">
             {/* Card 1: Reflection & Prayer Options */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E2DFFC] pb-3">
-                <SectionHeader
-                  icon={BsChatSquareQuote}
-                  title="Reflection & Prayer"
-                  subtitle="Help users reflect and connect"
-                />
-                <Toggle
-                  checked={formData.enableReflection}
-                  onChange={(val) => updateField("enableReflection", val)}
-                />
-              </div>
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
+  <SectionHeader
+    icon={BsChatSquareQuote}
+    title="Reflection & Prayer"
+    subtitle="Help users reflect and connect"
+  />
 
-              <div>
-                <Label>Reflection Title</Label>
-                <Input
-                  placeholder="e.g. What is God showing you today?"
-                  value={formData.reflectionTitle}
-                  onChange={(e) => updateField("reflectionTitle", e.target.value)}
-                />
-              </div>
+  <h4 className="text-sm font-semibold text-[#0A0847CC]">Reflection Option</h4>
 
-              <div>
-                <Label>Reflection Limit</Label>
-                <Select
-                  value={formData.reflectionLimit}
-                  onChange={(e) => updateField("reflectionLimit", e.target.value)}
-                >
-                  <option>150</option>
-                  <option>250</option>
-                  <option>500</option>
-                </Select>
-              </div>
+  <div className="flex items-center justify-between">
+    <span className="text-xs font-semibold text-[#0A0847CC]">Enable Reflection</span>
+    <Toggle
+      checked={formData.enableReflection}
+      onChange={(val) => updateField("enableReflection", val)}
+    />
+  </div>
 
-              <div>
-                <Label>Focus Prompt</Label>
-                <Input
-                  placeholder="e.g. Gentle reminder"
-                  value={formData.focusPrompt}
-                  onChange={(e) => updateField("focusPrompt", e.target.value)}
-                />
-              </div>
+  <div>
+    <Label>Reflection Title</Label>
+    <Input
+      placeholder="What is God showing you today?"
+      value={formData.reflectionTitle}
+      onChange={(e) => updateField("reflectionTitle", e.target.value)}
+    />
+  </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-[#001984] font-medium bg-[#EEF2FF] p-2.5 rounded-lg border border-[#E2DFFC]">
-                <BsFillInfoCircleFill size={14} className="shrink-0" />
-                <span>Reflections are also private notes.</span>
-              </div>
-            </div>
+  <div>
+    <Label>Reflection Limit</Label>
+    <div className="relative">
+      <Select
+        value={formData.reflectionLimit}
+        onChange={(e) => updateField("reflectionLimit", e.target.value)}
+        className="appearance-none pr-8"
+      >
+        <option>150</option>
+        <option>250</option>
+        <option>500</option>
+      </Select>
+      <FiChevronDown
+        size={14}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+      />
+    </div>
+  </div>
+
+  <div>
+    <Label>Focus Prompt</Label>
+    <Input
+      placeholder="Gentle reminder"
+      value={formData.focusPrompt}
+      onChange={(e) => updateField("focusPrompt", e.target.value)}
+    />
+  </div>
+
+  <div className="flex items-center gap-2 text-xs text-[#0A0847CC] italic font-medium">
+    <FiInfo size={16} className="text-[#001984] shrink-0" />
+    <span>Reflections are also private notes.</span>
+  </div>
+</div>
 
             {/* Card 2: Reward */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <SectionHeader
                 icon={BsAward}
                 title="Reward"
@@ -1072,7 +1262,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 </Select>
               </div>
 
-              <div>
+              <div className="mb-8">
                 <Label>Amount</Label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#F59E0B] text-white text-[10px] font-bold flex items-center justify-center">
@@ -1090,8 +1280,8 @@ export default function AddDailyVerseWizard({ onCancel }) {
             </div>
 
             {/* Card 3: Personal Prayer */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-[#E2DFFC] pb-3">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
+              <div className="flex items-center justify-between pb-3">
                 <SectionHeader
                   icon={BsHeart}
                   title="Personal Prayer"
@@ -1121,55 +1311,68 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 />
               </div>
 
-              <div className="flex items-center gap-2 text-[11px] text-[#001984] font-medium bg-[#EEF2FF] p-2.5 rounded-lg border border-[#E2DFFC]">
-                <BsFillInfoCircleFill size={14} className="shrink-0" />
-                <span>Reflections are also private prayers.</span>
-              </div>
+              <div className="flex items-center gap-2 text-xs text-[#0A0847CC] italic font-medium mb-6">
+                    <FiInfo size={16} className="text-[#001984] shrink-0" />
+                    <span>Reflections are also private notes.</span>
+                </div>
             </div>
 
             {/* Card 4: Publishing */}
-            <div className="bg-white rounded-2xl border border-[#E2DFFC] p-6 shadow-sm space-y-4">
-              <SectionHeader
-                icon={BsSend}
-                title="Publishing"
-                subtitle="Set schedule details"
-              />
+            <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
+  <SectionHeader
+    icon={BsSend}
+    title="Publishing"
+    subtitle="Set schedule details"
+  />
 
-              <div className="bg-[#ECFDF5] border border-[#10B981] rounded-xl p-3 flex items-center gap-2 text-xs font-semibold text-[#059669]">
-                <FiCalendar size={16} />
-                <span>
-                  This will be published on {formData.displayDate || "May 24, 2025"}
-                </span>
-              </div>
+  <div className="bg-[#ECFDF3] border border-[#21AC1C] rounded-lg px-3 py-3 flex items-center gap-2 text-xs font-semibold text-[#21AC1C]">
+    <FiCalendar size={18} />
+    <span>
+      This will be published on {formData.displayDate || "May 24, 2025"}
+    </span>
+  </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <Label>Visible Mode</Label>
-                  <span className="text-[11px] text-gray-400 font-medium">
-                    Choose who can see and engage
-                  </span>
-                </div>
-                <Select
-                  value={formData.visibleMode}
-                  onChange={(e) => updateField("visibleMode", e.target.value)}
-                >
-                  <option>User Group</option>
-                  <option>Public</option>
-                </Select>
-              </div>
+  {/* Visible Mode */}
+  <div className="flex items-center justify-between gap-4">
+    <div>
+      <h4 className="text-sm font-semibold text-[#0A0847]">Visible Mode</h4>
+      <p className="text-[11px] text-[#0A084799] font-medium mt-0.5">
+        Choose who can see and engage
+      </p>
+    </div>
+    <div className="relative shrink-0">
+      <select
+        value={formData.visibleMode}
+        onChange={(e) => updateField("visibleMode", e.target.value)}
+        className="h-10 appearance-none bg-[#E8E9FB] rounded-lg pl-4 pr-9 text-xs font-semibold text-[#0A0847] outline-none cursor-pointer"
+      >
+        <option>User Group</option>
+        <option>Public</option>
+      </select>
+      <FiChevronDown
+        size={14}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0A0847] pointer-events-none"
+      />
+    </div>
+  </div>
 
-              <div>
-                <Label>Visibility To</Label>
-                <div className="flex items-center gap-2 border border-[#E2DFFC] rounded-lg px-3 py-2 bg-white text-xs font-semibold text-[#0A0847]">
-                  <FiUsers size={16} className="text-[#001984]" />
-                  <span>{formData.visibilityTo}</span>
-                </div>
-              </div>
-            </div>
+  {/* Visibility To */}
+  <div>
+    <h4 className="text-sm font-semibold text-[#0A0847] mb-3">Visibility To</h4>
+    <div className="flex items-center gap-3">
+      <div className="w-8 h-8 rounded-full bg-[#3231DB] text-white flex items-center justify-center shrink-0">
+        <FiUsers size={14} />
+      </div>
+      <span className="text-xs font-medium text-[#0A0847CC]">
+        {formData.visibilityTo}
+      </span>
+    </div>
+  </div>
+</div>
           </div>
 
           {/* Step 2 Bottom Full-Width Action Footer */}
-          <div className="lg:col-span-12 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-[#E2DFFC]">
+          <div className="lg:col-span-12 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4">
             <button
               type="button"
               onClick={() => setCurrentStep(1)}
@@ -1195,7 +1398,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <button
                 type="button"
                 onClick={() => handleSave("Schedule / Published")}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#001984] text-white font-bold text-xs rounded-lg hover:bg-[#001266] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-6 py-2.5 bg-[#001984] text-white font-semibold text-xs rounded-lg hover:bg-[#001266] flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <FiCalendar size={14} /> Schedule Now
               </button>

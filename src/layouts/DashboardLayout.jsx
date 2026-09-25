@@ -60,7 +60,7 @@ const NAV_GROUPS = [
   },
 ],
     },
-    { id: "pray", label: "Pray with Me", icon: PiHandsPraying },
+    { id: "pray", label: "Pray with Me", icon: PiHandsPraying, path: "/admin/pray-with-me" },
     { id: "audio", label: "Audio Library", icon: PiHeadphones },
     { id: "jesus", label: "Jesus Story", icon: PiBookOpenText },
   ],

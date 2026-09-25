@@ -22,6 +22,7 @@ import { BsGrid, BsFillInfoCircleFill, BsFillEyeFill } from "react-icons/bs";
 import { BiSolidEditAlt, BiDollar } from "react-icons/bi";
 import { MdOutlineDragIndicator } from "react-icons/md";
 import { TbFileOff } from "react-icons/tb";
+import { FaCalendarDays } from "react-icons/fa6";
 
 /* ==========================================================================
    MOCK API FETCH (Returns full page payload)
@@ -258,7 +259,7 @@ const ToggleSwitch = ({ enabled, onChange }) => (
     }`}
   >
     <span
-      className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+      className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white ring-0 transition duration-200 ease-in-out ${
         enabled ? "translate-x-4" : "translate-x-0"
       }`}
     />
@@ -411,7 +412,7 @@ export default function Subscription() {
                     <div
                       className={`w-9 h-9 rounded-xl ${plan.iconColor} text-white flex items-center justify-center`}
                     >
-                      <FiCalendar size={18} />
+                      <FaCalendarDays size={18} />
                     </div>
                     <h3 className="font-semibold text-sm text-[#0A0847]">
                       {plan.title}
@@ -482,7 +483,7 @@ export default function Subscription() {
           </div>
 
           {/* Plan Features Card */}
-          <div className="bg-white rounded-lg border border-[#E2DFFC] shadow-sm p-6 space-y-6">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-6">
             <div className="flex items-start gap-3">
               <FiSettings
                 size={22}
@@ -532,7 +533,7 @@ export default function Subscription() {
         <div className="space-y-6">
           {/* Top Metrics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white rounded-lg border border-[#E2DFFC] shadow-sm px-5 py-8 flex items-center gap-4">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] px-5 py-8 flex items-center gap-4">
               <div className="w-18 h-18 rounded-xl bg-[#6897F8] text-white flex items-center justify-center">
                 <FiTrendingDown size={32} />
               </div>
@@ -546,7 +547,7 @@ export default function Subscription() {
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-[#E2DFFC] shadow-sm px-5 py-8 flex items-center gap-4">
+            <div className="bg-white rounded-lg border border-[#E2DFFC] px-5 py-8 flex items-center gap-4">
               <div className="w-18 h-18 rounded-xl bg-[#9E6AF2] text-white flex items-center justify-center">
                 <FiStar size={32} className="fill-white" />
               </div>
@@ -725,7 +726,7 @@ export default function Subscription() {
 
       {/* Save Button Bar */}
       <div className="pt-2">
-        <button className="w-full bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold text-sm py-3.5 rounded-lg flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer">
+        <button className="w-full bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold text-sm py-3.5 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer">
           <FiSave size={18} />
           Save Plan Changes
         </button>
