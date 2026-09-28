@@ -719,6 +719,28 @@ function StepOne({ v, upd, setStep, navigate }) {
    STEP 2 — PRAYER & COMPLETION
    ========================================================================== */
 function StepTwo({ v, upd, setStep }) {
+  const audioFileRef = useRef(null);
+  const [audio2, setAudio2] = useState(null);
+
+  const fmtDur = (s) => {
+    if (!s) return "00:00";
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  };
+
+  const handleAudioUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setAudio2({ name: file.name, size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`, url, duration: null });
+      const probe = new Audio(url);
+      probe.addEventListener("loadedmetadata", () => {
+        setAudio2((s) => (s && s.url === url ? { ...s, duration: probe.duration } : s));
+      });
+    }
+    e.target.value = "";
+  };
   return (
     <>
       <div className="grid grid-cols-1 items-stretch gap-[24px] lg:grid-cols-[1fr_370px]">
@@ -759,9 +781,17 @@ function StepTwo({ v, upd, setStep }) {
             <h3 className="text-[13px] font-bold text-[#0B1250]">Player Audio & Accessibility</h3>
             <div className="mt-[14px]">
               <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">File Actions:</p>
+              <input
+                ref={audioFileRef}
+                type="file"
+                accept="audio/mp3,audio/wav,audio/m4a,audio/*"
+                className="hidden"
+                onChange={handleAudioUpload}
+              />
               <div className="grid grid-cols-4 gap-[8px]">
                 <button
                   type="button"
+                  onClick={() => audioFileRef.current?.click()}
                   className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
                   <PiUploadSimple size={14} />
@@ -776,6 +806,7 @@ function StepTwo({ v, upd, setStep }) {
                 </button>
                 <button
                   type="button"
+                  onClick={() => audioFileRef.current?.click()}
                   className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
                   <PiArrowsClockwise size={14} />
@@ -783,6 +814,7 @@ function StepTwo({ v, upd, setStep }) {
                 </button>
                 <button
                   type="button"
+                  onClick={() => setAudio2(null)}
                   className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#DC2626] transition hover:bg-red-50"
                 >
                   <PiTrash size={14} />
@@ -791,7 +823,16 @@ function StepTwo({ v, upd, setStep }) {
               </div>
             </div>
 
-            <AudioPlayer time="0:00/2:48" fill="75%" rightTime />
+            <AudioPlayer
+              time={audio2 ? `0:00/${fmtDur(audio2.duration)}` : "0:00/2:48"}
+              fill="75%"
+              rightTime
+            />
+            {audio2 && (
+              <p className="mt-[8px] text-[11px] text-[#0B1250]">
+                Loaded: <span className="font-semibold">{audio2.name}</span> ({audio2.size})
+              </p>
+            )}
 
             <div className="mt-[12px] flex items-center justify-between gap-[10px]">
               <Checkbox label="Transcript / Captions" checked={v.transcript2} onChange={upd("transcript2")} />
