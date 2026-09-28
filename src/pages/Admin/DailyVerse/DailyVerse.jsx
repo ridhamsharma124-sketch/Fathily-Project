@@ -121,7 +121,7 @@ const DropdownFilter = ({ label, options, value, onChange }) => (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="appearance-none bg-white border border-[#E2DFFC] rounded-lg px-3.5 py-2 pr-8 text-xs font-medium text-[#0A0847] outline-none cursor-pointer focus:border-[#001984]"
+      className="appearance-none bg-white border border-[#E2DFFC] rounded-md px-3.5 py-2 pr-8 text-xs font-medium text-[#0A0847CC] outline-none cursor-pointer focus:border-[#001984]"
     >
       <option value="">{label}</option>
       {options.map((opt) => (
@@ -318,7 +318,7 @@ export default function DailyVersesPage() {
             placeholder="Search by verse, reference or text..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white border border-[#E2DFFC] rounded-lg pl-9 pr-3 py-3 text-xs text-[#0A084799] placeholder-gray-400 outline-none focus:border-[#001984]"
+            className="w-full bg-white border border-[#E2DFFC] rounded-md pl-9 pr-3 py-3 text-xs text-[#0A084799] placeholder-gray-400 outline-none focus:border-[#001984]"
           />
         </div>
 
@@ -346,7 +346,7 @@ export default function DailyVersesPage() {
       </div>
 
       {/* Main Table Container */}
-      <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden">
+      <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden p-[14px]">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             {/* Table Header */}

@@ -12,7 +12,14 @@ import {
   FiChevronDown,
   FiCalendar,
   FiUser,
-  FiMusic, FiX, FiShield, FiEyeOff, FiInfo, FiPlay, FiVolume2, FiSettings
+  FiMusic,
+  FiX,
+  FiShield,
+  FiEyeOff,
+  FiInfo,
+  FiPlay,
+  FiVolume2,
+  FiSettings,
 } from "react-icons/fi";
 import { BsCheckCircle, BsPlayCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -187,7 +194,7 @@ const DropdownFilter = ({ label, options, value, onChange }) => (
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="appearance-none bg-white border border-[#E2DFFC] rounded-lg px-3.5 py-2.5 pr-8 text-xs font-medium text-[#0A0847] outline-none cursor-pointer focus:border-[#001984]"
+      className="appearance-none bg-white border border-[#E2DFFC] rounded-md px-3.5 py-2.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none cursor-pointer focus:border-[#001984]"
     >
       <option value="">{label} (All)</option>
       {options.map((opt) => (
@@ -204,7 +211,14 @@ const DropdownFilter = ({ label, options, value, onChange }) => (
 );
 
 /** Actions Popover Menu (portal) */
-const ActionsMenu = ({ isOpen, onToggle, onDelete, onFlag, onApprove, onView }) => {
+const ActionsMenu = ({
+  isOpen,
+  onToggle,
+  onDelete,
+  onFlag,
+  onApprove,
+  onView,
+}) => {
   const btnRef = useRef(null);
   const menuRef = useRef(null);
   const [pos, setPos] = useState({ top: 0, left: 0 });
@@ -276,13 +290,16 @@ const ActionsMenu = ({ isOpen, onToggle, onDelete, onFlag, onApprove, onView }) 
               <FiTrash2 size={14} /> Delete
             </button>
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );
 };
 
-const WAVE = [4,8,14,10,18,12,6,16,20,10,14,8,18,12,6,14,10,18,8,12,16,6,10,14,8,18,12,6,10,16,8,12,14,6,10];
+const WAVE = [
+  4, 8, 14, 10, 18, 12, 6, 16, 20, 10, 14, 8, 18, 12, 6, 14, 10, 18, 8, 12, 16,
+  6, 10, 14, 8, 18, 12, 6, 10, 16, 8, 12, 14, 6, 10,
+];
 
 const ModalSelect = ({ value, onChange, options }) => (
   <div className="relative">
@@ -326,13 +343,18 @@ const ReviewPrayerModal = ({ item, onClose, onUpdate, onDelete }) => {
       >
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
-          <h3 className="text-sm font-bold text-[#0A0847]">Review Prayer Post</h3>
+          <h3 className="text-sm font-bold text-[#0A0847]">
+            Review Prayer Post
+          </h3>
           <button
             type="button"
             onClick={onClose}
             className="text-[#001984] hover:opacity-70 cursor-pointer"
           >
-            <FiX size={22} className="rounded-full border-2 border-[#001984] p-0.5" />
+            <FiX
+              size={22}
+              className="rounded-full border-2 border-[#001984] p-0.5"
+            />
           </button>
         </div>
 
@@ -374,9 +396,13 @@ const ReviewPrayerModal = ({ item, onClose, onUpdate, onDelete }) => {
           <div className="flex items-center gap-3">
             <Avatar src={item.avatar} name={item.name} />
             <div>
-              <p className="text-xs font-semibold text-[#0A0847]">{item.name}</p>
+              <p className="text-xs font-semibold text-[#0A0847]">
+                {item.name}
+              </p>
               {item.handle && (
-                <p className="text-xs font-medium text-[#0A0847CC]">{item.handle}</p>
+                <p className="text-xs font-medium text-[#0A0847CC]">
+                  {item.handle}
+                </p>
               )}
             </div>
           </div>
@@ -446,11 +472,14 @@ const ReviewPrayerModal = ({ item, onClose, onUpdate, onDelete }) => {
 
         <div className="mt-4 flex items-start gap-2 bg-[#0019840D] border border-[#DBE2FF] rounded-lg p-3 text-[11px] font-medium text-[#001984]">
           <FiInfo size={16} className="text-[#001984] shrink-0 mt-0.5" />
-          <span>Disabled posts are hidden from users and can be restored at any time.</span>
+          <span>
+            Disabled posts are hidden from users and can be restored at any
+            time.
+          </span>
         </div>
       </div>
     </div>,
-    document.body
+    document.body,
   );
 };
 
@@ -483,10 +512,14 @@ export default function PrayWithMePage() {
       p.request.toLowerCase().includes(q) ||
       p.name.toLowerCase().includes(q) ||
       p.handle.toLowerCase().includes(q);
-    const matchesCategory = categoryFilter ? p.category === categoryFilter : true;
+    const matchesCategory = categoryFilter
+      ? p.category === categoryFilter
+      : true;
     const matchesStatus = statusFilter ? p.status === statusFilter : true;
     const matchesType = typeFilter
-      ? (typeFilter === "Text" ? p.format === "Text" : p.format === "Audio")
+      ? typeFilter === "Text"
+        ? p.format === "Text"
+        : p.format === "Audio"
       : true;
     return matchesSearch && matchesCategory && matchesStatus && matchesType;
   });
@@ -497,7 +530,7 @@ export default function PrayWithMePage() {
   const currentPage = Math.min(page, totalPages);
   const visible = filtered.slice(
     (currentPage - 1) * perPage,
-    currentPage * perPage
+    currentPage * perPage,
   );
 
   // Selection
@@ -509,13 +542,13 @@ export default function PrayWithMePage() {
     setSelectedIds((prev) =>
       e.target.checked
         ? [...new Set([...prev, ...ids])]
-        : prev.filter((id) => !ids.includes(id))
+        : prev.filter((id) => !ids.includes(id)),
     );
   };
 
   const handleSelectRow = (id) =>
     setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
 
   // Row actions
@@ -539,41 +572,49 @@ export default function PrayWithMePage() {
     } else if (value === "Flag" || value === "Approve") {
       const status = value === "Flag" ? "Flagged" : "Active";
       setPrayers((prev) =>
-        prev.map((p) => (selectedIds.includes(p.id) ? { ...p, status } : p))
+        prev.map((p) => (selectedIds.includes(p.id) ? { ...p, status } : p)),
       );
     }
     setSelectedIds([]);
   };
 
   // Page numbers
-  const pageNumbers = Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1);
+  const pageNumbers = Array.from(
+    { length: Math.min(totalPages, 5) },
+    (_, i) => i + 1,
+  );
 
   const updatePrayer = (id, patch) =>
-  setPrayers((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
+    setPrayers((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, ...patch } : p)),
+    );
 
-const deleteFromModal = (id) => {
-  handleDelete(id);
-  setReviewId(null);
-};
+  const deleteFromModal = (id) => {
+    handleDelete(id);
+    setReviewId(null);
+  };
 
   return (
     <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
       {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h1 className="text-xl font-bold text-[#0A0847]">Pray With Me Management</h1>
-            <p className="text-sm text-[#0A084799] font-medium mt-2">
-            Review prayer requests, respond regularly, and strengthen visibility.
-            </p>
+          <h1 className="text-xl font-bold text-[#0A0847]">
+            Pray With Me Management
+          </h1>
+          <p className="text-sm text-[#0A084799] font-medium mt-2">
+            Review prayer requests, respond regularly, and strengthen
+            visibility.
+          </p>
         </div>
         <button
-            type="button"
-            onClick={() => navigate("/admin/pray-with-me/settings")}
-            className=" text-[#0A0847] text-xs font-medium px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors hover:scale-[1.05] cursor-pointer self-start sm:self-auto"
+          type="button"
+          onClick={() => navigate("/admin/pray-with-me/settings")}
+          className=" text-[#0A0847] text-xs font-medium px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors hover:scale-[1.05] cursor-pointer self-start sm:self-auto"
         >
-            <FiSettings size={16} />
+          <FiSettings size={16} />
         </button>
-        </div>
+      </div>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -619,7 +660,7 @@ const deleteFromModal = (id) => {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full bg-white border border-[#E2DFFC] rounded-lg pl-9 pr-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984]"
+              className="w-full bg-white border border-[#E2DFFC] rounded-md pl-9 pr-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984]"
             />
           </div>
 
@@ -655,7 +696,7 @@ const deleteFromModal = (id) => {
             {/* Featured Date */}
             <div
               onClick={() => dateRef.current?.showPicker?.()}
-              className="relative bg-white border border-[#E2DFFC] rounded-lg px-3.5 py-2.5 text-xs font-medium text-[#0A0847] flex items-center gap-3 cursor-pointer hover:border-[#001984] transition-colors"
+              className="relative bg-white border border-[#E2DFFC] rounded-md px-3.5 py-2.5 text-xs font-medium text-[#0A0847CC] flex items-center gap-3 cursor-pointer hover:border-[#001984] transition-colors"
             >
               <span>{featuredDate || "Featured Date"}</span>
               <FiCalendar size={16} className="text-gray-500" />
@@ -675,7 +716,7 @@ const deleteFromModal = (id) => {
           <select
             value={bulkAction}
             onChange={(e) => handleBulk(e.target.value)}
-            className="appearance-none bg-white border border-[#001984] rounded-lg pl-3 pr-9 py-2.5 text-xs font-medium text-[#0A0847] outline-none cursor-pointer w-40"
+            className="appearance-none bg-white border border-[#001984] rounded-md pl-3 pr-9 py-2.5 text-xs font-medium text-[#0A0847CC] outline-none cursor-pointer w-40"
           >
             <option value="">Bulk Actions</option>
             <option value="Approve">Approve</option>
@@ -690,12 +731,12 @@ const deleteFromModal = (id) => {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden p-[14px]">
+        <div className="overflow-x-auto ">
           <table className="w-full text-left text-xs min-w-[1000px]">
             <thead className="bg-[#F3F7FD] border-b border-[#E2DFFC]">
               <tr className="text-sm font-medium text-[#0A0847CC]">
-                <th className="p-4 w-10">
+                <th className="px-4 w-10">
                   <input
                     type="checkbox"
                     checked={allSelected}
@@ -703,15 +744,15 @@ const deleteFromModal = (id) => {
                     className="rounded border-gray-300 accent-[#001984] cursor-pointer"
                   />
                 </th>
-                <th className="p-4 font-medium">Prayer Request</th>
-                <th className="p-4 font-medium">Posted By</th>
-                <th className="p-4 font-medium">Category</th>
-                <th className="p-4 font-medium">Format</th>
-                <th className="p-4 font-medium">Reports</th>
-                <th className="p-4 font-medium">Posted</th>
-                <th className="p-4 font-medium">Auto-Delete</th>
-                <th className="p-4 font-medium">Status</th>
-                <th className="p-4 font-medium text-right">Actions</th>
+                <th className="px-4 py-3 font-medium">Prayer Request</th>
+                <th className="px-4 font-medium">Posted By</th>
+                <th className="px-4 font-medium">Category</th>
+                <th className="px-4 font-medium">Format</th>
+                <th className="px-4 font-medium">Reports</th>
+                <th className="px-4 font-medium">Posted</th>
+                <th className="px-4 font-medium">Auto-Delete</th>
+                <th className="px-4 font-medium">Status</th>
+                <th className="px-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
 
@@ -725,7 +766,10 @@ const deleteFromModal = (id) => {
               )}
 
               {visible.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50/50 transition-colors">
+                <tr
+                  key={item.id}
+                  className="hover:bg-gray-50/50 transition-colors"
+                >
                   <td className="p-4">
                     <input
                       type="checkbox"
@@ -749,14 +793,21 @@ const deleteFromModal = (id) => {
                           {item.name}
                         </p>
                         {item.handle && (
-                          <p className="text-[#0A0847CC] font-medium">{item.handle}</p>
+                          <p className="text-[#0A0847CC] font-medium">
+                            {item.handle}
+                          </p>
                         )}
                       </div>
                     </div>
                   </td>
 
                   <td className="p-4">
-                    <Badge className={CATEGORY_STYLES[item.category] || "bg-gray-100 text-gray-700 border-gray-200"}>
+                    <Badge
+                      className={
+                        CATEGORY_STYLES[item.category] ||
+                        "bg-gray-100 text-gray-700 border-gray-200"
+                      }
+                    >
                       {item.category}
                     </Badge>
                   </td>
@@ -774,8 +825,12 @@ const deleteFromModal = (id) => {
                   </td>
 
                   <td className="p-4">
-                    <p className="font-medium text-[#0A0847CC] whitespace-nowrap">{item.posted}</p>
-                    <p className="text-[#0A084799] font-normal">{item.postedTime}</p>
+                    <p className="font-medium text-[#0A0847CC] whitespace-nowrap">
+                      {item.posted}
+                    </p>
+                    <p className="text-[#0A084799] font-normal">
+                      {item.postedTime}
+                    </p>
                   </td>
 
                   <td className="p-4 font-medium text-[#0A0847CC] whitespace-nowrap">
@@ -783,14 +838,18 @@ const deleteFromModal = (id) => {
                   </td>
 
                   <td className="p-4">
-                    <Badge className={STATUS_STYLES[item.status]}>{item.status}</Badge>
+                    <Badge className={STATUS_STYLES[item.status]}>
+                      {item.status}
+                    </Badge>
                   </td>
 
                   <td className="p-4 text-right">
                     <ActionsMenu
                       isOpen={openActionId === item.id}
                       onToggle={() =>
-                        setOpenActionId((prev) => (prev === item.id ? null : item.id))
+                        setOpenActionId((prev) =>
+                          prev === item.id ? null : item.id,
+                        )
                       }
                       onDelete={() => handleDelete(item.id)}
                       onFlag={() => setStatus(item.id, "Flagged")}
@@ -798,7 +857,7 @@ const deleteFromModal = (id) => {
                       onView={() => {
                         setReviewId(item.id);
                         setOpenActionId(null);
-                        }}
+                      }}
                     />
                   </td>
                 </tr>
@@ -866,13 +925,13 @@ const deleteFromModal = (id) => {
         </div>
       </div>
       {reviewItem && (
-  <ReviewPrayerModal
-    item={reviewItem}
-    onClose={() => setReviewId(null)}
-    onUpdate={updatePrayer}
-    onDelete={deleteFromModal}
-  />
-)}
+        <ReviewPrayerModal
+          item={reviewItem}
+          onClose={() => setReviewId(null)}
+          onUpdate={updatePrayer}
+          onDelete={deleteFromModal}
+        />
+      )}
     </div>
   );
 }

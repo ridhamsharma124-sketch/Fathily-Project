@@ -18,7 +18,7 @@ import { MdDragIndicator } from "react-icons/md";
 
 const Input = ({ className = "", ...props }) => (
   <input
-    className={`w-full border border-[#E2DFFC] rounded-lg px-3 py-2.5 text-xs font-medium text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] focus:ring-1 focus:ring-[#001984] transition-all ${className}`}
+    className={`w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] focus:ring-[#001984] transition-all ${className}`}
     {...props}
   />
 );
@@ -460,7 +460,7 @@ export default function PrayWithMeSettingsPage() {
             <button
               type="button"
               onClick={() => imageRef.current?.click()}
-              className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-sm rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <FiUpload size={16} /> Upload New Image
             </button>
@@ -472,7 +472,7 @@ export default function PrayWithMeSettingsPage() {
               <button
                 type="button"
                 onClick={() => imageRef.current?.click()}
-                className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-sm rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <FiRefreshCw size={16} /> Replace
               </button>
@@ -482,7 +482,7 @@ export default function PrayWithMeSettingsPage() {
                   setImgError(false);
                   set("pageImage", "");
                 }}
-                className="h-11 w-full border border-[#DE2128] bg-white text-[#DE2128] font-semibold text-sm rounded-lg hover:bg-red-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="h-11 w-full border border-[#DE2128] bg-white text-[#DE2128] font-semibold text-xs rounded-lg hover:bg-red-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
                 <FiTrash2 size={16} /> Remove
               </button>
