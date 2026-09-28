@@ -16,6 +16,9 @@ import SoundAudio from "./pages/Admin/SoundAudio/SoundAudio";
 import AIOverview from "./pages/Admin/AIEngagement/AIOverview";
 import AIExperience from "./pages/Admin/AIEngagement/AIExperience";
 import AICredits from "./pages/Admin/AIEngagement/AICredits";
+import SeasonalJourneysPage from "./pages/Admin/SeasonalJourney/SeasonalJourney";
+import AddSeasonalJourneyWizard from "./pages/Admin/SeasonalJourney/AddSeasonalJourney";
+import EditDailyContentPage from "./pages/Admin/SeasonalJourney/EditDailyContent";
 
 function App() {
   return (
@@ -40,6 +43,9 @@ function App() {
         <Route path="ai-engagement/overview" element={<AIOverview />} />
         <Route path="ai-engagement/experience" element={<AIExperience />} />
         <Route path="ai-engagement/credits" element={<AICredits />} />
+        <Route path="seasonal-journey" element={<SeasonalJourneysPage />} />
+        <Route path="seasonal-journey/add" element={<AddSeasonalJourneyWizard />} />
+        <Route path="seasonal-journey/add/edit-daily-content" element={<EditDailyContentPage />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route

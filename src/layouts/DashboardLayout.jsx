@@ -63,7 +63,7 @@ const NAV_GROUPS = [
       ],
     },
     { id: "pray", label: "Pray with Me", icon: PiHandsPraying, path: "/admin/pray-with-me" },
-    { id: "seasonal", label: "Seasonal Journey", icon: PiLeaf },
+    { id: "seasonal", label: "Seasonal Journey", icon: PiLeaf, path: "/admin/seasonal-journey" },
     { id: "audio", label: "Audio Stories", icon: PiHeadphones },
     {
       id: "bible",
