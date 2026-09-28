@@ -358,7 +358,7 @@ export default function Subscription() {
     <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
       {/* Title Header */}
       <div>
-        <h1 className="text-xl font-bold text-[#0A0847]">Plans & Features</h1>
+        <h1 className="text-xl font-semibold text-[#0A0847]">Plans & Features</h1>
         <p className="text-sm text-[#0A084799] font-medium mt-2">
           {activeTab === "plans"
             ? "Manage subscription pricing and features."

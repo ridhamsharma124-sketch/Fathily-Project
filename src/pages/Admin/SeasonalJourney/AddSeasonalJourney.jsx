@@ -406,9 +406,7 @@ const DayForm = ({ value, onChange, onSubmit, onCancel, submitLabel }) => (
   </div>
 );
 
-/* ==========================================================================
-   MAIN PAGE
-   ========================================================================== */
+
 export default function AddSeasonalJourneyWizard({ onCancel }) {
   const coverImageRef = useRef(null);
   const thumbnailRef = useRef(null);
@@ -601,7 +599,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">
+          <h1 className="text-xl font-semibold text-[#0A0847]">
             Add New Seasonal Journey
           </h1>
           <p className="text-sm text-[#0A084799] font-medium mt-2">

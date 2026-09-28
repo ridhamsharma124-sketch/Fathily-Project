@@ -599,7 +599,7 @@ export default function PrayWithMePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">
+          <h1 className="text-xl font-semibold text-[#0A0847]">
             Pray With Me Management
           </h1>
           <p className="text-sm text-[#0A084799] font-medium mt-2">
