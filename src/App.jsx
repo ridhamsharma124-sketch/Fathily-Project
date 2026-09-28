@@ -12,6 +12,10 @@ import DailyReflectionList from "./pages/Admin/DailyReflection/DailyReflectionLi
 import AddHistoricalStory from "./pages/Admin/DailyReflection/AddHistoricalStory";
 import PrayWithMePage from "./pages/Admin/PrayWithMe/PrayWithMe";
 import PrayWithMeSettingsPage from "./pages/Admin/PrayWithMe/PrayWithMeSetting";
+import SoundAudio from "./pages/Admin/SoundAudio/SoundAudio";
+import AIOverview from "./pages/Admin/AIEngagement/AIOverview";
+import AIExperience from "./pages/Admin/AIEngagement/AIExperience";
+import AICredits from "./pages/Admin/AIEngagement/AICredits";
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
         <Route path="dailyreflection/add" element={<AddHistoricalStory />} />
         <Route path="pray-with-me" element={<PrayWithMePage />} />
         <Route path="pray-with-me/settings" element={<PrayWithMeSettingsPage/>} />
+        <Route path="sound-audio" element={<SoundAudio />} />
+        <Route path="ai-engagement/overview" element={<AIOverview />} />
+        <Route path="ai-engagement/experience" element={<AIExperience />} />
+        <Route path="ai-engagement/credits" element={<AICredits />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route

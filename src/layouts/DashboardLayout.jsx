@@ -1,36 +1,46 @@
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  PiArrowsLeftRight,
   PiArrowSquareOut,
   PiBell,
   PiBookOpenText,
   PiCalendarBlank,
   PiCaretDown,
   PiCaretRight,
-  PiChartBar,
+  PiClipboardText,
   PiDotsThreeCircle,
+  PiGameController,
   PiGear,
+  PiGift,
+  PiHandPeace,
   PiHandsPraying,
   PiHeadphones,
-  PiHeadset,
   PiHouse,
   PiIdentificationCard,
+  PiImages,
+  PiLeaf,
   PiList,
   PiMagnifyingGlass,
-  PiQuestion,
+  PiMedal,
+  PiNotebook,
   PiSignOut,
   PiSparkle,
-  PiStar,
-  PiTag,
+  PiSpeakerHigh,
+  PiTicket,
   PiUserCircle,
-  PiUserGear,
   PiUsers,
   PiX,
 } from "react-icons/pi";
 import Logo from "../components/shared/Logo";
 
 /* ---------------- Sidebar ---------------- */
+/*
+  This list matches the Figma design 1:1, in the exact same order:
+  Dashboard -> Subscription -> Daily -> Pray with Me -> Seasonal Journey ->
+  Audio Stories -> Bible -> Users -> Questions -> Broad Spectrum -> Group Play ->
+  Journal -> Media Library -> Settings -> Badges -> Coupon -> Gifts and Donation ->
+  Sounds/Audio -> AI Engagement -> More Info
+*/
 
 const NAV_GROUPS = [
   [{ id: "dashboard", label: "Dashboard", icon: PiHouse, path: "/admin" }],
@@ -48,21 +58,22 @@ const NAV_GROUPS = [
       label: "Daily",
       icon: PiCalendarBlank,
       children: [
-  {
-    id: "daily-verse",
-    label: "Daily Verse",
-    path: "/admin/dailyverse",
-  },
-  {
-    id: "daily-reflection",
-    label: "Daily Reflection",
-    path: "/admin/dailyreflection",
-  },
-],
+        { id: "daily-verse", label: "Daily Verse", path: "/admin/dailyverse" },
+        { id: "daily-reflection", label: "Daily Reflection", path: "/admin/dailyreflection" },
+      ],
     },
     { id: "pray", label: "Pray with Me", icon: PiHandsPraying, path: "/admin/pray-with-me" },
-    { id: "audio", label: "Audio Library", icon: PiHeadphones },
-    { id: "jesus", label: "Jesus Story", icon: PiBookOpenText },
+    { id: "seasonal", label: "Seasonal Journey", icon: PiLeaf },
+    { id: "audio", label: "Audio Stories", icon: PiHeadphones },
+    {
+      id: "bible",
+      label: "Bible",
+      icon: PiBookOpenText,
+      children: [
+        { id: "bible-books", label: "Books" },
+        { id: "bible-activities", label: "Activities" },
+      ],
+    },
   ],
   [
     {
@@ -70,50 +81,106 @@ const NAV_GROUPS = [
       label: "Users",
       icon: PiUsers,
       children: [
-        { id: "roles", label: "Roles" },
-        { id: "activities", label: "Activities" },
+        { id: "users-list", label: "Users" },
+        { id: "roles-permissions", label: "Roles & Permissions" },
       ],
     },
+    {
+      id: "questions",
+      label: "Questions",
+      icon: PiClipboardText,
+      children: [
+        { id: "manage-questions", label: "Manage Questions" },
+        { id: "ai-generator", label: "AI Generator" },
+        { id: "bulk-upload", label: "Bulk Upload" },
+        { id: "question-types", label: "Question Types" },
+        { id: "level-management", label: "Level Management" },
+      ],
+    },
+    { id: "broad-spectrum", label: "Broad Spectrum", icon: PiHandPeace },
+    { id: "group-play", label: "Group Play", icon: PiGameController },
+    { id: "journal", label: "Journal", icon: PiNotebook },
+    { id: "media-library", label: "Media Library", icon: PiImages },
     {
       id: "settings",
       label: "Settings",
       icon: PiGear,
       children: [
-        { id: "set-subscription", label: "Subscription" },
+        { id: "set-site", label: "Site Settings" },
+        { id: "set-website", label: "Website Management" },
         { id: "set-ai", label: "AI Model" },
         { id: "set-look", label: "Lock & Feel" },
         { id: "set-email", label: "Email Service" },
       ],
     },
-    { id: "more", label: "More Info", icon: PiDotsThreeCircle },
   ],
   [
-    { id: "help", label: "Help Center", icon: PiQuestion },
-    { id: "support", label: "Support", icon: PiHeadset },
-    { id: "rate", label: "Rate the App", icon: PiStar },
+    { id: "badges", label: "Badges", icon: PiMedal },
+    { id: "coupon", label: "Coupon", icon: PiTicket },
+    { id: "gifts", label: "Gifts and Donation", icon: PiGift },
+    {
+      id: "sounds",
+      label: "Sounds/Audio",
+      icon: PiSpeakerHigh,
+      path: "/admin/sound-audio",
+    },
+    {
+      id: "ai",
+      label: "AI Engagement",
+      icon: PiSparkle,
+      children: [
+        {
+          id: "ai-overview",
+          label: "AI Overview & Usage",
+          path: "/admin/ai-engagement/overview",
+        },
+        {
+          id: "ai-experience",
+          label: "AI Experience Setup",
+          path: "/admin/ai-engagement/experience",
+        },
+        {
+          id: "ai-credits",
+          label: "AI Credits & Info",
+          path: "/admin/ai-engagement/credits",
+        },
+      ],
+    },
   ],
   [
     {
-      id: "cms",
-      label: "CMS",
-      icon: PiUserGear,
+      id: "more",
+      label: "More Info",
+      icon: PiDotsThreeCircle,
       children: [
-        { id: "cms-resources", label: "Help & Resources" },
-        { id: "cms-pages", label: "Pages" },
+        { id: "help-center", label: "Help Center" },
+        { id: "policies", label: "Policies" },
+        { id: "terms", label: "Terms" },
       ],
     },
-    { id: "report", label: "Report", icon: PiChartBar },
-    { id: "quiz", label: "Quiz & Answers", icon: PiTag },
-    { id: "reflection", label: "Reflection", icon: PiArrowsLeftRight },
-    { id: "ai", label: "AI Engagement", icon: PiSparkle },
   ],
 ];
 
+const NAV_PATH_MAP = (() => {
+  const map = {};
+  const walk = (items) => {
+    items.forEach((item) => {
+      if (item.path) map[item.path] = item.id;
+      if (item.children) walk(item.children);
+    });
+  };
+  walk(NAV_GROUPS);
+  return map;
+})();
+
 function NavItem({ item, active, collapsed, onNavigate }) {
-  const [open, setOpen] = useState(false);
-  const Icon = item.icon;
   const hasChildren = item.children && item.children.length > 0;
-  const isActive = active === item.id;
+  const hasActiveChild = hasChildren && item.children.some((child) => child.id === active);
+  const isActive = active === item.id || hasActiveChild;
+  const [open, setOpen] = useState(false);
+  const isOpen = open || hasActiveChild;
+
+  const Icon = item.icon;
 
   const handleClick = () => {
     if (hasChildren) setOpen((v) => !v);
@@ -146,10 +213,10 @@ function NavItem({ item, active, collapsed, onNavigate }) {
       >
         <Icon size={16} className={isActive ? "text-white" : "text-muted"} strokeWidth={1.5} />
         <span className="flex-1 truncate text-left">{item.label}</span>
-        {hasChildren && (open ? <PiCaretDown size={14} /> : <PiCaretRight size={14} />)}
+        {hasChildren && (isOpen ? <PiCaretDown size={14} /> : <PiCaretRight size={14} />)}
       </button>
 
-      {hasChildren && open && !collapsed && (
+      {hasChildren && isOpen && !collapsed && (
         <div className="ml-[22px] border-l border-white/20 pl-3">
           {item.children.map((child) => (
             <button
@@ -287,7 +354,7 @@ function Navbar({ collapsed, onMenuClick }) {
           />
           <input
             type="text"
-            placeholder="Search anything..."
+            placeholder="Search for more..."
             className="h-[36px] w-full rounded-[8px] border border-[#E5E7EB] bg-white pl-9 pr-3 text-[12px] text-navy outline-none transition placeholder:text-[#9AA0B4] focus:border-navy/40"
           />
         </div>
@@ -321,7 +388,9 @@ function Navbar({ collapsed, onMenuClick }) {
           aria-label="Notifications"
         >
           <PiBell size={16} />
-          <span className="absolute right-[7px] top-[7px] h-[6px] w-[6px] rounded-full bg-red-500" />
+          <span className="absolute right-[-2px] top-[-5px] flex h-[15px] min-w-[15px] items-center justify-center rounded-full bg-red-500 px-[3px] text-[9px] font-bold leading-none text-white">
+            3
+          </span>
         </button>
 
         <button className="flex h-[32px] items-center gap-1.5 rounded-[8px] border border-navy bg-white px-2.5 text-[12px] font-semibold text-navy transition hover:bg-navy hover:text-white sm:px-3">
@@ -345,6 +414,7 @@ export default function DashboardLayout() {
   );
   const [active, setActive] = useState("dashboard");
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -352,6 +422,8 @@ export default function DashboardLayout() {
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
+
+  const resolvedActive = NAV_PATH_MAP[location.pathname] ?? active;
 
   const handleNavigate = (item) => {
     setActive(item.id);
@@ -374,7 +446,7 @@ export default function DashboardLayout() {
         mobileOpen={mobileOpen}
         onToggle={() => setCollapsed((v) => !v)}
         onClose={() => setMobileOpen(false)}
-        active={active}
+        active={resolvedActive}
         onNavigate={handleNavigate}
       />
       <div className="flex min-w-0 flex-1 flex-col">

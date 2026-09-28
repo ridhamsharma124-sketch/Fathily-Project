@@ -11,8 +11,25 @@
   --color-line: #e5e7eb;
   --color-surface: #f8fafc;
   --color-gold: #eab308;
+  --color-brand-navy: #1e1b4b;
+  --color-brand-navy-hover: #302b63;
+  --color-brand-indigo: #4f46e5;
+  --color-brand-indigo-soft: #eef0ff;
+  --color-brand-badge: #f3f1ff;
+  --color-brand-gold-soft: #fef9e7;
+  --color-brand-gold: #f5c518;
+  --color-brand-border: #e5e7eb;
 
   --radius-nav: 10px;
+
+  --color-ink: #0a0847;
+  --color-ink-body: #3b396c;
+  --color-ink-muted: #6c6b91;
+  --color-drag: #001984;
+  --color-remove: #193090;
+  --color-edge-input: #e2dffc;
+  --color-edge-row: #ececec;
+  --color-action-soft: #f0f1fc;
 }
 
 @layer base {
