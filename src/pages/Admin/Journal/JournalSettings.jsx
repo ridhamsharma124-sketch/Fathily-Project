@@ -160,11 +160,11 @@ export default function JournalSettingsPage() {
       toggle: { checked: s.audioRecording, onChange: (v) => set("audioRecording", v) },
     },
     {
-      title: "Character Limit",
+      title: "Audio Recording",
       icon: MdOutlineTextFields,
       iconBg: "bg-[#E8E9FB] text-[#001984]",
-      status: `${s.charLimit || 0} chars`,
-      desc: "Maximum characters per entry.",
+      status: s.audioRecording ? "Enabled" : "Disabled",
+      desc: "Allow users to record voice entries.",
     },
     {
       title: "Image Upload",
