@@ -99,14 +99,14 @@ const NAV_GROUPS = [
     },
     { id: "broad-spectrum", label: "Broad Spectrum", icon: PiHandPeace },
     { id: "group-play", label: "Group Play", icon: PiGameController },
-    { id: "journal", label: "Journal", icon: PiNotebook },
+    { id: "journal", label: "Journal", icon: PiNotebook, path: "/admin/journal-settings" },
     { id: "media-library", label: "Media Library", icon: PiImages },
     {
       id: "settings",
       label: "Settings",
       icon: PiGear,
       children: [
-        { id: "set-site", label: "Site Settings" },
+        { id: "set-site", label: "Site Settings", path: "/admin/settings/site-settings" },
         { id: "set-website", label: "Website Management" },
         { id: "set-ai", label: "AI Model" },
         { id: "set-look", label: "Lock & Feel" },
@@ -117,7 +117,7 @@ const NAV_GROUPS = [
   [
     { id: "badges", label: "Badges", icon: PiMedal, path: "/admin/badges" },
     { id: "coupon", label: "Coupon", icon: PiTicket },
-    { id: "gifts", label: "Gifts and Donation", icon: PiGift },
+    { id: "gifts", label: "Gifts and Donation", icon: PiGift, path: '/admin/donations' },
     {
       id: "sounds",
       label: "Sounds/Audio",

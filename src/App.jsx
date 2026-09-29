@@ -25,6 +25,15 @@ import HelpCenter from "./pages/Admin/HelpCenter/HelpCenter";
 import SupportInbox from "./pages/Admin/SupportInbox/SupportInbox";
 import Badges from "./pages/Admin/Badges/Badges";
 import AddBadge from "./pages/Admin/Badges/AddBadge";
+import DonationsDashboardPage from "./pages/Admin/Gifts&Donations/DonationDashboard";
+import DonationDetailsPage from "./pages/Admin/Gifts&Donations/DonationDetailsPage";
+import RecordDonationPage from "./pages/Admin/Gifts&Donations/RecoardDonation";
+import ChapterStoriesPage from "./pages/Admin/ChapterStories/ChapterStories";
+import AddChapterStoryPage from "./pages/Admin/ChapterStories/AddChapterStories";
+import JournalSettingsPage from "./pages/Admin/Journal/JournalSettings";
+import SiteSettingsPage from "./pages/Admin/Settings/SiteSettings";
+import NotificationsPage from "./pages/Admin/Notification/NotificationPage";
+import CreateNotificationPage from "./pages/Admin/Notification/CreateNotificationPage";
 
 function App() {
   return (
@@ -58,6 +67,15 @@ function App() {
       <Route path="support-inbox" element={<SupportInbox />} />
       <Route path="badges" element={<Badges />} />
       <Route path="badges/add" element={<AddBadge />} />
+          <Route path="donations" element={<DonationsDashboardPage />} />\
+        <Route path="donations/:id" element={<DonationDetailsPage />} />
+        <Route path="donations/add" element={<RecordDonationPage />} />
+        <Route path="chapter-stories" element={<ChapterStoriesPage />} />
+        <Route path="chapter-stories/add" element={<AddChapterStoryPage />} />
+        <Route path="journal-settings" element={<JournalSettingsPage />} />
+        <Route path="settings/site-settings" element={<SiteSettingsPage />} />
+        <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="notifications/create" element={<CreateNotificationPage />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route
