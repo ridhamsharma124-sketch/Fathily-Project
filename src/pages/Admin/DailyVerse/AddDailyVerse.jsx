@@ -420,7 +420,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
       {/* Top Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">Add Daily Verse</h1>
+          <h1 className="text-xl font-semibold text-[#0A0847]">Add Daily Verse</h1>
           <p className="text-sm text-[#0A084799] font-medium mt-2">
             Create and customize your daily verse experience
           </p>
@@ -436,7 +436,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             onClick={() => handleSave("Preview 3 Screens")}
             className="px-4 py-2 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <FiEye size={14} /> Preview All 2 Screens
+            <FiEye size={18} /> Preview All 2 Screens
           </button>
           {currentStep === 1 ? (
             <button
