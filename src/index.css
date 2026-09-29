@@ -1,5 +1,205 @@
 @import "tailwindcss";
 
+:root {
+  /* brand / action */
+  --primary: #03137f;
+  --primary-text-hover: #001984;
+  --primary-hover: #020e63;
+  --toggle-on: #0c53a8;
+  --toggle-off: #d1d5db;
+
+  /* text (matches Daily Verse) */
+  --heading: #0a0847;
+  --text: #0a0847;
+  --text-emphasis: #0a0847cc;
+  --table-head-text: #0a0847cc;
+  --text-muted: #0a084799;
+  --placeholder: #0a084799;
+  --editor-body: #0a084799;
+
+  /* surfaces */
+  --page-bg: #f0f1f6;
+  --card-bg: #ffffff;
+  --table-head-bg: #f2f5fc;
+  --seg-active: #e6e6f2;
+  --hover-soft: #f7f7fc;
+  --hover-row: #fafafe;
+
+  /* borders */
+  --border: #e2dffc;
+  --divider: #f2f2f2;
+
+  /* status */
+  --green-bg: #ebf7ee;
+  --green-pill-bg: #e9f8e8;
+  --green: #29c31e;
+  --green-icon: #37b455;
+  --red-bg: #f8eaec;
+  --red: #c44552;
+  --indigo: #1e1782;
+  --orange-bg: #f6ebe4;
+  --orange: #b84909;
+  --orange-num: #b84c0b;
+  --delete-red: #c0264a;
+  --badge-gray: #eeedf0;
+
+  /* editor / controls */
+  --toolbar-fill: #f0f0f0;
+  --toolbar-border: #d0d0d0;
+  --toolbar-hover: #e6e6e6;
+  --highlight: #ffeb3b;
+  --text-color-icon: #e11d2e;
+  --menu-icon: #6d6b75;
+
+  /* help center */
+  --chip-bg: #f2f5fc;
+  --count-box-bg: #f3f4f9;
+  --kebab-bg: #e6e4ec;
+  --category-icon: #0b156d;
+  --count-text: #3a3464;
+  --stat-purple-bg: #ebe5fc;
+  --stat-purple: #6d0bf5;
+  --stat-purple-num: #5800f2;
+  --stat-green-bg: #ebf7f0;
+  --stat-green-icon: #37b455;
+  --stat-green-num: #0d0735;
+  --stat-orange-bg: #f6ebe4;
+  --stat-orange: #b84909;
+  --stat-orange-num: #bc4e09;
+  --stat-lav-bg: #e5e3f9;
+  --stat-lav: #2309cd;
+  --pill-published-bg: #e7fae6;
+  --pill-published: #29c31e;
+  --pill-draft-bg: #f6ebe4;
+  --pill-draft: #b84909;
+  --toggle-green: #39a740;
+
+  /* article modal */
+  --label: #403962;
+  --body-muted: #6f6c7b;
+  --counter: #6e678e;
+  --chip-text: #38356b;
+  --chip-x: #757eed;
+  --chip-edge: #e3e1f5;
+  --close: #2b41ea;
+  --toolbar-icon: #444444;
+  --btn-edge: #e3dff3;
+  --btn-text: #3e3a5e;
+  --select-chevron: #706990;
+  --overlay: rgba(3, 19, 127, 0.4);
+  --modal-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+
+  /* support inbox */
+  --support-overlay: rgba(0, 0, 0, 0.4);
+  --support-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.28);
+  --support-thread: #f2f5fc;
+  --support-avatar: #e8e7ff;
+  --support-avatar-text: #4338ca;
+  --support-note-bg: #eef0ff;
+  --support-note: #4f46e5;
+}
+
+/* Article modal scope: its Figma palette differs from the page it sits in. */
+.am-theme {
+  --heading: #0d083f;
+  --text: #3e356a;
+  --divider: #eaeaea;
+  --toggle-on: #2e9839;
+  --toolbar-fill: #eeeeee;
+  --toolbar-border: #cbcbcb;
+}
+
+/* Help Center page scope: this page's Figma palette differs from the Terms
+   pages, so the shared token names are re-pointed here instead of in :root. */
+.hc-theme {
+  --heading: #0b0241;
+  --text: #3e3666;
+  --text-muted: #7a7a84;
+  --placeholder: #a5a3ab;
+  --page-bg: #fbfaff;
+  --border: #e7e3fb;
+  --table-head-bg: #f2f6fa;
+  --divider: #f3f3f3;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-text: var(--primary-text-hover);
+  --color-primary-hover: var(--primary-hover);
+  --color-toggle-on: var(--toggle-on);
+  --color-toggle-off: var(--toggle-off);
+  --color-heading: var(--heading);
+  --color-body: var(--text);
+  --color-emphasis: var(--text-emphasis);
+  --color-sub: var(--text-muted);
+  --color-thead-text: var(--table-head-text);
+  --color-placeholder-ink: var(--placeholder);
+  --color-editor: var(--editor-body);
+  --color-page: var(--page-bg);
+  --color-card: var(--card-bg);
+  --color-thead: var(--table-head-bg);
+  --color-seg: var(--seg-active);
+  --color-soft: var(--hover-soft);
+  --color-row-hover: var(--hover-row);
+  --color-edge: var(--border);
+  --color-divider: var(--divider);
+  --color-green-bg: var(--green-bg);
+  --color-green-pill: var(--green-pill-bg);
+  --color-green: var(--green);
+  --color-green-icon: var(--green-icon);
+  --color-red-bg: var(--red-bg);
+  --color-red: var(--red);
+  --color-indigo: var(--indigo);
+  --color-orange-bg: var(--orange-bg);
+  --color-orange: var(--orange);
+  --color-orange-num: var(--orange-num);
+  --color-danger: var(--delete-red);
+  --color-badge-gray: var(--badge-gray);
+  --color-toolbar: var(--toolbar-fill);
+  --color-toolbar-edge: var(--toolbar-border);
+  --color-toolbar-hover: var(--toolbar-hover);
+  --color-highlight: var(--highlight);
+  --color-color-icon: var(--text-color-icon);
+  --color-menu-icon: var(--menu-icon);
+  --color-chip: var(--chip-bg);
+  --color-count-box: var(--count-box-bg);
+  --color-kebab: var(--kebab-bg);
+  --color-category-icon: var(--category-icon);
+  --color-count-text: var(--count-text);
+  --color-stat-purple-bg: var(--stat-purple-bg);
+  --color-stat-purple: var(--stat-purple);
+  --color-stat-purple-num: var(--stat-purple-num);
+  --color-stat-green-bg: var(--stat-green-bg);
+  --color-stat-green-icon: var(--stat-green-icon);
+  --color-stat-green-num: var(--stat-green-num);
+  --color-stat-orange-bg: var(--stat-orange-bg);
+  --color-stat-orange: var(--stat-orange);
+  --color-stat-orange-num: var(--stat-orange-num);
+  --color-stat-lav-bg: var(--stat-lav-bg);
+  --color-stat-lav: var(--stat-lav);
+  --color-pill-published-bg: var(--pill-published-bg);
+  --color-pill-published: var(--pill-published);
+  --color-pill-draft-bg: var(--pill-draft-bg);
+  --color-pill-draft: var(--pill-draft);
+  --color-toggle-green: var(--toggle-green);
+  --color-label: var(--label);
+  --color-body-muted: var(--body-muted);
+  --color-counter: var(--counter);
+  --color-chip-text: var(--chip-text);
+  --color-chip-x: var(--chip-x);
+  --color-chip-edge: var(--chip-edge);
+  --color-close: var(--close);
+  --color-toolbar-icon: var(--toolbar-icon);
+  --color-btn-edge: var(--btn-edge);
+  --color-btn-text: var(--btn-text);
+  --color-select-chevron: var(--select-chevron);
+  --color-support-thread: var(--support-thread);
+  --color-support-avatar: var(--support-avatar);
+  --color-support-avatar-text: var(--support-avatar-text);
+  --color-support-note-bg: var(--support-note-bg);
+  --color-support-note: var(--support-note);
+}
+
 @theme {
   --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
@@ -51,4 +251,35 @@
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+/* ==========================================================================
+   MODAL OPEN / CLOSE ANIMATIONS — fade + scale 95% -> 100% over 200ms
+   ========================================================================== */
+@keyframes overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.anim-overlay-in {
+  animation: overlay-fade 200ms ease-out both;
+}
+
+.anim-dialog-in {
+  animation: dialog-pop 200ms ease-out both;
 }

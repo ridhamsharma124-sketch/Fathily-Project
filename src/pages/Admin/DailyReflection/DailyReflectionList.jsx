@@ -214,18 +214,18 @@ export default function DailyReflectionList() {
       {/* Header */}
       <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-[24px] font-bold text-[#0B1250]">
+          <h1 className="text-xl font-bold text-[#0A0847]">
             Today in Biblical History
           </h1>
-          <p className="mt-[6px] text-[15px] text-[#5B5F8C]">
+          <p className="mt-2 text-sm font-medium text-[#0A084799]">
             Create, schedule, and manage daily biblical history experiences.
           </p>
         </div>
         <button
           onClick={() => navigate("/admin/dailyreflection/add")}
-          className="flex h-[46px] shrink-0 cursor-pointer items-center gap-[8px] rounded-[8px] bg-[#0B1F7A] px-[22px] text-[14px] font-semibold text-white transition hover:bg-[#0a1c68]"
+          className="flex cursor-pointer items-center justify-center gap-2 self-start rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#001266] md:self-auto"
         >
-          <PiPlus size={20} />
+          <PiPlus size={16} />
           Add Historical Story
         </button>
       </div>
@@ -237,21 +237,21 @@ export default function DailyReflectionList() {
           return (
             <div
               key={stat.label}
-              className="flex h-[96px] items-center gap-[12px] rounded-[8px] border border-[#E5E7EB] bg-white px-[16px] lg:h-[110px]"
+              className="flex h-[118px] items-center gap-4 rounded-lg border border-[#E2DFFC] bg-white px-4"
             >
               <div
-                className={`flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[10px] ${stat.box}`}
+                className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl ${stat.box}`}
               >
-                <Icon size={22} color={stat.iconColor} strokeWidth={1.5} />
+                <Icon size={28} color={stat.iconColor} strokeWidth={1.5} />
               </div>
               <div className="min-w-0">
-                <p className="text-[13px] font-semibold text-[#0B1250]">
+                <p className="text-xs font-semibold text-[#001984]">
                   {stat.label}
                 </p>
-                <p className="text-[22px] font-bold leading-tight text-[#0B1250]">
+                <p className="mt-0.5 text-xl font-semibold text-[#0A0847]">
                   {stat.value}
                 </p>
-                <p className="text-[11px] text-[#5B5F8C]">{stat.caption}</p>
+                <p className="text-[11px] text-[#0A084799]">{stat.caption}</p>
               </div>
             </div>
           );

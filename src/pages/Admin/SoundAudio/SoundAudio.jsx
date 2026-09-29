@@ -151,7 +151,7 @@ function Select({ value, onChange, options = [] }) {
       <select
         value={value}
         onChange={onChange}
-        className="h-[38px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E5E7EB] bg-white pl-[12px] pr-[30px] text-[13px] text-[#0A1E46] outline-none transition focus:border-[#4338CA]"
+        className="h-[38px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E5E7EB] bg-white pl-[12px] pr-[30px] text-[13px] text-body outline-none transition focus:border-[#4338CA]"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -545,14 +545,14 @@ function EditDrawer({ row, onClose }) {
         {/* Modal header */}
         <div className="flex items-start justify-between gap-[12px] border-b border-[#EEF0F5] p-[20px]">
           <div>
-            <h3 className="text-[16px] font-bold text-[#0A1E46]">Edit Audio</h3>
-            <p className="mt-[2px] text-[13px] text-[#6B7280]">{row.title}</p>
+            <h3 className="text-[16px] font-bold text-heading">Edit Audio</h3>
+            <p className="mt-[2px] text-[13px] text-sub">{row.title}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#E5E7EB] text-[#6B7280] transition hover:text-[#0A1E46]"
+            className="flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#E5E7EB] text-sub transition hover:text-heading"
           >
             <PiX size={15} />
           </button>
@@ -572,7 +572,7 @@ function EditDrawer({ row, onClose }) {
             <input
               value={form.displayName}
               onChange={upd("displayName")}
-              className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-[#0A1E46] outline-none transition placeholder:text-[#9CA3AF] focus:border-[#4338CA]"
+              className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-body outline-none transition placeholder:text-[#9CA3AF] focus:border-[#4338CA]"
             />
           </Field>
 
@@ -583,10 +583,10 @@ function EditDrawer({ row, onClose }) {
                   <PiMusicNoteSimple size={17} />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] font-semibold text-[#0A1E46]">
+                  <p className="truncate text-[13px] font-semibold text-body">
                     {form.fileName}
                   </p>
-                  <p className="text-[11.5px] text-[#9CA3AF]">{form.fileSize}</p>
+                  <p className="text-[11.5px] text-sub">{form.fileSize}</p>
                 </div>
                 <button
                   type="button"
@@ -598,21 +598,21 @@ function EditDrawer({ row, onClose }) {
               </div>
               <button
                 type="button"
-                className="mt-[12px] flex cursor-pointer items-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] py-[6px] text-[12px] font-medium text-[#0A1E46] transition hover:bg-[#F3F4FB]"
+                className="mt-[12px] flex cursor-pointer items-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] py-[6px] text-[12px] font-medium text-body transition hover:bg-[#F3F4FB]"
               >
                 Replace
               </button>
             </div>
           </Field>
 
-          <p className="-mt-[6px] text-[11.5px] text-[#9CA3AF]">
+          <p className="-mt-[6px] text-[11.5px] text-sub">
             Accepted format: MP3, WAV or M4A · Max 20 MB
           </p>
 
           <div className="flex items-center justify-between border-b border-[#EEF0F5] pb-[16px]">
             <div>
-              <p className="text-[12.5px] font-semibold text-[#374151]">Playback</p>
-              <p className="text-[11.5px] text-[#9CA3AF]">Loop</p>
+              <p className="text-[12.5px] font-semibold text-emphasis">Playback</p>
+              <p className="text-[11.5px] text-sub">Loop</p>
             </div>
             <Switch checked={form.loop} onChange={upd("loop")} />
           </div>
@@ -627,7 +627,7 @@ function EditDrawer({ row, onClose }) {
                 onChange={upd("volume")}
                 className="w-full cursor-pointer accent-[#04127F]"
               />
-              <span className="shrink-0 rounded-[6px] bg-[#F3F4FB] px-[8px] py-[3px] text-[12px] font-semibold text-[#0A1E46]">
+              <span className="shrink-0 rounded-[6px] bg-[#F3F4FB] px-[8px] py-[3px] text-[12px] font-semibold text-body">
                 {form.volume}%
               </span>
             </div>
@@ -639,7 +639,7 @@ function EditDrawer({ row, onClose }) {
                 type="text"
                 value={form.fadeIn}
                 onChange={upd("fadeIn")}
-                className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-[#0A1E46] outline-none transition focus:border-[#4338CA]"
+                className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-body outline-none transition focus:border-[#4338CA]"
               />
             </Field>
             <Field label="Fade Out" className="flex-1">
@@ -647,15 +647,15 @@ function EditDrawer({ row, onClose }) {
                 type="text"
                 value={form.fadeOut}
                 onChange={upd("fadeOut")}
-                className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-[#0A1E46] outline-none transition focus:border-[#4338CA]"
+                className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[12px] text-[13.5px] text-body outline-none transition focus:border-[#4338CA]"
               />
             </Field>
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-[12.5px] font-semibold text-[#374151]">Status</p>
-              <p className="text-[11.5px] text-[#9CA3AF]">Enabled</p>
+              <p className="text-[12.5px] font-semibold text-emphasis">Status</p>
+              <p className="text-[11.5px] text-sub">Enabled</p>
             </div>
             <Switch checked={form.enabled} onChange={upd("enabled")} />
           </div>
@@ -666,7 +666,7 @@ function EditDrawer({ row, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 cursor-pointer rounded-[8px] border border-[#E5E7EB] bg-white px-[20px] py-[10px] text-[13px] font-semibold text-[#0A1E46] transition hover:bg-[#F3F4FB]"
+            className="flex-1 cursor-pointer rounded-[8px] border border-[#E5E7EB] bg-white px-[20px] py-[10px] text-[13px] font-semibold text-body transition hover:bg-[#F3F4FB]"
           >
             Cancel
           </button>
@@ -686,7 +686,7 @@ function EditDrawer({ row, onClose }) {
 function Field({ label, className = "", children }) {
   return (
     <div className={className}>
-      <label className="mb-[6px] block text-[12.5px] font-semibold text-[#374151]">
+      <label className="mb-[6px] block text-[12.5px] font-semibold text-emphasis">
         {label}
       </label>
       {children}

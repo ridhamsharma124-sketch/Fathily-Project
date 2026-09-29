@@ -115,7 +115,7 @@ const NAV_GROUPS = [
     },
   ],
   [
-    { id: "badges", label: "Badges", icon: PiMedal },
+    { id: "badges", label: "Badges", icon: PiMedal, path: "/admin/badges" },
     { id: "coupon", label: "Coupon", icon: PiTicket },
     { id: "gifts", label: "Gifts and Donation", icon: PiGift },
     {
@@ -153,9 +153,21 @@ const NAV_GROUPS = [
       label: "More Info",
       icon: PiDotsThreeCircle,
       children: [
-        { id: "help-center", label: "Help Center" },
-        { id: "policies", label: "Policies" },
-        { id: "terms", label: "Terms" },
+        {
+          id: "help-center",
+          label: "Help Center",
+          path: "/admin/help-center",
+        },
+        {
+          id: "terms-policies",
+          label: "Terms&Policies",
+          path: "/admin/terms-privacy",
+        },
+        {
+          id: "support-inbox",
+          label: "Support Inbox & Settings",
+          path: "/admin/support-inbox",
+        },
       ],
     },
   ],

@@ -19,6 +19,12 @@ import AICredits from "./pages/Admin/AIEngagement/AICredits";
 import SeasonalJourneysPage from "./pages/Admin/SeasonalJourney/SeasonalJourney";
 import AddSeasonalJourneyWizard from "./pages/Admin/SeasonalJourney/AddSeasonalJourney";
 import EditDailyContentPage from "./pages/Admin/SeasonalJourney/EditDailyContent";
+import TermsPrivacy from "./pages/Admin/TermsPrivacy/TermsPrivacy";
+import EditLegalDocument from "./pages/Admin/TermsPrivacy/EditLegalDocument";
+import HelpCenter from "./pages/Admin/HelpCenter/HelpCenter";
+import SupportInbox from "./pages/Admin/SupportInbox/SupportInbox";
+import Badges from "./pages/Admin/Badges/Badges";
+import AddBadge from "./pages/Admin/Badges/AddBadge";
 
 function App() {
   return (
@@ -46,6 +52,12 @@ function App() {
         <Route path="seasonal-journey" element={<SeasonalJourneysPage />} />
         <Route path="seasonal-journey/add" element={<AddSeasonalJourneyWizard />} />
         <Route path="seasonal-journey/add/edit-daily-content" element={<EditDailyContentPage />} />
+        <Route path="terms-privacy" element={<TermsPrivacy />} />
+        <Route path="terms-privacy/edit" element={<EditLegalDocument />} />
+        <Route path="help-center" element={<HelpCenter />} />
+      <Route path="support-inbox" element={<SupportInbox />} />
+      <Route path="badges" element={<Badges />} />
+      <Route path="badges/add" element={<AddBadge />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route
