@@ -1,0 +1,243 @@
+import { useState } from "react";
+import { LuHeadphones, LuUpload } from "react-icons/lu";
+import liveQuestionImage from "../../../assets/live question img.png";
+import {
+  ActivityPageHeader,
+  AudioFileCard,
+  AudioPlayer,
+  Field,
+  ImageUploadBox,
+  TextArea,
+  TextInput,
+  Toggle,
+  actionRowClass,
+  cardRowClass,
+  formCardClass,
+  labelClass,
+  outlineButton,
+  pageBodyClass,
+  pageShellClass,
+  purpleButton,
+} from "./activityFormShared";
+
+/* ==========================================================================
+   MOCK DATA — hardcoded exactly as specified
+   ========================================================================== */
+const DEFAULT_STORY_IMAGE = liveQuestionImage;
+
+const IMAGE_ALT = "Jesus and Nicodemus";
+const IMAGE_CAPTION = [
+  "Upload an image to represent the story",
+  "and help capture attention.",
+];
+
+const DESCRIPTION =
+  "A powerful dialogue between Jesus & Nicodemus on the new birth.";
+
+const DURATION_LABEL = "09:48 min • 10.2 MB";
+const INTRO_TIME = "00:10 / 00:10";
+
+/* ==========================================================================
+   STORY ENTRY PREVIEW (right card)
+   ========================================================================== */
+const PREVIEW_TRUNCATE_AT = 72;
+
+function truncate(text, limit) {
+  return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
+}
+function StoryEntryPreview({ title, description, image }) {
+  return (
+    <section className="w-full shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-6 lg:w-[450px]">
+      <div className="flex flex-col gap-3">
+        <div>
+          <h2 className="text-[22px] font-bold text-[#0A0847]">
+            Story Entry Preview
+          </h2>
+          <p className="mt-1 text-[14px] text-[#0A084799]">
+            This is how the story will appear to users.
+          </p>
+        </div>
+
+        {image && (
+          <img
+            src={image}
+            alt={IMAGE_ALT}
+            className="h-[229px] w-full rounded-lg border border-[#E2DFFC] object-cover"
+          />
+        )}
+
+        <p className="mt-1 text-[15px] font-bold text-[#0A0847]">{title}</p>
+
+        <p className="text-[13px] font-bold italic text-[#041581]">John 3</p>
+
+        <div className="flex items-center gap-2">
+          <LuHeadphones size={14} className="shrink-0 text-[#0A084799]" aria-hidden />
+          <p className="text-[12px] italic text-[#0A084799]">
+            09:48 • 24 Plays
+          </p>
+        </div>
+
+        <p className="line-clamp-2 text-[12px] italic leading-[1.5] text-[#0A084799]">
+          {truncate(description, PREVIEW_TRUNCATE_AT)}
+        </p>
+
+        <AudioPlayer time={INTRO_TIME} />
+      </div>
+    </section>
+  );
+}
+
+/* ==========================================================================
+   PAGE
+   ========================================================================== */
+export default function AddChapterAudioStory() {
+  const [title, setTitle] = useState("The New Birth: Born Again");
+  const [description, setDescription] = useState(DESCRIPTION);
+  const [image, setImage] = useState(DEFAULT_STORY_IMAGE);
+  const [introLabel, setIntroLabel] = useState("A");
+  const [note, setNote] = useState("Draft 1");
+  const [transcriberOn, setTranscriberOn] = useState(true);
+
+  return (
+    <div className={pageShellClass}>
+      <div className={pageBodyClass}>
+        <ActivityPageHeader
+          breadcrumb={[
+            "Bible Content",
+            "Articles",
+            "John",
+            "Chapter 3",
+            "Chapter Audio Stories",
+          ]}
+          title="Add Chapter Audio Story"
+        />
+
+        <div className={cardRowClass}>
+          {/* LEFT — story form */}
+          <section className={`${formCardClass} lg:w-[578px] lg:flex-none`}>
+            <Field label="Story Title" required htmlFor="story-title">
+              <TextInput
+                id="story-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Field>
+
+            <Field label="Story Description" required htmlFor="story-description">
+              <TextArea
+                id="story-description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                max={500}
+                className="h-[100px]"
+              />
+            </Field>
+
+            <div>
+              <p className={labelClass}>
+                Upload Image <span className="text-[#E11D48]">*</span>
+              </p>
+
+              <ImageUploadBox
+                image={image}
+                onSelect={setImage}
+                onRemove={() => setImage(null)}
+                caption={IMAGE_CAPTION}
+                alt={IMAGE_ALT}
+              />
+            </div>
+
+            <AudioFileCard>
+              <div className="px-4 pt-4 pb-10 pl-[70px]">
+                <p className="text-[11px] leading-[1.6] text-[#0A0847]">
+                  This audio will be used as the story narration.
+                  <br />
+                  Supported formats: MP3, WAV, AAC (max 25 MB)
+                </p>
+              </div>
+            </AudioFileCard>
+
+            <div>
+              <p className="text-[12px] font-semibold text-[#0A0847]">
+                Duration (Based on Audio)
+              </p>
+              <p className="mt-1 text-[11px] text-[#0A084799]">{DURATION_LABEL}</p>
+            </div>
+
+            <div>
+              <p className="mb-[6px] text-[12px] font-semibold text-[#0A0847]">
+                10-Second Intro/Preview
+              </p>
+              <AudioPlayer time={INTRO_TIME} />
+            </div>
+
+            <Field
+              label="Intro / Trailer after Transcription"
+              required
+              htmlFor="intro-trailer"
+            >
+              <TextInput
+                id="intro-trailer"
+                value={introLabel}
+                onChange={(e) => setIntroLabel(e.target.value)}
+              />
+            </Field>
+
+            <Field label="Note" required htmlFor="note">
+              <TextInput
+                id="note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+              />
+            </Field>
+
+            <div className="flex items-center gap-3">
+              <p className="text-[12px] font-semibold text-[#0A0847]">
+                Enable Transcriber
+              </p>
+              <Toggle
+                checked={transcriberOn}
+                onChange={setTranscriberOn}
+                label="Enable Transcriber"
+              />
+            </div>
+
+            <button
+              type="button"
+              className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-6 text-[13px] font-semibold text-[#0A0847CC] transition-colors hover:bg-[#F1F1F9]"
+            >
+              <LuUpload size={15} aria-hidden />
+              Upload Transcriber or Paste Text
+            </button>
+          </section>
+
+          {/* RIGHT — story entry preview */}
+          <StoryEntryPreview
+            title={title}
+            description={description}
+            image={image}
+          />
+        </div>
+
+        {/* BOTTOM ACTION ROW */}
+        <div className={actionRowClass}>
+          <button type="button" className={outlineButton}>
+            Cancel
+          </button>
+
+          <div className="flex flex-wrap gap-3">
+            <button type="button" className={outlineButton}>
+              Save as Draft
+            </button>
+            <button type="button" className={outlineButton}>
+              Preview as User
+            </button>
+            <button type="button" className={purpleButton}>
+              Publish Story
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

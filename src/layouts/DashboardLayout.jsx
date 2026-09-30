@@ -35,7 +35,6 @@ import Logo from "../components/shared/Logo";
 
 /* ---------------- Sidebar ---------------- */
 /*
-  This list matches the Figma design 1:1, in the exact same order:
   Dashboard -> Subscription -> Daily -> Pray with Me -> Seasonal Journey ->
   Audio Stories -> Bible -> Users -> Questions -> Broad Spectrum -> Group Play ->
   Journal -> Media Library -> Settings -> Badges -> Coupon -> Gifts and Donation ->
@@ -71,7 +70,7 @@ const NAV_GROUPS = [
       icon: PiBookOpenText,
       children: [
         { id: "bible-books", label: "Books" },
-        { id: "bible-activities", label: "Activities" },
+        { id: "bible-activities", label: "Activities", path: "/admin/activities" },
       ],
     },
   ],
@@ -91,10 +90,29 @@ const NAV_GROUPS = [
       icon: PiClipboardText,
       children: [
         { id: "manage-questions", label: "Manage Questions" },
-        { id: "ai-generator", label: "AI Generator" },
-        { id: "bulk-upload", label: "Bulk Upload" },
-        { id: "question-types", label: "Question Types" },
+          { id: "question-types", label: "Question Types" },
         { id: "level-management", label: "Level Management" },
+        {
+          id: "ai-generator",
+          label: "AI Generator",
+          path: "/admin/activities/quiz/ai-generator",
+        },
+        {
+          id: "bulk-upload",
+          label: "Bulk Upload",
+          path: "/admin/activities/quiz/bulk-upload",
+        },
+      
+        {
+          id: "add-quiz-questions",
+          label: "Add Quiz Questions",
+          path: "/admin/activities/quiz/add-questions",
+        },
+        {
+          id: "add-question-manually",
+          label: "Add Question Manually",
+          path: "/admin/activities/quiz/add-question-manually",
+        },
       ],
     },
     { id: "broad-spectrum", label: "Broad Spectrum", icon: PiHandPeace },

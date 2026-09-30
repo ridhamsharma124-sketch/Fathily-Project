@@ -246,21 +246,21 @@ export default function SoundAudio() {
       </div>
 
       {/* 2. Stat cards */}
-      <div className="mt-[20px] grid grid-cols-4 gap-[16px]">
+      <div className="mt-[20px] flex flex-nowrap justify-start gap-[20px]">
         {STATS.map(({ bg, color, Icon, label, value }) => (
           <div
             key={label}
-            className="flex items-center gap-[12px] rounded-[12px] border border-[#EEF0F5] bg-white p-[16px]"
+            className="flex h-[127px] w-full max-w-[255px] min-w-0 flex-1 basis-0 items-center gap-[10px] rounded-[8px] border border-[#E5E4EC] bg-white pl-[16px] pr-[29px]"
           >
             <div
-              className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[10px]"
+              className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-xl"
               style={{ backgroundColor: bg }}
             >
               <Icon size={20} style={{ color }} strokeWidth={1.5} />
             </div>
             <div>
-              <p className="text-[12px] font-medium text-[#6B7280]">{label}</p>
-              <p className="mt-[2px] text-[20px] font-bold leading-tight text-[#0A1E46]">
+              <p className="text-[13px] font-medium whitespace-nowrap text-[#6B7280]">{label}</p>
+              <p className="mt-[2px] text-[20px] font-bold leading-tight whitespace-nowrap text-[#0A1E46]">
                 {value}
               </p>
             </div>

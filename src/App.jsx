@@ -34,6 +34,14 @@ import JournalSettingsPage from "./pages/Admin/Journal/JournalSettings";
 import SiteSettingsPage from "./pages/Admin/Settings/SiteSettings";
 import NotificationsPage from "./pages/Admin/Notification/NotificationPage";
 import CreateNotificationPage from "./pages/Admin/Notification/CreateNotificationPage";
+import Activities from "./pages/Admin/Activities/Activities";
+import AddQuizQuestions from "./pages/Admin/Activities/AddQuizQuestions";
+import AIQuizGenerator from "./pages/Admin/Activities/AIQuizGenerator";
+import AddQuestionManually from "./pages/Admin/Activities/AddQuestionManually";
+import BulkUploadQuizQuestions from "./pages/Admin/Activities/BulkUploadQuizQuestions";
+import AddWordSearch from "./pages/Admin/Activities/AddWordSearch";
+import AddChapterAudioStory from "./pages/Admin/Activities/AddChapterAudioStory";
+import AddMemoryVerse from "./pages/Admin/Activities/AddMemoryVerse";
 
 function App() {
   return (
@@ -53,7 +61,7 @@ function App() {
         <Route path="dailyreflection" element={<DailyReflectionList />} />
         <Route path="dailyreflection/add" element={<AddHistoricalStory />} />
         <Route path="pray-with-me" element={<PrayWithMePage />} />
-        <Route path="pray-with-me/settings" element={<PrayWithMeSettingsPage/>} />
+        <Route path="pray-with-me/settings" element={<PrayWithMeSettingsPage />} />
         <Route path="sound-audio" element={<SoundAudio />} />
         <Route path="ai-engagement/overview" element={<AIOverview />} />
         <Route path="ai-engagement/experience" element={<AIExperience />} />
@@ -64,10 +72,10 @@ function App() {
         <Route path="terms-privacy" element={<TermsPrivacy />} />
         <Route path="terms-privacy/edit" element={<EditLegalDocument />} />
         <Route path="help-center" element={<HelpCenter />} />
-      <Route path="support-inbox" element={<SupportInbox />} />
-      <Route path="badges" element={<Badges />} />
-      <Route path="badges/add" element={<AddBadge />} />
-          <Route path="donations" element={<DonationsDashboardPage />} />\
+        <Route path="support-inbox" element={<SupportInbox />} />
+        <Route path="badges" element={<Badges />} />
+        <Route path="badges/add" element={<AddBadge />} />
+        <Route path="donations" element={<DonationsDashboardPage />} />
         <Route path="donations/:id" element={<DonationDetailsPage />} />
         <Route path="donations/add" element={<RecordDonationPage />} />
         <Route path="chapter-stories" element={<ChapterStoriesPage />} />
@@ -76,13 +84,21 @@ function App() {
         <Route path="settings/site-settings" element={<SiteSettingsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="notifications/create" element={<CreateNotificationPage />} />
+        <Route path="activities" element={<Activities />} />
+        <Route path="activities/quiz/add-questions" element={<AddQuizQuestions />} />
+        <Route path="activities/quiz/ai-generator" element={<AIQuizGenerator />} />
+        <Route path="activities/quiz/add-question-manually" element={<AddQuestionManually />}/>
+        <Route  path="activities/quiz/bulk-upload"element={<BulkUploadQuizQuestions />}/>
+        <Route path="activities/word-search/add" element={<AddWordSearch />}/>
+        <Route path="activities/chapter-audio-story/add" element={<AddChapterAudioStory />}/>
+        <Route path="activities/memory-verse/add" element={<AddMemoryVerse />}/>
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route
         path="/subscriptions"
         element={<Navigate to="/admin/subscriptions" replace />}
       />
-       <Route path="/dailyverse" element={<DailyVersesPage />} />
+      <Route path="/dailyverse" element={<DailyVersesPage />} />
       <Route path="/dailyverse/add" element={<AddDailyVerseWizard />} />
 
       <Route path="/" element={<Navigate to="/login" replace />} />
