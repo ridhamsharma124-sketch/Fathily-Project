@@ -227,7 +227,7 @@ export default function DivineCounselManagementPage() {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
           <h1 className="text-xl font-semibold text-[#0A0847]">Divine Counsel Management</h1>
-          <p className="text-sam text-[#0A084799] font-medium mt-2 max-w-xl">
+          <p className="text-sm text-[#0A084799] font-medium mt-2 max-w-xl">
             Create and manage Scripture-based guidance topics, reflections, audio, prayers, and Amen pages.
           </p>
         </div>
