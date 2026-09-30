@@ -23,6 +23,7 @@ import {
   FiCheckCircle,
   FiAlertTriangle,
   FiInfo,
+  FiImage
 } from "react-icons/fi";
 // import { MdDragIndicator } from "react-[#0A0847CC]"; // Standard grid handle placeholder icon
 import Breadcrumb from "../../../components/UIComponents/BreadCrumb";
@@ -382,6 +383,20 @@ export default function AddDivineCounselTopicPage() {
     a.currentTime = ratio * f.audioSecs;
   };
 
+  const handleCoverUpload = (e) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  if (f.coverImage) URL.revokeObjectURL(f.coverImage);
+  setImgError(false);
+  set("coverImage", URL.createObjectURL(file));
+  e.target.value = "";
+};
+
+const removeCover = () => {
+  if (f.coverImage) URL.revokeObjectURL(f.coverImage);
+  set("coverImage", "");
+};
+
   return (
     <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 text-xs text-[#0A0847]">
       <input
@@ -401,6 +416,7 @@ export default function AddDivineCounselTopicPage() {
         onChange={handleAudioUpload}
         className="hidden"
       />
+      <input type="file" ref={imageRef} accept="image/*" onChange={handleCoverUpload} className="hidden" />
 
       {/* Header */}
       <div>
@@ -545,26 +561,40 @@ export default function AddDivineCounselTopicPage() {
                 </div>
 
                 <div>
-                  <div className="rounded-lg overflow-hidden border border-[#E2DFFC] bg-gray-100 h-28 flex items-center justify-center relative">
-                    <img
-                      src={
-                        f.coverImage || "https://via.placeholder.com/400x160"
-                      }
-                      alt="Cover"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <p className="text-[10px] text-[#0A084799] font-medium mt-1">
-                    Recommended 1600 × 400 • JPG or PNG
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => imageRef.current?.click()}
-                    className="w-full mt-2 py-2 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded flex items-center justify-center gap-2 hover:bg-gray-50"
-                  >
-                    <FiRefreshCw size={13} /> Replace Image
-                  </button>
-                </div>
+  {f.coverImage && !imgError ? (
+    <div className="rounded-lg overflow-hidden border border-[#E2DFFC] bg-gray-100 h-28 relative">
+      <img
+        src={f.coverImage}
+        alt="Cover"
+        onError={() => setImgError(true)}
+        className="w-full h-full object-cover"
+      />
+      <button
+        type="button"
+        onClick={removeCover}
+        className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 cursor-pointer"
+      >
+        <FiX size={13} />
+      </button>
+    </div>
+  ) : (
+    <div
+      onClick={() => imageRef.current?.click()}
+      className="h-28 rounded-lg border border-dashed border-[#CBC6F8] bg-[#FAFAFF] hover:bg-[#F1F2F9] flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors"
+    >
+      <FiImage size={20} className="text-[#001984]" />
+      <span className="text-xs font-semibold text-[#0A0847]">Upload Cover Image</span>
+    </div>
+  )}
+  <p className="text-[10px] text-[#0A084799] font-medium mt-1">Recommended 1600 × 400 • JPG or PNG</p>
+  <button
+    type="button"
+    onClick={() => imageRef.current?.click()}
+    className="w-full mt-2 py-2 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer"
+  >
+    <FiRefreshCw size={13} /> {f.coverImage && !imgError ? "Replace Image" : "Upload Image"}
+  </button>
+</div>
               </div>
             </SectionCard>
 

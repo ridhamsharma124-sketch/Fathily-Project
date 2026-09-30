@@ -63,13 +63,13 @@ const NAV_GROUPS = [
     },
     { id: "pray", label: "Pray with Me", icon: PiHandsPraying, path: "/admin/pray-with-me" },
     { id: "seasonal", label: "Seasonal Journey", icon: PiLeaf, path: "/admin/seasonal-journey" },
-    { id: "audio", label: "Audio Stories", icon: PiHeadphones },
+     { id: "audio", label: "Audio Stories", icon: PiHeadphones, path: '/admin/chapter-stories' },
     {
       id: "bible",
       label: "Bible",
       icon: PiBookOpenText,
       children: [
-        { id: "bible-books", label: "Books" },
+         { id: "bible-books", label: "Books", path: "/admin/bible-books" },
         { id: "bible-activities", label: "Activities", path: "/admin/activities" },
       ],
     },
@@ -115,8 +115,9 @@ const NAV_GROUPS = [
         },
       ],
     },
-    { id: "broad-spectrum", label: "Broad Spectrum", icon: PiHandPeace },
-    { id: "group-play", label: "Group Play", icon: PiGameController },
+    { id: "broad-spectrum", label: "Broad Spectrum", icon: PiHandPeace, path: "/admin/broad-spectrum" },
+    { id: "group-play", label: "Group Play", icon: PiGameController, path: "/admin/group-play-settings" },
+    { id: "divine-counsel", label: "Divine Counsel", icon: PiGameController, path: "/admin/divine-counsel" },
     { id: "journal", label: "Journal", icon: PiNotebook, path: "/admin/journal-settings" },
     { id: "media-library", label: "Media Library", icon: PiImages },
     {
@@ -134,7 +135,7 @@ const NAV_GROUPS = [
   ],
   [
     { id: "badges", label: "Badges", icon: PiMedal, path: "/admin/badges" },
-    { id: "coupon", label: "Coupon", icon: PiTicket },
+    { id: "coupon", label: "Coupon", icon: PiTicket, path: "/admin/coupon-codes" },
     { id: "gifts", label: "Gifts and Donation", icon: PiGift, path: '/admin/donations' },
     {
       id: "sounds",

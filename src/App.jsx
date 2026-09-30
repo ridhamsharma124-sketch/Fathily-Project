@@ -42,6 +42,14 @@ import BulkUploadQuizQuestions from "./pages/Admin/Activities/BulkUploadQuizQues
 import AddWordSearch from "./pages/Admin/Activities/AddWordSearch";
 import AddChapterAudioStory from "./pages/Admin/Activities/AddChapterAudioStory";
 import AddMemoryVerse from "./pages/Admin/Activities/AddMemoryVerse";
+import CouponCodesPage from "./pages/Admin/CouponCodes/CouponCodePage";
+import CreateCouponPage from "./pages/Admin/CouponCodes/CreateCouponCode";
+import BroadSpectrumPage from "./pages/Admin/BroadSpectrum/BroadSpectrumPage";
+import DivineCounselManagementPage from "./pages/Admin/DivineCounsel/DivineCounselPage";
+import AddDivineCounselTopicPage from "./pages/Admin/DivineCounsel/AddDivineCounselPage";
+import GroupPlaySettings from "./pages/Admin/GroupPlay/GroupPlaySettings";
+import BibleBooksPage from "./pages/Admin/BibleBooks/BibleBookPage";
+import EditBookPage from "./pages/Admin/BibleBooks/EditBibleBook";
 
 function App() {
   return (
@@ -92,6 +100,14 @@ function App() {
         <Route path="activities/word-search/add" element={<AddWordSearch />}/>
         <Route path="activities/chapter-audio-story/add" element={<AddChapterAudioStory />}/>
         <Route path="activities/memory-verse/add" element={<AddMemoryVerse />}/>
+        <Route path="coupon-codes" element={<CouponCodesPage />} />
+        <Route path="coupon-codes/create" element={<CreateCouponPage />} />
+        <Route path="broad-spectrum" element={<BroadSpectrumPage />} />
+        <Route path="divine-counsel" element={<DivineCounselManagementPage />} />
+        <Route path="divine-counsel/add" element={<AddDivineCounselTopicPage />} />
+        <Route path="group-play-settings" element={<GroupPlaySettings />} />
+        <Route path="bible-books" element={<BibleBooksPage />} />
+        <Route path="bible-books/edit/:id" element={<EditBookPage />} />
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route
