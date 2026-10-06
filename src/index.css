@@ -202,6 +202,7 @@
 
 @theme {
   --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   --color-navy: #0f1a4a;
   --color-navy-deep: #13214f;
@@ -230,6 +231,36 @@
   --color-edge-input: #e2dffc;
   --color-edge-row: #ececec;
   --color-action-soft: #f0f1fc;
+
+  /* ---- admin form / mystery card palette ---- */
+  --color-action-navy: #001984;
+  --color-strong-navy: #0b0b6b;
+  --color-deep-navy: #2a2750;
+  --color-grey-navy: #6b6f8d;
+  --color-faint-navy: #8b8fa8;
+  --color-field-navy: #4a4d6a;
+  --color-publish-navy: #00007a;
+
+  --color-page-canvas: #f8f8ff;
+
+  --color-lavender: #eef0fb;
+  --color-lavender-deep: #e8f0fb;
+  --color-lavender-line: #cfe0f5;
+  --color-lavender-hair: #eef0f8;
+  --color-lavender-slot: #dde3f5;
+
+  --color-blush: #fbe3e8;
+  --color-blush-edge: #f3c5cf;
+  --color-rose: #d1264a;
+  --color-rose-strong: #c2185b;
+
+  --color-pale-indigo: #e6e8fb;
+  --color-indigo-ink: #2b2fa8;
+  --color-pale-green: #e6f6ea;
+  --color-green-ink: #2e9e3e;
+
+  --color-ornament: #d9a93a;
+  --color-star: #f5a623;
 }
 
 @layer base {
@@ -282,4 +313,16 @@
 
 .anim-dialog-in {
   animation: dialog-pop 200ms ease-out both;
+}
+
+/* ==========================================================================
+   WORD SEARCH — CSV UPLOAD DROP ZONE
+   Tailwind's `border-dashed` only sets border-style and falls back to the
+   browser default dash rhythm. The design calls for a 6px dash / 6px gap,
+   which needs border-dasharray, so it is declared as a utility here.
+   ========================================================================== */
+@utility csv-dash {
+  border-style: dashed;
+  border-width: 1px;
+  border-dasharray: 6 6;
 }

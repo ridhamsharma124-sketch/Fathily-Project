@@ -25,6 +25,7 @@ import HelpCenter from "./pages/Admin/HelpCenter/HelpCenter";
 import SupportInbox from "./pages/Admin/SupportInbox/SupportInbox";
 import Badges from "./pages/Admin/Badges/Badges";
 import AddBadge from "./pages/Admin/Badges/AddBadge";
+import TiersManagement from "./pages/Admin/Badges/TiersManagement";
 import DonationsDashboardPage from "./pages/Admin/Gifts&Donations/DonationDashboard";
 import DonationDetailsPage from "./pages/Admin/Gifts&Donations/DonationDetailsPage";
 import RecordDonationPage from "./pages/Admin/Gifts&Donations/RecoardDonation";
@@ -40,6 +41,20 @@ import AIQuizGenerator from "./pages/Admin/Activities/AIQuizGenerator";
 import AddQuestionManually from "./pages/Admin/Activities/AddQuestionManually";
 import BulkUploadQuizQuestions from "./pages/Admin/Activities/BulkUploadQuizQuestions";
 import AddWordSearch from "./pages/Admin/Activities/AddWordSearch";
+import WordSearchManagement from "./pages/Admin/WordSearch/WordSearchManagement";
+import AddEditWordSearch from "./pages/Admin/WordSearch/AddEditWordSearch";
+import AIGenerateWordSearch from "./pages/Admin/WordSearch/AIGenerateWordSearch";
+import AIGenerateVerseRestoration from "./pages/Admin/WordSearch/AIGenerateVerseRestoration";
+import AIGenerateAudioRevelation from "./pages/Admin/WordSearch/AIGenerateAudioRevelation";
+import AIGenerateMysteryScripture from "./pages/Admin/WordSearch/AIGenerateMysteryScripture";
+import ManualHiddenRestoration from "./pages/Admin/WordSearch/ManualHiddenRestoration";
+import ManualVerseRestoration from "./pages/Admin/WordSearch/ManualVerseRestoration";
+import ManualAudioRevelation from "./pages/Admin/WordSearch/ManualAudioRevelation";
+import ManualMysteryScripture from "./pages/Admin/WordSearch/ManualMysteryScripture";
+import CSVUploadWordSearch from "./pages/Admin/WordSearch/CSVUploadWordSearch";
+import CSVUploadValidateMap from "./pages/Admin/WordSearch/CSVUploadValidateMap";
+import CSVUploadReviewImages from "./pages/Admin/WordSearch/CSVUploadReviewImages";
+import CSVUploadImportReview from "./pages/Admin/WordSearch/CSVUploadImportReview";
 import AddChapterAudioStory from "./pages/Admin/Activities/AddChapterAudioStory";
 import AddMemoryVerse from "./pages/Admin/Activities/AddMemoryVerse";
 import CouponCodesPage from "./pages/Admin/CouponCodes/CouponCodePage";
@@ -50,6 +65,13 @@ import AddDivineCounselTopicPage from "./pages/Admin/DivineCounsel/AddDivineCoun
 import GroupPlaySettings from "./pages/Admin/GroupPlay/GroupPlaySettings";
 import BibleBooksPage from "./pages/Admin/BibleBooks/BibleBookPage";
 import EditBookPage from "./pages/Admin/BibleBooks/EditBibleBook";
+import StreakMilestonesRewards from "./pages/Admin/Streaks/StreakMilestonesRewards";
+import MemoryVerseManagement from "./pages/Admin/MemoryVerse/MemoryVerseManagement";
+import AddEditMemoryVerse from "./pages/Admin/MemoryVerse/AddEditMemoryVerse";
+import AddEditMemoryVerseAI from "./pages/Admin/MemoryVerse/AddEditMemoryVerseAI";
+import CreateMysteryCard from "./pages/Admin/MysteryCard/CreateMysteryCard";
+import MysteryCardDashboard from "./pages/Admin/MysteryCard/MysteryCardDashboard";
+import EditMysteryCard from "./pages/Admin/MysteryCard/EditMysteryCard";
 
 function App() {
   return (
@@ -83,6 +105,7 @@ function App() {
         <Route path="support-inbox" element={<SupportInbox />} />
         <Route path="badges" element={<Badges />} />
         <Route path="badges/add" element={<AddBadge />} />
+        <Route path="tiers" element={<TiersManagement />} />
         <Route path="donations" element={<DonationsDashboardPage />} />
         <Route path="donations/:id" element={<DonationDetailsPage />} />
         <Route path="donations/add" element={<RecordDonationPage />} />
@@ -92,14 +115,37 @@ function App() {
         <Route path="settings/site-settings" element={<SiteSettingsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="notifications/create" element={<CreateNotificationPage />} />
+        
         <Route path="activities" element={<Activities />} />
         <Route path="activities/quiz/add-questions" element={<AddQuizQuestions />} />
         <Route path="activities/quiz/ai-generator" element={<AIQuizGenerator />} />
         <Route path="activities/quiz/add-question-manually" element={<AddQuestionManually />}/>
         <Route  path="activities/quiz/bulk-upload"element={<BulkUploadQuizQuestions />}/>
         <Route path="activities/word-search/add" element={<AddWordSearch />}/>
-        <Route path="activities/chapter-audio-story/add" element={<AddChapterAudioStory />}/>
+         <Route path="activities/chapter-audio-story/add" element={<AddChapterAudioStory />}/>
         <Route path="activities/memory-verse/add" element={<AddMemoryVerse />}/>
+
+        {/* Word Search */}
+        <Route path="word-search" element={<WordSearchManagement />} />
+        <Route path="word-search/add-edit" element={<AddEditWordSearch />} />
+
+        <Route path="word-search/add-edit/manual-hidden" element={<ManualHiddenRestoration />} />
+        <Route path="word-search/add-edit/manual-verse" element={<ManualVerseRestoration />} />
+        <Route path="word-search/add-edit/manual-audio" element={<ManualAudioRevelation />} />
+        <Route path="word-search/add-edit/manual-mystery" element={<ManualMysteryScripture />} />
+
+        <Route path="word-search/add-edit/ai-generate" element={<AIGenerateWordSearch />} />
+        <Route path="word-search/add-edit/ai-generate/verse-restoration" element={<AIGenerateVerseRestoration />} />
+        <Route path="word-search/add-edit/ai-generate/audio-revelation" element={<AIGenerateAudioRevelation />} />
+        <Route path="word-search/add-edit/ai-generate/mystery-scripture" element={<AIGenerateMysteryScripture />} />
+
+        <Route path="word-search/add-edit/csv-upload" element={<CSVUploadWordSearch />} />
+        <Route path="word-search/add-edit/csv-upload/validate-map" element={<CSVUploadValidateMap />} />
+        <Route path="word-search/add-edit/csv-upload/review-images" element={<CSVUploadReviewImages />} />
+        <Route path="word-search/add-edit/csv-upload/import-review" element={<CSVUploadImportReview />} />
+
+       
+
         <Route path="coupon-codes" element={<CouponCodesPage />} />
         <Route path="coupon-codes/create" element={<CreateCouponPage />} />
         <Route path="broad-spectrum" element={<BroadSpectrumPage />} />
@@ -108,6 +154,16 @@ function App() {
         <Route path="group-play-settings" element={<GroupPlaySettings />} />
         <Route path="bible-books" element={<BibleBooksPage />} />
         <Route path="bible-books/edit/:id" element={<EditBookPage />} />
+        
+        <Route path="streaks" element={<StreakMilestonesRewards />} />
+        <Route path="memory-verse" element={<MemoryVerseManagement />} />
+        <Route path="memory-verse/add-edit" element={<AddEditMemoryVerse />} />
+        <Route path="memory-verse/add-edit/ai-generate" element={<AddEditMemoryVerseAI />} />
+
+      <Route path="/admin/mystery-card" element={<MysteryCardDashboard />} />
+      <Route path="/admin/mystery-card/create" element={<CreateMysteryCard />} />
+      <Route path="/admin/mystery-card/edit" element={<EditMysteryCard />} />
+
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
       <Route

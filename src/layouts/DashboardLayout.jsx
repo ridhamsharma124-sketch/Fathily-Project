@@ -9,6 +9,7 @@ import {
   PiCaretRight,
   PiClipboardText,
   PiDotsThreeCircle,
+  PiFire,
   PiGameController,
   PiGear,
   PiGift,
@@ -19,9 +20,11 @@ import {
   PiIdentificationCard,
   PiImages,
   PiLeaf,
+  PiStack,
   PiList,
   PiMagnifyingGlass,
   PiMedal,
+  PiPuzzlePiece,
   PiNotebook,
   PiSignOut,
   PiSparkle,
@@ -63,14 +66,15 @@ const NAV_GROUPS = [
     },
     { id: "pray", label: "Pray with Me", icon: PiHandsPraying, path: "/admin/pray-with-me" },
     { id: "seasonal", label: "Seasonal Journey", icon: PiLeaf, path: "/admin/seasonal-journey" },
-     { id: "audio", label: "Audio Stories", icon: PiHeadphones, path: '/admin/chapter-stories' },
+    { id: "audio", label: "Audio Stories", icon: PiHeadphones, path: "/admin/chapter-stories" },
     {
       id: "bible",
       label: "Bible",
       icon: PiBookOpenText,
       children: [
-         { id: "bible-books", label: "Books", path: "/admin/bible-books" },
+        { id: "bible-books", label: "Books", path: "/admin/bible-books" },
         { id: "bible-activities", label: "Activities", path: "/admin/activities" },
+        { id: "memory-verses", label: "Memory Verses", path: "/admin/memory-verse" },
       ],
     },
   ],
@@ -90,7 +94,7 @@ const NAV_GROUPS = [
       icon: PiClipboardText,
       children: [
         { id: "manage-questions", label: "Manage Questions" },
-          { id: "question-types", label: "Question Types" },
+        { id: "question-types", label: "Question Types" },
         { id: "level-management", label: "Level Management" },
         {
           id: "ai-generator",
@@ -135,8 +139,44 @@ const NAV_GROUPS = [
   ],
   [
     { id: "badges", label: "Badges", icon: PiMedal, path: "/admin/badges" },
+    { id: "tiers", label: "Tiers Management", icon: PiStack, path: "/admin/tiers" },
+    {
+      id: "streaks",
+      label: "Streak Milestones",
+      icon: PiFire,
+      path: "/admin/streaks",
+    },
+    {
+      id: "word-search",
+      label: "Word Search",
+      icon: PiPuzzlePiece,
+      noNavigate: true,
+      children: [
+        { id: "ws-management", label: "Word Search Management", path: "/admin/word-search" },
+        {
+          id: "ws-manual-hidden",
+          label: "Manual — Hidden Restoration",
+          path: "/admin/word-search/add-edit/manual-hidden",
+        },
+        {
+          id: "ws-manual-verse",
+          label: "Manual — Verse Restoration",
+          path: "/admin/word-search/add-edit/manual-verse",
+        },
+        {
+          id: "ws-manual-audio",
+          label: "Manual — Audio Revelation",
+          path: "/admin/word-search/add-edit/manual-audio",
+        },
+        {
+          id: "ws-manual-mystery",
+          label: "Manual — Mystery Scripture",
+          path: "/admin/word-search/add-edit/manual-mystery",
+        },
+      ],
+    },
     { id: "coupon", label: "Coupon", icon: PiTicket, path: "/admin/coupon-codes" },
-    { id: "gifts", label: "Gifts and Donation", icon: PiGift, path: '/admin/donations' },
+    { id: "gifts", label: "Gifts and Donation", icon: PiGift, path: "/admin/donations" },
     {
       id: "sounds",
       label: "Sounds/Audio",
@@ -204,17 +244,34 @@ const NAV_PATH_MAP = (() => {
   return map;
 })();
 
+/* maps "<pathname><search>" -> nav id, for any item that still differs by query
+   string. Empty when no nav path carries a query string. */
+const NAV_QUERY_MAP = (() => {
+  const map = {};
+  const walk = (items) => {
+    items.forEach((item) => {
+      if (item.path && item.path.includes("?")) map[item.path] = item.id;
+      if (item.children) walk(item.children);
+    });
+  };
+  walk(NAV_GROUPS);
+  return map;
+})();
+
 function NavItem({ item, active, collapsed, onNavigate }) {
   const hasChildren = item.children && item.children.length > 0;
   const hasActiveChild = hasChildren && item.children.some((child) => child.id === active);
   const isActive = active === item.id || hasActiveChild;
-  const [open, setOpen] = useState(false);
+  /* groups with children start open so their labels are visible in the
+     expanded sidebar; the caret still toggles them. */
+  const [open, setOpen] = useState(() => hasChildren);
   const isOpen = open || hasActiveChild;
 
   const Icon = item.icon;
 
   const handleClick = () => {
     if (hasChildren) setOpen((v) => !v);
+    if (item.noNavigate) return;
     onNavigate(item);
   };
 
@@ -247,21 +304,21 @@ function NavItem({ item, active, collapsed, onNavigate }) {
         {hasChildren && (isOpen ? <PiCaretDown size={14} /> : <PiCaretRight size={14} />)}
       </button>
 
-      {hasChildren && isOpen && !collapsed && (
-        <div className="ml-[22px] border-l border-white/20 pl-3">
-          {item.children.map((child) => (
-            <button
-              key={child.id}
-              onClick={() => onNavigate(child)}
-              className={`flex h-9 w-full items-center rounded-md px-2 text-[13px] transition ${
-                active === child.id ? "font-semibold text-white" : "text-[#a8b3d8] hover:text-white"
-              }`}
-            >
-              {child.label}
-            </button>
-          ))}
-        </div>
-      )}
+        {hasChildren && isOpen && !collapsed && (
+          <div className="ml-[20px] border-l border-white/20 pl-2.5">
+            {item.children.map((child) => (
+              <button
+                key={child.id}
+                onClick={() => onNavigate(child)}
+                className={`flex h-9 w-full items-center rounded-md px-1.5 text-[13px] transition ${
+                  active === child.id ? "font-semibold text-white" : "text-[#a8b3d8] hover:text-white"
+                }`}
+              >
+                <span className="truncate text-left whitespace-nowrap">{child.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
     </div>
   );
 }
@@ -269,7 +326,7 @@ function NavItem({ item, active, collapsed, onNavigate }) {
 function Sidebar({ collapsed, mobileOpen, onToggle, onClose, active, onNavigate }) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-[100dvh] w-[250px] shrink-0 flex-col bg-[#16235c] transition-all duration-200 lg:sticky lg:top-0 lg:bottom-auto lg:z-auto lg:translate-x-0 ${
+      className={`fixed inset-y-0 left-0 z-50 flex h-[100dvh] w-[250px] shrink-0 flex-col bg-[#012859] transition-all duration-200 lg:sticky lg:top-0 lg:bottom-auto lg:z-auto lg:translate-x-0 ${
         mobileOpen ? "translate-x-0" : "-translate-x-full"
       } ${collapsed ? "lg:w-[72px]" : "lg:w-[250px]"}`}
     >
@@ -365,7 +422,7 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onClose, active, onNavigate 
 function Navbar({ collapsed, onMenuClick }) {
   return (
     <header
-      className={`flex h-[64px] shrink-0 items-center justify-between gap-3 whitespace-nowrap border-b border-[#E8ECF4] bg-white px-4 sm:px-6 ${
+      className={`flex h-[72px] shrink-0 items-center justify-between gap-3 whitespace-nowrap border-b border-[#E8ECF4] bg-white px-4 shadow-[0_1px_3px_rgba(16,24,40,0.06)] sm:px-6 ${
         collapsed ? "lg:pl-4 lg:pr-6" : ""
       }`}
     >
@@ -378,7 +435,7 @@ function Navbar({ collapsed, onMenuClick }) {
           <PiList size={20} />
         </button>
 
-        <div className="relative min-w-0 max-w-[280px] flex-1">
+        <div className="relative w-[270px] shrink-0">
           <PiMagnifyingGlass
             size={16}
             className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtext"
@@ -386,14 +443,27 @@ function Navbar({ collapsed, onMenuClick }) {
           <input
             type="text"
             placeholder="Search for more..."
-            className="h-[36px] w-full rounded-[8px] border border-[#E5E7EB] bg-white pl-9 pr-3 text-[12px] text-navy outline-none transition placeholder:text-[#9AA0B4] focus:border-navy/40"
+            className="h-[38px] w-full rounded-[8px] border border-[#E4E5F0] bg-white pl-9 pr-3 text-[13px] text-[#6B668F] outline-none transition placeholder:text-[#6B668F] focus:border-navy/40"
           />
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
-        <button className="flex h-[32px] items-center gap-1.5 rounded-[8px] border border-[#E5E7EB] bg-white px-2.5 text-[12px] font-medium text-navy transition hover:border-navy/40">
-          <span className="text-[14px] leading-none">🇬🇧</span>
+      <div className="flex shrink-0 items-center gap-2.5">
+        <button className="flex h-[38px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-2.5 text-[14px] font-medium text-navy transition hover:border-navy/40">
+          <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden className="shrink-0">
+            <defs>
+              <clipPath id="uk-flag-clip">
+                <rect width="60" height="42" rx="3" />
+              </clipPath>
+            </defs>
+            <g clipPath="url(#uk-flag-clip)">
+              <rect width="60" height="42" fill="#012169" />
+              <path d="M0 0 L60 42 M60 0 L0 42" stroke="#FFFFFF" strokeWidth="8" />
+              <path d="M0 0 L60 42 M60 0 L0 42" stroke="#C8102E" strokeWidth="4" />
+              <path d="M30 0 V42 M0 21 H60" stroke="#FFFFFF" strokeWidth="13" />
+              <path d="M30 0 V42 M0 21 H60" stroke="#C8102E" strokeWidth="8" />
+            </g>
+          </svg>
           <span className="hidden sm:inline">English</span>
           <svg
             className="hidden sm:block"
@@ -415,18 +485,18 @@ function Navbar({ collapsed, onMenuClick }) {
         <span className="h-4 w-px bg-[#E8ECF4]" aria-hidden />
 
         <button
-          className="relative flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[8px] border border-[#E5E7EB] bg-white text-navy transition hover:border-navy/40"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#E4E5F0] bg-white text-navy transition hover:border-navy/40"
           aria-label="Notifications"
         >
-          <PiBell size={16} />
-          <span className="absolute right-[-2px] top-[-5px] flex h-[15px] min-w-[15px] items-center justify-center rounded-full bg-red-500 px-[3px] text-[9px] font-bold leading-none text-white">
+          <PiBell size={18} />
+          <span className="absolute -top-1.5 -right-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E11D48] px-[4px] text-[10px] font-bold leading-none text-white">
             3
           </span>
         </button>
 
-        <button className="flex h-[32px] items-center gap-1.5 rounded-[8px] border border-navy bg-white px-2.5 text-[12px] font-semibold text-navy transition hover:bg-navy hover:text-white sm:px-3">
+        <button className="flex h-[38px] items-center gap-2 rounded-[8px] border border-[#E0E3F5] bg-[#EEF0FB] px-3 text-[14px] font-medium text-[#001984] transition hover:border-[#001984]/40">
+          <PiArrowSquareOut size={15} />
           <span className="hidden sm:inline">View Website</span>
-          <PiArrowSquareOut size={14} />
         </button>
       </div>
     </header>
@@ -454,7 +524,10 @@ export default function DashboardLayout() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const resolvedActive = NAV_PATH_MAP[location.pathname] ?? active;
+  const resolvedActive =
+    NAV_QUERY_MAP[`${location.pathname}${location.search}`] ??
+    NAV_PATH_MAP[location.pathname] ??
+    active;
 
   const handleNavigate = (item) => {
     setActive(item.id);
