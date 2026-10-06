@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
 import { Card, Counter, FieldError, inputCls, errCls } from "../Shared/ui";
-import ExplanationFields from "../Shared/ExplainationFeilds";
+import ExplanationFields from "../Shared/ExplanationFields";
 
 const LETTERS = "ABCDEF";
 const MAX_CHOICES = 6;

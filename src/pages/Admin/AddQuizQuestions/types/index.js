@@ -8,6 +8,7 @@ import AudioQuizForm, { config as aq } from "./AudioQuizForm";
 import MatchPairForm, { config as mp } from "./MatchPairForm";
 import StorySequenceForm, { config as ss } from "./StorySequenceForm";
 import SpeedChallengeForm, { config as sc } from "./SpeedChallengeForm";
+import MultipleSelectForm, { config as ms } from "./MultipleSelectForm";
 
 export const QUESTION_TYPES = {
   multiple_choice: { Component: MultipleChoiceForm, ...mc },
@@ -20,6 +21,7 @@ audio_quiz: { Component: AudioQuizForm, ...aq },
 match_pair: { Component: MatchPairForm, ...mp },
 story_sequence: { Component: StorySequenceForm, ...ss },
 speed_challenge: { Component: SpeedChallengeForm, ...sc },
+multiple_select: { Component: MultipleSelectForm, ...ms },
   // next: tap_order, verse_builder, who_am_i, match_pair, audio_quiz, story_sequence, speed_challenge
 };
 

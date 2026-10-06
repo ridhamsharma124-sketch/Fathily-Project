@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { Card, Toggle, FieldError, inputCls, errCls } from "../Shared/ui";
-import ExplanationFields from "../Shared/ExplainationFeilds";
+import ExplanationFields from "../Shared/ExplanationFields";
 
 const BLANK = /_{3,}/g;
 const TOKEN = "___";

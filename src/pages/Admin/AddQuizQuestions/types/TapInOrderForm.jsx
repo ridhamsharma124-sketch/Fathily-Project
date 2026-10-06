@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FiPlus, FiTrash2, FiShuffle } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
 import { Card, FieldError, inputCls, errCls } from "../Shared/ui";
-import ExplanationFields from "../Shared/ExplainationFeilds";
+import ExplanationFields from "../Shared/ExplanationFields";
 import useDragReorder from "../Shared/useDragReorder";
 
 const uid = () => crypto.randomUUID();

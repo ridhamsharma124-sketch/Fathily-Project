@@ -1,7 +1,7 @@
 import React from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { Card, Toggle, FieldError, inputCls, errCls } from "../Shared/ui";
-import ExplanationFields from "../Shared/ExplainationFeilds";
+import ExplanationFields from "../Shared/ExplanationFields";
 
 export const config = {
   label: "True / False",

@@ -2,14 +2,18 @@ import React from "react";
 import { Card, Label, Counter, inputCls } from "./ui";
 
 /** layout: "split" (Multiple Choice) | "stacked" (True/False) | "joined" (Fill in Blanks) */
-export default function ExplanationFields({ data, onChange, layout = "split", subtitle }) {
+export default function ExplanationFields({
+  data, onChange, layout = "split", subtitle,
+  explanationSubtitle = "Explain why the correct answer is right.",
+  hintPlaceholder = "e.g., This was the very first thing God made visible.",
+}) {
   const f = (k) => (e) => onChange({ [k]: e.target.value });
 
   if (layout === "split") {
     return (
       <>
         <div className="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-5">
-          <Card title="Answer Explanation" subtitle="Explain why the correct answer is right.">
+          <Card title="Answer Explanation" subtitle={explanationSubtitle}>
             <textarea rows={3} maxLength={500} value={data.explanation} onChange={f("explanation")}
               className={`${inputCls} resize-none`} />
             <Counter value={data.explanation} max={500} />
@@ -20,7 +24,7 @@ export default function ExplanationFields({ data, onChange, layout = "split", su
         </div>
         <Card title="Hint" optional subtitle="Provide a hint to help users (shown only if enabled).">
           <input maxLength={200} value={data.hint} onChange={f("hint")}
-            placeholder="e.g., This was the very first thing God made visible." className={inputCls} />
+  placeholder={hintPlaceholder} className={inputCls} />
           <Counter value={data.hint} max={200} />
         </Card>
       </>
