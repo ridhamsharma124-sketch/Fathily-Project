@@ -84,8 +84,8 @@ const NAV_GROUPS = [
       label: "Users",
       icon: PiUsers,
       children: [
-        { id: "users-list", label: "Users" },
-        { id: "roles-permissions", label: "Roles & Permissions" },
+        { id: "users-list", label: "Users", path: "/admin/users" },
+        { id: "roles-permissions", label: "Roles & Permissions", path: "/admin/users/roles-permissions" },
       ],
     },
     {
@@ -94,8 +94,8 @@ const NAV_GROUPS = [
       icon: PiClipboardText,
       children: [
         { id: "manage-questions", label: "Manage Questions" },
-        { id: "question-types", label: "Question Types" },
-        { id: "level-management", label: "Level Management" },
+        { id: "question-types", label: "Question Types", path: "/admin/questions/quiz/add" },
+        { id: "level-management", label: "Level Management", path: "/admin/levels" },
         {
           id: "ai-generator",
           label: "AI Generator",

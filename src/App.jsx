@@ -72,6 +72,12 @@ import AddEditMemoryVerseAI from "./pages/Admin/MemoryVerse/AddEditMemoryVerseAI
 import CreateMysteryCard from "./pages/Admin/MysteryCard/CreateMysteryCard";
 import MysteryCardDashboard from "./pages/Admin/MysteryCard/MysteryCardDashboard";
 import EditMysteryCard from "./pages/Admin/MysteryCard/EditMysteryCard";
+import UserManagementPage from "./pages/Admin/UserManagement/UserManagement";
+import RolesPermissionsPage from "./pages/Admin/UserManagement/RolesPermissions";
+import AddUserPage from "./pages/Admin/UserManagement/AddNewUser";
+import StreakManagementPage from "./pages/Admin/Streaks/StreaksManagement";
+import LevelsPage from "./pages/Admin/LevelManagement/LevelManagementPage";
+import QuizQuestionFormPage from "./pages/Admin/AddQuizQuestions/QuizQuestionFormPage";
 
 function App() {
   return (
@@ -163,6 +169,13 @@ function App() {
       <Route path="/admin/mystery-card" element={<MysteryCardDashboard />} />
       <Route path="/admin/mystery-card/create" element={<CreateMysteryCard />} />
       <Route path="/admin/mystery-card/edit" element={<EditMysteryCard />} />
+
+            <Route path='users' element={<UserManagementPage />} />
+        <Route path="users/roles-permissions" element={<RolesPermissionsPage />} />
+        <Route path="users/add" element={<AddUserPage />} />
+        <Route path="streaks" element={<StreakManagementPage />} />
+        <Route path='levels' element={<LevelsPage />} />
+        <Route path="questions/quiz/add" element={<QuizQuestionFormPage />} />
 
       </Route>
       <Route path="/dashboard" element={<Navigate to="/admin" replace />} />
