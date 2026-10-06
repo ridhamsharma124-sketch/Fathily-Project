@@ -91,6 +91,59 @@ export default function LevelsSection({ mode, s, set }) {
     );
   }
 
+    if (mode === "passages") {
+    const on = s.passages.filter((p) => p.on);
+    const off = s.passages.filter((p) => !p.on);
+    const total = on.reduce((a, p) => a + Number(p.n || 0), 0);
+    const setP = (level, patch) => set({ passages: s.passages.map((p) => (p.level === level ? { ...p, ...patch } : p)) });
+    const Box = ({ checked, onClick }) => (
+      <button type="button" onClick={onClick}
+        className={`w-4 h-4 rounded border-2 flex items-center justify-center cursor-pointer ${checked ? "bg-[#001984] border-[#001984] text-white" : "border-[#0A0847CC] bg-white"}`}>
+        {checked && <FiCheck size={10} strokeWidth={3} />}
+      </button>
+    );
+    return (
+      <>
+        <div>
+          <p className="text-xs font-semibold text-[#0A0847CC] mb-2">Selected Levels</p>
+          <div className="flex flex-wrap items-center gap-2 border border-[#E2DFFC] rounded-md p-2">
+            {on.map((p) => (
+              <span key={p.level} className="px-2.5 py-1.5 rounded bg-[#F3F2FF] border border-[#E2DFFC] text-[11px] font-medium text-[#0A0847CC] flex items-center gap-2">
+                {p.level}
+                <button type="button" onClick={() => setP(p.level, { on: false })} className="cursor-pointer"><FiX size={12} className="text-[#001984]" /></button>
+              </span>
+            ))}
+            {off.length > 0 && (
+              <select value="" onChange={(e) => e.target.value && setP(e.target.value, { on: true })}
+                className="ml-auto text-xs text-gray-500 outline-none bg-transparent cursor-pointer">
+                <option value="">Add level…</option>
+                {off.map((p) => <option key={p.level}>{p.level}</option>)}
+              </select>
+            )}
+          </div>
+        </div>
+        <div className="border border-[#E2DFFC] rounded-md overflow-hidden text-xs text-[#0A0847CC]">
+          <div className="grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 bg-[#F3F7FD] font-semibold">
+            <Box checked={on.length === s.passages.length} onClick={() => set({ passages: s.passages.map((p) => ({ ...p, on: on.length !== s.passages.length })) })} />
+            <span>Level</span><span>Bible Passage</span><span>Questions</span>
+          </div>
+          {s.passages.map((p) => (
+            <div key={p.level} className="grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 border-t border-[#E2DFFC]">
+              <Box checked={p.on} onClick={() => setP(p.level, { on: !p.on })} />
+              <span>{p.level}</span>
+              <span className="font-medium">{p.passage}</span>
+              <input type="number" min={0} value={p.n} onChange={(e) => setP(p.level, { n: e.target.value })}
+                className="w-14 h-8 border border-[#E2DFFC] rounded text-center outline-none focus:border-[#001984]" />
+            </div>
+          ))}
+          <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#E2DFFC] font-semibold text-[#0A0847]">
+            Total Questions <Total total={total} count={s.count} />
+          </div>
+        </div>
+      </>
+    );
+  }
+
   const rows = distribute(s.count, s.levels.length);
   return (
     <>

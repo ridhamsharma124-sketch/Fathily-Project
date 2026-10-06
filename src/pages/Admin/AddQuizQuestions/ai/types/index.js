@@ -6,6 +6,9 @@ import * as to from "./AITapInOrder";
 import * as vb from "./AIVerseBuilder";
 import * as wa from "./AIWhoAmI";
 import * as mp from "./AIMatchPair";
+import * as ss from "./AIStorySequence";
+import * as sc from "./AISpeedChallenge";
+import * as aq from "./AIAudioQuiz";
 
 const build = (m) => ({
   ...m.config,
@@ -23,6 +26,9 @@ export const AI_TYPES = {
 verse_builder: build(vb),
 who_am_i: build(wa),
 match_pair: build(mp),
+story_sequence: build(ss),
+speed_challenge: build(sc),
+audio_quiz: build(aq),
   // next: tap_order, verse_builder, who_am_i, ...
 };
 

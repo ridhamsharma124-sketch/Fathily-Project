@@ -5,7 +5,7 @@ export const IMAGES = [
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=70",
 ];
 export const ALL_LEVELS = Array.from({ length: 8 }, (_, i) => `Level ${i + 1}`);
-export const COUNTS = [5, 10, 15, 20, 25];
+export const COUNTS = [5, 10, 12, 15, 20, 25];
 export const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 
 export const distribute = (total, k) =>

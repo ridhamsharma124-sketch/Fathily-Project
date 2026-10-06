@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { FiCheck, FiEdit2, FiRefreshCw, FiImage, FiUpload } from "react-icons/fi";
+import { FiCheck, FiEdit2, FiRefreshCw, FiImage, FiUpload, FiClock, FiVolume2 } from "react-icons/fi";
+import AISummary from "./aiSummary";
 import { randomImage, randomSample } from "./aiUtils";
 
 const Btn = ({ icon: Icon, children, onClick }) => (
@@ -20,11 +21,17 @@ export default function AIPreviewCard({ reg, items, setItems, s }) {
 
   return (
     <div className="bg-white border border-[#E2DFFC] rounded-lg p-5">
-      <h3 className="text-sm font-semibold text-[#0A0847]">Generated Preview</h3>
-
-      {reg.previewSub !== false && (
-  <p className="text-xs text-[#0A084799] font-medium mt-1">Review sample questions that will be generated.</p>
-)}
+     <div className="flex items-start justify-between gap-4">
+  <div>
+    <h3 className="text-sm font-semibold text-[#0A0847]">Generated Preview</h3>
+    {reg.previewSub !== false && (
+      <p className="text-xs text-[#0A084799] font-medium mt-1">
+        {typeof reg.previewSub === "string" ? reg.previewSub : "Review sample questions that will be generated."}
+      </p>
+    )}
+  </div>
+  {reg.countBadge && <span className="px-3 py-1.5 rounded bg-[#E4E1F7] text-xs font-semibold text-[#0A0847CC]">{s.count} Questions</span>}
+</div>
 
       <input ref={fileRef} type="file" accept="image/*" className="hidden"
         onChange={(e) => {
@@ -43,6 +50,11 @@ export default function AIPreviewCard({ reg, items, setItems, s }) {
                 {it.selected && <FiCheck size={13} strokeWidth={3} />}
               </button>
               <span className="px-4 py-1.5 rounded-md bg-[#E4E1F7] text-xs font-semibold text-[#0A0847CC]">{it.level}</span>
+              {reg.levelBadge && (
+  <span className="ml-auto px-3 py-1.5 rounded bg-[#E4E1F7] text-xs font-semibold text-[#0A0847CC] flex items-center gap-1.5">
+    <FiClock size={13} /> {reg.levelBadge(s)}
+  </span>
+)}
             </div>
             <div className={`flex gap-4 ${stacked ? "flex-col" : "flex-col sm:flex-row"}`}>
   {s.images && (stacked ? (
@@ -66,6 +78,7 @@ export default function AIPreviewCard({ reg, items, setItems, s }) {
                   <Btn icon={FiRefreshCw} onClick={() => patch(it.id, randomSample(reg.samples, it.q))}>Regenerate Question</Btn>
 <Btn icon={FiImage} onClick={() => patch(it.id, { img: randomImage(it.img), ...(it.img2 ? { img2: randomImage(it.img2) } : {}) })}>Regenerate Image</Btn>   
                <Btn icon={FiUpload} onClick={() => { target.current = it.id; fileRef.current?.click(); }}>Replace Image</Btn>
+               {reg.audio && <Btn icon={FiVolume2} onClick={() => patch(it.id, { audioV: Date.now() })}>Regenerate Audio</Btn>}
                 </div>
               </div>
             </div>
@@ -75,6 +88,7 @@ export default function AIPreviewCard({ reg, items, setItems, s }) {
       {reg.previewNote !== false && (
         <p className="text-xs italic text-[#0A084799] mt-4">Preview is for example only. Generated content may vary.</p>
       )}
+      {reg.summary && <AISummary reg={reg} s={s} />}
     </div>
   );
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FiSave, FiSettings } from "react-icons/fi";
+import { FiSave, FiSettings, FiUpload } from "react-icons/fi";
 import { BsStars } from "react-icons/bs";
 import { Toggle, Counter, inputCls } from "../Shared/ui";
 import { AI_TYPES, AI_TYPE_OPTIONS } from "./types";
 import { COUNTS, DIFFICULTIES, makePreview } from "./shared/aiUtils";
 import { Sel, H, Row, Info } from "./shared/aiUi";
 import LevelsSection from "./shared/LevelsSection";
-import AIPreviewCard from "./shared/AIPreviewCard";
+import AIPreviewCard from "./shared/aiPreviewCard";
 
 const BASE = {
   difficulty: "Medium",
@@ -25,14 +25,24 @@ export default function AIGeneratorPanel({ type, meta, onTypeChange }) {
   const set = (p) => setS((x) => ({ ...x, ...p }));
   const { TopSettings, Settings } = reg;
 
-  useEffect(() => {
-    setItems(makePreview(reg.samples, s.levels));
-    // eslint-disable-next-line
-  }, [s.levels.join()]);
+  const levelList = reg.levelMode === "passages" ? s.passages.filter((p) => p.on).map((p) => p.level) : s.levels;
+
+useEffect(() => {
+  setItems(makePreview(reg.samples, levelList));
+  // eslint-disable-next-line
+}, [levelList.join()]);
+
+//   useEffect(() => {
+//     setItems(makePreview(reg.samples, s.levels));
+//     // eslint-disable-next-line
+//   }, [s.levels.join()]);
 
   const generate = () =>
     console.log("AI generate payload:", { type, meta, settings: s, preview: items.filter((i) => i.selected) }); // TODO: API
   const draft = () => console.log("AI draft:", { type, meta, settings: s });
+
+  const imageRow = <Row label="Generate a unique AI image for every question" checked={s.images} onChange={(images) => set({ images })} />;
+const publish = () => console.log("AI publish:", { type, meta, settings: s, preview: items.filter((i) => i.selected) });
 
   return (
     <div className="space-y-6">
@@ -72,11 +82,18 @@ export default function AIGeneratorPanel({ type, meta, onTypeChange }) {
             ))}
           </div>
 
-          <LevelsSection mode={reg.levelMode} s={s} set={set} />
+          <LevelsSection
+  mode={reg.levelMode}
+  s={s}
+  set={set}
+  levelData={reg.levelData}
+/>
 
           <Row label="Generate a unique AI image for every question" checked={s.images} onChange={(images) => set({ images })} />
 
           {Settings && <Settings s={s} set={set} />}
+
+          {!reg.imageLast && imageRow}
 
           <div>
             <p className="text-xs font-semibold text-[#0A0847CC] mb-2">AI Instructions (Optional)<Info /></p>
@@ -96,6 +113,22 @@ export default function AIGeneratorPanel({ type, meta, onTypeChange }) {
         <AIPreviewCard reg={reg} items={items} setItems={setItems} s={s} />
       </div>
 
+{reg.footer === "publish" ? (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <button type="button" onClick={draft}
+      className="py-3.5 bg-white border border-[#E2DFFC] rounded-md text-sm font-semibold text-[#0A0847] flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
+      <FiSave size={15} /> Save draft
+    </button>
+    <button type="button" onClick={generate}
+      className="py-3.5 bg-[#EEF0FB] border border-[#C9CDE8] rounded-md text-sm font-semibold text-[#0A0847] flex items-center justify-center gap-2 hover:bg-[#E4E8F8] cursor-pointer">
+      <BsStars size={15} /> Generate Questions &amp; Images
+    </button>
+    <button type="button" onClick={publish}
+      className="py-3.5 bg-[#001984] hover:bg-[#001266] text-white rounded-md text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
+      <FiUpload size={15} /> Publish Selected
+    </button>
+  </div>
+) : (
       <div className={`grid grid-cols-1 gap-6 ${reg.showSaveDraft === false ? "" : "md:grid-cols-[1fr_1.4fr]"}`}>
         {reg.showSaveDraft !== false && (
           <button type="button" onClick={draft}
@@ -107,7 +140,8 @@ export default function AIGeneratorPanel({ type, meta, onTypeChange }) {
           className="py-3.5 bg-[#001984] hover:bg-[#001266] text-white rounded-md text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
           <BsStars size={15} /> Generate Questions &amp; Images
         </button>
-      </div>
+      </div> 
+)}
     </div>
   );
 }
