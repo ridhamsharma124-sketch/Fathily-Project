@@ -282,8 +282,9 @@ export default function AIQuizGenerator() {
 
         <LocationChip />
 
-        {/* two columns — 376px fixed left, rest right, top-aligned */}
-        <div className="grid grid-cols-[376px_minmax(0,1fr)] items-start gap-6">
+        {/* two columns — 376px fixed left, rest right.
+            items-stretch: both cards end on the same bottom line */}
+        <div className="grid grid-cols-[376px_minmax(0,1fr)] items-stretch gap-6">
           {/* LEFT — configure */}
           <section className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
             <h2 className="text-[16px] font-semibold text-[#0A0847]">Configure Your Quiz</h2>
@@ -456,22 +457,22 @@ export default function AIQuizGenerator() {
               onChange={setAvoidDuplicates}
             />
 
-            {/* AI instructions */}
-            <div>
+            {/* AI instructions: fills the remaining height so both cards end at the same line */}
+            <div className="flex flex-1 flex-col">
               <label htmlFor="ai-instructions" className="block text-[12px] font-semibold text-[#0A0847]">
                 AI Instructions (Optional)
               </label>
               <p className="mt-1 text-[10px] text-[#0A0847]/60">
                 Add any special instructions for the AI to follow.
               </p>
-              <div className="relative mt-2">
+              <div className="relative mt-2 min-h-[116px] flex-1">
                 <textarea
                   id="ai-instructions"
                   maxLength={500}
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
                   placeholder="e.g., Focus on application-based questions, include real-life scenarios, etc."
-                  className="h-[116px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984]"
+                  className="absolute inset-0 h-full w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984]"
                 />
                 <span className="absolute right-3 bottom-2 text-[10px] text-[#0A0847]/60">
                   {instructions.length} / 500
