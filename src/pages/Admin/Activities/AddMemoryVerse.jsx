@@ -18,6 +18,7 @@ import {
   labelClass,
   outlineButton,
   pageBodyClass,
+  pageInnerClass,
   pageShellClass,
   purpleButton,
 } from "./activityFormShared";
@@ -87,13 +88,13 @@ function VersePreviewCard({ reference, verseText, translation, image }) {
 
 function MemoryVersePreview({ reference, verseText, translation, image }) {
   return (
-    <section className="w-full shrink-0 rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] p-6 lg:w-[465px]">
-      <div className="flex flex-col gap-[14px]">
+    <section className="w-full min-w-0 shrink-0 rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] p-8">
+      <div className="mx-auto flex w-full max-w-[397px] flex-col gap-[14px]">
         <div className="text-center">
           <h2 className="text-[16px] font-bold text-[#0A0847]">
             User Memory Verse Preview
           </h2>
-          <p className="mt-1 text-[11px] leading-[1.5] text-[#0A084799]">
+          <p className="mt-1 text-[16px] leading-[1.5] text-[#0A084799]">
             This is how the memory verse
             <br />
             will appear to users.
@@ -193,20 +194,21 @@ export default function AddMemoryVerse() {
   return (
     <div className={pageShellClass}>
       <div className={pageBodyClass}>
-        <ActivityPageHeader
-          breadcrumb={[
-            "Bible Content",
-            "Activities",
-            "John",
-            "Chapter 3",
-            "Memory Verse",
-          ]}
-          title="Add Memory Verse"
-        />
+        <div className={pageInnerClass}>
+          <ActivityPageHeader
+            breadcrumb={[
+              "Bible Content",
+              "Activities",
+              "John",
+              "Chapter 3",
+              "Memory Verse",
+            ]}
+            title="Add Memory Verse"
+          />
 
-        <div className={cardRowClass}>
-          {/* LEFT — memory verse form */}
-          <section className={`${formCardClass} lg:w-[578px] lg:flex-none`}>
+          <div className={cardRowClass}>
+            {/* LEFT — memory verse form */}
+            <section className={formCardClass}>
             <Field label="Verse Reference" required htmlFor="verse-reference">
               <TextInput
                 id="verse-reference"
@@ -221,7 +223,7 @@ export default function AddMemoryVerse() {
                 value={verseText}
                 onChange={(e) => setVerseText(e.target.value)}
                 max={300}
-                className="h-[90px]"
+                className="h-[102px]"
               />
             </Field>
 
@@ -348,21 +350,22 @@ export default function AddMemoryVerse() {
 
         {/* BOTTOM ACTION ROW */}
         <div className={actionRowClass}>
-          <button type="button" className={outlineButton}>
+          <button type="button" className={`${outlineButton} w-[152px]`}>
             Cancel
           </button>
 
-          <div className="flex flex-wrap gap-3">
-            <button type="button" className={outlineButton}>
+          <div className="flex flex-wrap gap-4">
+            <button type="button" className={`${outlineButton} w-[152px]`}>
               Save as Draft
             </button>
-            <button type="button" className={outlineButton}>
+            <button type="button" className={`${outlineButton} w-[188px]`}>
               Preview as User
             </button>
             <button type="button" className={purpleButton}>
               Publish Story
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

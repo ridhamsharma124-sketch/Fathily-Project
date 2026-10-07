@@ -6,14 +6,14 @@ import {
   LuPencil,
   LuExternalLink,
   LuRefreshCw,
-  LuSave,
   LuSparkles,
   LuChevronDown,
+  LuBookOpen,
+  LuChevronRight,
 } from "react-icons/lu";
-import { Breadcrumb, LocationChip, Toggle } from "./quizShared";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   MOCK DATA — hardcoded exactly as specified (unchanged)
    ========================================================================== */
 const QUESTION_TYPE_OPTIONS = ["Multiple Choice"];
 const DIFFICULTY_OPTIONS = ["Medium", "Easy", "Hard"];
@@ -73,40 +73,73 @@ const GENERATED_QUESTIONS = [
 ];
 
 /* ==========================================================================
-   PAGE-LOCAL STYLES (kept here so the shared quizShared.jsx is untouched)
+   PAGE-LOCAL PRIMITIVES (quizShared.jsx left untouched for other pages)
    ========================================================================== */
-const labelCls = "mb-1.5 block text-[12px] font-semibold text-[#0A0847]";
+const labelCls = "mb-2 block text-[12px] font-semibold text-[#0A0847]";
 
-const inputCls =
-  "h-10 w-full rounded-lg border border-[#E5E4EC] bg-white px-3 text-[13px] text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]";
+const fieldCls =
+  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
 
-/* soft pill button — Regenerate All / Edit / Regenerate Question / Regenerate Image */
-const softButton =
-  "flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[#E2DFFC] bg-[#F1F1F9] px-3 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#E8E8F3]";
+const helperCls = "text-[10px] font-medium leading-[13px] text-[#0A0847]/60";
 
-/* bottom action row */
-const purpleButton =
-  "flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4C1DD6] px-5 text-[13px] font-semibold text-white transition-colors hover:bg-[#4318B8]";
+/* soft action button inside question cards */
+const actionButton =
+  "flex h-[38px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#9CAFF4] bg-[#001984]/5 px-3 text-[13px] font-medium text-[#001984] transition-colors hover:bg-[#001984]/10";
 
-const outlineButton =
-  "flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#0A0847] bg-white px-5 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
-
-/* ==========================================================================
-   SUB-COMPONENTS
-   ========================================================================== */
-function Panel({ title, subtitle, children, bodyClassName = "" }) {
+function Breadcrumb({ items }) {
   return (
-    <section className="rounded-xl border border-[#E2DFFC] bg-white">
-      <div className="px-5 py-4">
-        {title && (
-          <h2 className="text-[20px] font-bold text-[#0A0847]">{title}</h2>
-        )}
-        {subtitle && (
-          <p className="mt-1 text-[12px] text-[#0A084799]">{subtitle}</p>
-        )}
-        <div className={bodyClassName}>{children}</div>
-      </div>
-    </section>
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <li key={item} className="flex items-center gap-1.5">
+              {index > 0 && (
+                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
+              )}
+              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
+  return (
+    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
+      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
+      <p className="text-[13px] leading-[22px]">
+        {parts.map((part, index) => (
+          <span key={part}>
+            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
+            <span className="font-bold text-[#0A0847]">{part}</span>
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
+function Toggle({ checked, onChange, label }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+      className={`relative h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
+        checked ? "bg-[#001984]" : "bg-[#D1D5DB]"
+      }`}
+    >
+      <span
+        className={`absolute top-[3px] h-4 w-4 rounded-full bg-white shadow-sm transition-all ${
+          checked ? "left-[25px]" : "left-[3px]"
+        }`}
+      />
+    </button>
   );
 }
 
@@ -117,7 +150,7 @@ function CompactSelect({ id, value, options, onChange }) {
         id={id}
         value={value}
         onChange={onChange}
-        className={`${inputCls} cursor-pointer appearance-none pr-9`}
+        className={`${fieldCls} cursor-pointer appearance-none`}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -127,7 +160,7 @@ function CompactSelect({ id, value, options, onChange }) {
       </select>
       <LuChevronDown
         size={15}
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#0A084799]"
+        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
         aria-hidden
       />
     </div>
@@ -136,10 +169,10 @@ function CompactSelect({ id, value, options, onChange }) {
 
 function ToggleRow({ title, description, checked, onChange }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-3">
+    <div className="flex h-[32px] items-center justify-between gap-4">
       <div className="min-w-0">
-        <p className="text-[13px] font-bold text-[#0A0847]">{title}</p>
-        <p className="mt-0.5 text-[11px] text-[#0A084799]">{description}</p>
+        <p className="text-[12px] leading-[15px] font-semibold text-[#0A0847]">{title}</p>
+        <p className={`mt-[2px] ${helperCls}`}>{description}</p>
       </div>
       <Toggle checked={checked} onChange={onChange} label={title} />
     </div>
@@ -148,9 +181,9 @@ function ToggleRow({ title, description, checked, onChange }) {
 
 function QuestionCard({ question }) {
   return (
-    <article className="rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] p-4">
+    <article className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[13px] pb-[20px] pl-[13px]">
       <div className="flex gap-[31px]">
-        {/* column 1 — portrait image with checkbox over its top-left corner */}
+        {/* image with checkbox at its top-left corner */}
         <div className="relative shrink-0">
           <img
             src={LEVEL_IMAGES[question.level]}
@@ -163,27 +196,25 @@ function QuestionCard({ question }) {
             type="checkbox"
             defaultChecked
             aria-label={`Select question ${question.id}`}
-            className="absolute left-2 top-2 h-[18px] w-[18px] cursor-pointer rounded border-[#E5E4EC] accent-[#0A0847]"
+            className="absolute left-2 top-2 h-[18px] w-[18px] cursor-pointer rounded border border-[#E2DFFC] accent-[#0A0847]"
           />
         </div>
 
-        {/* column 2 — badge, title, options */}
-        <div className="min-w-0 flex-1">
-          <span className="inline-block rounded-md bg-[#F1F1F9] px-2 py-0.5 text-[11px] font-semibold text-[#0A0847]">
+        {/* right column — tag, question, options */}
+        <div className="flex min-w-0 flex-1 flex-col gap-[10px]">
+          <span className="inline-flex h-[25px] w-fit items-center rounded-[4px] bg-[#001984]/5 px-2 text-[12px] font-medium text-[#001984]">
             {question.level}
           </span>
-          <p className="mt-2 line-clamp-2 text-[14px] font-semibold text-[#0A0847]">
+          <p className="max-w-[260px] text-[14px] leading-[30px] font-semibold text-[#0A0847]">
             {question.text}
           </p>
-          <ul className="mt-2.5">
+          <ul>
             {question.options.map((option, index) => (
               <li
                 key={option}
-                className="text-[12px] leading-5 text-[#0A084799]"
+                className="text-[14px] leading-[24px] font-medium text-[#0A0847]/60"
               >
-                <span className="font-bold text-[#0A0847]">
-                  {String.fromCharCode(65 + index)}.
-                </span>{" "}
+                <span className="font-bold">{String.fromCharCode(65 + index)}.</span>{" "}
                 {option}
               </li>
             ))}
@@ -191,18 +222,18 @@ function QuestionCard({ question }) {
         </div>
       </div>
 
-      {/* buttons — full width under image + text */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button type="button" className={softButton}>
-          <LuPencil size={14} />
+      {/* action buttons row */}
+      <div className="flex flex-wrap items-center gap-2 p-[12px]">
+        <button type="button" className={actionButton}>
+          <LuPencil size={15} />
           Edit
         </button>
-        <button type="button" className={softButton}>
-          <LuExternalLink size={14} />
+        <button type="button" className={`${actionButton} w-[179px]`}>
+          <LuExternalLink size={15} />
           Regenerate Question
         </button>
-        <button type="button" className={softButton}>
-          <LuRefreshCw size={14} />
+        <button type="button" className={actionButton}>
+          <LuRefreshCw size={15} />
           Regenerate Image
         </button>
       </div>
@@ -236,23 +267,27 @@ export default function AIQuizGenerator() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="mx-auto max-w-[1200px] space-y-5 px-5 py-6">
+      {/* ONE container — width 100%, every section a direct child */}
+      <div className="flex w-full min-w-0 flex-col gap-6 px-6 py-6">
         <Breadcrumb
           items={["Bible Content", "Articles", "John", "Chapter 3", "Quiz"]}
         />
 
-        <div>
-          <h1 className="text-[22px] font-bold text-[#0A0847]">AI Quiz Generator</h1>
-          <p className="mt-[6px] text-[14px] text-[#0A084799]">
+        <div className="w-full min-w-0">
+          <h1 className="text-[22px] font-semibold text-[#0A0847]">AI Quiz Generator</h1>
+          <p className="mt-1.5 text-[14px] font-medium text-[#0A0847]/60">
             Engage and track activities for each chapter.
           </p>
         </div>
 
         <LocationChip />
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[40fr_60fr]">
+        {/* two columns — 376px fixed left, rest right, top-aligned */}
+        <div className="grid grid-cols-[376px_minmax(0,1fr)] items-start gap-6">
           {/* LEFT — configure */}
-          <Panel title="Configure Your Quiz" bodyClassName="mt-4 space-y-3">
+          <section className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
+            <h2 className="text-[16px] font-semibold text-[#0A0847]">Configure Your Quiz</h2>
+
             {/* Question Type */}
             <div>
               <label htmlFor="q-type" className={labelCls}>
@@ -276,7 +311,7 @@ export default function AIQuizGenerator() {
                 type="text"
                 value={passage}
                 onChange={(e) => setPassage(e.target.value)}
-                className={inputCls}
+                className={fieldCls}
               />
             </div>
 
@@ -290,7 +325,7 @@ export default function AIQuizGenerator() {
                 type="text"
                 value={questionCount}
                 onChange={(e) => setQuestionCount(e.target.value)}
-                className={inputCls}
+                className={fieldCls}
               />
             </div>
 
@@ -307,20 +342,21 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* AI image toggle — plain row, no box */}
+            {/* AI image toggle + divider below */}
             <ToggleRow
               title="Generate an AI Image for Every Question"
               description="Each generated question includes a unique image."
               checked={aiImage}
               onChange={setAiImage}
             />
+            <div className="h-px w-full bg-[#0A0847]/10" />
 
-            {/* Level Setup — one joined segmented control */}
+            {/* Level Setup */}
             <div>
               <p className={labelCls}>
                 Level Setup <span className="text-[#E11D48]">*</span>
               </p>
-              <div className="flex overflow-hidden rounded-lg border border-[#E5E4EC]">
+              <div className="flex">
                 {LEVEL_TABS.map((tab, index) => {
                   const active = levelSetup === tab.id;
                   return (
@@ -328,12 +364,14 @@ export default function AIQuizGenerator() {
                       key={tab.id}
                       type="button"
                       onClick={() => setLevelSetup(tab.id)}
-                      className={`flex-1 cursor-pointer px-2 py-2 text-[12px] font-semibold transition-colors ${
-                        index === 0 ? "border-r border-[#E5E4EC]" : ""
+                      className={`flex h-[33px] cursor-pointer items-center justify-center px-2 py-1 text-[12px] font-medium transition-colors ${
+                        index === 0
+                          ? "-ml-px w-[169px] rounded-l-[7.47px]"
+                          : "w-[172px] rounded-r-[7.47px]"
                       } ${
                         active
-                          ? "border-[#041581] bg-[#E4E7F0] text-[#0A0847] shadow-[inset_0_0_0_1px_#041581]"
-                          : "bg-white text-[#0A0847]"
+                          ? "border border-[#001984] bg-[#001984]/10 text-[#001984]"
+                          : "border border-[#E2DFFC] bg-white text-[#0A0847]/80"
                       }`}
                     >
                       {tab.label}
@@ -344,8 +382,8 @@ export default function AIQuizGenerator() {
             </div>
 
             {/* Level counts */}
-            <div className="grid grid-cols-2 gap-3">
-              <div>
+            <div className="flex gap-[29px]">
+              <div className="min-w-0 flex-1">
                 <label htmlFor="level-count" className={labelCls}>
                   Number of Levels <span className="text-[#E11D48]">*</span>
                 </label>
@@ -356,7 +394,7 @@ export default function AIQuizGenerator() {
                   onChange={(e) => setLevelCount(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <label htmlFor="per-level" className={labelCls}>
                   Questions per Level <span className="text-[#E11D48]">*</span>
                 </label>
@@ -369,119 +407,138 @@ export default function AIQuizGenerator() {
               </div>
             </div>
 
-            <p className="text-[12px] italic text-[#041581]">
-              15 questions = 3 levels × 5 questions
+            <p className="text-[10px] italic text-[#001984]">
+              15 questions = 3 levels x 5 questions
             </p>
 
             {/* Existing levels */}
             <div>
-              <p className="text-[13px] font-bold text-[#0A0847]">Existing Levels</p>
-              <p className="mt-0.5 text-[11px] text-[#0A084799]">
+              <p className="text-[12px] font-semibold text-[#0A0847]">Existing Levels</p>
+              <p className="mt-1 text-[10px] text-[#0A0847]/60">
                 Choose multiple levels and set the number of questions for each.
               </p>
-              <div className="mt-2.5 flex flex-nowrap gap-2">
+              <div className="mt-3 flex gap-2">
                 {levels.map((level) => (
                   <button
                     key={level.id}
                     type="button"
                     onClick={() => toggleLevel(level.id)}
-                    className={`cursor-pointer whitespace-nowrap rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors ${
+                    className={`flex h-[28px] w-[58px] cursor-pointer items-center justify-center rounded-[6px] border text-[12px] font-semibold transition-colors ${
                       level.selected
-                        ? "border-[#041581] bg-[#041581] text-white"
-                        : "border-[#E5E4EC] bg-white text-[#0A0847]"
+                        ? "border-[#001984] bg-[#001984] text-white"
+                        : "border-[#E2DFFC] bg-white text-[#0A0847]"
                     }`}
                   >
                     Level {level.id}
                   </button>
                 ))}
               </div>
-              <div className="mt-2.5 rounded-lg bg-[#F3F4F8] px-[14px] py-3 text-[12px] leading-[1.6] text-[#0A0847]">
+              <div className="mt-3 h-[90px] w-full rounded-lg border border-[#E2DFFC] bg-[#FAFBFE] px-[14px] py-2">
                 {LEVEL_SUMMARY.map((line) => (
-                  <p key={line}>{line}</p>
+                  <p key={line} className="text-[12px] leading-[24px] font-medium text-[#0A0847]">
+                    {line}
+                  </p>
                 ))}
               </div>
             </div>
 
-            {/* Verse refs + duplicates — plain rows with 1px separators */}
-            <div className="divide-y divide-[#E5E4EC] border-t border-[#E5E4EC]">
-              <ToggleRow
-                title="Include Verse References"
-                description="Add verse references to questions and explanations."
-                checked={verseRefs}
-                onChange={setVerseRefs}
-              />
-              <ToggleRow
-                title="Avoid Duplicates"
-                description="Avoid exactly repeating similar questions."
-                checked={avoidDuplicates}
-                onChange={setAvoidDuplicates}
-              />
-            </div>
+            {/* Verse refs + duplicates */}
+            <ToggleRow
+              title="Include Verse References"
+              description="Add verse references to questions and explanations."
+              checked={verseRefs}
+              onChange={setVerseRefs}
+            />
+            <ToggleRow
+              title="Avoid Duplicates"
+              description="Avoid exactly repeating similar questions."
+              checked={avoidDuplicates}
+              onChange={setAvoidDuplicates}
+            />
 
-            {/* AI instructions — counter inside the textarea */}
+            {/* AI instructions */}
             <div>
-              <label htmlFor="ai-instructions" className={labelCls}>
+              <label htmlFor="ai-instructions" className="block text-[12px] font-semibold text-[#0A0847]">
                 AI Instructions (Optional)
               </label>
-              <p className="mb-1.5 text-[11px] text-[#0A084799]">
+              <p className="mt-1 text-[10px] text-[#0A0847]/60">
                 Add any special instructions for the AI to follow.
               </p>
-              <div className="relative">
+              <div className="relative mt-2">
                 <textarea
                   id="ai-instructions"
-                  rows={4}
                   maxLength={500}
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
                   placeholder="e.g., Focus on application-based questions, include real-life scenarios, etc."
-                  className="w-full resize-none rounded-lg border border-[#E5E4EC] bg-white px-3 py-2.5 pb-7 text-[13px] leading-relaxed text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]"
+                  className="h-[116px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984]"
                 />
-                <span className="absolute bottom-2 right-3 text-[11px] text-[#0A084799]">
+                <span className="absolute right-3 bottom-2 text-[10px] text-[#0A0847]/60">
                   {instructions.length} / 500
                 </span>
               </div>
             </div>
-          </Panel>
+          </section>
 
           {/* RIGHT — preview */}
-          <Panel
-            title="Generated Questions Preview"
-            subtitle="Review the AI generated questions below and select the ones to keep."
-            bodyClassName="mt-4 space-y-3"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-3">
+          <section className="flex min-w-0 flex-col gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-6">
+            <div className="min-w-0">
+              <h2 className="text-[20px] font-semibold text-[#0A0847]">
+                Generated Questions Preview
+              </h2>
+              <p className="mt-1 text-[14px] text-[#0A0847]/60">
+                Review the AI generated questions below and select the ones to keep.
+              </p>
+            </div>
+
+            {/* select-all row — height 42 */}
+            <div className="flex h-[42px] items-center justify-between gap-3">
               <label className="flex cursor-pointer items-center gap-2.5 text-[13px] font-semibold text-[#0A0847]">
                 <input
                   type="checkbox"
                   defaultChecked
-                  className="h-[18px] w-[18px] cursor-pointer rounded border-[#E5E4EC] accent-[#0A0847]"
+                  className="h-[18px] w-[18px] cursor-pointer rounded border border-[#E2DFFC] accent-[#0A0847]"
                 />
                 Select All (15)
               </label>
-              <button type="button" className={softButton}>
-                <LuRefreshCw size={14} />
+              <button
+                type="button"
+                className="flex h-[42px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] bg-white px-4 text-[13px] font-medium text-[#001984] transition-colors hover:bg-[#F9FAFE]"
+              >
+                <LuRefreshCw size={15} />
                 Regenerate All
               </button>
             </div>
 
-            {GENERATED_QUESTIONS.map((question) => (
-              <QuestionCard key={question.id} question={question} />
-            ))}
-          </Panel>
+            {/* question stack — gap 24 */}
+            <div className="flex flex-col gap-6">
+              {GENERATED_QUESTIONS.map((question) => (
+                <QuestionCard key={question.id} question={question} />
+              ))}
+            </div>
+          </section>
         </div>
 
-        {/* BOTTOM ACTION ROW — full width, below both cards */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <button type="button" className={purpleButton}>
-            <LuSparkles size={15} />
+        {/* BOTTOM BAR — full width, height 48, space-between */}
+        <div className="flex h-[48px] w-full min-w-0 items-center justify-between gap-4">
+          <button
+            type="button"
+            className="flex h-[48px] cursor-pointer items-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[13px] font-semibold text-white transition-colors hover:opacity-90"
+          >
+            <LuSparkles size={16} />
             Generate Questions &amp; Images
           </button>
-          <div className="flex flex-wrap gap-3">
-            <button type="button" className={outlineButton}>
-              <LuSave size={15} />
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              className="flex h-[48px] cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
+            >
               Save as Draft
             </button>
-            <button type="button" className={purpleButton}>
+            <button
+              type="button"
+              className="flex h-[48px] cursor-pointer items-center justify-center rounded-lg bg-[#4022D1] px-4 text-[13px] font-semibold text-white transition-colors hover:opacity-90"
+            >
               Publish Selected
             </button>
           </div>

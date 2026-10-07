@@ -25,12 +25,12 @@ import {
 import { WordSearchGlyph, MemoryVerseGlyph } from "./activityGlyphs";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   MOCK DATA — text kept exactly as before
    ========================================================================== */
 const SELECTORS = [
-  { label: "Testament", value: "New Testament", iconBg: "bg-[#EEE3FE]", iconColor: "#5B0FEE", Glyph: LuBookOpen },
-  { label: "Book", value: "John", iconBg: "bg-[#EEE3FE]", iconColor: "#5B0FEE", Glyph: LuBookOpen },
-  { label: "Book", value: "John", iconBg: "bg-[#FBE7DA]", iconColor: "#F97316", Glyph: LuFileText },
+  { label: "Testament", value: "New Testament", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen },
+  { label: "Book", value: "John", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen },
+  { label: "Book", value: "John", tint: "bg-[#F97316]/10", iconColor: "#F97316", Glyph: LuFileText },
 ];
 
 const ACTIVITY_CARDS = [
@@ -38,12 +38,12 @@ const ACTIVITY_CARDS = [
     id: "quiz",
     title: "Quiz",
     description: "Test knowledge with multiple question types.",
-    iconBg: "bg-[#4F46E5]",
-    iconColor: "#FFFFFF",
+    tint: "bg-[#001984]/10",
+    iconColor: "#001984",
     Glyph: LuCircleHelp,
     stats: [
-      { label: "Active", value: "12", Glyph: LuLayers, statBg: "bg-[#EEE3FE]", color: "#4F46E5" },
-      { label: "Questions", value: "12", Glyph: LuCircleHelp, statBg: "bg-[#EEE3FE]", color: "#4F46E5" },
+      { label: "Active", value: "12", Glyph: LuLayers },
+      { label: "Questions", value: "12", Glyph: LuCircleHelp },
     ],
     buttons: [
       { label: "View Quiz", Glyph: LuEye },
@@ -54,12 +54,12 @@ const ACTIVITY_CARDS = [
     id: "word-search",
     title: "Word Search",
     description: "Test knowledge with multiple question types.",
-    iconBg: "bg-[#22C55E]",
-    iconColor: "#FFFFFF",
+    tint: "bg-[#21AC1C]/10",
+    iconColor: "#21AC1C",
     Glyph: WordSearchGlyph,
     stats: [
-      { label: "Active", value: "8", Glyph: LuUsers, statBg: "bg-[#DCFCE7]", color: "#16A34A" },
-      { label: "Words", value: "96", Glyph: LuPuzzle, statBg: "bg-[#DCFCE7]", color: "#16A34A" },
+      { label: "Active", value: "8", Glyph: LuUsers },
+      { label: "Words", value: "96", Glyph: LuPuzzle },
     ],
     buttons: [
       { label: "View Word Search", Glyph: LuEye },
@@ -70,12 +70,12 @@ const ACTIVITY_CARDS = [
     id: "audio-stream",
     title: "Chapter Audio Stream",
     description: "Listen to engaging audio content.",
-    iconBg: "bg-[#EEE3FE]",
-    iconColor: "#041581",
+    tint: "bg-[#001984]/10",
+    iconColor: "#001984",
     Glyph: LuHeadphones,
     stats: [
-      { label: "Sessions", value: "5", Glyph: LuHeadphones, statBg: "bg-[#EEE3FE]", color: "#041581" },
-      { label: "Duration", value: "25m", Glyph: LuClock, statBg: "bg-[#EEE3FE]", color: "#041581" },
+      { label: "Sessions", value: "5", Glyph: LuHeadphones },
+      { label: "Duration", value: "25m", Glyph: LuClock },
     ],
     buttons: [
       { label: "View Audio Stream", Glyph: LuEye },
@@ -86,12 +86,12 @@ const ACTIVITY_CARDS = [
     id: "memory-verse",
     title: "Memory Verse",
     description: "Learn and memorize key Bible verses.",
-    iconBg: "bg-[#FDF1E4]",
+    tint: "bg-[#F97316]/10",
     iconColor: "#F97316",
     Glyph: MemoryVerseGlyph,
     stats: [
-      { label: "Verses", value: "6", Glyph: LuBookmark, statBg: "bg-[#FDF1E4]", color: "#F97316" },
-      { label: "Practiced", value: "24", Glyph: LuCircleCheck, statBg: "bg-[#FDF1E4]", color: "#D4A017" },
+      { label: "Verses", value: "6", Glyph: LuBookmark },
+      { label: "Practiced", value: "24", Glyph: LuCircleCheck },
     ],
     buttons: [
       { label: "Manage Memory Verse", Glyph: LuSettings },
@@ -108,8 +108,8 @@ const TABLE_ROWS = [
     status: "Enabled",
     content: "12 active • 96 questions",
     updated: "May 12, 2024",
-    iconBg: "bg-[#4F46E5]",
-    iconColor: "#FFFFFF",
+    tint: "bg-[#001984]/10",
+    iconColor: "#001984",
     Glyph: LuCircleHelp,
   },
   {
@@ -119,8 +119,8 @@ const TABLE_ROWS = [
     status: "Enabled",
     content: "8 puzzles • 96 words",
     updated: "May 12, 2024",
-    iconBg: "bg-[#22C55E]",
-    iconColor: "#FFFFFF",
+    tint: "bg-[#21AC1C]/10",
+    iconColor: "#21AC1C",
     Glyph: WordSearchGlyph,
   },
   {
@@ -130,8 +130,8 @@ const TABLE_ROWS = [
     status: "Enabled",
     content: "5 sessions • 25 min",
     updated: "May 12, 2024",
-    iconBg: "bg-[#EEE3FE]",
-    iconColor: "#041581",
+    tint: "bg-[#001984]/10",
+    iconColor: "#001984",
     Glyph: LuHeadphones,
   },
   {
@@ -141,7 +141,7 @@ const TABLE_ROWS = [
     status: "Enabled",
     content: "6 verses • 24 practiced",
     updated: "May 12, 2024",
-    iconBg: "bg-[#FDF1E4]",
+    tint: "bg-[#F97316]/10",
     iconColor: "#F97316",
     Glyph: MemoryVerseGlyph,
   },
@@ -158,101 +158,114 @@ function Toggle({ checked, onChange, label }) {
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors ${
-        checked ? "bg-[#0A55A6]" : "bg-[#D1D5DB]"
-      }`}
+      className="relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full transition-colors"
+      style={{ backgroundColor: checked ? "#001984" : "#D6D6DE" }}
     >
       <span
-        className={`absolute top-[3px] h-4 w-4 rounded-full bg-white shadow-sm transition-all ${
-          checked ? "left-[25px]" : "left-[3px]"
-        }`}
+        className="absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white transition-all"
+        style={{ left: checked ? 16 : 2 }}
       />
     </button>
   );
 }
 
-function SelectorCard({ selector }) {
-  const { label, value, iconBg, iconColor, Glyph } = selector;
+/* 40x40 toggle box area at the top right of an activity card */
+function ToggleBox({ checked, onChange, label }) {
   return (
-    <button
-      type="button"
-      className="flex items-center gap-4 rounded-xl border border-[#E5E4EC] bg-white px-5 py-4 text-left transition-colors hover:border-[#041581]/40"
-    >
-      <span
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] ${iconBg}`}
-      >
-        <Glyph size={20} style={{ color: iconColor }} />
-      </span>
-      <span className="min-w-0 flex-1">
-        <span className="block text-[12px] text-[#0A084799]">{label}</span>
-        <span className="block truncate text-[18px] font-bold text-[#0A0847]">
-          {value}
-        </span>
-      </span>
-      <LuChevronDown
-        size={18}
-        className="shrink-0 text-[#0A0847CC]"
-        aria-hidden
-      />
-    </button>
+    <span className="flex h-[40px] w-[40px] shrink-0 items-center justify-center">
+      <Toggle checked={checked} onChange={onChange} label={label} />
+    </span>
   );
 }
 
-function BookIllustration() {
+function CheckBox({ label }) {
   return (
-    <img
-      src={bookImage}
-      alt="Open book illustration"
-      className="h-[160px] w-[280px] shrink-0 object-contain"
+    <input
+      type="checkbox"
+      aria-label={label}
+      className="h-[14px] w-[14px] shrink-0 cursor-pointer appearance-none rounded-[2px] border-[1.5px] border-[#64828A] bg-white transition-colors checked:bg-[#64828A]"
     />
   );
 }
 
-function ActivityCard({ card, enabled, onToggle }) {
-  const { title, description, iconBg, iconColor, Glyph, stats, buttons } = card;
+function SelectorCard({ selector }) {
+  const { label, value, tint, iconColor, Glyph } = selector;
   return (
-    <article className="rounded-xl border border-[#EFEDF8] bg-white p-5">
-      <div className="flex items-start justify-between gap-4">
+    <button
+      type="button"
+      className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-[18px] py-[22px] text-left transition-colors hover:border-[#001984]/40"
+    >
+      <span
+        className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
+      >
+        <Glyph size={24} style={{ color: iconColor }} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[12px] leading-none text-[#0A0847]/60">{label}</span>
+        <span className="mt-2 block truncate text-[18px] leading-none font-semibold text-[#0A0847]">
+          {value}
+        </span>
+      </span>
+      <LuChevronDown size={18} className="shrink-0 text-[#0A0847]/60" aria-hidden />
+    </button>
+  );
+}
+
+function ActivityCard({ card, enabled, onToggle }) {
+  const { title, description, tint, iconColor, Glyph, stats, buttons } = card;
+  return (
+    <article className="flex h-[268px] min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[22px] pr-[18px] pb-[26px] pl-[17px]">
+      <div className="flex items-start justify-between">
         <div className="flex min-w-0 items-start gap-3">
           <span
-            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] ${iconBg}`}
+            className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
           >
-            <Glyph size={22} style={{ color: iconColor }} />
+            <Glyph size={24} style={{ color: iconColor }} />
           </span>
           <div className="min-w-0">
-            <h3 className="text-[16px] font-bold text-[#0A0847]">{title}</h3>
-            <p className="mt-1 text-[13px] text-[#0A084799]">{description}</p>
+            <h3 className="text-[16px] leading-none font-semibold text-[#0A0847]">{title}</h3>
+            <p className="mt-2 text-[12px] leading-[16px] font-medium text-[#0A0847]/60">
+              {description}
+            </p>
           </div>
         </div>
-        <Toggle checked={enabled} onChange={onToggle} label={`Toggle ${title}`} />
+        <ToggleBox
+          checked={enabled}
+          onChange={onToggle}
+          label={`Toggle ${title}`}
+        />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-[10px]">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className={`flex flex-col gap-1.5 rounded-lg px-3 py-3 ${stat.statBg}`}
+            className="flex h-[77px] min-w-0 items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FAF9FE] p-[12px]"
           >
-            <div className="flex items-center gap-2">
-              <stat.Glyph size={16} style={{ color: stat.color }} aria-hidden />
-              <span className="text-[12px] text-[#0A084799]">{stat.label}</span>
-            </div>
-            <span className="text-[16px] font-bold leading-none text-[#0A0847]">
-              {stat.value}
+            <span
+              className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-lg ${tint}`}
+            >
+              <stat.Glyph size={18} style={{ color: iconColor }} aria-hidden />
             </span>
+            <div className="min-w-0">
+              <p className="text-[12px] leading-none text-[#0A0847]/60">{stat.label}</p>
+              <p className="mt-1.5 text-[18px] leading-none font-semibold text-[#0A0847]">
+                {stat.value}
+              </p>
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-[10px]">
         {buttons.map((btn) => (
           <button
             key={btn.label}
             type="button"
-            className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] text-[13px] font-semibold text-[#041581] transition-colors hover:bg-[#041581]/5"
+            className="flex h-[43px] min-w-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-2 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#001984]/5"
           >
-            <btn.Glyph size={15} />
-            {btn.label}
+            <btn.Glyph size={16} className="shrink-0" />
+            <span className="truncate">{btn.label}</span>
           </button>
         ))}
       </div>
@@ -260,10 +273,10 @@ function ActivityCard({ card, enabled, onToggle }) {
   );
 }
 
-function StatusBadge() {
+function StatusBadge({ status }) {
   return (
-    <span className="inline-block rounded-full bg-[#EAF9E9] px-3 py-[5px] text-[12px] font-semibold text-[#16A34A]">
-      Enabled
+    <span className="inline-flex h-[28px] items-center rounded-lg bg-[#21AC1C]/10 px-3 text-[12px] font-medium whitespace-nowrap text-[#21AC1C]">
+      {status}
     </span>
   );
 }
@@ -281,26 +294,27 @@ export default function Activities() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="mx-auto max-w-[1200px] space-y-6 px-5 py-6">
-        {/* header */}
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 className="text-[22px] font-bold text-[#0A0847]">Activities</h1>
-            <p className="mt-[6px] text-[14px] text-[#0A084799]">
+      {/* ONE container — every section is a direct child, full width, min-w-0 */}
+      <div className="flex w-full min-w-0 flex-col gap-6 px-6 py-6">
+        {/* HEADER */}
+        <div className="flex w-full min-w-0 flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="text-[22px] font-semibold text-[#0A0847]">Activities</h1>
+            <p className="mt-1.5 text-[14px] font-medium text-[#0A0847]/60">
               Engage and track activities for each chapter.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-4">
             <button
               type="button"
-              className="flex h-10 cursor-pointer items-center gap-2 rounded-lg border border-[#E5E4EC] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
+              className="flex h-[42px] cursor-pointer items-center gap-2 rounded-lg border border-[#E2DFFC] bg-white px-4 text-[14px] font-medium text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
             >
               <LuEye size={16} />
               Preview as User
             </button>
             <button
               type="button"
-              className="flex h-10 cursor-pointer items-center gap-2 rounded-lg bg-[#041581] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#030D5C]"
+              className="flex h-[42px] cursor-pointer items-center gap-2 rounded-lg bg-[#001984] px-4 text-[14px] font-medium text-white transition-colors hover:opacity-90"
             >
               <LuSettings size={16} />
               Activity Settings
@@ -308,43 +322,50 @@ export default function Activities() {
           </div>
         </div>
 
-        {/* selector row */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {SELECTORS.map((selector) => (
-            <SelectorCard key={`${selector.label}-${selector.value}-${selector.iconBg}`} selector={selector} />
+        {/* SELECTORS — 3 equal cards, gap 16 */}
+        <div className="grid w-full min-w-0 grid-cols-1 gap-4 md:grid-cols-3">
+          {SELECTORS.map((selector, i) => (
+            <SelectorCard
+              key={`${selector.label}-${selector.value}-${i}`}
+              selector={selector}
+            />
           ))}
         </div>
 
-        {/* selected location banner */}
-        <div className="flex h-[175px] w-[1066px] max-w-full items-center justify-between gap-6 overflow-hidden rounded-xl border border-[#E5E4EC] bg-gradient-to-r from-[#F3E8FF] to-[#EDE9FE] px-6 py-5">
+        {/* SELECTED LOCATION — full width, same edges as selector row */}
+        <section className="flex h-[175px] w-full min-w-0 items-center justify-between gap-6 overflow-hidden rounded-lg border border-[#E2DFFC] bg-gradient-to-r from-[#FBF8FF] to-[#F6F1FF] px-6">
           <div className="min-w-0">
-            <p className="text-[16px] font-bold text-[#0A0847]">Selected Location</p>
-            <p className="mt-1.5 text-[13px] text-[#0A084799]">
+            <p className="text-[16px] font-semibold text-[#0A0847]">Selected Location</p>
+            <p className="mt-2 text-[13px] text-[#0A0847]/60">
               New Testament &gt; John &gt; Chapter 3
             </p>
-            <p className="mt-1 text-[13px] text-[#0A084799]">Total Activities: 6</p>
+            <p className="mt-1.5 text-[13px] text-[#0A0847]/60">Total Activities: 6</p>
           </div>
-          <BookIllustration />
-        </div>
+          <img
+            src={bookImage}
+            alt="Open book illustration"
+            className="h-[110px] w-[220px] shrink-0 object-contain"
+          />
+        </section>
 
-        {/* info notice */}
-        <div className="flex items-start gap-3 rounded-lg bg-[#F3F1FC] px-4 py-3.5">
-          <span className="mt-[1px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0A0847]/10">
+        {/* INFO BANNER — height 38px (hug) */}
+        <section className="flex w-full min-w-0 items-center gap-3 rounded-lg bg-[#001984]/[0.06] px-4 py-[4px]">
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0A0847]/10">
             <LuInfo size={13} className="text-[#0A0847]" aria-hidden />
           </span>
-          <p className="text-[13px] leading-relaxed">
-            <span className="font-bold text-[#0A0847]">
+          <div className="min-w-0">
+            <p className="text-[12px] leading-[15px] font-semibold text-[#0A0847]">
               Choose which activities are available for this chapter.
-            </span>
-            <span className="mt-0.5 block text-[12.5px] text-[#0A084799]">
-              You can enable or disable them anytime. Controls will be visible
-              to manage them easily.
-            </span>
-          </p>
-        </div>
+            </p>
+            <p className="text-[12px] leading-[15px] text-[#0A0847]/60">
+              You can enable or disable activities anytime. Controls will be visible to manage
+              them easily.
+            </p>
+          </div>
+        </section>
 
-        {/* activity cards */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        {/* ACTIVITY CARDS — 2 columns, gap 24 */}
+        <div className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
           {ACTIVITY_CARDS.map((card) => (
             <ActivityCard
               key={card.id}
@@ -355,43 +376,39 @@ export default function Activities() {
           ))}
         </div>
 
-        {/* table section */}
-        <section>
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <h2 className="text-[18px] font-bold text-[#0A0847]">
+        {/* TABLE SECTION */}
+        <section className="w-full min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="min-w-0">
+              <h2 className="text-[16px] font-semibold text-[#0A0847]">
                 All Activities for This Chapter
               </h2>
-              <p className="mt-1 text-[13px] text-[#0A084799]">
+              <p className="mt-1 text-[13px] text-[#0A0847]/60">
                 Overview of all activities and their status.
               </p>
             </div>
             <button
               type="button"
-              className="flex h-10 cursor-pointer items-center gap-2 rounded-lg border border-[#041581] bg-white px-4 text-[13px] font-semibold text-[#041581] transition-colors hover:bg-[#041581]/5"
+              className="flex h-[43px] w-[164px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] bg-white text-[14px] font-medium text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
             >
               <LuPlus size={15} />
               Add New Activity
             </button>
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-xl border border-[#E5E4EC] bg-white">
+          <div className="mt-4 w-full min-w-0 overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
             <table className="w-full border-collapse text-left">
-              <thead className="bg-[#F2F5FC]">
-                <tr>
-                  <th scope="col" className="w-10 px-4 py-3">
-                    <input
-                      type="checkbox"
-                      aria-label="Select all activities"
-                      className="h-4 w-4 cursor-pointer rounded border-[#E5E4EC] accent-[#041581]"
-                    />
+              <thead>
+                <tr className="h-[50px] bg-[#F3F7FD]">
+                  <th scope="col" className="px-5 py-[11.85px]">
+                    <CheckBox label="Select all activities" />
                   </th>
                   {["Activity", "Description", "Status", "Content", "Updated", "Actions"].map(
                     (heading) => (
                       <th
                         key={heading}
                         scope="col"
-                        className="px-4 py-3 text-[12px] font-semibold uppercase tracking-wide text-[#0A084799]"
+                        className="px-5 py-[11.85px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/80"
                       >
                         {heading}
                       </th>
@@ -405,61 +422,59 @@ export default function Activities() {
                   return (
                     <tr
                       key={row.id}
-                      className="border-t border-[#EFEDF8] transition-colors hover:bg-[#FAFAFE]"
+                      className="h-[61px] border-b-[0.75px] border-[#E2DFFC] transition-colors hover:bg-[#FAFAFE]"
                     >
-                      <td className="px-4 py-3">
-                        <input
-                          type="checkbox"
-                          aria-label={`Select ${row.name}`}
-                          className="h-4 w-4 cursor-pointer rounded border-[#E5E4EC] accent-[#041581]"
-                        />
+                      <td className="px-5 py-[10px]">
+                        <CheckBox label={`Select ${row.name}`} />
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-[10px]">
                         <div className="flex items-center gap-2.5">
                           <span
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] ${row.iconBg}`}
+                            className={`flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[10px] ${row.tint}`}
                           >
-                            <Glyph size={16} style={{ color: row.iconColor }} aria-hidden />
+                            <Glyph size={18} style={{ color: row.iconColor }} aria-hidden />
                           </span>
-                          <span className="text-[13.5px] font-semibold text-[#0A0847]">
+                          <span className="text-[12px] font-medium text-[#0A0847]">
                             {row.name}
                           </span>
                         </div>
                       </td>
-                      <td className="px-4 py-3 text-[13px] text-[#0A084799]">
+                      <td className="px-5 py-[10px] text-[12px] text-[#0A0847]/60">
                         {row.description}
                       </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge />
+                      <td className="px-5 py-[10px]">
+                        <StatusBadge status={row.status} />
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-[13px] text-[#0A084799]">
+                      <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
                         {row.content}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-[13px] text-[#0A084799]">
+                      <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
                         {row.updated}
                       </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            type="button"
-                            aria-label={`Edit ${row.name}`}
-                            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-[#041581] transition-colors hover:bg-[#041581]/5"
-                          >
-                            <LuPencil size={15} />
-                          </button>
-                          <button
-                            type="button"
-                            aria-label={`Delete ${row.name}`}
-                            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-[#DC2626] transition-colors hover:bg-[#DC2626]/5"
-                          >
-                            <LuTrash2 size={15} />
-                          </button>
+                      <td className="px-5 py-[10px]">
+                        <div className="flex items-center gap-[10px]">
+                          <div className="flex items-center gap-[10px]">
+                            <button
+                              type="button"
+                              aria-label={`Edit ${row.name}`}
+                              className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#001984] transition-colors hover:bg-[#001984]/5"
+                            >
+                              <LuPencil size={18} />
+                            </button>
+                            <button
+                              type="button"
+                              aria-label={`Delete ${row.name}`}
+                              className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#DC2626] transition-colors hover:bg-[#DC2626]/5"
+                            >
+                              <LuTrash2 size={18} />
+                            </button>
+                          </div>
                           <button
                             type="button"
                             aria-label={`More actions for ${row.name}`}
-                            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-[#0A084799] transition-colors hover:bg-[#0A0847]/5"
+                            className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[3px] bg-[#0A0847]/10 text-[#0A0847] transition-colors hover:bg-[#0A0847]/15"
                           >
-                            <LuEllipsis size={15} />
+                            <LuEllipsis size={18} />
                           </button>
                         </div>
                       </td>
@@ -471,23 +486,23 @@ export default function Activities() {
           </div>
         </section>
 
-        {/* tip banner */}
-        <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg bg-[#FDF1E7] px-4 py-3.5">
-          <p className="flex items-start gap-2.5 text-[13px] leading-relaxed text-[#D2691E]">
+        {/* TIP BANNER */}
+        <section className="flex h-[75px] w-full min-w-0 items-center justify-between gap-[10px] rounded-lg bg-[#FE9809]/10 pt-4 pr-[31px] pb-[15px] pl-[18px]">
+          <p className="flex min-w-0 items-start gap-[10px] text-[12px] font-medium text-[#FE9809]">
             <LuLightbulb size={17} className="mt-[1px] shrink-0" aria-hidden />
             <span>
-              Tip: You can reorder and hide an Activity Settings by using the
-              order flow against the icon.
+              Tip: You can reorder and hide an Activity Settings by using the order flow against
+              the icon.
             </span>
           </p>
           <button
             type="button"
-            className="flex h-10 shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-[#F97316] bg-white px-4 text-[13px] font-semibold text-[#D2691E] transition-colors hover:bg-[#F97316]/5"
+            className="flex h-[43px] shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-white px-4 text-[14px] font-medium text-[#FE9809] transition-colors hover:bg-[#FFF7ED]"
           >
-            <LuSettings size={15} />
+            <LuSettings size={15} style={{ color: "#FE9809" }} />
             Go to Activity Settings
           </button>
-        </div>
+        </section>
       </div>
     </div>
   );

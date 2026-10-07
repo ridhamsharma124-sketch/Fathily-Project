@@ -1,19 +1,12 @@
 import { useState } from "react";
-import { LuCircleX, LuDownload, LuPlus } from "react-icons/lu";
 import {
-  ActivityPageHeader,
-  Field,
-  Select,
-  TextArea,
-  TextInput,
-  actionRowClass,
-  cardRowClass,
-  formCardClass,
-  outlineButton,
-  pageBodyClass,
-  pageShellClass,
-  purpleButton,
-} from "./activityFormShared";
+  LuBookOpen,
+  LuChevronDown,
+  LuChevronRight,
+  LuCircleX,
+  LuDownload,
+  LuPlus,
+} from "react-icons/lu";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -48,7 +41,7 @@ const WORD_DOT_COLORS = {
   TRUTH: "#F27C9A",
 };
 
-const CLUE_TEXT = "Find the hidden words from John 3.";
+const CLUE_PLACEHOLDER = "Find the hidden words from John 3.";
 
 /* -------------------------------------------------------------------------
    12 × 12 LETTER GRID
@@ -66,80 +59,175 @@ const GRID = [
   "HDLGUZRULIIH",
   "YLACRTTHHMOT",
   "AWOMMZGQDIAV",
-  "CLBUXWRTPYLL",
 ];
 
-/* highlight pills: [row, col, length, orientation, tone] — 0-indexed */
+/* highlight pills — ONE rounded rectangle behind each whole word */
 const PILLS = {
-  green: { bg: "#DBF6D6", border: "#AFE3A7" },
-  blue: { bg: "#D9E7FC", border: "#B6CFF8" },
-  purple: { bg: "#EBE2FC", border: "#D4C2F8" },
-  orange: { bg: "#FCEAD7", border: "#F8D5AE" },
-  pink: { bg: "#F9D7E0", border: "#F6B4C5" },
+  green: { bg: "rgba(33, 172, 28, 0.15)", border: "rgba(33, 172, 28, 0.4)" },
+  blue: { bg: "rgba(152, 200, 253, 0.3)", border: "rgba(152, 200, 253, 0.8)" },
+  purple: { bg: "rgba(64, 34, 209, 0.15)", border: "rgba(64, 34, 209, 0.35)" },
+  orange: { bg: "rgba(245, 158, 11, 0.2)", border: "rgba(245, 158, 11, 0.5)" },
+  pink: { bg: "rgba(244, 63, 94, 0.15)", border: "rgba(244, 63, 94, 0.35)" },
 };
 
-/* JESUS (R1 c1-5), HOLEE (R4 c7-11), MAV horizontal (R5 c2-4),
-   NKFNNKTR (R9 c3-10), TTHHM (R11 c6-10) */
+/* JESUS (r0 c0-4), HOLEE (r3 c6-10), MAV (r4 c1-3),
+   NKFNNKTR (r8 c2-9), TTHHM (r10 c5-9) */
 const HIGHLIGHTS = [
-  { row: 0, col: 0, length: 5, axis: "x", tone: "green" },
-  { row: 3, col: 6, length: 5, axis: "x", tone: "blue" },
-  { row: 4, col: 1, length: 3, axis: "x", tone: "purple" },
-  { row: 8, col: 2, length: 8, axis: "x", tone: "orange" },
-  { row: 10, col: 5, length: 5, axis: "x", tone: "pink" },
+  { row: 0, col: 0, length: 5, tone: "green" },
+  { row: 3, col: 6, length: 5, tone: "blue" },
+  { row: 4, col: 1, length: 3, tone: "purple" },
+  { row: 8, col: 2, length: 8, tone: "orange" },
+  { row: 10, col: 5, length: 5, tone: "pink" },
 ];
 
-/* maps a cell to its pill span so only the outer ends get rounded corners */
-function buildPillMap() {
-  const map = new Map();
+/* ==========================================================================
+   PAGE-LOCAL STYLES (activityFormShared.jsx left untouched for other pages)
+   ========================================================================== */
+const cardClass =
+  "flex w-full min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[24px]";
 
-  HIGHLIGHTS.forEach((pill) => {
-    for (let i = 0; i < pill.length; i += 1) {
-      const row = pill.axis === "y" ? pill.row + i : pill.row;
-      const col = pill.axis === "x" ? pill.col + i : pill.col;
-      map.set(`${row}-${col}`, {
-        tone: pill.tone,
-        start: i === 0,
-        end: i === pill.length - 1,
-        axis: pill.axis,
-      });
-    }
-  });
+const labelCls = "mb-2 block text-[12px] font-semibold text-[#0A0847]";
 
-  return map;
+const fieldCls =
+  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
+
+const dividerCls = "h-px w-full bg-[#0A0847]/10";
+
+const outlineButton =
+  "flex h-12 w-[152px] shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+
+const purpleButton =
+  "flex h-12 w-[174px] shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90";
+
+const stepButton =
+  "flex h-[43px] shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+
+/* ==========================================================================
+   SUB-COMPONENTS
+   ========================================================================== */
+function Breadcrumb({ items }) {
+  return (
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <li key={item} className="flex items-center gap-1.5">
+              {index > 0 && (
+                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
+              )}
+              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
 }
 
-const PILL_MAP = buildPillMap();
+function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
+  return (
+    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
+      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
+      <p className="text-[13px] leading-[22px]">
+        {parts.map((part, index) => (
+          <span key={part}>
+            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
+            <span className="font-bold text-[#0A0847]">{part}</span>
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
+function Field({ label, required, htmlFor, children }) {
+  return (
+    <div>
+      {label && (
+        <label htmlFor={htmlFor} className={labelCls}>
+          {label} {required && <span className="text-[#E11D48]">*</span>}
+        </label>
+      )}
+      {children}
+    </div>
+  );
+}
+
+function TextInput({ id, value, onChange, adornment }) {
+  return (
+    <div className="relative w-full">
+      <input
+        id={id}
+        type="text"
+        value={value}
+        onChange={onChange}
+        className={fieldCls}
+      />
+      {adornment && (
+        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[12px] text-[#0A0847]/60">
+          {adornment}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function Select({ id, value, options, onChange }) {
+  return (
+    <div className="relative w-full">
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={`${fieldCls} cursor-pointer appearance-none`}
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <LuChevronDown
+        size={16}
+        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
+        aria-hidden
+      />
+    </div>
+  );
+}
 
 /* ==========================================================================
    LIVE PUZZLE PREVIEW (right card)
    ========================================================================== */
 function PuzzleGrid() {
   return (
-    <div className="rounded-lg border border-[#E2DFFC] bg-white p-5">
-      <div className="grid grid-cols-12">
+    <div className="w-full rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[26px]">
+      <div className="grid grid-cols-12 gap-y-5">
         {GRID.map((rowLetters, rowIndex) =>
           [...rowLetters].map((letter, colIndex) => {
-            const pill = PILL_MAP.get(`${rowIndex}-${colIndex}`);
-            const colors = pill ? PILLS[pill.tone] : null;
-
-            const radius = !pill
-              ? ""
-              : pill.axis === "x"
-                ? `${pill.start ? "rounded-l-lg" : ""} ${pill.end ? "rounded-r-lg" : ""}`
-                : `${pill.start ? "rounded-t-lg" : ""} ${pill.end ? "rounded-b-lg" : ""}`;
+            const highlight = HIGHLIGHTS.find(
+              (item) => item.row === rowIndex && item.col === colIndex,
+            );
+            const tone = highlight ? PILLS[highlight.tone] : null;
 
             return (
               <div
                 key={`${rowIndex}-${colIndex}`}
-                className="relative flex h-[30px] items-center justify-center"
+                className="relative flex h-9 items-center justify-center"
               >
-                {colors && (
+                {tone && (
                   <span
-                    style={{ background: colors.bg, borderColor: colors.border }}
-                    className={`absolute inset-y-[3px] inset-x-0 border ${radius}`}
+                    aria-hidden
+                    style={{
+                      width: `calc(${highlight.length} * 100%)`,
+                      background: tone.bg,
+                      borderColor: tone.border,
+                    }}
+                    className="absolute left-0 top-1/2 z-0 h-9 -translate-y-1/2 rounded-lg border"
                   />
                 )}
-                <span className="relative text-[13px] font-medium text-[#0A0847]">
+                <span className="relative z-[1] text-[14px] font-medium text-[#0A0847]">
                   {letter}
                 </span>
               </div>
@@ -153,18 +241,18 @@ function PuzzleGrid() {
 
 function WordsToFind({ words }) {
   return (
-    <div className="rounded-lg border border-[#E2DFFC] bg-white p-5">
-      <h3 className="text-[18px] font-bold text-[#0A0847]">Words to Find</h3>
+    <div className="rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[19px] pl-[22px]">
+      <h3 className="text-[22px] font-semibold text-[#0A0847]">Words to Find</h3>
 
       <ul className="mt-4 grid grid-flow-col grid-rows-4 gap-x-6 gap-y-3">
         {words.map((word) => (
           <li
             key={word}
-            className="flex items-center gap-2.5 text-[13px] font-semibold whitespace-nowrap text-[#0A0847]"
+            className="flex items-center gap-3 text-[14px] font-semibold whitespace-nowrap text-[#0A0847] uppercase"
           >
             <span
               style={{ background: WORD_DOT_COLORS[word] }}
-              className="h-[10px] w-[10px] shrink-0 rounded-full"
+              className="h-3 w-3 shrink-0 rounded-full"
             />
             {word}
           </li>
@@ -183,7 +271,7 @@ export default function AddWordSearch() {
   const [difficulty, setDifficulty] = useState("Medium");
   const [directions, setDirections] = useState(WORD_DIRECTIONS);
   const [words, setWords] = useState(INITIAL_WORDS);
-  const [clue, setClue] = useState(CLUE_TEXT);
+  const [clue, setClue] = useState("");
   const [timeLimit, setTimeLimit] = useState("10");
   const [rewardPoints, setRewardPoints] = useState("10");
   const [status, setStatus] = useState("Draft");
@@ -199,24 +287,34 @@ export default function AddWordSearch() {
     setWords((prev) => prev.filter((item) => item !== word));
 
   return (
-    <div className={pageShellClass}>
-      <div className={pageBodyClass}>
-        <ActivityPageHeader
-          breadcrumb={[
+    <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
+      <div className="flex w-full min-w-0 flex-col px-5 py-6">
+        <Breadcrumb
+          items={[
             "Bible Content",
             "Activities",
             "John",
             "Chapter 3",
             "Word Search",
           ]}
-          title="Add Word Search"
-          subtitle="Engage and track activities for each chapter."
         />
 
-        <div className={cardRowClass}>
+        <h1 className="mt-5 text-[22px] font-semibold text-[#0A0847]">
+          Add Word Search
+        </h1>
+        <p className="mt-2 text-[14px] font-medium text-[#0A0847]/60">
+          Engage and track activities for each chapter.
+        </p>
+
+        <div className="mt-5">
+          <LocationChip />
+        </div>
+
+        {/* TWO COLUMNS — equal, fluid, equal heights (bottoms aligned) */}
+        <div className="mt-5 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
           {/* LEFT — configure form */}
-          <section className={`${formCardClass} lg:w-[511px] lg:flex-none`}>
-            <h2 className="text-[16px] font-bold text-[#041581]">
+          <section className={cardClass}>
+            <h2 className="text-[14px] font-semibold text-[#001984]">
               Configure Your Quiz
             </h2>
 
@@ -233,7 +331,7 @@ export default function AddWordSearch() {
                 id="puzzle-size"
                 value={puzzleSize}
                 options={PUZZLE_SIZE_OPTIONS}
-                onChange={(e) => setPuzzleSize(e.target.value)}
+                onChange={setPuzzleSize}
               />
             </Field>
 
@@ -242,28 +340,29 @@ export default function AddWordSearch() {
                 id="difficulty"
                 value={difficulty}
                 options={DIFFICULTY_OPTIONS}
-                onChange={(e) => setDifficulty(e.target.value)}
+                onChange={setDifficulty}
               />
             </Field>
 
-            <div className="my-3 h-px w-full bg-[#E5E4EC]" />
+            <div className={dividerCls} />
 
+            {/* WORD DIRECTION CHECKBOXES */}
             <div>
-              <p className="text-[13px] font-semibold text-[#0A0847]">
+              <p className="text-[14px] font-semibold text-[#0A0847]">
                 Word Direction
               </p>
 
-              <div className="mt-2.5 flex flex-col gap-2">
+              <div className="mt-2.5 flex w-[245px] flex-col gap-4">
                 {WORD_DIRECTIONS.map((direction) => (
                   <label
                     key={direction}
-                    className="flex cursor-pointer items-center gap-2.5 text-[14px] font-semibold text-[#0A0847]"
+                    className="flex cursor-pointer items-center gap-2.5 text-[14px] font-medium text-[#0A0847]"
                   >
                     <input
                       type="checkbox"
                       checked={directions.includes(direction)}
                       onChange={() => toggleDirection(direction)}
-                      className="h-[18px] w-[18px] shrink-0 cursor-pointer accent-[#041581]"
+                      className="h-[16.67px] w-[16.67px] shrink-0 cursor-pointer accent-[#001984]"
                     />
                     {direction}
                   </label>
@@ -271,25 +370,26 @@ export default function AddWordSearch() {
               </div>
             </div>
 
-            <div className="h-px w-full bg-[#E5E4EC]" />
+            <div className={dividerCls} />
 
+            {/* WORDS */}
             <div>
               <div className="flex items-center justify-between">
-                <p className="text-[13px] font-semibold text-[#0A0847]">
+                <p className="text-[14px] font-semibold text-[#0A0847]">
                   Word Direction
                 </p>
-                <p className="text-[12px] text-[#0A084799]">
+                <p className="text-[12px] font-medium text-[#0A0847]/60">
                   {words.length} / {MAX_WORDS}
                 </p>
               </div>
 
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2.5">
                 {words.map((word) => (
                   <span
                     key={word}
-                    className="flex h-9 items-center gap-1.5 rounded-lg border border-[#E2DFFC] bg-white px-3"
+                    className="flex h-[35px] items-center gap-2 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-[13px]"
                   >
-                    <span className="text-[11px] font-semibold tracking-wide text-[#041581]">
+                    <span className="text-[12px] font-medium uppercase text-[#001984]">
                       {word}
                     </span>
                     <button
@@ -298,39 +398,40 @@ export default function AddWordSearch() {
                       onClick={() => removeWord(word)}
                       className="flex cursor-pointer items-center"
                     >
-                      <LuCircleX size={16} className="text-[#041581]" aria-hidden />
+                      <LuCircleX size={14} className="text-[#001984]" aria-hidden />
                     </button>
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              <button
-                type="button"
-                className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]"
-              >
-                <LuPlus size={15} aria-hidden />
+            <div className="flex flex-wrap gap-2.5">
+              <button type="button" className={`${stepButton} w-[164px]`}>
+                <LuPlus size={16} className="shrink-0" aria-hidden />
                 Add New Book
               </button>
 
-              <button
-                type="button"
-                className="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]"
-              >
-                <LuDownload size={15} aria-hidden />
+              <button type="button" className={`${stepButton} w-fit`}>
+                <LuDownload size={16} className="shrink-0" aria-hidden />
                 Import Words from Chapter
               </button>
             </div>
 
+            {/* CLUE */}
             <Field label="Clue / Instruction" htmlFor="clue">
-              <TextArea
-                id="clue"
-                value={clue}
-                onChange={(e) => setClue(e.target.value)}
-                max={200}
-                className="h-[96px]"
-              />
+              <div className="relative">
+                <textarea
+                  id="clue"
+                  value={clue}
+                  maxLength={200}
+                  placeholder={CLUE_PLACEHOLDER}
+                  onChange={(e) => setClue(e.target.value)}
+                  className="h-[85px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] text-[12px] leading-relaxed text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984]"
+                />
+                <span className="absolute right-3 bottom-2.5 text-[10px] text-[#0A0847]/60">
+                  {clue.length} / 200
+                </span>
+              </div>
             </Field>
 
             <Field label="Time Limit (Optional)" htmlFor="time-limit">
@@ -355,19 +456,19 @@ export default function AddWordSearch() {
                 id="status"
                 value={status}
                 options={STATUS_OPTIONS}
-                onChange={(e) => setStatus(e.target.value)}
+                onChange={setStatus}
               />
             </Field>
           </section>
 
           {/* RIGHT — live puzzle preview */}
-          <section className="w-full shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] pt-[26px] pr-[26px] pb-[46px] pl-[26px] lg:w-[532px]">
+          <section className={cardClass}>
             <div className="flex flex-col gap-5">
               <div>
-                <h2 className="text-[22px] font-bold text-[#0A0847]">
+                <h2 className="text-[22px] font-semibold text-[#0A0847]">
                   Live Puzzle Preview
                 </h2>
-                <p className="mt-1 max-w-[330px] text-[14px] leading-[1.4] text-[#0A084799]">
+                <p className="mt-1 max-w-[330px] text-[14px] leading-[1.4] font-medium text-[#0A0847]/60">
                   This is how your word search puzzle will appear to users.
                 </p>
               </div>
@@ -380,12 +481,12 @@ export default function AddWordSearch() {
         </div>
 
         {/* BOTTOM ACTION ROW */}
-        <div className={actionRowClass}>
+        <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-4">
           <button type="button" className={outlineButton}>
             Cancel
           </button>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-4">
             <button type="button" className={outlineButton}>
               Save as Draft
             </button>

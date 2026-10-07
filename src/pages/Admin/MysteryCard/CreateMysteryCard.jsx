@@ -21,20 +21,21 @@ import mysteryCardPreview from "../../../assets/Mystery card preview.png";
 const BORDER = "#E2DFFC";
 const DEEP_NAVY = "#00007A";
 const PAGE_BG = "#F8F8FF";
-const UPLOAD_BG = "#E8E9F7";
 const GOLD = "#D9A93A";
+const NAVY_TINT = "rgba(0, 25, 132, 0.10)";
+const ACTIVE_TINT = "rgba(19, 65, 227, 0.10)";
 
 /* ==========================================================================
    SHARED
    ========================================================================== */
 const FIELD =
-  "w-full rounded-[6px] border border-[#E2DFFC] bg-white px-[14px] text-[14px] text-[#2A2750] outline-none placeholder:text-[#8B8FA8] focus:border-[#00007A]";
+  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[14px] text-[#2A2750] outline-none placeholder:text-[#8B8FA8] focus:border-[#00007A]";
 
-function Label({ children, optional = false }) {
+function Label({ children, optional = false, bare = false }) {
   return (
     <span className="block text-[14px] font-semibold text-[#2A2750]">
       {children}
-      {optional ? (
+      {bare ? null : optional ? (
         <span className="font-normal text-[#8B8FA8]"> (optional)</span>
       ) : (
         <span className="text-[#C2185B]"> *</span>
@@ -49,7 +50,7 @@ function Select({ placeholder }) {
       <select
         defaultValue=""
         aria-label={placeholder}
-        className={`${FIELD} h-[46px] cursor-pointer appearance-none pr-9`}
+        className={`${FIELD} h-[40px] cursor-pointer appearance-none pr-[50px]`}
       >
         <option value="" disabled>
           {placeholder}
@@ -58,16 +59,16 @@ function Select({ placeholder }) {
       </select>
       <LuChevronDown
         size={16}
-        className="pointer-events-none absolute top-1/2 right-[14px] -translate-y-1/2 text-[#2A275099]"
+        className="pointer-events-none absolute top-1/2 right-[16px] -translate-y-1/2 text-[#2A2750]/60"
       />
     </div>
   );
 }
 
-/* segmented control — buttons touch, shared borders */
-function Segmented({ options, value, onChange, widthClass = "w-full" }) {
+/* segmented control — full width, equal segments, shared borders */
+function Segmented({ options, value, onChange }) {
   return (
-    <div className={`flex ${widthClass}`}>
+    <div className="flex w-full">
       {options.map((opt, i) => {
         const active = opt === value;
         return (
@@ -75,13 +76,14 @@ function Segmented({ options, value, onChange, widthClass = "w-full" }) {
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
-            className={`h-[46px] cursor-pointer border border-[#E2DFFC] px-2 text-[14px] first:rounded-l-[6px] last:rounded-r-[6px] ${
+            className={`h-[40px] flex-1 cursor-pointer border px-2 text-[14px] first:rounded-l-[7.47px] last:rounded-r-[7.47px] ${
               i > 0 ? "-ml-px" : ""
             } ${
               active
-                ? "relative z-10 border-[1.5px] border-[#1B1A52] bg-[#E6E8F7] font-medium text-[#1B1A52]"
-                : "bg-white font-normal text-[#6B6F8A]"
+                ? "relative z-10 border-[#00007A] font-bold text-[#00007A]"
+                : "border-[#E2DFFC] bg-white font-normal text-[#6B6F8A]"
             }`}
+            style={active ? { background: ACTIVE_TINT } : undefined}
           >
             {opt}
           </button>
@@ -99,11 +101,13 @@ function CheckOption({ label, checked, onChange }) {
     <button
       type="button"
       onClick={onChange}
-      className="flex cursor-pointer items-center gap-[9px]"
+      className="flex cursor-pointer items-center gap-[12px]"
     >
       <span
         className={`${CHECKBOX} ${
-          checked ? "border-[#1B1A52] bg-[#1B1A52] text-white" : "bg-white text-transparent"
+          checked
+            ? "border-[#00007A] bg-[#00007A] text-white"
+            : "bg-white text-transparent"
         }`}
       >
         <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -183,7 +187,7 @@ function BookWatercolor() {
       <ellipse cx="150" cy="150" rx="120" ry="34" fill="#B9D3F1" opacity="0.4" />
 
       <path
-        d="M150 74c-18-16-42-24-72-24H44v92h34c30 0 54 8 72 24 18-16 42-24 72-24h34V50h-34c-30 0-54 8-72 24z"
+        d="M150 74c-18-16-42-24-72-24H44v92h34c30 0 54 8 72 24 18-16 42-24 72-24h34V50h-34c-30 0-54-8-72 24z"
         fill="#8FB8E4"
       />
       <path
@@ -191,11 +195,10 @@ function BookWatercolor() {
         fill="#B7D2F0"
       />
       <path
-        d="M150 74v92c18-16 42-24 72-24h34V50h-34c-30 0-54 8-72 24z"
+        d="M150 74v92c18 16 42 24 72 24h34V50h-34c-30 0-54-8-72 24z"
         fill="#9CC3EC"
       />
-      <path
-        d="M150 74v92" stroke="#6E9BD1" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M150 74v92" stroke="#6E9BD1" strokeWidth="2.5" strokeLinecap="round" />
       <g stroke="#7FA8D8" strokeWidth="2" strokeLinecap="round" opacity="0.65">
         <path d="M62 82h58M62 98h58M62 114h44" />
         <path d="M180 82h58M180 98h58M180 114h44" />
@@ -220,9 +223,10 @@ function RewardTile({ label, active, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-[100px] flex-1 cursor-pointer flex-col items-center justify-center rounded-[8px] border bg-white ${
-        active ? "relative z-10 border-[1.5px] border-[#1B1A52] bg-[#E6E8F7]" : "border-[#E2DFFC]"
+      className={`flex h-[85px] w-[134px] shrink-0 cursor-pointer flex-col items-center justify-center rounded-[8px] border ${
+        active ? "border-[#00007A]" : "border-[#E2DFFC] bg-white"
       }`}
+      style={active ? { background: NAVY_TINT } : undefined}
     >
       <Icon size={28} strokeWidth={1.7} className="text-[#1B1A52]" />
       <span className="mt-[10px] text-[15px] font-semibold text-[#1B1A52]">{label}</span>
@@ -255,13 +259,13 @@ export default function CreateMysteryCard() {
 
   return (
     <div
-      className="min-h-screen w-full p-6"
+      className="min-h-screen w-full p-6 font-inter"
       style={{ background: PAGE_BG, fontFamily: "Inter, sans-serif" }}
     >
       {/* ============ OUTER CARD ============ */}
       <div
-        className="rounded-[8px] border bg-white"
-        style={{ borderColor: BORDER, padding: 24 }}
+        className="w-full min-w-0 rounded-[8px] border bg-white p-[24px]"
+        style={{ borderColor: BORDER }}
       >
         {/* ---- back ---- */}
         <button
@@ -279,28 +283,16 @@ export default function CreateMysteryCard() {
           Fill in the details below to create a new Mystery Card.
         </p>
 
-        {/* ---- two cards ---- */}
-        <div className="mt-6 flex items-start" style={{ gap: 18 }}>
+        {/* ---- two columns ---- */}
+        <div className="mt-6 grid grid-cols-[minmax(0,1fr)_316px] gap-[24px]">
           {/* ===== LEFT — form ===== */}
-          <div
-            className="flex flex-col rounded-[8px] border bg-white"
-            style={{
-              width: 627,
-              height: 1042,
-              borderColor: BORDER,
-              paddingTop: 21,
-              paddingRight: 20,
-              paddingBottom: 41,
-              paddingLeft: 20,
-              gap: 10,
-            }}
-          >
+          <div className="flex min-w-0 flex-col gap-[24px]">
             <div>
               <Label>Card Title</Label>
               <input
                 type="text"
                 placeholder="Enter a compelling title"
-                className={`${FIELD} mt-[6px] h-[46px]`}
+                className={`${FIELD} mt-[6px] h-[40px]`}
               />
             </div>
 
@@ -324,7 +316,7 @@ export default function CreateMysteryCard() {
 
             <div>
               <Label>Eligible Activities</Label>
-              <div className="mt-[10px] flex flex-wrap" style={{ gap: 18, rowGap: 14 }}>
+              <div className="mt-[10px] flex flex-wrap gap-[28px]">
                 {Object.keys(activities).map((k) => (
                   <CheckOption
                     key={k}
@@ -336,19 +328,19 @@ export default function CreateMysteryCard() {
               </div>
             </div>
 
-            <div className="flex" style={{ gap: 16 }}>
-              <div className="flex-1">
+            <div className="grid grid-cols-2 gap-[24px]">
+              <div>
                 <Label optional>Book</Label>
                 <div className="mt-[6px]">
                   <Select placeholder="Select book" />
                 </div>
               </div>
-              <div className="flex-1">
+              <div>
                 <Label optional>Chapter</Label>
                 <input
                   type="text"
                   placeholder="e.g. 1-17"
-                  className={`${FIELD} mt-[6px] h-[46px]`}
+                  className={`${FIELD} mt-[6px] h-[40px]`}
                 />
               </div>
             </div>
@@ -357,49 +349,46 @@ export default function CreateMysteryCard() {
               <Label>Card Content</Label>
               <textarea
                 placeholder="Write the card content here..."
-                className={`${FIELD} mt-[6px] resize-none py-[10px]`}
-                style={{ height: 66 }}
+                className={`${FIELD} mt-[6px] h-[70px] resize-none py-[10px]`}
               />
             </div>
 
-            <div className="flex" style={{ gap: 16 }}>
-              <div className="flex-1">
+            <div className="grid grid-cols-2 gap-[24px]">
+              <div>
                 <Label>Bible Verse Reference</Label>
                 <div className="mt-[6px]">
                   <Select placeholder="e.g. 1 Samuel 17:45" />
                 </div>
               </div>
-              <div className="flex-1">
+              <div>
                 <Label>Bible Verse Text</Label>
                 <input
                   type="text"
                   placeholder="Enter the full verse text..."
-                  className={`${FIELD} mt-[6px] h-[46px]`}
+                  className={`${FIELD} mt-[6px] h-[40px]`}
                 />
               </div>
             </div>
 
             <div>
-              <Label>Encouragement Message</Label>
+              <Label bare>Encouragement Message</Label>
               <textarea
                 placeholder="Write an encouraging message..."
-                className={`${FIELD} mt-[6px] resize-none py-[10px]`}
-                style={{ height: 66 }}
+                className={`${FIELD} mt-[6px] h-[70px] resize-none py-[10px]`}
               />
             </div>
 
             <div className="h-px w-full" style={{ background: "#EEF0F8" }} />
 
             <div>
-              <Label>Encouragement Message</Label>
+              <Label bare>Encouragement Message</Label>
               <textarea
                 placeholder="Write an encouraging message..."
-                className={`${FIELD} mt-[6px] resize-none py-[10px]`}
-                style={{ height: 66 }}
+                className={`${FIELD} mt-[6px] h-[70px] resize-none py-[10px]`}
               />
             </div>
 
-            <div className="flex" style={{ gap: 16 }}>
+            <div className="flex items-center justify-between gap-[16px]">
               {["None", "Faith Points", "AI Credits", "Badge"].map((r) => (
                 <RewardTile
                   key={r}
@@ -409,143 +398,128 @@ export default function CreateMysteryCard() {
                 />
               ))}
             </div>
-          </div>
 
-          {/* ===== RIGHT — live preview ===== */}
-          <div
-            className="rounded-[13px] border bg-white"
-            style={{ width: 316, height: 784, borderColor: BORDER, padding: 14 }}
-          >
-            <h2 className="text-[16px] font-semibold text-[#2A2750]">Live Preview</h2>
-
-            <div
-              className="relative mt-[12px] w-full overflow-hidden rounded-[12px] border bg-[#E8F0FB] bg-cover bg-center bg-no-repeat"
-              style={{
-                height: 730,
-                borderColor: "#CFE0F5",
-                backgroundImage: `url(${mysteryCardPreview})`,
-              }}
-            >
-              <GoldCorner />
-              <GoldCorner flip />
-
-              {/* centered content */}
-              <div className="relative z-10 flex flex-col items-center px-[22px] pt-[86px] text-center">
-                <div className="relative mb-[26px]">
-                  <LuCross
-                    size={26}
-                    strokeWidth={2.4}
-                    className="absolute -top-[18px] left-1/2 -translate-x-1/2 text-[#D9A93A]"
-                  />
-                  <LuBookOpen size={56} strokeWidth={1.5} className="text-[#2A2750]" />
-                </div>
-
-                <p className="text-[20px] font-bold text-[#2A2750]">
-                  Your card preview will appear here
-                </p>
-                <p className="mt-[10px] text-[14px] text-[#6B6F8A]">
-                  Add content and details to see how it looks.
-                </p>
-
-                <div className="mt-[22px]">
-                  <GoldDivider />
-                </div>
-              </div>
-
-              <BookWatercolor />
-            </div>
-          </div>
-        </div>
-
-        {/* ---- below the two cards ---- */}
-        <div className="mt-6">
-          {/* reward amount + rarity */}
-          <div className="flex items-end" style={{ gap: 28 }}>
-            <div style={{ width: "45%" }}>
-              <Label optional>Reward Amount</Label>
-              <input
-                type="text"
-                placeholder="e.g. 100"
-                className={`${FIELD} mt-[6px] h-[46px]`}
-              />
-            </div>
-            <div className="flex-1">
-              <Label optional>Rarity</Label>
-              <div className="mt-[6px]">
-                <Segmented
-                  options={["Common", "Uncommon", "Rare", "Legendary"]}
-                  value={rarity}
-                  onChange={setRarity}
+            <div className="grid grid-cols-2 gap-[24px]">
+              <div>
+                <Label bare>Reward Amount</Label>
+                <input
+                  type="text"
+                  placeholder="e.g. 100"
+                  className={`${FIELD} mt-[6px] h-[40px]`}
                 />
               </div>
+              <div>
+                <Label bare>Rarity</Label>
+                <div className="mt-[6px]">
+                  <Segmented
+                    options={["Common", "Uncommon", "Rare", "Legendary"]}
+                    value={rarity}
+                    onChange={setRarity}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* card image upload */}
-          <div className="mt-6">
-            <Label optional>Card Image</Label>
-            <div
-              className="mt-[6px] flex w-full cursor-pointer items-center justify-center rounded-[6px] border-[1.5px] border-dashed"
-              style={{ height: 90, borderColor: DEEP_NAVY, background: UPLOAD_BG }}
-              title={uploadedName || undefined}
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <div className="flex items-center" style={{ gap: 14 }}>
+            <div>
+              <Label bare>Card Image</Label>
+              <div
+                className="mt-[6px] flex h-[77px] w-full cursor-pointer items-center justify-center gap-[14px] rounded-[8px] border-[1.5px] border-dashed px-[22px]"
+                style={{ borderColor: DEEP_NAVY, background: NAVY_TINT }}
+                title={uploadedName || undefined}
+                onClick={() => fileInputRef.current?.click()}
+              >
                 <LuCloudUpload size={36} strokeWidth={1.6} className="text-[#00007A]" />
                 <div className="flex flex-col">
                   <span className="text-[18px] font-semibold text-[#00007A]">Upload an image</span>
                   <span className="text-[13px] text-[#6B6F8A]">PNG or JPG, max 5MB</span>
                 </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg"
+                  className="hidden"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) setUploadedName(f.name);
+                  }}
+                />
               </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png,image/jpeg"
-                className="hidden"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) setUploadedName(f.name);
-                }}
-              />
+            </div>
+
+            <div>
+              <Label bare>Status</Label>
+              <div className="mt-[6px]">
+                <Segmented
+                  options={["Draft", "Active", "Unpublished"]}
+                  value={status}
+                  onChange={setStatus}
+                />
+              </div>
             </div>
           </div>
 
-          {/* status */}
-          <div className="mt-6">
-            <Label optional>Status</Label>
-            <div className="mt-[6px]">
-              <Segmented
-                options={["Draft", "Active", "Unpublished"]}
-                value={status}
-                onChange={setStatus}
-                widthClass="w-[55%]"
-              />
+          {/* ===== RIGHT — live preview ===== */}
+          <div className="min-w-0">
+            <div className="h-[858px] rounded-[8px] border border-edge-input bg-white p-[14px]">
+              <p className="text-[16px] font-semibold text-deep-navy">Live Preview</p>
+
+              <div
+                className="relative mt-[12px] h-[804px] w-full overflow-hidden rounded-[12px] border border-lavender-line bg-lavender-deep bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${mysteryCardPreview})` }}
+              >
+                <GoldCorner />
+                <GoldCorner flip />
+
+                {/* centered content */}
+                <div className="relative z-10 flex flex-col items-center px-[22px] pt-[86px] text-center">
+                  <div className="relative mb-[26px]">
+                    <LuCross
+                      size={26}
+                      strokeWidth={2.4}
+                      className="absolute -top-[18px] left-1/2 -translate-x-1/2 text-[#D9A93A]"
+                    />
+                    <LuBookOpen size={56} strokeWidth={1.5} className="text-deep-navy" />
+                  </div>
+
+                  <p className="text-[20px] font-bold text-deep-navy">
+                    Your card preview will appear here
+                  </p>
+                  <p className="mt-[10px] text-[14px] text-[#6B6F8A]">
+                    Add content and details to see how it looks.
+                  </p>
+
+                  <div className="mt-[22px]">
+                    <GoldDivider />
+                  </div>
+                </div>
+
+                <BookWatercolor />
+              </div>
             </div>
           </div>
+        </div>
 
-          {/* footer actions */}
-          <div className="mt-6 flex justify-end" style={{ gap: 14 }}>
-            <button
-              type="button"
-              className="h-[46px] cursor-pointer rounded-[6px] border border-[#E2DFFC] bg-white px-[28px] text-[14px] font-semibold text-[#00007A]"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="flex h-[46px] cursor-pointer items-center rounded-[6px] border border-[#E2DFFC] bg-white px-[28px] text-[14px] font-semibold text-[#00007A]"
-              style={{ gap: 9 }}
-            >
-              <LuSave size={17} strokeWidth={1.8} /> Save draft
-            </button>
-            <button
-              type="button"
-              className="flex h-[46px] cursor-pointer items-center rounded-[6px] bg-[#00007A] px-[22px] text-[14px] font-semibold text-white"
-              style={{ gap: 9 }}
-            >
-              <LuArrowRight size={17} strokeWidth={2} /> Publish Card
-            </button>
-          </div>
+        {/* ---- footer actions ---- */}
+        <div className="mt-6 flex justify-end gap-[16px]">
+          <button
+            type="button"
+            onClick={() => navigate("/admin/mystery-card")}
+            className="h-[40px] cursor-pointer rounded-[8px] border border-[#E2DFFC] bg-white px-[28px] text-[14px] font-semibold text-[#00007A]"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className="flex h-[40px] cursor-pointer items-center gap-[9px] rounded-[8px] border border-[#E2DFFC] bg-white px-[28px] text-[14px] font-semibold text-[#00007A]"
+          >
+            <LuSave size={17} strokeWidth={1.8} /> Save draft
+          </button>
+          <button
+            type="button"
+            className="flex h-[40px] cursor-pointer items-center gap-[9px] rounded-[8px] bg-[#00007A] px-[28px] text-[14px] font-semibold text-white"
+          >
+            <LuArrowRight size={17} strokeWidth={2} /> Publish Card
+          </button>
         </div>
       </div>
     </div>

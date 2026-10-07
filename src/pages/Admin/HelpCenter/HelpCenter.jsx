@@ -10,6 +10,7 @@ import {
   LuChevronDown,
   LuSettings,
   LuEllipsis,
+  LuEllipsisVertical,
   LuEye,
   LuPencil,
   LuCopy,
@@ -120,7 +121,7 @@ const CATEGORIES = [
 ];
 
 const STATUS_PILL = {
-  Published: "bg-pill-published-bg text-pill-published",
+  Published: "bg-[#DCFCE7] text-pill-published",
   Draft: "bg-pill-draft-bg text-pill-draft",
 };
 
@@ -138,8 +139,8 @@ const MENU_ITEMS = [
 function StatusPill({ status }) {
   return (
     <span
-      className={`inline-block whitespace-nowrap rounded-lg border px-3 py-1 text-xs font-medium ${
-        STATUS_PILL[status] || "border-transparent bg-gray-100 text-gray-700"
+      className={`inline-block whitespace-nowrap rounded-md px-3 py-1 text-xs font-medium ${
+        STATUS_PILL[status] || "bg-gray-100 text-gray-700"
       }`}
     >
       {status}
@@ -217,41 +218,41 @@ export default function HelpCenter() {
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">
+          <h1 className="text-[22px] font-semibold text-[#0A0847]">
             Help Center Management
           </h1>
-          <p className="mt-2 text-sm font-medium text-[#0A084799]">
+          <p className="mt-2 text-[16px] font-medium text-[#0A084799]">
             Create, organize, and manage help content.
           </p>
         </div>
         <button
           onClick={() => setModal({ mode: "create", article: null })}
-          className="flex cursor-pointer items-center gap-2 self-start rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#001266] sm:self-auto"
+          className="flex h-[41px] w-[152px] cursor-pointer items-center justify-center gap-2 self-start rounded-lg bg-[#001984] text-[16px] font-semibold text-white transition-colors hover:bg-[#001266] sm:self-auto"
         >
-          <LuPlus size={16} />
+          <LuPlus size={20} />
           New Article
         </button>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-[17px] sm:grid-cols-2 lg:grid-cols-4">
         {STATS.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.label}
-              className="flex items-center gap-4 rounded-lg border border-[#E2DFFC] bg-white px-4 py-8"
+              className="flex h-[155px] items-center gap-4 rounded-xl border border-[#E2DFFC] bg-white px-4"
             >
               <div
-                className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl ${stat.badge}`}
+                className={`flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-2xl ${stat.badge}`}
               >
                 <Icon size={28} />
               </div>
               <div className="min-w-0">
-                <p className="text-xl font-semibold text-[#0A0847] mt-0.5">
+                <p className={`text-[26px] font-bold ${stat.valueClass}`}>
                   {stat.value}
                 </p>
-                <p className="mt-0.5 text-xs font-semibold text-[#001984]">
+                <p className="mt-0.5 text-[14px] font-semibold text-[#0A0847]">
                   {stat.label}
                 </p>
               </div>
@@ -263,7 +264,7 @@ export default function HelpCenter() {
       {/* Filter row */}
       <div className="flex flex-col items-start justify-between gap-4 xl:flex-row xl:items-center">
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-[370px]">
+          <div className="relative w-full sm:w-[409px]">
             <LuSearch
               size={18}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -273,7 +274,7 @@ export default function HelpCenter() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search journeys..."
-              className="w-full rounded-md border border-[#E2DFFC] bg-white py-3 pl-9 pr-3 text-xs text-[#0A084799] outline-none transition-colors placeholder:text-gray-400 focus:border-[#001984]"
+              className="h-[42px] w-full rounded-md border border-[#E2DFFC] bg-white pl-9 pr-3 text-xs text-[#0A084799] outline-none transition-colors placeholder:text-gray-400 focus:border-[#001984]"
             />
           </div>
 
@@ -281,9 +282,9 @@ export default function HelpCenter() {
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white py-2 pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
+              className="h-[42px] w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
             >
-              {["All Statuses", "Published", "Draft"].map((option) => (
+              {["All Statuses", "Published", "Draft", "Scheduled"].map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
@@ -294,12 +295,28 @@ export default function HelpCenter() {
               className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
             />
           </div>
-
+          <div className="relative w-full sm:w-[125px]">
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="h-[42px] w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
+            >
+              {["All Statuses", "Published", "Draft", "Scheduled"].map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <LuChevronDown
+              size={16}
+              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+            />
+          </div>
           <div className="relative w-full sm:w-[125px]">
             <select
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              className="w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white py-2 pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
+              className="h-[42px] w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
             >
               {["All Authors", "John Doe", "Jane Smith"].map((option) => (
                 <option key={option} value={option}>
@@ -316,9 +333,9 @@ export default function HelpCenter() {
 
         <button
           type="button"
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-[#E2DFFC] bg-white px-3.5 py-2 text-xs font-medium text-[#0A0847CC] transition-colors hover:bg-gray-50 xl:w-auto"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-[#E2DFFC] bg-white px-3 text-xs font-medium text-[#0A0847CC] transition-colors hover:bg-gray-50 xl:w-[161px]"
         >
-          <LuSettings size={16} />
+          <LuSettings size={16} className="shrink-0" />
           Manage Categories
         </button>
       </div>
@@ -333,8 +350,8 @@ export default function HelpCenter() {
         <div className="overflow-x-auto" onScroll={() => setMenu(null)}>
           <table className="w-full min-w-[900px] border-collapse text-xs">
             <thead>
-              <tr className="border-b border-[#E2DFFC] bg-[#F3F7FD]">
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+              <tr className="border-b border-[#E2DFFC] bg-[#EFEDF8]">
+                <th className="w-[130px] p-4 text-left text-sm font-medium text-[#0A0847CC]">
                   Title
                 </th>
                 <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
@@ -361,13 +378,13 @@ export default function HelpCenter() {
               {visible.map((article) => (
                 <tr
                   key={article.id}
-                  className="border-b border-[#E2DFFC] text-xs text-[#0A0847] transition-colors last:border-b-0 hover:bg-gray-50/50"
+                  className="h-[75px] border-b border-[#E2DFFC] text-xs text-[#0A0847] transition-colors last:border-b-0 hover:bg-gray-50/50"
                 >
-                  <td className="p-4 font-medium">{article.title}</td>
-                  <td className="p-4">
-                    <span className="inline-block rounded-md bg-[#F3F7FD] px-2 py-1 text-xs">
-                      {article.category}
-                    </span>
+                  <td className="p-4 text-[13px] font-medium text-[#0A0847]/80">
+                    {article.title}
+                  </td>
+                  <td className="p-4 text-[13px] text-[#0A0847]">
+                    {article.category}
                   </td>
                   <td className="p-4">{article.views}</td>
                   <td className="p-4">{article.helpful}</td>
@@ -406,12 +423,12 @@ export default function HelpCenter() {
       </div>
 
       {/* Categories card */}
-      <div className="overflow-hidden rounded-lg border border-[#E2DFFC] bg-white p-[14px]">
+      <div className="overflow-hidden rounded-xl border border-[#E2DFFC] bg-white p-[14px]">
         <div className="flex flex-col items-start justify-between gap-3 border-b border-[#E2DFFC] px-1 pb-4 sm:flex-row sm:items-center">
-          <h2 className="text-sm font-bold text-[#0A0847CC]">Categories</h2>
+          <h2 className="text-sm font-semibold text-[#0A0847CC]">Categories</h2>
           <button
             type="button"
-            className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-[#E2DFFC] bg-white px-3.5 py-2 text-xs font-medium text-[#0A0847CC] transition-colors hover:bg-gray-50 sm:w-auto"
+            className="flex h-[42px] w-[166px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] bg-white text-xs font-medium text-[#0A0847CC] transition-colors hover:bg-gray-50"
           >
             <LuPlus size={16} />
             Add Category
@@ -424,32 +441,32 @@ export default function HelpCenter() {
             return (
               <div
                 key={category.name}
-                className="flex h-[56px] items-center justify-between gap-3 border-b border-[#E2DFFC] last:border-b-0"
+                className="flex h-[62px] items-center justify-between gap-3 border-b border-[#E2DFFC] last:border-b-0"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <Icon size={22} className="shrink-0 text-[#0A0847CC]" />
+                  <Icon size={20} className="shrink-0 text-[#0A0847CC]" />
                   <span className="truncate text-xs text-[#0A0847]">
                     {category.name}
                   </span>
                 </div>
 
                 <div className="flex shrink-0 items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-md bg-[#F3F7FD] text-sm font-bold text-[#0A0847CC]">
+                  <span className="flex h-[28px] w-[28px] items-center justify-center rounded-md bg-[#F3F7FD] text-[13px] font-bold text-[#0A0847CC]">
                     {category.count}
                   </span>
                   <button
                     type="button"
                     aria-label={`Edit ${category.name}`}
-                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#0A0847CC] transition-colors hover:bg-gray-50"
+                    className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#0A0847CC] transition-colors hover:bg-gray-50"
                   >
-                    <LuPencil size={15} />
+                    <LuPencil size={14} />
                   </button>
                   <button
                     type="button"
                     aria-label={`More actions for ${category.name}`}
-                    className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md bg-[#E9E9E9] text-gray-500 transition-colors hover:bg-gray-50"
+                    className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-md bg-[#E9E9E9] text-gray-500 transition-colors hover:bg-gray-50"
                   >
-                    <LuEllipsis size={18} />
+                    <LuEllipsisVertical size={16} />
                   </button>
                 </div>
               </div>

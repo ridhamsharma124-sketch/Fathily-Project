@@ -16,6 +16,7 @@ import {
   labelClass,
   outlineButton,
   pageBodyClass,
+  pageInnerClass,
   pageShellClass,
   purpleButton,
 } from "./activityFormShared";
@@ -32,7 +33,7 @@ const IMAGE_CAPTION = [
 ];
 
 const DESCRIPTION =
-  "A powerful dialogue between Jesus & Nicodemus on the new birth.";
+  "A powerful dialogue between Jesus & Nicodemus on the new birth. Experience the conversation.";
 
 const DURATION_LABEL = "09:48 min • 10.2 MB";
 const INTRO_TIME = "00:10 / 00:10";
@@ -40,20 +41,20 @@ const INTRO_TIME = "00:10 / 00:10";
 /* ==========================================================================
    STORY ENTRY PREVIEW (right card)
    ========================================================================== */
-const PREVIEW_TRUNCATE_AT = 72;
+const PREVIEW_TRUNCATE_AT = 74;
 
 function truncate(text, limit) {
   return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
 }
 function StoryEntryPreview({ title, description, image }) {
   return (
-    <section className="w-full shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-6 lg:w-[450px]">
+    <section className="w-full min-w-0 shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-8">
       <div className="flex flex-col gap-3">
         <div>
           <h2 className="text-[22px] font-bold text-[#0A0847]">
             Story Entry Preview
           </h2>
-          <p className="mt-1 text-[14px] text-[#0A084799]">
+          <p className="mt-1 text-[16px] text-[#0A084799]">
             This is how the story will appear to users.
           </p>
         </div>
@@ -73,7 +74,7 @@ function StoryEntryPreview({ title, description, image }) {
         <div className="flex items-center gap-2">
           <LuHeadphones size={14} className="shrink-0 text-[#0A084799]" aria-hidden />
           <p className="text-[12px] italic text-[#0A084799]">
-            09:48 • 24 Plays
+            <span className="font-bold">09:48</span> • 24 Plays
           </p>
         </div>
 
@@ -101,20 +102,21 @@ export default function AddChapterAudioStory() {
   return (
     <div className={pageShellClass}>
       <div className={pageBodyClass}>
-        <ActivityPageHeader
-          breadcrumb={[
-            "Bible Content",
-            "Articles",
-            "John",
-            "Chapter 3",
-            "Chapter Audio Stories",
-          ]}
-          title="Add Chapter Audio Story"
-        />
+        <div className={pageInnerClass}>
+          <ActivityPageHeader
+            breadcrumb={[
+              "Bible Content",
+              "Articles",
+              "John",
+              "Chapter 3",
+              "Chapter Audio Stories",
+            ]}
+            title="Add Chapter Audio Story"
+          />
 
-        <div className={cardRowClass}>
-          {/* LEFT — story form */}
-          <section className={`${formCardClass} lg:w-[578px] lg:flex-none`}>
+          <div className={cardRowClass}>
+            {/* LEFT — story form */}
+            <section className={formCardClass}>
             <Field label="Story Title" required htmlFor="story-title">
               <TextInput
                 id="story-title"
@@ -147,15 +149,14 @@ export default function AddChapterAudioStory() {
               />
             </div>
 
-            <AudioFileCard>
-              <div className="px-4 pt-4 pb-10 pl-[70px]">
-                <p className="text-[11px] leading-[1.6] text-[#0A0847]">
-                  This audio will be used as the story narration.
-                  <br />
-                  Supported formats: MP3, WAV, AAC (max 25 MB)
-                </p>
-              </div>
-            </AudioFileCard>
+            <div>
+              <AudioFileCard />
+              <p className="mt-2 text-[11px] leading-[1.6] text-[#0A0847]">
+                This audio will be used as the story narration.
+                <br />
+                Supported formats: MP3, WAV, AAC (max 25 MB)
+              </p>
+            </div>
 
             <div>
               <p className="text-[12px] font-semibold text-[#0A0847]">
@@ -191,7 +192,7 @@ export default function AddChapterAudioStory() {
               />
             </Field>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-[60px]">
               <p className="text-[12px] font-semibold text-[#0A0847]">
                 Enable Transcriber
               </p>
@@ -204,7 +205,7 @@ export default function AddChapterAudioStory() {
 
             <button
               type="button"
-              className="flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-6 text-[13px] font-semibold text-[#0A0847CC] transition-colors hover:bg-[#F1F1F9]"
+              className="flex h-12 w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-8 text-[14px] font-semibold text-[#0A0847]/60 transition-colors hover:bg-[#F1F1F9]"
             >
               <LuUpload size={15} aria-hidden />
               Upload Transcriber or Paste Text
@@ -221,21 +222,22 @@ export default function AddChapterAudioStory() {
 
         {/* BOTTOM ACTION ROW */}
         <div className={actionRowClass}>
-          <button type="button" className={outlineButton}>
+          <button type="button" className={`${outlineButton} w-[152px]`}>
             Cancel
           </button>
 
-          <div className="flex flex-wrap gap-3">
-            <button type="button" className={outlineButton}>
+          <div className="flex flex-wrap gap-4">
+            <button type="button" className={`${outlineButton} w-[152px]`}>
               Save as Draft
             </button>
-            <button type="button" className={outlineButton}>
+            <button type="button" className={`${outlineButton} w-[188px]`}>
               Preview as User
             </button>
             <button type="button" className={purpleButton}>
               Publish Story
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import {
   PiCalendarBlank,
   PiCaretDown,
   PiCaretRight,
+  PiCards,
   PiClipboardText,
   PiDotsThreeCircle,
   PiFire,
@@ -20,7 +21,7 @@ import {
   PiIdentificationCard,
   PiImages,
   PiLeaf,
-  PiStack,
+  PiListChecks,
   PiList,
   PiMagnifyingGlass,
   PiMedal,
@@ -41,7 +42,7 @@ import Logo from "../components/shared/Logo";
   Dashboard -> Subscription -> Daily -> Pray with Me -> Seasonal Journey ->
   Audio Stories -> Bible -> Users -> Questions -> Broad Spectrum -> Group Play ->
   Journal -> Media Library -> Settings -> Badges -> Coupon -> Gifts and Donation ->
-  Sounds/Audio -> AI Engagement -> More Info
+  Sounds/Audio -> AI Engagement -> Mystery Card -> Quiz Management -> More Info
 */
 
 const NAV_GROUPS = [
@@ -73,7 +74,33 @@ const NAV_GROUPS = [
       icon: PiBookOpenText,
       children: [
         { id: "bible-books", label: "Books", path: "/admin/bible-books" },
-        { id: "bible-activities", label: "Activities", path: "/admin/activities" },
+        {
+          id: "bible-activities",
+          label: "Activities",
+          noNavigate: true,
+          children: [
+            {
+              id: "act-overview",
+              label: "Activities",
+              path: "/admin/activities",
+            },
+            {
+              id: "act-ws-add",
+              label: "Add Word Search",
+              path: "/admin/activities/word-search/add",
+            },
+            {
+              id: "act-audio-add",
+              label: "Add Chapter Audio Story",
+              path: "/admin/activities/chapter-audio-story/add",
+            },
+            {
+              id: "act-mv-add",
+              label: "Add Memory Verse",
+              path: "/admin/activities/memory-verse/add",
+            },
+          ],
+        },
         { id: "memory-verses", label: "Memory Verses", path: "/admin/memory-verse" },
       ],
     },
@@ -130,7 +157,7 @@ const NAV_GROUPS = [
       icon: PiGear,
       children: [
         { id: "set-site", label: "Site Settings", path: "/admin/settings/site-settings" },
-        { id: "set-website", label: "Website Management" },
+        { id: "set-website", label: "Website Management", path: "/admin/website-management" },
         { id: "set-ai", label: "AI Model" },
         { id: "set-look", label: "Lock & Feel" },
         { id: "set-email", label: "Email Service" },
@@ -138,13 +165,33 @@ const NAV_GROUPS = [
     },
   ],
   [
-    { id: "badges", label: "Badges", icon: PiMedal, path: "/admin/badges" },
-    { id: "tiers", label: "Tiers Management", icon: PiStack, path: "/admin/tiers" },
     {
-      id: "streaks",
-      label: "Streak Milestones",
+      id: "badges-group",
+      label: "Badges",
+      icon: PiMedal,
+      noNavigate: true,
+      children: [
+        { id: "badges", label: "Badges", path: "/admin/badges" },
+        { id: "tiers", label: "Tiers Management", path: "/admin/tiers" },
+      ],
+    },
+    {
+      id: "streaks-group",
+      label: "Streak Management",
       icon: PiFire,
-      path: "/admin/streaks",
+      noNavigate: true,
+      children: [
+        {
+          id: "streak-management",
+          label: "Streak Management",
+          path: "/admin/streaks/management",
+        },
+        {
+          id: "streaks",
+          label: "Streak Milestones & Rewards",
+          path: "/admin/streaks",
+        },
+      ],
     },
     {
       id: "word-search",
@@ -172,6 +219,60 @@ const NAV_GROUPS = [
           id: "ws-manual-mystery",
           label: "Manual — Mystery Scripture",
           path: "/admin/word-search/add-edit/manual-mystery",
+        },
+        {
+          id: "ws-ai",
+          label: "AI Generate",
+          noNavigate: true,
+          children: [
+            {
+              id: "ws-ai-choose",
+              label: "Choose Activity Type",
+              path: "/admin/word-search/add-edit/ai-generate",
+            },
+            {
+              id: "ws-ai-verse",
+              label: "Verse Restoration",
+              path: "/admin/word-search/add-edit/ai-generate/verse-restoration",
+            },
+            {
+              id: "ws-ai-mystery",
+              label: "Mystery Scripture",
+              path: "/admin/word-search/add-edit/ai-generate/mystery-scripture",
+            },
+            {
+              id: "ws-ai-audio",
+              label: "Audio Revelation",
+              path: "/admin/word-search/add-edit/ai-generate/audio-revelation",
+            },
+          ],
+        },
+        {
+          id: "ws-csv",
+          label: "CSV Upload",
+          noNavigate: true,
+          children: [
+            {
+              id: "ws-csv-upload",
+              label: "Upload File",
+              path: "/admin/word-search/add-edit/csv-upload",
+            },
+            {
+              id: "ws-csv-validate",
+              label: "Validate & Map",
+              path: "/admin/word-search/add-edit/csv-upload/validate-map",
+            },
+            {
+              id: "ws-csv-review",
+              label: "Review Images",
+              path: "/admin/word-search/add-edit/csv-upload/review-images",
+            },
+            {
+              id: "ws-csv-import",
+              label: "Import Review",
+              path: "/admin/word-search/add-edit/csv-upload/import-review",
+            },
+          ],
         },
       ],
     },
@@ -202,6 +303,30 @@ const NAV_GROUPS = [
           id: "ai-credits",
           label: "AI Credits & Info",
           path: "/admin/ai-engagement/credits",
+        },
+      ],
+    },
+    {
+      id: "mystery-card",
+      label: "Mystery Card",
+      icon: PiCards,
+      path: "/admin/mystery-card",
+    },
+    {
+      id: "quiz-mgmt-group",
+      label: "Quiz Management",
+      icon: PiListChecks,
+      noNavigate: true,
+      children: [
+        {
+          id: "quiz-management",
+          label: "Quiz Management",
+          path: "/admin/quiz-management",
+        },
+        {
+          id: "quiz-management-ai-generator",
+          label: "AI Generator",
+          path: "/admin/quiz-management/ai-generator",
         },
       ],
     },
@@ -236,6 +361,7 @@ const NAV_PATH_MAP = (() => {
   const map = {};
   const walk = (items) => {
     items.forEach((item) => {
+      if (Array.isArray(item)) return walk(item);
       if (item.path) map[item.path] = item.id;
       if (item.children) walk(item.children);
     });
@@ -250,6 +376,7 @@ const NAV_QUERY_MAP = (() => {
   const map = {};
   const walk = (items) => {
     items.forEach((item) => {
+      if (Array.isArray(item)) return walk(item);
       if (item.path && item.path.includes("?")) map[item.path] = item.id;
       if (item.children) walk(item.children);
     });
@@ -258,9 +385,13 @@ const NAV_QUERY_MAP = (() => {
   return map;
 })();
 
-function NavItem({ item, active, collapsed, onNavigate }) {
+/* true when `id` exists anywhere in the (possibly nested) children tree */
+const hasActiveIn = (items, id) =>
+  items.some((it) => it.id === id || (it.children && hasActiveIn(it.children, id)));
+
+function NavItem({ item, active, collapsed, onNavigate, depth = 0 }) {
   const hasChildren = item.children && item.children.length > 0;
-  const hasActiveChild = hasChildren && item.children.some((child) => child.id === active);
+  const hasActiveChild = hasChildren && hasActiveIn(item.children, active);
   const isActive = active === item.id || hasActiveChild;
   /* groups with children start open so their labels are visible in the
      expanded sidebar; the caret still toggles them. */
@@ -268,6 +399,7 @@ function NavItem({ item, active, collapsed, onNavigate }) {
   const isOpen = open || hasActiveChild;
 
   const Icon = item.icon;
+  const isChild = depth > 0;
 
   const handleClick = () => {
     if (hasChildren) setOpen((v) => !v);
@@ -284,7 +416,7 @@ function NavItem({ item, active, collapsed, onNavigate }) {
           isActive ? "bg-navy-hover text-white" : "text-muted hover:bg-navy-hover/40 hover:text-white"
         }`}
       >
-        <Icon size={16} strokeWidth={1.5} />
+        {Icon && <Icon size={16} strokeWidth={1.5} />}
       </button>
     );
   }
@@ -293,32 +425,41 @@ function NavItem({ item, active, collapsed, onNavigate }) {
     <div>
       <button
         onClick={handleClick}
-        className={`flex h-10 w-full items-center gap-3 rounded-nav px-3 text-[14px] transition ${
-          isActive
-            ? "bg-navy-hover font-bold text-white"
-            : "text-muted hover:bg-navy-hover/40 hover:text-white"
-        }`}
+        className={
+          isChild
+            ? `flex h-9 w-full items-center rounded-md px-1.5 text-[13px] transition ${
+                isActive ? "font-semibold text-white" : "text-[#a8b3d8] hover:text-white"
+              }`
+            : `flex h-10 w-full items-center gap-3 rounded-nav px-3 text-[14px] transition ${
+                isActive
+                  ? "bg-navy-hover font-bold text-white"
+                  : "text-muted hover:bg-navy-hover/40 hover:text-white"
+              }`
+        }
       >
-        <Icon size={16} className={isActive ? "text-white" : "text-muted"} strokeWidth={1.5} />
+        {Icon && (
+          <Icon size={16} className={isActive ? "text-white" : "text-muted"} strokeWidth={1.5} />
+        )}
         <span className="flex-1 truncate text-left">{item.label}</span>
         {hasChildren && (isOpen ? <PiCaretDown size={14} /> : <PiCaretRight size={14} />)}
       </button>
 
-        {hasChildren && isOpen && !collapsed && (
-          <div className="ml-[20px] border-l border-white/20 pl-2.5">
-            {item.children.map((child) => (
-              <button
-                key={child.id}
-                onClick={() => onNavigate(child)}
-                className={`flex h-9 w-full items-center rounded-md px-1.5 text-[13px] transition ${
-                  active === child.id ? "font-semibold text-white" : "text-[#a8b3d8] hover:text-white"
-                }`}
-              >
-                <span className="truncate text-left whitespace-nowrap">{child.label}</span>
-              </button>
-            ))}
-          </div>
-        )}
+      {hasChildren && isOpen && (
+        <div
+          className={`border-l border-white/20 pl-2.5 ${isChild ? "ml-[16px]" : "ml-[20px]"}`}
+        >
+          {item.children.map((child) => (
+            <NavItem
+              key={child.id}
+              item={child}
+              active={active}
+              collapsed={collapsed}
+              onNavigate={onNavigate}
+              depth={depth + 1}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -419,7 +560,7 @@ function Sidebar({ collapsed, mobileOpen, onToggle, onClose, active, onNavigate 
 
 /* ---------------- Navbar ---------------- */
 
-function Navbar({ collapsed, onMenuClick }) {
+function Navbar({ collapsed, onMenuClick, figmaText = false, bellDot = false }) {
   return (
     <header
       className={`flex h-[72px] shrink-0 items-center justify-between gap-3 whitespace-nowrap border-b border-[#E8ECF4] bg-white px-4 shadow-[0_1px_3px_rgba(16,24,40,0.06)] sm:px-6 ${
@@ -438,7 +579,9 @@ function Navbar({ collapsed, onMenuClick }) {
         <div className="relative w-[270px] shrink-0">
           <PiMagnifyingGlass
             size={16}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-subtext"
+            className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 ${
+              figmaText ? "text-heading" : "text-subtext"
+            }`}
           />
           <input
             type="text"
@@ -449,7 +592,7 @@ function Navbar({ collapsed, onMenuClick }) {
       </div>
 
       <div className="flex shrink-0 items-center gap-2.5">
-        <button className="flex h-[38px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-2.5 text-[14px] font-medium text-navy transition hover:border-navy/40">
+        <button className={`flex h-[38px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-2.5 text-[14px] font-medium transition hover:border-navy/40 ${figmaText ? "text-heading" : "text-navy"}`}>
           <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden className="shrink-0">
             <defs>
               <clipPath id="uk-flag-clip">
@@ -485,13 +628,20 @@ function Navbar({ collapsed, onMenuClick }) {
         <span className="h-4 w-px bg-[#E8ECF4]" aria-hidden />
 
         <button
-          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#E4E5F0] bg-white text-navy transition hover:border-navy/40"
+          className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-[8px] border border-[#E4E5F0] bg-white transition hover:border-navy/40 ${figmaText ? "text-heading" : "text-navy"}`}
           aria-label="Notifications"
         >
           <PiBell size={18} />
-          <span className="absolute -top-1.5 -right-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E11D48] px-[4px] text-[10px] font-bold leading-none text-white">
-            3
-          </span>
+          {bellDot ? (
+            <span
+              className="absolute top-[8px] right-[8px] h-[8px] w-[8px] rounded-full bg-[#E11D48]"
+              aria-hidden
+            />
+          ) : (
+            <span className="absolute -top-1.5 -right-1.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#E11D48] px-[4px] text-[10px] font-bold leading-none text-white">
+              3
+            </span>
+          )}
         </button>
 
         <button className="flex h-[38px] items-center gap-2 rounded-[8px] border border-[#E0E3F5] bg-[#EEF0FB] px-3 text-[14px] font-medium text-[#001984] transition hover:border-[#001984]/40">
@@ -554,7 +704,15 @@ export default function DashboardLayout() {
         onNavigate={handleNavigate}
       />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Navbar collapsed={collapsed} onMenuClick={() => setMobileOpen(true)} />
+        <Navbar
+          collapsed={collapsed}
+          onMenuClick={() => setMobileOpen(true)}
+          figmaText={location.pathname === "/admin/ai-engagement/overview"}
+          bellDot={
+            location.pathname.startsWith("/admin/ai-engagement/experience") ||
+            location.pathname.startsWith("/admin/terms-privacy/edit")
+          }
+        />
         <main className="flex-1 ">
           <Outlet />
         </main>

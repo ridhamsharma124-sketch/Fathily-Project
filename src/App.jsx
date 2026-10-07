@@ -41,6 +41,9 @@ import AIQuizGenerator from "./pages/Admin/Activities/AIQuizGenerator";
 import AddQuestionManually from "./pages/Admin/Activities/AddQuestionManually";
 import BulkUploadQuizQuestions from "./pages/Admin/Activities/BulkUploadQuizQuestions";
 import AddWordSearch from "./pages/Admin/Activities/AddWordSearch";
+import QuizManagement from "./pages/Admin/QuizManagement/QuizManagement";
+import AIQuestionGenerator from "./pages/Admin/QuizManagement/AIQuizGenerator";
+import ManagePlansPage from "./pages/Admin/WebsiteManagement/ManagePlansPage";
 import WordSearchManagement from "./pages/Admin/WordSearch/WordSearchManagement";
 import AddEditWordSearch from "./pages/Admin/WordSearch/AddEditWordSearch";
 import AIGenerateWordSearch from "./pages/Admin/WordSearch/AIGenerateWordSearch";
@@ -94,24 +97,31 @@ function App() {
         <Route path="subscriptions" element={<Subscription />} />
         <Route path="dailyverse" element={<DailyVersesPage />} />
         <Route path="dailyverse/add" element={<AddDailyVerseWizard />} />
+
         <Route path="dailyreflection" element={<DailyReflectionList />} />
         <Route path="dailyreflection/add" element={<AddHistoricalStory />} />
+
         <Route path="pray-with-me" element={<PrayWithMePage />} />
         <Route path="pray-with-me/settings" element={<PrayWithMeSettingsPage />} />
+
         <Route path="sound-audio" element={<SoundAudio />} />
         <Route path="ai-engagement/overview" element={<AIOverview />} />
         <Route path="ai-engagement/experience" element={<AIExperience />} />
         <Route path="ai-engagement/credits" element={<AICredits />} />
+        
         <Route path="seasonal-journey" element={<SeasonalJourneysPage />} />
         <Route path="seasonal-journey/add" element={<AddSeasonalJourneyWizard />} />
         <Route path="seasonal-journey/add/edit-daily-content" element={<EditDailyContentPage />} />
+
         <Route path="terms-privacy" element={<TermsPrivacy />} />
         <Route path="terms-privacy/edit" element={<EditLegalDocument />} />
         <Route path="help-center" element={<HelpCenter />} />
         <Route path="support-inbox" element={<SupportInbox />} />
+
         <Route path="badges" element={<Badges />} />
         <Route path="badges/add" element={<AddBadge />} />
         <Route path="tiers" element={<TiersManagement />} />
+
         <Route path="donations" element={<DonationsDashboardPage />} />
         <Route path="donations/:id" element={<DonationDetailsPage />} />
         <Route path="donations/add" element={<RecordDonationPage />} />
@@ -121,15 +131,18 @@ function App() {
         <Route path="settings/site-settings" element={<SiteSettingsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
         <Route path="notifications/create" element={<CreateNotificationPage />} />
-        
+        {/* activities */}
         <Route path="activities" element={<Activities />} />
         <Route path="activities/quiz/add-questions" element={<AddQuizQuestions />} />
         <Route path="activities/quiz/ai-generator" element={<AIQuizGenerator />} />
         <Route path="activities/quiz/add-question-manually" element={<AddQuestionManually />}/>
         <Route  path="activities/quiz/bulk-upload"element={<BulkUploadQuizQuestions />}/>
+
         <Route path="activities/word-search/add" element={<AddWordSearch />}/>
          <Route path="activities/chapter-audio-story/add" element={<AddChapterAudioStory />}/>
         <Route path="activities/memory-verse/add" element={<AddMemoryVerse />}/>
+
+      
 
         {/* Word Search */}
         <Route path="word-search" element={<WordSearchManagement />} />
@@ -160,20 +173,28 @@ function App() {
         <Route path="group-play-settings" element={<GroupPlaySettings />} />
         <Route path="bible-books" element={<BibleBooksPage />} />
         <Route path="bible-books/edit/:id" element={<EditBookPage />} />
-        
-        <Route path="streaks" element={<StreakMilestonesRewards />} />
+        {/* streaksmanagement */}
+        <Route path="streaks/management" element={<StreakManagementPage />} />
+         <Route path="streaks" element={<StreakMilestonesRewards />} />
+        {/* memory-verse */}
         <Route path="memory-verse" element={<MemoryVerseManagement />} />
         <Route path="memory-verse/add-edit" element={<AddEditMemoryVerse />} />
         <Route path="memory-verse/add-edit/ai-generate" element={<AddEditMemoryVerseAI />} />
-
+{/* mystery-card */}
       <Route path="/admin/mystery-card" element={<MysteryCardDashboard />} />
       <Route path="/admin/mystery-card/create" element={<CreateMysteryCard />} />
       <Route path="/admin/mystery-card/edit" element={<EditMysteryCard />} />
 
-            <Route path='users' element={<UserManagementPage />} />
+        {/* Quiz Management */} 
+        <Route path="quiz-management" element={<QuizManagement />} />
+        <Route path="quiz-management/ai-generator" element={<AIQuestionGenerator />} />
+
+        {/* Manage Plans */}
+        <Route path="website-management" element={<ManagePlansPage />} />
+
+        <Route path='users' element={<UserManagementPage />} />
         <Route path="users/roles-permissions" element={<RolesPermissionsPage />} />
         <Route path="users/add" element={<AddUserPage />} />
-        <Route path="streaks" element={<StreakManagementPage />} />
         <Route path='levels' element={<LevelsPage />} />
         <Route path="questions/quiz/add" element={<QuizQuestionFormPage />} />
 

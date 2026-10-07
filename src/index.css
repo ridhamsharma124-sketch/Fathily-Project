@@ -97,6 +97,18 @@
   --support-avatar-text: #4338ca;
   --support-note-bg: #eef0ff;
   --support-note: #4f46e5;
+
+  /* AI engagement overview */
+  --icon-color: #3231d8;
+  --icon-bg: rgba(50, 49, 216, 0.1);
+  --toggle-knob: #eceff1;
+  --success: #16a34a;
+  --danger: #ef4444;
+
+  /* credit rules (figma) */
+  --line-faint: rgba(0, 25, 132, 0.1);
+  --field-border: #e2dffc;
+  --toggle-blue: #0b5ed7;
 }
 
 /* Article modal scope: its Figma palette differs from the page it sits in. */
@@ -120,6 +132,32 @@
   --border: #e7e3fb;
   --table-head-bg: #f2f6fa;
   --divider: #f3f3f3;
+}
+
+/* AI Overview page scope: this page's Figma palette differs from the shared
+   token defaults, so these are re-pointed here instead of in :root. */
+.ai-theme {
+  --card-bg: #feffff;
+  --primary: #04127f;
+  --primary-hover: #0a1c68;
+  --toggle-on: #04127f;
+}
+
+/* AI Experience Setup page scope: Figma design tokens for this frame. */
+.aie-theme {
+  --text: #0a0847;
+  --text-80: rgba(10, 8, 71, 0.8);
+  --text-60: rgba(10, 8, 71, 0.6);
+  --card-bg: #feffff;
+  --line: rgba(0, 25, 132, 0.1);
+  --icon: #3231d8;
+  --icon-bg: rgba(50, 49, 216, 0.1);
+  --border-soft: #e2dffc;
+  --success-bg: rgba(33, 172, 28, 0.1);
+  --success-bd: #daf3c8;
+  --success-fg: #21ac1c;
+  --danger: #ef4444;
+  --navy: #04127f;
 }
 
 @theme inline {
@@ -153,7 +191,15 @@
   --color-orange-bg: var(--orange-bg);
   --color-orange: var(--orange);
   --color-orange-num: var(--orange-num);
-  --color-danger: var(--delete-red);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-icon-color: var(--icon-color);
+  --color-icon-bg: var(--icon-bg);
+  --color-toggle-knob: var(--toggle-knob);
+  --color-line-faint: var(--line-faint);
+  --color-field-border: var(--field-border);
+  --color-toggle-blue: var(--toggle-blue);
+  --color-border-soft: var(--border-soft, var(--border));
   --color-badge-gray: var(--badge-gray);
   --color-toolbar: var(--toolbar-fill);
   --color-toolbar-edge: var(--toolbar-border);
@@ -201,7 +247,7 @@
 }
 
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   --color-navy: #0f1a4a;
@@ -270,6 +316,12 @@
     height: 100%;
   }
 
+  /* keep the scrollbar gutter reserved so page content stays centered
+     whether or not the document is scrollable (collapsed sidebar fix) */
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     margin: 0;
     font-family: var(--font-sans);
@@ -325,4 +377,16 @@
   border-style: dashed;
   border-width: 1px;
   border-dasharray: 6 6;
+}
+
+:root { --border-soft: #E2DFFC; --page-bg-ld: #F9FAFE; --primary-ld: #001984; --toolbar-border-ld: #CCCCCC; }
+
+.ld-theme {
+  --page-bg: #F9FAFE;
+  --primary: #001984;
+  --primary-hover: color-mix(in srgb, #001984 90%, #000);
+  --toolbar-border: #CCCCCC;
+  --border-soft: #E2DFFC;
+  --border: #E2DFFC;
+  --edge: #E2DFFC;
 }

@@ -206,7 +206,7 @@ function RewardTile({ label, active, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-[85px] w-[134px] shrink-0 cursor-pointer flex-col items-center justify-center rounded-[8px] border ${
+      className={`flex h-[85px] min-w-0 flex-1 cursor-pointer flex-col items-center justify-center rounded-[8px] border ${
         active ? "border-action-navy bg-action-navy/10" : "border-edge-input bg-white"
       }`}
     >
@@ -332,7 +332,7 @@ export default function EditMysteryCard() {
         {/* ---- two columns ---- */}
         <div className="mt-6 flex items-start gap-[18px]">
           {/* ===== LEFT — Card Information ===== */}
-          <div className="flex h-[1406px] w-[627px] flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white pt-[21px] pr-5 pb-[41px] pl-5">
+          <div className="flex min-h-[1406px] min-w-0 flex-[627_1_0px] flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white pt-[21px] pr-5 pb-[41px] pl-5">
             <h2 className="text-[16px] font-semibold text-deep-navy">Card Information</h2>
 
             <div>
@@ -404,7 +404,7 @@ export default function EditMysteryCard() {
                 <Label>Bible Verse Text</Label>
                 <textarea
                   defaultValue="You come to me with a sword and a spear and a javelin, but I come to you in the name of the Lord Almighty."
-                  className={`${FIELD} mt-[6px] h-[66px] resize-none py-[10px]`}
+                  className={`${FIELD} mt-[6px] h-[112px] resize-none py-[10px]`}
                 />
               </div>
             </div>
@@ -510,7 +510,7 @@ export default function EditMysteryCard() {
           </div>
 
           {/* ===== RIGHT ===== */}
-          <div className="flex w-[348px] flex-col gap-[18px]">
+          <div className="flex min-w-0 flex-[348_1_0px] flex-col gap-[18px]">
             {/* ---- Card A : Live Preview ---- */}
             <div className="h-[858px] rounded-[8px] border border-edge-input bg-white p-[14px]">
               <h2 className="text-[16px] font-semibold text-deep-navy">Live Preview</h2>

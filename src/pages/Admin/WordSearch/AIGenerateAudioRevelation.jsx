@@ -1,34 +1,466 @@
 import { useState } from "react";
-import sunImg from "../../../assets/word search/sun.png";
-import seaWaterImg from "../../../assets/word search/sea water.png";
 import {
   LuChevronDown,
   LuChevronUp,
-  LuRotateCw,
-  LuCheck,
-  LuX,
-  LuImagePlus,
-  LuSave,
-  LuArrowRight,
-  LuZap,
-  LuPencil,
+  LuCircleCheck,
   LuImage,
+  LuImagePlus,
+  LuPencil,
+  LuRotateCw,
+  LuArrowRight,
+  LuSave,
+  LuX,
   LuPlay,
 } from "react-icons/lu";
+import sunImg from "../../../assets/word search/sun.png";
+import seaWaterImg from "../../../assets/word search/sea water.png";
 
 /* ==========================================================================
    TOKENS
    ========================================================================== */
-const NAVY = "#041581";
 const HEADING = "#0A0847";
-const GRAY = "#6B7194";
-const BORDER = "#E5E4EC";
-const PAGE_BG = "#F9FAFE";
-const GREEN = "#16A34A";
-const LAVENDER = "#F1EFFC";
+const PRIMARY = "#001984";
+const MUTED = "rgba(10, 8, 71, 0.6)";
+const LABEL_COLOR = "rgba(10, 8, 71, 0.8)";
+const DIVIDER_COLOR = "rgba(10, 8, 71, 0.1)";
+const GREEN = "#22C55E";
+const GREEN_TEXT = "#16A34A";
+
+const CONTROL_CLS =
+  "h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] outline-none focus:border-[#001984]/40";
 
 /* ==========================================================================
-   HEADER FIELDS
+   PRIMITIVES
+   ========================================================================== */
+function Chevron() {
+  return (
+    <LuChevronDown
+      size={14}
+      className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2"
+      style={{ color: MUTED }}
+      aria-hidden
+    />
+  );
+}
+
+function FieldLabel({ htmlFor, children }) {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className="block text-[12px] leading-none font-semibold whitespace-nowrap"
+      style={{ color: LABEL_COLOR }}
+    >
+      {children}
+    </label>
+  );
+}
+
+function SelectControl({ id, value, defaultValue, onChange, options, disabled = false, className = "" }) {
+  return (
+    <div className="relative">
+      <select
+        id={id}
+        value={value}
+        defaultValue={defaultValue}
+        onChange={onChange}
+        disabled={disabled}
+        className={`${CONTROL_CLS} ${disabled ? "cursor-not-allowed" : ""} ${className}`}
+        style={{ color: MUTED }}
+      >
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+      <Chevron />
+    </div>
+  );
+}
+
+function NumberStepper({ value, defaultValue, onChange, label }) {
+  const interactive = typeof onChange === "function";
+  return (
+    <div className="relative">
+      <input
+        {...(interactive
+          ? { type: "number", value, onChange: (e) => onChange(Number(e.target.value)) }
+          : { defaultValue })}
+        min="0"
+        aria-label={label}
+        className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-[30px] pl-3 text-[12px] outline-none focus:border-[#001984]/40"
+        style={{ color: MUTED }}
+      />
+      {interactive ? (
+        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label={`Increase ${label}`}
+            onClick={() => onChange((value ?? 0) + 1)}
+            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
+            style={{ color: MUTED }}
+          >
+            <LuChevronUp size={11} />
+          </button>
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label={`Decrease ${label}`}
+            onClick={() => onChange(Math.max(0, (value ?? 0) - 1))}
+            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
+            style={{ color: MUTED }}
+          >
+            <LuChevronDown size={11} />
+          </button>
+        </span>
+      ) : (
+        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
+          <svg width="10" height="6" viewBox="0 0 10 6">
+            <path
+              d="M1 4L5 1L9 4"
+              stroke={MUTED}
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+          <svg width="10" height="6" viewBox="0 0 10 6" className="mt-[1px]">
+            <path
+              d="M1 1L5 4L9 1"
+              stroke={MUTED}
+              strokeWidth="1.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+        </span>
+      )}
+    </div>
+  );
+}
+
+function Toggle({ on, onChange, label }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={() => onChange(!on)}
+      className="relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full transition-colors"
+      style={{ backgroundColor: on ? GREEN : "#D6D6DE" }}
+    >
+      <span
+        className="absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white transition-all"
+        style={{ left: on ? 16 : 2 }}
+      />
+    </button>
+  );
+}
+
+/* label on the left, toggle on the right — label 12/600, gap ~14 */
+function ToggleRight({ label, on, onChange, className = "" }) {
+  return (
+    <div className={`flex items-center gap-[14px] ${className}`}>
+      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: HEADING }}>
+        {label}
+      </span>
+      <Toggle on={on} onChange={onChange} label={label} />
+    </div>
+  );
+}
+
+/* toggle on the left, label on the right — label 13/500 */
+function ToggleLeft({ label, on, onChange, className = "" }) {
+  return (
+    <div className={`flex items-center gap-[10px] ${className}`}>
+      <Toggle on={on} onChange={onChange} label={label} />
+      <span className="text-[13px] font-medium whitespace-nowrap" style={{ color: HEADING }}>
+        {label}
+      </span>
+    </div>
+  );
+}
+
+/* label + control wrapper (label single line, 8px above the control) */
+function Field({ label, htmlFor, width = "flex-1", children }) {
+  return (
+    <div className={`${width} min-w-0 shrink-0`}>
+      <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
+      <div className="mt-[8px]">{children}</div>
+    </div>
+  );
+}
+
+/* ==========================================================================
+   PAGE HEADER + TOP DROPDOWN ROW + TABS
+   ========================================================================== */
+const HEADER_WIDTHS = ["w-[222px]", "w-[222px]", "w-[160px]", "w-[171px]"];
+const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
+
+function Tabs({ activeTab = "AI Generate", onTabChange }) {
+  return (
+    <div className="mt-[24px] w-full border-b border-[#E2DFFC]">
+      <div className="flex gap-[32px]">
+        {TABS.map((t) => {
+          const active = t === activeTab;
+          return (
+            <button
+              key={t}
+              type="button"
+              onClick={onTabChange ? () => onTabChange(t) : undefined}
+              className={`relative py-[10px] text-[12px] ${active ? "font-semibold" : "font-medium"}`}
+              style={{ color: active ? HEADING : MUTED }}
+            >
+              {t}
+              {active && (
+                <span
+                  className="absolute -bottom-px left-0 h-[2px] w-full"
+                  style={{ backgroundColor: HEADING }}
+                />
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
+  return (
+    <>
+      <h1 className="text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+        Add / Edit Word Search
+      </h1>
+      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+        Choose the activity type and how you want to create it.
+      </p>
+
+      <div className="mt-[16px] flex gap-[24px]">
+        {headerFields.map((f, i) => (
+          <Field key={f.label} label={f.label} htmlFor={f.htmlFor} width={HEADER_WIDTHS[i]}>
+            {f.control}
+          </Field>
+        ))}
+        <Field label="Points per Puzzle" width="flex-1">
+          {pointsControl}
+        </Field>
+      </div>
+
+      <Tabs activeTab={activeTab} onTabChange={onTabChange} />
+    </>
+  );
+}
+
+/* ==========================================================================
+   SECTION TITLE + FORM CARD
+   ========================================================================== */
+function SectionHeading({ title, subtitle }) {
+  return (
+    <>
+      <h2 className="mt-[24px] text-[20px] leading-none font-semibold" style={{ color: HEADING }}>
+        {title}
+      </h2>
+      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+        {subtitle}
+      </p>
+    </>
+  );
+}
+
+function FormCard({ children }) {
+  return (
+    <div className="mt-[16px] flex min-h-[311px] w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
+      {children}
+    </div>
+  );
+}
+
+function FormRow({ children, gap = "gap-[24px]", className = "" }) {
+  return <div className={`flex h-[63px] items-center ${gap} ${className}`}>{children}</div>;
+}
+
+function Divider() {
+  return <div className="my-[20px] h-px w-full" style={{ backgroundColor: DIVIDER_COLOR }} />;
+}
+
+/* New Levels multi-select — h40, chips 75x26 r8 */
+function LevelsSelect({ levels, onRemove }) {
+  return (
+    <div className="flex h-[40px] w-full items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px]">
+      {levels.map((lv) => (
+        <span
+          key={lv}
+          className="flex h-[26px] min-w-[75px] shrink-0 items-center justify-center gap-[8px] rounded-[8px] border border-[#CFD6EF] bg-[#F5F4FE] px-[12px] text-[11px] font-medium whitespace-nowrap"
+          style={{ color: PRIMARY }}
+        >
+          {lv}
+          {onRemove ? (
+            <button
+              type="button"
+              aria-label={`Remove ${lv}`}
+              onClick={() => onRemove(lv)}
+              className="cursor-pointer"
+              style={{ color: PRIMARY }}
+            >
+              <LuX size={12} />
+            </button>
+          ) : (
+            <LuX size={12} aria-hidden />
+          )}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/* Puzzles per Level — read-only, placeholder-style muted text */
+function PuzzlesPerLevel({ text }) {
+  return (
+    <input
+      readOnly
+      value={text}
+      aria-label="Puzzles per Level"
+      className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] outline-none"
+      style={{ color: MUTED }}
+    />
+  );
+}
+
+/* ==========================================================================
+   GENERATED PUZZLES PREVIEW
+   ========================================================================== */
+function PreviewHeading() {
+  return (
+    <h3 className="mt-[24px] text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
+      Generated Puzzles Preview
+    </h3>
+  );
+}
+
+function PreviewGrid({ children }) {
+  return <div className="mt-[16px] flex gap-[24px]">{children}</div>;
+}
+
+function PuzzleCard({ title, children, actions }) {
+  return (
+    <div className="flex h-[413px] w-[519px] flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[19px] pb-[26px] pl-[22px]">
+      <div className="flex items-center justify-between">
+        <p className="text-[12px] font-medium" style={{ color: MUTED }}>
+          {title}
+        </p>
+        <span
+          className="flex h-[20px] items-center rounded-[4px] px-[8px] text-[10px] font-semibold"
+          style={{ backgroundColor: "#E8FBEF", color: GREEN_TEXT }}
+        >
+          AI IMAGE
+        </span>
+      </div>
+
+      <div className="flex h-[223px] w-full gap-[21px]">{children}</div>
+
+      <div className="flex flex-col gap-[8px]">{actions}</div>
+    </div>
+  );
+}
+
+function PreviewImage({ src, alt }) {
+  return (
+    <div
+      className="flex h-[223px] w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
+      style={{ backgroundColor: "#F3F4F6" }}
+    >
+      {src ? (
+        <img src={src} alt={alt} className="h-full w-full object-cover" />
+      ) : (
+        <LuImage size={28} style={{ color: "#9CA3AF" }} aria-hidden />
+      )}
+    </div>
+  );
+}
+
+function OutlineAction({ icon: Icon, className = "", children }) {
+  return (
+    <button
+      type="button"
+      className={`flex h-[31px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E2DFFC] bg-white text-[11px] font-medium whitespace-nowrap transition-colors hover:bg-[#F7F8FE] ${className}`}
+      style={{ color: HEADING }}
+    >
+      <Icon size={12} />
+      {children}
+    </button>
+  );
+}
+
+function CardActions() {
+  return (
+    <>
+      <div className="flex gap-[8px]">
+        <OutlineAction icon={LuRotateCw} className="w-[130px]">
+          Regenerate Puzzle
+        </OutlineAction>
+        <OutlineAction icon={LuImage}>Regenerate Image</OutlineAction>
+        <OutlineAction icon={LuImagePlus}>Replace Image</OutlineAction>
+      </div>
+      <div className="flex gap-[8px]">
+        <OutlineAction icon={LuPencil} className="w-[74px]">
+          Edit
+        </OutlineAction>
+        <button
+          type="button"
+          className="flex h-[31px] w-[120px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] text-[11px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          style={{ backgroundColor: PRIMARY }}
+        >
+          <LuCircleCheck size={12} />
+          Publish Approved
+        </button>
+      </div>
+    </>
+  );
+}
+
+/* ==========================================================================
+   PAGE FOOTER
+   ========================================================================== */
+function PageFooter() {
+  return (
+    <div className="mt-[24px] flex items-center justify-between">
+      <button
+        type="button"
+        className="flex h-[42px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+        style={{ color: HEADING }}
+      >
+        Cancel
+      </button>
+
+      <div className="flex gap-[12px]">
+        <button
+          type="button"
+          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+          style={{ color: HEADING }}
+        >
+          <LuSave size={16} style={{ color: PRIMARY }} />
+          Save draft
+        </button>
+        <button
+          type="button"
+          className="flex h-[42px] w-[180px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+          style={{ backgroundColor: PRIMARY }}
+        >
+          Publish Approved
+          <LuArrowRight size={16} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ==========================================================================
+   AUDIO PAGE PARTS
    ========================================================================== */
 const HEADER_FIELDS = [
   { id: "testament", label: "Testament", value: "Old Testament", options: ["Old Testament", "New Testament"] },
@@ -37,7 +469,12 @@ const HEADER_FIELDS = [
   { id: "difficulty", label: "Difficulty", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
-const PASSAGE_OPTIONS = ["Creation (Genesis 1)", "Noah's Ark (Genesis 6)", "Abraham's Call (Genesis 12)", "The Exodus (Exodus 14)"];
+const PASSAGE_OPTIONS = [
+  "Creation (Genesis 1)",
+  "Noah's Ark (Genesis 6)",
+  "Abraham's Call (Genesis 12)",
+  "The Exodus (Exodus 14)",
+];
 const VOICE_OPTIONS = ["Male – Warm", "Male – Deep", "Female – Warm", "Female – Soft"];
 const AUDIO_LENGTH_OPTIONS = ["1", "2", "3", "4", "5"];
 const WORD_BANK_OPTIONS = ["Show", "Hide"];
@@ -45,356 +482,37 @@ const PUZZLE_COUNT_OPTIONS = ["1", "2", "3", "4", "5"];
 const IMAGE_STYLE_OPTIONS = ["Biblical Illustration", "Watercolour", "Modern Art", "Line Art"];
 const SAFETY_OPTIONS = ["Family Safe", "Family Safe (Strict)", "Unfiltered"];
 
-/* ==========================================================================
-   PRIMITIVES
-   ========================================================================== */
-const selectCls =
-  "h-[38px] w-full cursor-pointer appearance-none rounded-[6px] border border-[#E5E4EC] bg-white pl-3 pr-8 text-[13px] outline-none focus:border-[#041581]";
-
-const lbl = "mb-1.5 block text-[12px] font-bold";
-
-function Chevron() {
-  return (
-    <LuChevronDown
-      size={15}
-      className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2"
-      style={{ color: GRAY }}
-      aria-hidden
-    />
-  );
-}
-
-function Toggle({ on, onChange, label, color = GREEN }) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={() => onChange(!on)}
-      className="relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors"
-      style={{ backgroundColor: on ? color : "#D6D5E4" }}
-    >
-      <span
-        className="absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white shadow-sm transition-all"
-        style={{ left: on ? 13 : 2 }}
-      />
-    </button>
-  );
-}
-
-function NumberStepper({ value, onChange, label }) {
-  return (
-    <div className="relative">
-      <input
-        type="number"
-        min="0"
-        aria-label={label}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="h-[38px] w-full rounded-[6px] border border-[#E5E4EC] bg-white pr-8 pl-3 text-[13px] outline-none focus:border-[#041581]"
-        style={{ color: HEADING }}
-      />
-      <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label={`Increase ${label}`}
-          onClick={() => onChange((n) => (n ?? 0) + 1)}
-          className="flex h-[10px] w-[16px] cursor-pointer items-center justify-center text-[#6B7194]"
-        >
-          <LuChevronUp size={11} />
-        </button>
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label={`Decrease ${label}`}
-          onClick={() => onChange((n) => Math.max(0, (n ?? 0) - 1))}
-          className="flex h-[10px] w-[16px] cursor-pointer items-center justify-center text-[#6B7194]"
-        >
-          <LuChevronDown size={11} />
-        </button>
-      </span>
-    </div>
-  );
-}
-
-/* ==========================================================================
-   TABS
-   ========================================================================== */
-const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
-
-function TabsRow() {
-  return (
-    <div className="mt-[30px] flex items-stretch border-b border-[#E5E4EC]">
-      {TABS.map((t) => {
-        const active = t === "AI Generate";
-        return (
-          <button
-            key={t}
-            type="button"
-            className={`h-[50px] px-6 text-[15px] ${
-              active ? "-mb-px border-b-2 font-bold" : "font-normal"
-            }`}
-            style={{
-              borderColor: active ? NAVY : "transparent",
-              color: active ? NAVY : GRAY,
-            }}
-          >
-            {t}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ==========================================================================
-   AUDIO REVELATION AI GENERATE FORM
-   ========================================================================== */
-function AudioForm() {
-  const [passage, setPassage] = useState(PASSAGE_OPTIONS[0]);
-  const [voice, setVoice] = useState(VOICE_OPTIONS[0]);
-  const [audioLength, setAudioLength] = useState(AUDIO_LENGTH_OPTIONS[3]);
-  const [wordBank, setWordBank] = useState(WORD_BANK_OPTIONS[0]);
-  const [preserve, setPreserve] = useState(true);
-  const [count, setCount] = useState(PUZZLE_COUNT_OPTIONS[1]);
-  const [gridSize, setGridSize] = useState("—");
-  const [levels, setLevels] = useState(["Level 1", "Level 2"]);
-  const [aiImage, setAiImage] = useState(true);
-  const [imageStyle, setImageStyle] = useState(IMAGE_STYLE_OPTIONS[0]);
-  const [safety, setSafety] = useState(SAFETY_OPTIONS[0]);
-  const [noText, setNoText] = useState(true);
-  const [transcript, setTranscript] = useState(true);
-
-  const removeLevel = (lv) => setLevels((p) => p.filter((x) => x !== lv));
-
-  return (
-    <div
-      className="flex w-full flex-col rounded-[7.5px] border bg-white pt-4 pr-7 pb-4 pl-[27px]"
-      style={{ borderWidth: "0.75px", borderColor: BORDER }}
-    >
-      {/* ROW 1 — 5 items */}
-      <div className="flex items-start gap-[10px]">
-        <div className="w-[180px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Passage / Topic</label>
-          <div className="relative">
-            <select value={passage} onChange={(e) => setPassage(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {PASSAGE_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[180px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>AI Narration Voice</label>
-          <div className="relative">
-            <select value={voice} onChange={(e) => setVoice(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {VOICE_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[120px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Audio Length</label>
-          <div className="relative">
-            <select value={audioLength} onChange={(e) => setAudioLength(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {AUDIO_LENGTH_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[120px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Word Bank</label>
-          <div className="relative">
-            <select value={wordBank} onChange={(e) => setWordBank(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {WORD_BANK_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <div className="flex h-[38px] items-center gap-2">
-            <span className="text-[12px] font-bold whitespace-nowrap" style={{ color: HEADING }}>
-              Preserve Verse Wording
-            </span>
-            <Toggle on={preserve} onChange={setPreserve} label="Preserve Verse Wording" />
-          </div>
-        </div>
-      </div>
-
-      {/* divider */}
-      <div className="my-[14px] h-px w-full" style={{ backgroundColor: BORDER }} />
-
-      {/* ROW 2 — 4 items */}
-      <div className="flex items-start gap-[10px]">
-        <div className="w-[150px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Number of Puzzles</label>
-          <div className="relative">
-            <select value={count} onChange={(e) => setCount(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {PUZZLE_COUNT_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[150px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Grid Size</label>
-          <div className="relative">
-            <select
-              disabled
-              value={gridSize}
-              onChange={(e) => setGridSize(e.target.value)}
-              className={`${selectCls} cursor-not-allowed`}
-              style={{ color: GRAY, backgroundColor: "#F9F9FB" }}
-            >
-              <option>—</option>
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[280px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>New Levels</label>
-          <div className="flex h-[38px] w-full items-center gap-1.5 rounded-[6px] border border-[#E5E4EC] bg-white px-2">
-            {levels.map((lv) => (
-              <span
-                key={lv}
-                className="flex h-[24px] shrink-0 items-center gap-1 rounded-[5px] px-2 text-[12px] font-semibold"
-                style={{ backgroundColor: LAVENDER, color: NAVY }}
-              >
-                {lv}
-                <button
-                  type="button"
-                  aria-label={`Remove ${lv}`}
-                  onClick={() => removeLevel(lv)}
-                  className="cursor-pointer"
-                  style={{ color: NAVY }}
-                >
-                  <LuX size={11} />
-                </button>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="min-w-0 flex-1">
-          <label className={lbl} style={{ color: HEADING }}>Puzzles per Level</label>
-          <div
-            className="flex h-[38px] items-center gap-3 rounded-[6px] border border-[#E5E4EC] bg-white px-3 text-[12px]"
-            style={{ color: HEADING }}
-          >
-            {levels.map((lv) => (
-              <span key={lv} className="whitespace-nowrap">
-                <span className="font-bold">{lv}:</span> 1
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ROW 3 — 5 items */}
-      <div className="mt-[10px] flex items-start gap-[10px]">
-        <div className="w-[292px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Generate a unique AI image for every puzzle</label>
-          <div className="flex h-[38px] items-center">
-            <Toggle on={aiImage} onChange={setAiImage} label="Generate a unique AI image for every puzzle" />
-          </div>
-        </div>
-
-        <div className="w-[178px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>AI Image Style</label>
-          <div className="relative">
-            <select value={imageStyle} onChange={(e) => setImageStyle(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {IMAGE_STYLE_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[145px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Image Safety</label>
-          <div className="relative">
-            <select value={safety} onChange={(e) => setSafety(e.target.value)} className={selectCls} style={{ color: HEADING }}>
-              {SAFETY_OPTIONS.map((o) => (<option key={o} value={o}>{o}</option>))}
-            </select>
-            <Chevron />
-          </div>
-        </div>
-
-        <div className="w-[150px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>No text in image</label>
-          <div className="flex h-[38px] items-center">
-            <Toggle on={noText} onChange={setNoText} label="No text in image" />
-          </div>
-        </div>
-
-        <div className="w-[150px] shrink-0">
-          <label className={lbl} style={{ color: HEADING }}>Generate Transcript</label>
-          <div className="flex h-[38px] items-center">
-            <Toggle on={transcript} onChange={setTranscript} label="Generate Transcript" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ==========================================================================
-   PUZZLE CARD
-   ========================================================================== */
-const WAVEFORM = [4, 8, 12, 6, 10, 14, 7, 11, 5, 9, 13, 6, 10, 8, 4, 7, 11, 5, 9, 12, 6, 8, 10, 4, 6, 9, 7, 11, 5, 8];
-
-function ImagePlaceholder({ src, alt }) {
-  if (src) {
-    return (
-      <div
-        className="flex h-[225px] w-[250px] shrink-0 items-center justify-center overflow-hidden rounded-lg"
-        style={{ backgroundColor: "#F3F4F6" }}
-      >
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
-      </div>
-    );
-  }
-  return (
-    <div
-      className="flex h-[225px] w-[250px] shrink-0 items-center justify-center rounded-lg"
-      style={{ backgroundColor: "#F3F4F6" }}
-    >
-      <LuImage size={28} style={{ color: "#9CA3AF" }} aria-hidden />
-    </div>
-  );
-}
+const WAVEFORM = [
+  6, 12, 18, 9, 15, 20, 8, 14, 7, 17, 11, 19, 6, 13, 9, 16, 7, 20, 10, 14, 8, 18, 12, 6, 15, 9,
+  17, 11, 7, 19, 13, 8, 16, 10, 6, 14, 18, 9, 12, 20, 7, 15, 11, 8,
+];
 
 function AudioPlayer() {
   return (
     <div
-      className="mt-3 flex h-[38px] items-center gap-3 rounded-[7px] border px-3"
-      style={{ borderColor: BORDER, backgroundColor: "#FAFAFD" }}
+      className="mt-[12px] flex h-[34px] w-full items-center gap-[8px] rounded-[8px] px-[8px]"
+      style={{ backgroundColor: "#EFEDFB" }}
     >
       <button
         type="button"
         aria-label="Play audio"
-        className="flex h-[26px] w-[26px] shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90"
-        style={{ backgroundColor: NAVY }}
+        className="flex h-[18px] w-[18px] shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90"
+        style={{ backgroundColor: PRIMARY }}
       >
-        <LuPlay size={11} className="text-white" fill="white" aria-hidden />
+        <LuPlay size={8} className="text-white" fill="white" aria-hidden />
       </button>
 
-      <div className="flex h-full min-w-0 flex-1 items-center gap-[3px] overflow-hidden">
+      <div className="flex h-full min-w-0 flex-1 items-center gap-[1px] overflow-hidden">
         {WAVEFORM.map((h, i) => (
           <span
             key={i}
             className="flex-1 rounded-full"
-            style={{ height: h, backgroundColor: i % 4 === 0 ? NAVY : "#B9BAD1", minWidth: "1px" }}
+            style={{ height: h, backgroundColor: PRIMARY, minWidth: "1px" }}
           />
         ))}
       </div>
 
-      <span className="flex-shrink-0 text-[11px] whitespace-nowrap" style={{ color: GRAY }}>
+      <span className="shrink-0 text-[10px] whitespace-nowrap" style={{ color: MUTED }}>
         0:00 / 0:30
       </span>
     </div>
@@ -403,101 +521,44 @@ function AudioPlayer() {
 
 function AudioOption({ option, index, correct }) {
   return (
-    <div className="flex items-start gap-2">
+    <div className="flex items-center gap-[8px]">
       <span
-        className={`mt-[2px] flex h-[16px] w-[16px] shrink-0 items-center justify-center rounded-full ${
-          correct ? "" : "border"
-        }`}
-        style={
-          correct
-            ? { backgroundColor: GREEN }
-            : { borderWidth: "1.5px", borderColor: "#C3C4D4" }
-        }
+        className="flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full"
+        style={{ border: correct ? `1.5px solid ${GREEN}` : "1.5px solid #C3C4D4" }}
       >
-        {correct && <LuCheck size={10} className="text-white" aria-hidden />}
+        {correct && (
+          <span className="h-[6px] w-[6px] rounded-full" style={{ backgroundColor: GREEN }} />
+        )}
       </span>
-      <span className="text-[13px] leading-[1.4]" style={{ color: correct ? GREEN : HEADING }}>
+      <span className="text-[11px] font-medium" style={{ color: correct ? GREEN_TEXT : HEADING }}>
         {`${String.fromCharCode(65 + index)}. ${option}`}
       </span>
     </div>
   );
 }
 
-function AudioPuzzleCard({ level, puzzle, question, options, correctIndex }) {
+function AudioBody({ src, alt, question, options, correctIndex }) {
   return (
-    <div
-      className="flex w-full flex-col rounded-[7.5px] border bg-white pt-[15px] pr-[21px] pb-[28px] pl-5"
-      style={{ minHeight: "413px", borderWidth: "0.75px", borderColor: BORDER }}
-    >
-      {/* top row */}
-      <div className="flex items-start justify-between">
-        <p className="text-[13px] font-bold" style={{ color: HEADING }}>
-          {level} • Puzzle {puzzle}
+    <>
+      <PreviewImage src={src} alt={alt} />
+      <div className="min-w-0 flex-1">
+        <p className="text-[10px] font-medium whitespace-nowrap" style={{ color: HEADING }}>
+          Listen to the audio. Then answer the question.
         </p>
-        <span
-          className="flex h-[20px] items-center rounded-[10px] px-2.5 text-[10px] font-bold tracking-[0.4px]"
-          style={{ backgroundColor: "#E3F7E6", color: GREEN }}
-        >
-          AI IMAGE
-        </span>
-      </div>
 
-      {/* 2-column body — image placeholder left, audio content right */}
-      <div className="mt-3 flex flex-1 items-start gap-5">
-        <ImagePlaceholder src={level === "Level 1" ? sunImg : seaWaterImg} alt={`${level} image`} />
+        <AudioPlayer />
 
-        <div className="min-w-0 flex-1">
-          <p className="text-[13px]" style={{ color: GRAY }}>
-            Listen to the audio. Then answer the question.
-          </p>
+        <p className="mt-[12px] text-[12px] font-semibold" style={{ color: HEADING }}>
+          {question}
+        </p>
 
-          <AudioPlayer />
-
-          <p className="mt-3 text-[14px] font-bold" style={{ color: HEADING }}>
-            {question}
-          </p>
-
-          <div className="mt-2.5 space-y-2">
-            {options.map((opt, i) => (
-              <AudioOption key={`${opt}-${i}`} option={opt} index={i} correct={i === correctIndex} />
-            ))}
-          </div>
+        <div className="mt-[12px] flex flex-col gap-[8px]">
+          {options.map((opt, i) => (
+            <AudioOption key={`${opt}-${i}`} option={opt} index={i} correct={i === correctIndex} />
+          ))}
         </div>
       </div>
-
-      {/* button row 1 */}
-      <div className="mt-3 flex items-center gap-2">
-        <SmallOutline icon={LuRotateCw} label="Regenerate Puzzle" />
-        <SmallOutline icon={LuZap} label="Regenerate Image" />
-        <SmallOutline icon={LuImagePlus} label="Replace Image" />
-      </div>
-
-      {/* button row 2 */}
-      <div className="mt-2 flex items-center gap-2">
-        <SmallOutline icon={LuPencil} label="Edit" />
-        <button
-          type="button"
-          className="flex h-[30px] cursor-pointer items-center gap-1.5 rounded-[6px] px-3 text-[12px] font-bold text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: NAVY }}
-        >
-          <LuCheck size={13} />
-          Publish Approved
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function SmallOutline({ icon: Icon, label }) {
-  return (
-    <button
-      type="button"
-      className="flex h-[30px] cursor-pointer items-center gap-1.5 rounded-[6px] border px-3 text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
-      style={{ borderColor: NAVY, color: NAVY }}
-    >
-      <Icon size={13} />
-      {label}
-    </button>
+    </>
   );
 }
 
@@ -510,120 +571,176 @@ export default function AIGenerateAudioRevelation() {
     HEADER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
   );
 
+  const [passage, setPassage] = useState(PASSAGE_OPTIONS[0]);
+  const [voice, setVoice] = useState(VOICE_OPTIONS[0]);
+  const [audioLength, setAudioLength] = useState(AUDIO_LENGTH_OPTIONS[3]);
+  const [wordBank, setWordBank] = useState(WORD_BANK_OPTIONS[0]);
+  const [preserve, setPreserve] = useState(true);
+  const [count, setCount] = useState(PUZZLE_COUNT_OPTIONS[1]);
+  const [levels, setLevels] = useState(["Level 1", "Level 2"]);
+  const [aiImage, setAiImage] = useState(true);
+  const [imageStyle, setImageStyle] = useState(IMAGE_STYLE_OPTIONS[0]);
+  const [safety, setSafety] = useState(SAFETY_OPTIONS[0]);
+  const [noText, setNoText] = useState(true);
+  const [transcript, setTranscript] = useState(true);
+
+  const removeLevel = (lv) => setLevels((p) => p.filter((x) => x !== lv));
+
+  const headerFields = HEADER_FIELDS.map((f) => ({
+    label: f.label,
+    htmlFor: f.id,
+    control: (
+      <SelectControl
+        id={f.id}
+        value={values[f.id]}
+        onChange={(e) => setValues((p) => ({ ...p, [f.id]: e.target.value }))}
+        options={f.options}
+      />
+    ),
+  }));
+
+  const puzzlesPerLevel = levels.map((lv) => `${lv}: 1`).join("    ");
+
   return (
-    <div
-      className="min-h-[calc(100vh-72px)]"
-      style={{
-        backgroundColor: PAGE_BG,
-        color: HEADING,
-        fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
-      }}
-    >
-      <div className="mx-auto max-w-[1119px] px-5 py-6">
-        {/* page header */}
-        <h1 className="text-[22px] font-bold" style={{ color: HEADING }}>
-          Add / Edit Word Search
-        </h1>
-        <p className="mt-1 text-[14px]" style={{ color: GRAY }}>
-          Choose the activity type and how you want to create it.
-        </p>
-
-        {/* filter fields */}
-        <div className="mt-6 grid grid-cols-5 gap-4">
-          {HEADER_FIELDS.map(({ id, label, options }) => (
-            <div key={id}>
-              <label htmlFor={id} className={lbl} style={{ color: HEADING }}>
-                {label}
-              </label>
-              <div className="relative">
-                <select
-                  id={id}
-                  value={values[id]}
-                  onChange={(e) => setValues((p) => ({ ...p, [id]: e.target.value }))}
-                  className={selectCls}
-                  style={{ color: HEADING }}
-                >
-                  {options.map((o) => (<option key={o} value={o}>{o}</option>))}
-                </select>
-                <Chevron />
-              </div>
-            </div>
-          ))}
-
-          <div>
-            <label htmlFor="points" className={lbl} style={{ color: HEADING }}>
-              Points per Puzzle
-            </label>
+    <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: "#F9FAFE" }}>
+      <div className="mx-auto w-full max-w-[1114px] px-6 pt-6 pb-[48px]">
+        <PageHeader
+          headerFields={headerFields}
+          pointsControl={
             <NumberStepper value={points} onChange={setPoints} label="Points per Puzzle" />
-          </div>
-        </div>
+          }
+          activeTab="AI Generate"
+        />
 
-        <TabsRow />
+        <SectionHeading
+          title="AI Generate - Audio Revelation"
+          subtitle="Generate puzzles with audio clues for listening and answering."
+        />
 
-        {/* section heading */}
-        <h2 className="mt-[30px] text-[22px] font-bold" style={{ color: HEADING }}>
-          AI Generate — Audio Revelation
-        </h2>
-        <p className="mt-1 text-[13px]" style={{ color: GRAY }}>
-          Generate puzzles with audio clues for listening and answering.
-        </p>
+        <FormCard>
+          {/* ROW 1 */}
+          <FormRow>
+            <Field label="Passage / Topic" htmlFor="passage" width="w-[190px]">
+              <SelectControl
+                id="passage"
+                value={passage}
+                onChange={(e) => setPassage(e.target.value)}
+                options={PASSAGE_OPTIONS}
+              />
+            </Field>
+            <Field label="AI Narration Voice" htmlFor="voice" width="w-[180px]">
+              <SelectControl
+                id="voice"
+                value={voice}
+                onChange={(e) => setVoice(e.target.value)}
+                options={VOICE_OPTIONS}
+              />
+            </Field>
+            <Field label="Audio Length" htmlFor="audioLength" width="w-[130px]">
+              <SelectControl
+                id="audioLength"
+                value={audioLength}
+                onChange={(e) => setAudioLength(e.target.value)}
+                options={AUDIO_LENGTH_OPTIONS}
+              />
+            </Field>
+            <Field label="Word Bank" htmlFor="wordBank" width="w-[162px]">
+              <SelectControl
+                id="wordBank"
+                value={wordBank}
+                onChange={(e) => setWordBank(e.target.value)}
+                options={WORD_BANK_OPTIONS}
+              />
+            </Field>
+            <ToggleRight
+              label="Preserve Verse Wording"
+              on={preserve}
+              onChange={setPreserve}
+              className="ml-auto"
+            />
+          </FormRow>
 
-        {/* AI generate form */}
-        <div className="mt-6">
-          <AudioForm />
-        </div>
+          <Divider />
 
-        {/* generated puzzles preview */}
-        <h3 className="mt-8 text-[15px] font-bold" style={{ color: HEADING }}>
-          Generated Puzzles Preview
-        </h3>
+          {/* ROW 2 */}
+          <FormRow>
+            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[168px]">
+              <SelectControl
+                id="numPuzzles"
+                value={count}
+                onChange={(e) => setCount(e.target.value)}
+                options={PUZZLE_COUNT_OPTIONS}
+              />
+            </Field>
+            <Field label="Grid Size" htmlFor="gridSize" width="w-[134px]">
+              <SelectControl id="gridSize" disabled defaultValue="-" options={["-"]} />
+            </Field>
+            <Field label="New Levels" width="flex-1">
+              <LevelsSelect levels={levels} onRemove={removeLevel} />
+            </Field>
+            <Field label="Puzzles per Level" width="w-[274px]">
+              <PuzzlesPerLevel text={puzzlesPerLevel} />
+            </Field>
+          </FormRow>
 
-        <div className="mt-4 grid grid-cols-2 gap-[21px]">
-          <AudioPuzzleCard
-            level="Level 1"
-            puzzle={1}
-            question="1. What did God create in the beginning?"
-            options={["The earth", "The sun", "The heavens and the earth", "The stars"]}
-            correctIndex={2}
-          />
-          <AudioPuzzleCard
-            level="Level 2"
-            puzzle={1}
-            question="2. What did God call the light?"
-            options={["Day", "Day", "Night", "Evening"]}
-            correctIndex={0}
-          />
-        </div>
+          <Divider />
 
-        {/* bottom page actions */}
-        <div className="mt-8 flex items-center justify-between gap-4 pb-6">
-          <button
-            type="button"
-            className="flex h-[44px] cursor-pointer items-center rounded-[6px] border px-4 text-[13px] font-semibold transition-colors hover:bg-[#F0F2FB]"
-            style={{ borderColor: NAVY, color: NAVY }}
-          >
-            Cancel
-          </button>
+          {/* ROW 3 — one horizontal line */}
+          <FormRow gap="gap-[16px]">
+            <ToggleLeft
+              label="Generate a unique AI image for every puzzle"
+              on={aiImage}
+              onChange={setAiImage}
+            />
+            <Field label="AI Image Style" htmlFor="imageStyle" width="w-[155px]">
+              <SelectControl
+                id="imageStyle"
+                value={imageStyle}
+                onChange={(e) => setImageStyle(e.target.value)}
+                options={IMAGE_STYLE_OPTIONS}
+              />
+            </Field>
+            <Field label="Image Safety" htmlFor="imageSafety" width="w-[140px]">
+              <SelectControl
+                id="imageSafety"
+                value={safety}
+                onChange={(e) => setSafety(e.target.value)}
+                options={SAFETY_OPTIONS}
+              />
+            </Field>
+            <ToggleRight label="No text in image" on={noText} onChange={setNoText} />
+            <ToggleRight
+              label="Generate Transcript"
+              on={transcript}
+              onChange={setTranscript}
+              className="ml-auto"
+            />
+          </FormRow>
+        </FormCard>
 
-          <div className="flex items-center gap-2.5">
-            <button
-              type="button"
-              className="flex h-[44px] cursor-pointer items-center gap-2 rounded-[6px] border px-4 text-[13px] font-semibold transition-colors hover:bg-[#F0F2FB]"
-              style={{ borderColor: NAVY, color: NAVY }}
-            >
-              <LuSave size={15} />
-              Save draft
-            </button>
-            <button
-              type="button"
-              className="flex h-[44px] cursor-pointer items-center gap-2 rounded-[6px] px-4 text-[13px] font-bold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: NAVY }}
-            >
-              <LuArrowRight size={15} />
-              Publish Approved
-            </button>
-          </div>
-        </div>
+        <PreviewHeading />
+        <PreviewGrid>
+          <PuzzleCard title="Level 1 - Puzzle 1" actions={<CardActions />}>
+            <AudioBody
+              src={sunImg}
+              alt="Level 1 image"
+              question="1. What did God create in the beginning?"
+              options={["The earth", "The sun", "The heavens and the earth", "The stars"]}
+              correctIndex={2}
+            />
+          </PuzzleCard>
+          <PuzzleCard title="Level 2 - Puzzle 1" actions={<CardActions />}>
+            <AudioBody
+              src={seaWaterImg}
+              alt="Level 2 image"
+              question="2. What did God call the light?"
+              options={["Day", "Day", "Night", "Evening"]}
+              correctIndex={0}
+            />
+          </PuzzleCard>
+        </PreviewGrid>
+
+        <PageFooter />
       </div>
     </div>
   );

@@ -14,18 +14,13 @@ import {
    SHARED STYLES
    ========================================================================== */
 const thCls =
-  "whitespace-nowrap bg-[#F3F4FB] px-[16px] py-[12px] text-left text-[12.5px] font-semibold text-[#4B5563]";
-const tdCls = "whitespace-nowrap px-[16px] py-[12px] text-[13.5px] text-[#2A2A2A]";
+  "whitespace-nowrap border-b border-[color:var(--line)] bg-[#F3F4FB] px-[16px] py-[12px] text-left align-middle text-[14px] font-medium text-[color:var(--text)]";
+const tdCls =
+  "px-[16px] py-[12px] align-middle text-[12px] font-medium text-[color:var(--text-80)]";
 
-function StatusPill({ children, type = "enabled" }) {
-  const styles = {
-    enabled: "bg-[#E6F6EA] text-[#16A34A]",
-    active: "bg-[#E8E7FF] text-[#4338CA]",
-  };
+function StatusPill({ children }) {
   return (
-    <span
-      className={`inline-block rounded-[6px] px-[10px] py-[4px] text-[12px] font-medium ${styles[type]}`}
-    >
+    <span className="inline-flex h-[25px] items-center justify-center gap-[10px] rounded-[8px] border border-[color:var(--success-bd)] bg-[color:var(--success-bg)] px-[12px] py-[4px] text-[12px] font-medium text-[color:var(--success-fg)]">
       {children}
     </span>
   );
@@ -33,20 +28,20 @@ function StatusPill({ children, type = "enabled" }) {
 
 function RowActions() {
   return (
-    <div className="flex items-center gap-[10px]">
+    <div className="flex items-center justify-end gap-[10px]">
       <button
         type="button"
         aria-label="Edit"
-        className="cursor-pointer text-[#9CA3AF] transition hover:text-[#0A1E46]"
+        className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[3px] border-[0.75px] border-[color:var(--border-soft)] bg-white transition hover:bg-[color:var(--hover-soft)]"
       >
-        <PiPencilSimple size={16} />
+        <PiPencilSimple size={16} className="text-[color:var(--text)]" />
       </button>
       <button
         type="button"
         aria-label="Delete"
-        className="cursor-pointer text-[#9CA3AF] transition hover:text-[#EF4444]"
+        className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[3px] border-[0.75px] border-[color:var(--border-soft)] bg-white transition hover:bg-[color:var(--hover-soft)]"
       >
-        <PiTrash size={16} />
+        <PiTrash size={16} className="text-[color:var(--danger)]" />
       </button>
     </div>
   );
@@ -55,12 +50,51 @@ function RowActions() {
 function SelectedRadio({ selected }) {
   return (
     <span
-      className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border-2 ${
-        selected ? "border-[#04127F]" : "border-[#C9CDD6]"
+      className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border ${
+        selected
+          ? "border-2 border-[color:var(--navy)]"
+          : "border border-[#C9CDD6]"
       }`}
     >
-      {selected && <span className="h-[8px] w-[8px] rounded-full bg-[#04127F]" />}
+      {selected && (
+        <span className="h-[8px] w-[8px] rounded-full bg-[color:var(--navy)]" />
+      )}
     </span>
+  );
+}
+
+function OutlineButton({ children, className = "", gap = 9 }) {
+  return (
+    <button
+      type="button"
+      style={{ gap: `${gap}px` }}
+      className={`flex h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-[color:var(--border-soft)] bg-[color:var(--card-bg)] px-[18px] text-[14px] font-semibold text-[color:var(--text)] transition hover:bg-[color:var(--hover-soft)] ${className}`}
+    >
+      <PiPlus size={16} />
+      {children}
+    </button>
+  );
+}
+
+function SectionCard({ title, subtitle, action, className = "", style, gap = 24, children }) {
+  return (
+    <section
+      style={{ ...style, gap: `${gap}px` }}
+      className={`flex flex-col rounded-[7.5px] border-[0.75px] border-[color:var(--border-soft)] bg-[color:var(--card-bg)] ${className}`}
+    >
+      <div className={`flex ${action ? "items-center justify-between gap-[16px]" : ""}`}>
+        <div className="flex h-[40px] flex-col gap-[4px]">
+          <h2 className="text-[16px] font-semibold text-[color:var(--text)]">
+            {title}
+          </h2>
+          <p className="text-[12px] font-normal text-[color:var(--text-60)]">
+            {subtitle}
+          </p>
+        </div>
+        {action}
+      </div>
+      {children}
+    </section>
   );
 }
 
@@ -68,13 +102,13 @@ function SelectedRadio({ selected }) {
    MOCK DATA
    ========================================================================== */
 const VERSIONS = [
-  { name: "New International Version", abbr: "NIV", status: "Enabled", type: "enabled", selected: true },
-  { name: "King James Version", abbr: "KJV", status: "Enabled", type: "enabled", selected: false },
-  { name: "English Standard Version", abbr: "ESV", status: "Enabled", type: "enabled", selected: false },
-  { name: "New Living Translation", abbr: "NLT", status: "Enabled", type: "enabled", selected: false },
-  { name: "New American Standard Bible", abbr: "NASB", status: "Active", type: "active", selected: false },
-  { name: "Amplified Bible", abbr: "AMP", status: "Active", type: "active", selected: false },
-  { name: "Christian Standard Bible", abbr: "CSB", status: "Active", type: "active", selected: false },
+  { name: "New International Version", abbr: "NIV", status: "Enabled", selected: true },
+  { name: "King James Version", abbr: "KJV", status: "Enabled", selected: false },
+  { name: "English Standard Version", abbr: "ESV", status: "Enabled", selected: false },
+  { name: "New Living Translation", abbr: "NLT", status: "Enabled", selected: false },
+  { name: "New American Standard Bible", abbr: "NASB", status: "Active", selected: false },
+  { name: "Amplified Bible", abbr: "AMP", status: "Active", selected: false },
+  { name: "Christian Standard Bible", abbr: "CSB", status: "Active", selected: false },
 ];
 
 const STYLES = [
@@ -97,29 +131,21 @@ const MODERATION = [
     title: "Blocked Words / Topics",
     desc: "Manage blocked words and topics",
     Icon: PiShieldWarning,
-    bg: "#E8E7FF",
-    color: "#4338CA",
   },
   {
     title: "Sensitive Topics",
     desc: "Configure sensitive topic handling",
     Icon: PiWarningOctagon,
-    bg: "#F6ECE3",
-    color: "#C2703A",
   },
   {
     title: "Moderation Rules",
     desc: "Set rules and auto-moderation actions",
     Icon: PiSlidersHorizontal,
-    bg: "#E8F7EC",
-    color: "#22A55A",
   },
   {
     title: "Moderation Rules",
     desc: "Set rules and auto-moderation actions",
     Icon: PiSlidersHorizontal,
-    bg: "#E8F7EC",
-    color: "#22A55A",
   },
 ];
 
@@ -130,35 +156,29 @@ export default function AIExperience() {
   const [selectedVersion, setSelectedVersion] = useState("New International Version");
 
   return (
-    <div className="min-h-screen space-y-[16px] bg-[#F8FAFC] p-6 font-[Inter]">
+    <div className="aie-theme min-h-screen space-y-[16px] bg-[#F8FAFC] p-6 font-[Inter] leading-[100%]">
       {/* Header */}
-      <div>
-        <h1 className="text-[22px] font-bold text-[#0A1E46]">AI Experience Setup</h1>
-        <p className="mt-[2px] text-[13px] font-normal text-[#6B7280]">
-          Configure AI behavior, versions, and moderation.
+      <div className="mx-auto w-[1072px] max-w-full">
+        <h1 className="text-[22px] font-semibold text-[color:var(--text)]">
+          AI Experience Setup
+        </h1>
+        <p className="mt-[8px] text-[16px] font-medium text-[color:var(--text-60)]">
+          Configure how AI behaves and what users experience.
         </p>
       </div>
 
       {/* Card 1: Bible Version Management */}
-      <div className="overflow-hidden rounded-[12px] border border-[#EEF0F5] bg-white">
-        <div className="flex items-center justify-between gap-[16px] border-b border-[#EEF0F5] px-[20px] py-[16px]">
-          <div>
-            <h2 className="text-[14px] font-bold text-[#0A1E46]">
-              Bible Version Management
-            </h2>
-            <p className="mt-[1px] text-[11.5px] text-[#9CA3AF]">
-              Manage available Bible versions for AI responses.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="flex shrink-0 cursor-pointer items-center gap-[6px] rounded-[8px] bg-[#04127F] px-[14px] py-[8px] text-[13px] font-semibold text-white transition hover:bg-[#0a1c68]"
-          >
-            <PiPlus size={15} />
+      <SectionCard
+        title="Bible Version Management"
+        subtitle="Manage available Bible versions for AI responses."
+        className="mx-auto w-[1072px] max-w-full"
+        style={{ padding: "25px 33px 36px" }}
+        action={
+          <OutlineButton className="w-[178px]" gap={10}>
             Add Version
-          </button>
-        </div>
-
+          </OutlineButton>
+        }
+      >
         <div className="overflow-x-auto">
           <table className="w-full min-w-[720px] border-collapse text-left">
             <thead>
@@ -172,11 +192,11 @@ export default function AIExperience() {
             </thead>
             <tbody>
               {VERSIONS.map((v) => (
-                <tr key={v.abbr} className="border-b border-[#F0F1F5] last:border-0">
-                  <td className={`${tdCls} font-semibold text-[#0A1E46]`}>{v.name}</td>
-                  <td className={`${tdCls} font-semibold text-[#0A1E46]`}>{v.abbr}</td>
+                <tr key={v.abbr}>
+                  <td className={tdCls}>{v.name}</td>
+                  <td className={tdCls}>{v.abbr}</td>
                   <td className={tdCls}>
-                    <StatusPill type={v.type}>{v.status}</StatusPill>
+                    <StatusPill>{v.status}</StatusPill>
                   </td>
                   <td className={tdCls}>
                     <button
@@ -196,158 +216,135 @@ export default function AIExperience() {
             </tbody>
           </table>
         </div>
-      </div>
+      </SectionCard>
 
       {/* Card 2: Response Style Management */}
-      <div className="overflow-hidden rounded-[12px] border border-[#EEF0F5] bg-white">
-        <div className="border-b border-[#EEF0F5] px-[20px] py-[16px]">
-          <h2 className="text-[14px] font-bold text-[#0A1E46]">
-            Response Style Management
-          </h2>
-          <p className="mt-[1px] text-[11.5px] text-[#9CA3AF]">
-            Manage the style and tone of AI responses.
-          </p>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[620px] border-collapse text-left">
-            <thead>
-              <tr>
-                <th className={thCls}>Style</th>
-                <th className={thCls}>Description</th>
-                <th className={thCls}>Status</th>
-                <th className={`${thCls} text-right`}>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {STYLES.map((s) => (
-                <tr key={s.name} className="border-b border-[#F0F1F5] last:border-0">
-                  <td className={`${tdCls} font-semibold text-[#0A1E46]`}>{s.name}</td>
-                  <td className="px-[16px] py-[12px] text-[13.5px] text-[#6B7280]">
-                    {s.desc}
-                  </td>
-                  <td className={tdCls}>
-                    <StatusPill>Enabled</StatusPill>
-                  </td>
-                  <td className={`${tdCls} text-right`}>
-                    <RowActions />
-                  </td>
+      <SectionCard
+        title="Response Style Management"
+        subtitle="Manage the style and tone of AI responses."
+        className="mx-auto w-[1072px] max-w-full"
+        style={{ padding: "25px 33px 36px" }}
+      >
+        <div className="flex flex-col gap-[20px]">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[620px] border-collapse text-left">
+              <thead>
+                <tr>
+                  <th className={thCls}>Style</th>
+                  <th className={thCls}>Description</th>
+                  <th className={thCls}>Status</th>
+                  <th className={`${thCls} text-right`}>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {STYLES.map((s) => (
+                  <tr key={s.name}>
+                    <td className={tdCls}>{s.name}</td>
+                    <td className="px-[16px] py-[12px] align-middle text-[12px] font-normal text-[color:var(--text-60)]">
+                      {s.desc}
+                    </td>
+                    <td className={tdCls}>
+                      <StatusPill>Enabled</StatusPill>
+                    </td>
+                    <td className={`${tdCls} text-right`}>
+                      <RowActions />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <div className="px-[20px] py-[16px]">
-          <button
-            type="button"
-            className="flex cursor-pointer items-center gap-[6px] rounded-[8px] border border-[#04127F] bg-white px-[14px] py-[8px] text-[13px] font-semibold text-[#04127F] transition hover:bg-[#04127F]/5"
-          >
-            <PiPlus size={15} />
-            Add New
-          </button>
+          <div>
+            <OutlineButton>Add New</OutlineButton>
+          </div>
         </div>
-      </div>
+      </SectionCard>
 
       {/* Two column row */}
-      <div className="grid grid-cols-1 items-stretch gap-[16px] lg:grid-cols-2">
+      <div className="mx-auto flex w-full flex-col gap-[24px] xl:w-[1066px] xl:max-w-full xl:flex-row xl:items-start">
         {/* Left: Homepage Prompt Suggestions */}
-        <div className="overflow-hidden rounded-[12px] border border-[#EEF0F5] bg-white">
-          <div className="border-b border-[#EEF0F5] px-[20px] py-[16px]">
-            <h2 className="text-[14px] font-bold text-[#0A1E46]">
-              Homepage Prompt Suggestions
-            </h2>
-            <p className="mt-[1px] text-[11.5px] text-[#9CA3AF]">
-              Manage prompt suggestions shown on the homepage.
-            </p>
+        <SectionCard
+          title="Bible Version Management"
+          subtitle="Manage available Bible versions for AI responses."
+          className="w-full xl:w-[521px]"
+          style={{ padding: "20px" }}
+          gap={10}
+        >
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr>
+                  <th className={thCls}>Homepage Prompt Suggestions</th>
+                  <th className={`${thCls} text-right`}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PROMPTS.map((prompt, i) => (
+                  <tr key={prompt}>
+                    <td className={tdCls}>
+                      {i + 1}. {prompt}
+                    </td>
+                    <td className={`${tdCls} text-right`}>
+                      <RowActions />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
-          <div className="divide-y divide-[#F0F1F5]">
-            {PROMPTS.map((prompt, i) => (
-              <div
-                key={prompt}
-                className="flex items-center justify-between gap-[12px] px-[20px] py-[12px]"
-              >
-                <div className="flex min-w-0 items-center gap-[12px]">
-                  <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full bg-[#F3F4FB] text-[12px] font-semibold text-[#0A1E46]">
-                    {i + 1}
-                  </span>
-                  <p className="truncate text-[13.5px] font-medium text-[#0A1E46]">
-                    {prompt}
-                  </p>
-                </div>
-                <RowActions />
-              </div>
-            ))}
+          <div>
+            <OutlineButton>Add Prompt</OutlineButton>
           </div>
-
-          <div className="px-[20px] py-[16px]">
-            <button
-              type="button"
-              className="flex cursor-pointer items-center gap-[6px] rounded-[8px] border border-[#04127F] bg-white px-[14px] py-[8px] text-[13px] font-semibold text-[#04127F] transition hover:bg-[#04127F]/5"
-            >
-              <PiPlus size={15} />
-              Add Prompt
-            </button>
-          </div>
-        </div>
+        </SectionCard>
 
         {/* Right: Content Moderation / Blocking */}
-        <div className="overflow-hidden rounded-[12px] border border-[#EEF0F5] bg-white">
-          <div className="border-b border-[#EEF0F5] px-[20px] py-[16px]">
-            <h2 className="text-[14px] font-bold text-[#0A1E46]">
-              Content Moderation / Blocking
-            </h2>
-            <p className="mt-[1px] text-[11.5px] text-[#9CA3AF]">
-              Restrict or warn users against certain content.
-            </p>
-          </div>
-
-          <div className="divide-y divide-[#F0F1F5] px-[20px]">
+        <SectionCard
+          title="Content Moderation / Blocking"
+          subtitle="Restrict or warn users against certain content."
+          className="w-full xl:w-[521px]"
+          style={{ padding: "20px" }}
+          gap={10}
+        >
+          <div className="flex flex-col gap-[12px]">
             {MODERATION.map((m, i) => (
               <button
                 key={i}
                 type="button"
-                className="flex w-full cursor-pointer items-center justify-between gap-[12px] py-[12px] text-left transition hover:bg-[#F8FAFC]"
+                className="flex h-[77px] w-full cursor-pointer items-center justify-between gap-[12px] rounded-[7.5px] border-[0.75px] border-[color:var(--border-soft)] bg-white px-[10px] text-left transition hover:bg-[color:var(--hover-soft)]"
               >
-                <div className="flex min-w-0 items-center gap-[12px]">
-                  <div
-                    className="flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[8px]"
-                    style={{ backgroundColor: m.bg }}
-                  >
-                    <m.Icon size={17} style={{ color: m.color }} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-[13.5px] font-semibold text-[#0A1E46]">
+                <span className="flex min-w-0 items-center gap-[12px]">
+                  <span className="flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[8px] bg-[color:var(--icon-bg)] text-[color:var(--icon)]">
+                    <m.Icon size={17} />
+                  </span>
+                  <span className="flex h-[32px] min-w-0 flex-col justify-center gap-[2px]">
+                    <span className="text-[14px] font-semibold text-[color:var(--text)]">
                       {m.title}
-                    </p>
-                    <p className="truncate text-[12px] text-[#6B7280]">{m.desc}</p>
-                  </div>
-                </div>
-                <PiCaretRight size={15} className="shrink-0 text-[#9CA3AF]" />
+                    </span>
+                    <span className="text-[12px] font-normal text-[color:var(--text-60)]">
+                      {m.desc}
+                    </span>
+                  </span>
+                </span>
+                <PiCaretRight size={15} className="shrink-0 text-[color:var(--text-60)]" />
               </button>
             ))}
           </div>
 
-          <div className="px-[20px] py-[16px]">
-            <button
-              type="button"
-              className="flex cursor-pointer items-center gap-[6px] rounded-[8px] border border-[#04127F] bg-white px-[14px] py-[8px] text-[13px] font-semibold text-[#04127F] transition hover:bg-[#04127F]/5"
-            >
-              <PiPlus size={15} />
-              Add New
-            </button>
+          <div>
+            <OutlineButton className="w-[141px]">Add New</OutlineButton>
           </div>
-        </div>
+        </SectionCard>
       </div>
 
       {/* Bottom: Save All Changes */}
-      <div className="flex justify-end">
+      <div className="mx-auto flex w-[1072px] max-w-full justify-end">
         <button
           type="button"
-          className="flex cursor-pointer items-center gap-[8px] rounded-[8px] bg-[#04127F] px-[20px] py-[10px] text-[13px] font-semibold text-white transition hover:bg-[#0a1c68]"
+          className="flex h-[42px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[color:var(--navy)] px-[20px] text-[14px] font-semibold text-white transition hover:bg-[#0a1c68]"
         >
-          <PiFloppyDisk size={15} />
+          <PiFloppyDisk size={16} />
           Save All Changes
         </button>
       </div>

@@ -11,13 +11,16 @@ import {
   FiInfo,
   FiSearch,
 } from "react-icons/fi";
+import johnDoeImg from "../../../assets/StreakManagemnetSvgs/John Doe.png";
+import sarahJImg from "../../../assets/StreakManagemnetSvgs/Sarah J..png";
+import michaelRImg from "../../../assets/StreakManagemnetSvgs/Michael R..png";
+import emilyKImg from "../../../assets/StreakManagemnetSvgs/Emily K..png";
+import davidLImg from "../../../assets/StreakManagemnetSvgs/David L..png";
+import rachelMImg from "../../../assets/StreakManagemnetSvgs/Rachel M..png";
 
 /* Figma tokens for this page */
-const NAVY = "#0A0847";
-const PRIMARY = "#041581";
+const TEXT = "#0A0847";
 const PAGE_BG = "#F9FAFE";
-const INFO_BG = "#F4F5FA";
-const MUTED = "#6B668F";
 
 const TABS = ["Streak Settings", "User Streak Records"];
 
@@ -31,7 +34,7 @@ const USERS = [
     name: "John Doe",
     email: "john.doe@daily.com",
     initials: "JD",
-    avatar: "https://i.pravatar.cc/160?img=12",
+    avatar: johnDoeImg,
     tint: "bg-[#E8EDFB] text-[#041581]",
     current: "12 days",
     longest: "34 days",
@@ -42,7 +45,7 @@ const USERS = [
     name: "Sarah J.",
     email: "sarah.j@daily.com",
     initials: "SJ",
-    avatar: "https://i.pravatar.cc/160?img=47",
+    avatar: sarahJImg,
     tint: "bg-[#FBE9F0] text-[#A61E62]",
     current: "7 days",
     longest: "28 days",
@@ -53,7 +56,7 @@ const USERS = [
     name: "Michael R.",
     email: "michael.r@daily.com",
     initials: "MR",
-    avatar: "https://i.pravatar.cc/160?img=33",
+    avatar: michaelRImg,
     tint: "bg-[#E6F6EE] text-[#12734A]",
     current: "1 day",
     longest: "12 days",
@@ -64,7 +67,7 @@ const USERS = [
     name: "Emily K.",
     email: "emily.k@daily.com",
     initials: "EK",
-    avatar: "https://i.pravatar.cc/160?img=26",
+    avatar: emilyKImg,
     tint: "bg-[#FDF0E4] text-[#9A5B12]",
     current: "0 days",
     longest: "45 days",
@@ -75,7 +78,7 @@ const USERS = [
     name: "David L.",
     email: "david.l@daily.com",
     initials: "DL",
-    avatar: "https://i.pravatar.cc/160?img=52",
+    avatar: davidLImg,
     tint: "bg-[#EDEBFB] text-[#4B32B8]",
     current: "20 days",
     longest: "20 days",
@@ -86,7 +89,7 @@ const USERS = [
     name: "Rachel M.",
     email: "rachel.m@daily.com",
     initials: "RM",
-    avatar: "https://i.pravatar.cc/160?img=44",
+    avatar: rachelMImg,
     tint: "bg-[#E4F1F7] text-[#14607F]",
     current: "3 days",
     longest: "50 days",
@@ -96,8 +99,8 @@ const USERS = [
 ];
 
 const STATUS_STYLES = {
-  Active: "bg-[#E9F8E8] text-[#29C31E] border-[#C6EFC3]",
-  Inactive: "bg-[#F8EAEC] text-[#C44552] border-[#F2D3D7]",
+  Active: "bg-[rgba(33,172,28,0.1)] text-[#21AC1C]",
+  Inactive: "bg-[#F8EAEC] text-[#C44552]",
 };
 
 const HOW_IT_WORKS = [
@@ -108,24 +111,34 @@ const HOW_IT_WORKS = [
 ];
 
 /* 6 columns: Story | Current | Longest | Last Activity | Status | Actions */
-const GRID = "grid grid-cols-[minmax(190px,1fr)_118px_118px_186px_104px_92px] items-center gap-4";
+const GRID =
+  "grid grid-cols-[minmax(190px,1fr)_repeat(5,146px)] items-center gap-4";
 
-function Select({ value, onChange, options, className = "" }) {
+function Select({
+  value,
+  onChange,
+  options,
+  className = "",
+  selectClassName = "",
+  showChevron = true,
+}) {
   return (
     <div className={`relative ${className}`}>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-[38px] w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white py-0 pr-9 pl-3 text-[13px] text-[#0A0847] outline-none transition focus:border-[#041581]"
+        className={`h-full w-full cursor-pointer appearance-none border border-[#E2DFFC] bg-white outline-none transition focus:border-[#001984] ${selectClassName}`}
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
         ))}
       </select>
-      <FiChevronDown
-        size={14}
-        className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[#8B87AD]"
-      />
+      {showChevron && (
+        <FiChevronDown
+          size={14}
+          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[#8B87AD]"
+        />
+      )}
     </div>
   );
 }
@@ -136,7 +149,7 @@ function Avatar({ initials, tint, src, name }) {
   if (!src || failed) {
     return (
       <span
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${tint}`}
+        className={`flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${tint}`}
       >
         {initials}
       </span>
@@ -148,7 +161,7 @@ function Avatar({ initials, tint, src, name }) {
       src={src}
       alt={name}
       onError={() => setFailed(true)}
-      className="h-10 w-10 shrink-0 rounded-full bg-[#F1F2F8] object-cover"
+      className="h-[38px] w-[38px] shrink-0 rounded-full bg-[#F1F2F8] object-cover"
     />
   );
 }
@@ -171,10 +184,10 @@ function StreakTable() {
   return (
     <>
       {/* ---------------- filter row ---------------- */}
-      <div className="mt-6 flex flex-wrap items-center gap-3">
-        <div className="relative min-w-[240px] flex-1">
+      <div className="flex h-10 items-center justify-between gap-3">
+        <div className="relative w-[340px] shrink-0">
           <FiSearch
-            size={15}
+            size={16}
             className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[#8B87AD]"
           />
           <input
@@ -182,196 +195,193 @@ function StreakTable() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by name or email..."
-            className="h-[38px] w-full rounded-lg border border-[#E5E4EC] bg-white pr-3 pl-9 text-[13px] text-[#0A0847] outline-none transition placeholder:text-[#8B87AD] focus:border-[#041581]"
+            className={`h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-3 pl-10 text-[13px] text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]`}
           />
         </div>
 
-        <Select
-          value={status}
-          onChange={setStatus}
-          options={STATUS_OPTIONS}
-          className="w-[168px]"
-        />
-        <Select
-          value={TIER_OPTIONS[0]}
-          onChange={setTier}
-          options={TIER_OPTIONS}
-          className="w-[132px]"
-        />
+        <div className="flex shrink-0 items-center gap-3">
+          <Select
+            value={status}
+            onChange={setStatus}
+            options={STATUS_OPTIONS}
+            className="h-10 w-[183px] rounded-[7.47px]"
+            selectClassName={`rounded-[7.47px] py-0 pr-[50px] pl-3 text-[13px] font-medium text-[#0A0847CC]`}
+          />
+          <Select
+            value={TIER_OPTIONS[0]}
+            onChange={setTier}
+            options={TIER_OPTIONS}
+            className="h-10 w-[183px] rounded-[7.47px]"
+            selectClassName={`rounded-[7.47px] py-0 pr-[50px] pl-3 text-[13px] font-medium text-[#0A0847CC]`}
+          />
 
-        <button
-          type="button"
-          className="flex h-[38px] shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-[#041581] px-4 text-[13px] font-semibold text-white transition hover:bg-[#030F63]"
-        >
-          <FiDownload size={14} /> Export
-        </button>
+          <button
+            type="button"
+            className={`flex h-10 w-[162px] shrink-0 cursor-pointer items-center justify-center gap-[13px] rounded-[7.47px] bg-[#001984] text-[14px] font-medium text-white transition hover:opacity-90`}
+          >
+            <FiDownload size={16} /> Export
+          </button>
+        </div>
       </div>
 
       {/* ---------------- table ---------------- */}
-      <div className="mt-6 w-full max-w-[1067px] rounded-xl border border-[#E5E4EC] bg-white px-6 py-6">
-        <div className={`${GRID} pb-4`}>
-          {["Story", "Current Streak", "Longest Streak", "Last Activity", "Status", "Actions"].map(
+      <div className="mt-8 w-full">
+        <div
+          className={`h-[50px] items-center bg-[#F3F7FD] px-5 text-[14px] font-medium text-[#0A0847CC] ${GRID}`}
+        >
+          <span className="text-left">Story</span>
+          {["Current Streak", "Longest Streak", "Last Activity", "Status", "Actions"].map(
             (h) => (
-              <span key={h} className="text-[14px] font-bold" style={{ color: NAVY }}>
+              <span key={h} className="text-center">
                 {h}
               </span>
             ),
           )}
         </div>
-        <div className="border-b border-[#E5E4EC]" />
 
-        <div className="flex flex-col gap-8 pt-8">
-          {rows.map((u) => (
-            <div key={u.email} className={GRID}>
-              <div className="flex min-w-0 items-center gap-3">
-                <Avatar initials={u.initials} tint={u.tint} src={u.avatar} name={u.name} />
-                <div className="min-w-0">
-                  <p className="truncate text-[14px] font-bold" style={{ color: NAVY }}>
-                    {u.name}
-                  </p>
-                  <p className="mt-0.5 truncate text-[12px]" style={{ color: MUTED }}>
-                    {u.email}
-                  </p>
-                </div>
-              </div>
-
-              <span className="text-[13px]" style={{ color: NAVY }}>
-                {u.current}
-              </span>
-              <span className="text-[13px]" style={{ color: NAVY }}>
-                {u.longest}
-              </span>
-
+        {rows.map((u) => (
+          <div
+            key={u.email}
+            className={`h-[63px] border-b-[0.75px] border-[#E9E9E9] bg-white px-5 ${GRID}`}
+          >
+            <div className="flex min-w-0 items-center gap-2.5">
+              <Avatar initials={u.initials} tint={u.tint} src={u.avatar} name={u.name} />
               <div className="min-w-0">
-                {typeof u.lastActivity === "string" ? (
-                  <span className="text-[13px]" style={{ color: NAVY }}>
-                    {u.lastActivity}
-                  </span>
-                ) : (
-                  <>
-                    <p className="text-[13px] font-bold" style={{ color: NAVY }}>
-                      {u.lastActivity.date}
-                    </p>
-                    <p className="mt-0.5 text-[12px]" style={{ color: MUTED }}>
-                      {u.lastActivity.source}
-                    </p>
-                  </>
-                )}
+                <p
+                  className={`truncate text-[12px] font-semibold text-[#0A0847CC]`}
+                >
+                  {u.name}
+                </p>
+                <p className={`truncate text-[12px] font-medium text-[#0A084799]`}>
+                  {u.email}
+                </p>
               </div>
+            </div>
 
+            <span
+              className={`text-center text-[12px] font-semibold text-[#0A0847CC]`}
+            >
+              {u.current}
+            </span>
+            <span
+              className={`text-center text-[12px] font-semibold text-[#0A0847CC]`}
+            >
+              {u.longest}
+            </span>
+
+            <div className="flex min-w-0 flex-col items-center justify-center text-center">
+              {typeof u.lastActivity === "string" ? (
+                <span
+                  className={`text-[12px] font-semibold text-[#0A0847CC]`}
+                >
+                  {u.lastActivity}
+                </span>
+              ) : (
+                <>
+                  <p
+                    className={`text-[12px] font-semibold text-[#0A0847CC]`}
+                  >
+                    {u.lastActivity.date}
+                  </p>
+                  <p className={`text-[12px] font-medium text-[#0A084799]`}>
+                    {u.lastActivity.source}
+                  </p>
+                </>
+              )}
+            </div>
+
+            <div className="flex justify-center">
               <span
-                className={`w-fit rounded-full border px-3 py-1 text-[12px] font-semibold ${STATUS_STYLES[u.status]}`}
+                className={`flex h-[28px] w-fit items-center rounded-lg px-3 text-[12px] font-medium ${STATUS_STYLES[u.status]}`}
               >
                 {u.status}
               </span>
+            </div>
 
-              <div className="flex items-center gap-2">
+            <div className="flex justify-center">
+              <div className="flex gap-2">
                 <button
                   type="button"
                   aria-label={`View ${u.name}`}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
+                  className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
                 >
-                  <FiEye size={15} />
+                  <FiEye size={16} />
                 </button>
                 <button
                   type="button"
                   aria-label={`Edit ${u.name}`}
-                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
+                  className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
                 >
-                  <FiEdit2 size={15} />
+                  <FiEdit2 size={16} />
                 </button>
               </div>
             </div>
-          ))}
-
-          {rows.length === 0 && (
-            <p className="py-6 text-center text-[13px]" style={{ color: MUTED }}>
-              No streak records match your filters.
-            </p>
-          )}
-        </div>
-
-        {/* ---------------- table footer ---------------- */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-[#E5E4EC] pt-5">
-          <div className="flex items-center gap-2">
-            <span className="text-[13px]" style={{ color: MUTED }}>
-              Display
-            </span>
-            <Select
-              value={pageSize}
-              onChange={setPageSize}
-              options={PAGE_SIZES}
-              className="w-[68px]"
-            />
-            <span className="text-[13px]" style={{ color: MUTED }}>
-              users
-            </span>
           </div>
+        ))}
 
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              aria-label="Previous page"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
-            >
-              <FiChevronLeft size={14} />
-            </button>
-
-            {PAGE_NUMBERS.map((n) => (
-              <button
-                key={n}
-                type="button"
-                onClick={() => setPage(n)}
-                className={`h-8 w-8 cursor-pointer rounded-md text-[13px] font-semibold transition ${
-                  page === n
-                    ? "bg-[#041581] text-white"
-                    : "border border-[#E5E4EC] text-[#0A0847CC] hover:border-[#041581] hover:text-[#041581]"
-                }`}
-              >
-                {n}
-              </button>
-            ))}
-
-            <button
-              type="button"
-              aria-label="Next page"
-              onClick={() => setPage((p) => Math.min(PAGE_NUMBERS.length, p + 1))}
-              className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
-            >
-              <FiChevronRight size={14} />
-            </button>
-          </div>
-        </div>
+        {rows.length === 0 && (
+          <p
+            className={`py-6 text-center text-[13px] text-[#0A084799]`}
+          >
+            No streak records match your filters.
+          </p>
+        )}
       </div>
 
-      {/* ---------------- how streaks work ---------------- */}
-      <div
-        className="mt-6 flex min-h-[175px] w-full max-w-[1066px] flex-col gap-[10px] rounded-lg border border-[#E5E4EC] px-[25px] py-3"
-        style={{ backgroundColor: INFO_BG }}
-      >
+      {/* ---------------- table footer ---------------- */}
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <FiInfo size={16} style={{ color: PRIMARY }} />
-          <h2 className="text-[15px] font-bold" style={{ color: NAVY }}>
-            How Streaks Work
-          </h2>
+          <span className={`text-[12px] font-medium text-[#0A0847CC]`}>
+            Display
+          </span>
+          <Select
+            value={pageSize}
+            onChange={setPageSize}
+            options={PAGE_SIZES}
+            className="h-[28px] w-[42px] rounded-[4px]"
+            selectClassName={`rounded-[4px] px-0 text-center text-[12px] font-normal text-[#0A0847CC]`}
+            showChevron={false}
+          />
+          <span className={`text-[12px] font-normal text-[#0A084799]`}>
+            users
+          </span>
         </div>
 
-        <ul className="flex flex-col gap-1.5">
-          {HOW_IT_WORKS.map((line) => (
-            <li
-              key={line}
-              className="relative pl-4 text-[13px] leading-[1.35]"
-              style={{ color: MUTED }}
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            aria-label="Previous page"
+            disabled={page === 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] text-[#0A0847CC] transition disabled:cursor-not-allowed disabled:opacity-40`}
+          >
+            <FiChevronLeft size={14} />
+          </button>
+
+          {PAGE_NUMBERS.map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => setPage(n)}
+              className={`h-7 w-7 cursor-pointer rounded-[4px] text-[12px] font-medium transition ${
+                page === n
+                  ? `bg-[#001984] text-white`
+                  : `border border-[#E2DFFC] text-[#0A0847CC] hover:border-[#001984]`
+              }`}
             >
-              <span
-                className="absolute top-[6px] left-0 h-[4px] w-[4px] rounded-full"
-                style={{ backgroundColor: MUTED }}
-              />
-              {line}
-            </li>
+              {n}
+            </button>
           ))}
-        </ul>
+
+          <button
+            type="button"
+            aria-label="Next page"
+            onClick={() => setPage((p) => Math.min(PAGE_NUMBERS.length, p + 1))}
+            className={`flex h-7 w-7 cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] text-[#0A0847CC] transition`}
+          >
+            <FiChevronRight size={14} />
+          </button>
+        </div>
       </div>
     </>
   );
@@ -384,47 +394,93 @@ export default function StreakMilestonesRewards() {
   return (
     <div
       className="min-h-[calc(100vh-72px)] font-[Inter]"
-      style={{ backgroundColor: PAGE_BG, color: NAVY }}
+      style={{ backgroundColor: PAGE_BG, color: TEXT }}
     >
-      <div className="mx-auto w-full max-w-[1067px] px-5 py-6">
+      <div className="flex w-full min-w-0 flex-col px-6 py-6">
         {/* ---------------- header ---------------- */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            aria-label="Go back"
-            className="flex cursor-pointer items-center justify-center text-[#0A0847CC] transition hover:text-[#041581]"
-          >
-            <FiArrowLeft size={20} />
-          </button>
-          <h1 className="text-[22px] font-bold leading-tight" style={{ color: NAVY }}>
-            Streak Milestones &amp; Rewards
-          </h1>
+        <div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              aria-label="Go back"
+              className={`flex cursor-pointer items-center justify-center text-[#0A0847CC] transition hover:text-[#001984]`}
+            >
+              <FiArrowLeft size={20} />
+            </button>
+            <h1
+              className={`text-[22px] font-semibold leading-none text-[#0A0847]`}
+            >
+              Streak Milestones &amp; Rewards
+            </h1>
+          </div>
+          <p className={`mt-2 text-[14px] font-medium text-[#0A084799]`}>
+            View and manage user streak records.
+          </p>
         </div>
-        <p className="mt-1.5 text-[14px]" style={{ color: MUTED }}>
-          View and manage user streak records.
-        </p>
 
         {/* ---------------- tabs ---------------- */}
-        <div className="mt-5 flex w-fit items-center gap-1 rounded-xl bg-[#F1F2F8] p-1.5">
-          {TABS.map((t) => (
-            <button
-              key={t}
-              type="button"
-              onClick={() => setTab(t)}
-              className={`cursor-pointer rounded-lg px-6 py-2.5 text-[13px] transition ${
-                tab === t
-                  ? "bg-[#041581] font-bold text-white"
-                  : "font-medium text-[#6B668F] hover:text-[#0A0847]"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+        <div className="mt-[27px]">
+          <div className="flex gap-[10px]">
+            {TABS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTab(t)}
+                className={`flex h-[42px] w-[187px] cursor-pointer items-center justify-center rounded-t-md text-[14px] font-medium transition ${
+                  tab === t
+                    ? `bg-[#001984] text-white`
+                    : `bg-transparent text-[#0A0847CC] hover:text-[#001984]`
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <div className="h-[2px] w-full bg-[#E8E8E8]" />
         </div>
 
         {/* ---------------- tab content ---------------- */}
-        <StreakTable />
+        {tab === TABS[1] ? (
+          <div className="mt-6 border border-dashed border-[#E2DFFC] rounded-lg bg-white p-12 text-center text-xs font-medium text-gray-400">
+            User Streak Records isn't built yet.
+          </div>
+        ) : (
+          <>
+            {/* ---------------- main card ---------------- */}
+            <div
+              className={`mt-6 w-full rounded-lg border border-[#E2DFFC] bg-white p-5`}
+            >
+              <StreakTable />
+            </div>
+
+            {/* ---------------- how streaks work ---------------- */}
+            <div
+              className={`mt-6 flex w-full flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#F4F5FA] px-[25px] py-3`}
+            >
+              <div className="flex items-center gap-2">
+                <FiInfo size={16} className={`text-[#001984]`} />
+                <h2 className={`text-[14px] font-semibold text-[#0A0847]`}>
+                  How Streaks Work
+                </h2>
+              </div>
+
+              <ul className="flex flex-col gap-2">
+                {HOW_IT_WORKS.map((line) => (
+                  <li
+                    key={line}
+                    className={`relative pl-4 text-[13px] font-medium leading-6 text-[#0A084799]`}
+                  >
+                    <span
+                      className={`absolute top-[10px] left-0 h-[4px] w-[4px] rounded-full bg-[#0A084799]`}
+                    />
+                    {line}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

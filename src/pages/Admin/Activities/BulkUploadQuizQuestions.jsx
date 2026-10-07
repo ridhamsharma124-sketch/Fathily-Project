@@ -11,8 +11,8 @@ import {
   LuTrash2,
   LuBookOpen,
   LuChevronDown,
+  LuChevronRight,
 } from "react-icons/lu";
-import { Breadcrumb } from "./quizShared";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -28,15 +28,15 @@ const STAT_CARDS = [
     value: "18",
     label: "Ready",
     icon: LuCircleCheck,
-    iconWrap: "bg-[#DCFCE7]",
-    iconColor: "text-[#16A34A]",
+    iconWrap: "bg-[#21AC1C]/10",
+    iconColor: "text-[#21AC1C]",
   },
   {
     key: "errors",
     value: "2",
     label: "Errors",
     icon: LuTriangleAlert,
-    iconWrap: "bg-[#FEE2E2]",
+    iconWrap: "bg-[#DC2626]/10",
     iconColor: "text-[#DC2626]",
   },
   {
@@ -44,22 +44,12 @@ const STAT_CARDS = [
     value: "0",
     label: "Duplicates",
     icon: LuFileText,
-    iconWrap: "bg-[#E0F2FE]",
-    iconColor: "text-[#2563EB]",
+    iconWrap: "bg-[#2270AD]/10",
+    iconColor: "text-[#2270AD]",
   },
 ];
 
 const READY_COUNT = STAT_CARDS.find((stat) => stat.key === "ready")?.value ?? "0";
-
-const TABLE_HEADERS = [
-  "",
-  "No.",
-  "Description",
-  "Correct Answer",
-  "Bible Reference",
-  "Status",
-  "Actions",
-];
 
 const TABLE_ROWS = [
   {
@@ -107,37 +97,62 @@ const TABLE_ROWS = [
 ];
 
 /* ==========================================================================
-   PAGE-LOCAL STYLES
+   PAGE-LOCAL STYLES (quizShared.jsx left untouched for other pages)
    ========================================================================== */
-const labelCls = "mb-1.5 block text-[13px] font-semibold text-[#0A0847]";
+const labelCls = "mb-1.5 block text-[12px] font-semibold text-[#0A0847]";
 
-const inputCls =
-  "h-11 w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white pl-4 pr-10 text-[13px] text-[#0A0847AA] outline-none transition focus:border-[#041581]";
+const fieldCls =
+  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
+
+const stepButton =
+  "flex h-12 min-w-[152px] w-fit shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 py-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
 
 const outlineButton =
-  "flex h-11 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-8 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
-
-const outlineSmButton =
-  "flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-6 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-12 w-[152px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
 
 const purpleButton =
-  "flex h-11 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4C1DD6] px-6 text-[13px] font-semibold text-white transition-colors hover:bg-[#4318B8]";
+  "flex h-12 w-[174px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90";
 
 const formatSize = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
+
+/* columns: checkbox | No. | Description | Correct Answer | Bible Reference | Status | Actions */
+const TABLE_GRID =
+  "grid grid-cols-[48px_56px_minmax(0,1fr)_120px_130px_100px_104px] items-center gap-3 px-4";
 
 /* ==========================================================================
    SUB-COMPONENTS
    ========================================================================== */
-function LocationChip() {
+function Breadcrumb({ items }) {
   return (
-    <div className="flex w-full items-center gap-2.5 rounded-lg border border-[#E5E4EC] bg-[#F3F3F7] px-4 py-2.5">
+    <nav aria-label="Breadcrumb">
+      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+        {items.map((item, index) => {
+          const isLast = index === items.length - 1;
+          return (
+            <li key={item} className="flex items-center gap-1.5">
+              {index > 0 && (
+                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
+              )}
+              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
+  );
+}
+
+function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
+  return (
+    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
       <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
-      <p className="text-[13px]">
-        <span className="font-bold text-[#0A0847]">New Testament</span>
-        <span className="px-1.5 text-[#0A084766]">&gt;</span>
-        <span className="font-bold text-[#0A0847]">John</span>
-        <span className="px-1.5 text-[#0A084766]">&gt;</span>
-        <span className="font-bold text-[#0A0847]">Chapter 3</span>
+      <p className="text-[13px] leading-[22px]">
+        {parts.map((part, index) => (
+          <span key={part}>
+            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
+            <span className="font-bold text-[#0A0847]">{part}</span>
+          </span>
+        ))}
       </p>
     </div>
   );
@@ -145,20 +160,22 @@ function LocationChip() {
 
 function StepRow({ step, title, description, headerRight, children }) {
   return (
-    <section className="rounded-lg border border-[#E5E4EC] bg-white px-5 py-4">
+    <section className="flex w-full flex-col gap-2.5 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3.5">
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#041581] text-[13px] font-bold text-white">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] font-semibold text-white">
             {step}
           </span>
           <div className="min-w-0">
-            <h2 className="text-[15px] font-bold text-[#0A0847]">{title}</h2>
-            <p className="mt-0.5 text-[12px] text-[#0A084799]">{description}</p>
+            <h2 className="text-[14px] font-semibold text-[#0A0847]">{title}</h2>
+            <p className="mt-0.5 text-[12px] font-medium text-[#0A0847]/60">
+              {description}
+            </p>
           </div>
         </div>
         {headerRight}
       </div>
-      {children ? <div className="mt-4">{children}</div> : null}
+      {children}
     </section>
   );
 }
@@ -188,7 +205,7 @@ export default function BulkUploadQuizQuestions() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="mx-auto max-w-[1200px] space-y-5 px-5 py-6">
+      <div className="flex w-full min-w-0 flex-col px-5 py-6">
         <Breadcrumb
           items={[
             "Bible Content",
@@ -200,15 +217,15 @@ export default function BulkUploadQuizQuestions() {
           ]}
         />
 
-        <h1 className="text-[22px] font-bold text-[#0A0847]">
+        <h1 className="mt-5 text-[22px] font-semibold text-[#0A0847]">
           Bulk Upload Quiz Questions
         </h1>
 
-        {/* TOP AREA — chip and select share one width */}
-        <div className="w-full max-w-[533px]">
+        {/* TOP — chip (hug) + question type select */}
+        <div className="mt-5">
           <LocationChip />
 
-          <div className="mt-4">
+          <div className="mt-4 w-[535px] max-w-full">
             <label htmlFor="q-type" className={labelCls}>
               Question Type <span className="text-[#E11D48]">*</span>
             </label>
@@ -217,7 +234,7 @@ export default function BulkUploadQuizQuestions() {
                 id="q-type"
                 value={questionType}
                 onChange={(e) => setQuestionType(e.target.value)}
-                className={inputCls}
+                className={`${fieldCls} cursor-pointer appearance-none`}
               >
                 {QUESTION_TYPE_OPTIONS.map((option) => (
                   <option key={option} value={option}>
@@ -227,11 +244,11 @@ export default function BulkUploadQuizQuestions() {
               </select>
               <LuChevronDown
                 size={16}
-                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A084799]"
+                className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
                 aria-hidden
               />
             </div>
-            <p className="mt-[6px] text-[12px] italic text-[#0A084799]">
+            <p className="mt-1.5 text-[10px] text-[#0A0847]/60">
               Choose the question type before uploading.
             </p>
           </div>
@@ -245,107 +262,121 @@ export default function BulkUploadQuizQuestions() {
           onChange={(e) => acceptFiles(e.target.files)}
         />
 
-        {/* STEP 1 */}
-        <StepRow
-          step={1}
-          title="Download CSV Template"
-          description="Download the template file to enter your questions."
-          headerRight={
-            <button type="button" className={outlineSmButton}>
-              <LuDownload size={15} />
-              Download Template
-            </button>
-          }
-        />
+        {/* STEP CARDS — 16px between cards */}
+        <div className="mt-5 flex flex-col gap-4">
+          {/* STEP 1 */}
+          <StepRow
+            step={1}
+            title="Download CSV Template"
+            description="Download the template file to enter your questions."
+            headerRight={
+              <button type="button" className={stepButton}>
+                <LuDownload size={16} className="shrink-0" />
+                Download Template
+              </button>
+            }
+          />
 
-        {/* STEP 2 — clickable / drag-and-drop dropzone */}
-        <StepRow
-          step={2}
-          title="Upload Completed CSV"
-          description="Upload your filled data (CSV format)."
-        >
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={openPicker}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
+          {/* STEP 2 — clickable / drag-and-drop dropzone */}
+          <StepRow
+            step={2}
+            title="Upload Completed CSV"
+            description="Upload your filled data (CSV format)."
+          >
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={openPicker}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  openPicker();
+                }
+              }}
+              onDragEnter={(e) => {
                 e.preventDefault();
-                openPicker();
-              }
-            }}
-            onDragEnter={(e) => {
-              e.preventDefault();
-              dragDepth.current += 1;
-              setDragActive(true);
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragActive(true);
-            }}
-            onDragLeave={(e) => {
-              e.preventDefault();
-              dragDepth.current -= 1;
-              if (dragDepth.current <= 0) {
+                dragDepth.current += 1;
+                setDragActive(true);
+              }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragActive(true);
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault();
+                dragDepth.current -= 1;
+                if (dragDepth.current <= 0) {
+                  dragDepth.current = 0;
+                  setDragActive(false);
+                }
+              }}
+              onDrop={(e) => {
+                e.preventDefault();
                 dragDepth.current = 0;
                 setDragActive(false);
-              }
-            }}
-            onDrop={(e) => {
-              e.preventDefault();
-              dragDepth.current = 0;
-              setDragActive(false);
-              acceptFiles(e.dataTransfer.files);
-            }}
-            className={`flex cursor-pointer flex-row items-center justify-center gap-3 rounded-xl border border-dashed border-[1.5px] border-[#041581] px-6 py-8 transition-colors ${
-              dragActive ? "bg-[#E4E4F7]" : "bg-[#F3F1FC] hover:bg-[#EFEDF9]"
-            }`}
-          >
-            <LuCloudUpload size={28} className="shrink-0 text-[#041581]" aria-hidden />
-
-            <div className="text-left">
-              <p className="text-[14px] font-bold text-[#0A0847]">
-                Drag and drop your file here
-              </p>
-              <p className="mt-0.5 text-[11px] text-[#0A084799]">or</p>
-              <p className="mt-0.5 text-[11px] text-[#0A084799]">Supported format: .csv</p>
-            </div>
-
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                openPicker();
+                acceptFiles(e.dataTransfer.files);
               }}
-              className="ml-12 flex h-10 w-[130px] shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#041581] bg-white text-[13px] font-semibold text-[#041581] transition-colors hover:bg-[#F1F1F9]"
+              className={`relative mx-auto flex h-[147px] w-full max-w-[874px] cursor-pointer items-center justify-between rounded-lg border border-dashed border-[#001984] px-8 transition-colors ${
+                dragActive ? "bg-[#E4E4F7]" : "bg-[#F3F4FF] hover:bg-[#EFEDF9]"
+              }`}
             >
-              Browse File
-            </button>
-          </div>
-        </StepRow>
+              <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3">
+                <LuCloudUpload size={40} className="shrink-0 text-[#001984]" aria-hidden />
+                <div className="text-center">
+                  <p className="text-[16px] font-semibold text-[#0A0847]">
+                    Drag and drop your file here
+                  </p>
+                  <p className="mt-0.5 text-[12px] text-[#0A0847]/60">or</p>
+                  <p className="mt-0.5 text-[12px] text-[#0A0847]/60">
+                    Supported format: .csv
+                  </p>
+                </div>
+              </div>
 
-        {/* STEP 3 */}
-        <StepRow
-          step={3}
-          title="Validate Results"
-          description="Review your file to confirm for errors before importing."
-          headerRight={
-            <button type="button" className={outlineSmButton}>
-              <LuSearch size={15} />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openPicker();
+                }}
+                className="ml-auto flex h-[43px] w-[217px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] p-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]"
+              >
+                Browse File
+              </button>
+            </div>
+          </StepRow>
+
+          {/* STEP 3 — lives inside the combined card below */}
+        </div>
+        {/* COMBINED CARD — Validate Results → file row → stats → table */}
+        <section className="mt-4 flex w-full flex-col gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-3.5">
+              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] font-semibold text-white">
+                3
+              </span>
+              <div className="min-w-0">
+                <h2 className="text-[14px] font-semibold text-[#0A0847]">Validate Results</h2>
+                <p className="mt-0.5 text-[12px] font-medium text-[#0A0847]/60">
+                  Review your file to confirm for errors before importing.
+                </p>
+              </div>
+            </div>
+            <button type="button" className={stepButton}>
+              <LuSearch size={16} className="shrink-0" />
               Validate CSV
             </button>
-          }
-        />
+          </div>
 
-        {/* FILE ROW */}
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-[#F1F1F9] px-4 py-3">
+          {/* FILE ROW */}
+          <div className="flex h-[72px] items-center justify-between gap-3 rounded-lg bg-[#F9F9FF] pr-[31px] pl-5">
           <div className="flex min-w-0 items-center gap-3">
             <LuFileSpreadsheet size={20} className="shrink-0 text-[#16A34A]" aria-hidden />
             <div className="min-w-0">
-              <p className="truncate text-[13px] font-bold text-[#0A0847]">
+              <p className="truncate text-[14px] font-semibold text-[#001984]">
                 {fileName}
               </p>
-              <p className="mt-0.5 text-[12px] text-[#0A084799]">{fileMeta}</p>
+              <p className="mt-0.5 text-[12px] text-[#0A0847]/60">{fileMeta}</p>
             </div>
           </div>
           <LuCircleCheck
@@ -355,25 +386,27 @@ export default function BulkUploadQuizQuestions() {
           />
         </div>
 
-        {/* STAT CARDS — 319×106, radius 8px, 1px border (Figma spec) */}
-        <div className="flex flex-wrap gap-4">
+        {/* STAT CARDS — 3 equal columns filling full width */}
+        <div className="grid grid-cols-3 gap-4">
           {STAT_CARDS.map((stat) => {
             const Icon = stat.icon;
             return (
               <div
                 key={stat.key}
-                className="flex h-[106px] w-[319px] items-center gap-4 rounded-lg border border-[#E5E4EC] bg-white p-4"
+                className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[22px]"
               >
                 <span
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-lg ${stat.iconWrap}`}
+                  className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-xl ${stat.iconWrap}`}
                 >
-                  <Icon size={20} className={stat.iconColor} aria-hidden />
+                  <Icon size={26} className={stat.iconColor} aria-hidden />
                 </span>
-                <div className="min-w-0">
-                  <p className="text-[20px] font-bold leading-none text-[#0A0847]">
+                <div className="flex min-w-0 flex-col gap-2.5">
+                  <p className="text-[22px] leading-none font-semibold text-[#0A0847]">
                     {stat.value}
                   </p>
-                  <p className="mt-1.5 text-[13px] text-[#0A084799]">{stat.label}</p>
+                  <p className="text-[14px] font-medium text-[#0A0847]/60">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             );
@@ -381,98 +414,84 @@ export default function BulkUploadQuizQuestions() {
         </div>
 
         {/* VALIDATION TABLE */}
-        <section className="rounded-lg border border-[#E5E4EC] bg-white">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left">
-              <thead>
-                <tr className="bg-white">
-                  {TABLE_HEADERS.map((header, index) => (
-                    <th
-                      key={header || `blank-${index}`}
-                      scope="col"
-                      className="whitespace-nowrap px-4 py-3 text-[12px] font-semibold text-[#0A0847]"
-                    >
-                      {header || (
-                        <input
-                          type="checkbox"
-                          aria-label="Select all rows"
-                          className="h-4 w-4 cursor-pointer rounded border-[#E5E4EC] accent-[#0A0847]"
-                        />
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {TABLE_ROWS.map((row) => (
-                  <tr
-                    key={row.no}
-                    className="border-t border-[#EEF0F5] transition-colors hover:bg-[#F9F9FF]"
-                  >
-                    <td className="px-4 py-3.5">
-                      <input
-                        type="checkbox"
-                        aria-label={`Select row ${row.no}`}
-                        className="h-4 w-4 cursor-pointer rounded border-[#E5E4EC] accent-[#0A0847]"
-                      />
-                    </td>
-                    <td className="px-4 py-3.5 text-[12px] text-[#0A0847]">{row.no}</td>
-                    <td className="max-w-[180px] px-4 py-3.5 text-[12px] leading-5 text-[#0A0847]">
-                      {row.description}
-                    </td>
-                    <td className="px-4 py-3.5 text-[12px] font-semibold text-[#0A0847]">
-                      {row.answer}
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-3.5 text-[12px] text-[#0A0847]">
-                      {row.reference}
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <span
-                        className={`inline-block rounded-full px-2.5 py-[3px] text-[11px] font-semibold ${
-                          row.status === "Valid"
-                            ? "bg-[#DCFCE7] text-[#16A34A]"
-                            : "bg-[#FEE2E2] text-[#DC2626]"
-                        }`}
-                      >
-                        {row.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <div className="flex items-center gap-2.5">
-                        <button
-                          type="button"
-                          aria-label={`Edit row ${row.no}`}
-                          className="cursor-pointer text-[#041581] transition-opacity hover:opacity-70"
-                        >
-                          <LuPencil size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          aria-label={`Delete row ${row.no}`}
-                          className="cursor-pointer text-[#DC2626] transition-opacity hover:opacity-70"
-                        >
-                          <LuTrash2 size={16} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="w-full overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
+          {/* header */}
+          <div
+            className={`${TABLE_GRID} h-[50px] bg-[#F3F7FD] text-[14px] font-medium text-[#0A0847]/80`}
+          >
+            <div className="flex items-center justify-start">
+              <input
+                type="checkbox"
+                aria-label="Select all rows"
+                className="h-4 w-4 cursor-pointer rounded-[4px] border border-[#E2DFFC] accent-[#001984]"
+              />
+            </div>
+            <div className="text-center">No.</div>
+            <div className="text-center">Description</div>
+            <div className="text-center">Correct Answer</div>
+            <div className="text-center">Bible Reference</div>
+            <div className="text-center">Status</div>
+            <div className="text-center">Actions</div>
           </div>
+
+          {/* rows */}
+          {TABLE_ROWS.map((row) => (
+            <div
+              key={row.no}
+              className={`${TABLE_GRID} h-[63px] border-b-[0.75px] border-[#E9E9E9] bg-white text-[12px] font-medium text-[#0A0847]/80 last:border-b-0`}
+            >
+              <div className="flex items-center justify-start">
+                <input
+                  type="checkbox"
+                  aria-label={`Select row ${row.no}`}
+                  className="h-4 w-4 cursor-pointer rounded-[4px] border border-[#E2DFFC] accent-[#001984]"
+                />
+              </div>
+              <div className="text-center">{row.no}</div>
+              <div className="text-center leading-4">{row.description}</div>
+              <div className="text-center">{row.answer}</div>
+              <div className="text-center">{row.reference}</div>
+              <div className="flex items-center justify-center">
+                <span
+                  className={`flex h-[28px] w-fit items-center rounded-lg px-3 text-[12px] font-medium ${
+                    row.status === "Valid"
+                      ? "bg-[#21AC1C]/10 text-[#21AC1C]"
+                      : "bg-[#FEE2E2] text-[#DC2626]"
+                  }`}
+                >
+                  {row.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-center">
+                <div className="flex w-[72px] gap-2">
+                  <button
+                    type="button"
+                    aria-label={`Edit row ${row.no}`}
+                    className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]"
+                  >
+                    <LuPencil size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Delete row ${row.no}`}
+                    className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#DC2626] transition hover:border-[#DC2626]"
+                  >
+                    <LuTrash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
         </section>
 
         {/* BOTTOM ACTION ROW */}
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-3">
           <button type="button" className={outlineButton}>
             Cancel
           </button>
-          <div className="flex flex-wrap gap-3">
-            <button
-              type="button"
-              onClick={openPicker}
-              className={outlineButton}
-            >
+          <div className="flex flex-wrap items-center gap-4">
+            <button type="button" onClick={openPicker} className={outlineButton}>
               Replace File
             </button>
             <button type="button" className={outlineButton}>

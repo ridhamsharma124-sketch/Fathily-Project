@@ -6,11 +6,18 @@ import {
   LuChevronDown,
   LuChevronLeft,
   LuChevronRight,
-  LuSprout,
-  LuTreePine,
-  LuShield,
-  LuShell,
 } from "react-icons/lu";
+import seedIcon from "../../../assets/tiers/seed.svg";
+import sproutIcon from "../../../assets/tiers/sprout.svg";
+import treeIcon from "../../../assets/tiers/tree.svg";
+import faithfulIcon from "../../../assets/tiers/faithful.svg";
+
+const TIER_ICONS = {
+  seed: seedIcon,
+  sprout: sproutIcon,
+  tree: treeIcon,
+  faithful: faithfulIcon,
+};
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -20,9 +27,6 @@ const TIERS = [
     id: "seed",
     name: "Seed",
     subtitle: "Beginning your faith journey",
-    iconBg: "#E8F5E9",
-    iconColor: "#2E7D32",
-    Glyph: LuShell,
     points: "0–999",
     description: "Starting faith journey",
     benefits: [
@@ -37,9 +41,6 @@ const TIERS = [
     id: "sprout",
     name: "Sprout",
     subtitle: "Growing through God's Word",
-    iconBg: "#F3E8FF",
-    iconColor: "#6B3FA0",
-    Glyph: LuSprout,
     points: "1,000–4,999",
     description: "Building skills and growing spiritually",
     benefits: [
@@ -55,9 +56,6 @@ const TIERS = [
     id: "tree",
     name: "Tree",
     subtitle: "Rooted in Scripture",
-    iconBg: "#E8F5E9",
-    iconColor: "#2E7D32",
-    Glyph: LuTreePine,
     points: "5,000–19,999",
     description: "Deepening your understanding and helping others",
     benefits: [
@@ -73,9 +71,6 @@ const TIERS = [
     id: "faithful",
     name: "Faithful",
     subtitle: "Accomplished and dedicated learner",
-    iconBg: "#FEF9E7",
-    iconColor: "#B7791F",
-    Glyph: LuShield,
     points: "20,000+",
     description: "Making impact and inspiring others",
     benefits: [
@@ -160,19 +155,19 @@ export default function TiersManagement() {
             <table className="w-full min-w-[1000px] border-collapse text-left">
               <thead>
                 <tr className="bg-[#F2F5FC]">
-                  <th scope="col" className="w-[22%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
+                  <th scope="col" className="w-[13%] py-4 pr-4 pl-5 text-left text-[13px] font-bold text-[#0A0847]">
                     Tier
                   </th>
-                  <th scope="col" className="w-[10%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
+                  <th scope="col" className="w-[12%] px-4 py-4 text-left text-[13px] font-bold whitespace-nowrap text-[#0A0847]">
                     Points Range
                   </th>
-                  <th scope="col" className="w-[18%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
+                  <th scope="col" className="w-[20%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
                     Description
                   </th>
-                  <th scope="col" className="w-[30%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
+                  <th scope="col" className="w-[34%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
                     Benefits Unlocked
                   </th>
-                  <th scope="col" className="w-[10%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
+                  <th scope="col" className="w-[11%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
                     Status
                   </th>
                   <th scope="col" className="w-[10%] px-4 py-4 text-[13px] font-bold text-[#0A0847]">
@@ -183,36 +178,25 @@ export default function TiersManagement() {
 
               <tbody>
                 {TIERS.map((tier) => {
-                  const Glyph = tier.Glyph;
-
                   return (
                     <tr
                       key={tier.id}
                       className="border-b border-[#E5E4EC] align-top transition-colors hover:bg-[#FBFBFF]"
                     >
                       {/* Tier */}
-                      <td className="px-4 py-5">
-                        <div className="flex items-center gap-3">
-                          <span
-                            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full"
-                            style={{ backgroundColor: tier.iconBg }}
-                          >
-                            <Glyph
-                              size={24}
-                              style={{ color: tier.iconColor }}
-                              strokeWidth={1.6}
-                              aria-hidden
-                            />
-                          </span>
-
-                          <div className="min-w-0">
-                            <p className="text-[15px] font-bold text-[#0A0847]">
-                              {tier.name}
-                            </p>
-                            <p className="mt-0.5 text-[12px] leading-[1.4] text-[#0A084799]">
-                              {tier.subtitle}
-                            </p>
-                          </div>
+                      <td className="py-5 pr-4 pl-5">
+                        <div className="flex flex-col items-start">
+                          <img
+                            src={TIER_ICONS[tier.id]}
+                            alt=""
+                            className="h-8 w-8 shrink-0"
+                          />
+                          <p className="mt-[6px] text-[12px] font-semibold text-[#0A0847]/80">
+                            {tier.name}
+                          </p>
+                          <p className="mt-0.5 w-[110px] text-[10px] leading-[1.4] text-[#0A0847]/60">
+                            {tier.subtitle}
+                          </p>
                         </div>
                       </td>
 

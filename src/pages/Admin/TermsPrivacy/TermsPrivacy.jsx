@@ -143,7 +143,8 @@ export default function TermsPrivacy() {
   };
 
   const handleMenuAction = (key) => {
-    if (key === "edit") navigate("/admin/terms-privacy/edit");
+    // Edit opens the edit page for the selected document
+    if (key === "edit") navigate(`/admin/terms-privacy/edit?id=${menu.id}`);
     setMenu(null);
   };
 
@@ -164,8 +165,11 @@ export default function TermsPrivacy() {
             Manage legal documents shown to users.
           </p>
         </div>
+
+        {/* Add Document: onClick removed, so it does not open any page for now.
+            To enable create mode later, add:
+            onClick={() => navigate("/admin/terms-privacy/edit?mode=create")} */}
         <button
-          onClick={() => navigate("/admin/terms-privacy/edit?mode=create")}
           className="flex cursor-pointer items-center gap-2 self-start rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#001266] sm:self-auto"
         >
           <LuPlus size={16} />

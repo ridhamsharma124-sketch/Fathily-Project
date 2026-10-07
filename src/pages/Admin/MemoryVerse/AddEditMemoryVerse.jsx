@@ -37,12 +37,13 @@ const INPUT_H = "h-[38px]";
 const LABEL = "text-[12px] font-semibold text-[#1E1B4B]";
 const COUNTER = "text-right text-[11px] italic text-[#6B7280]";
 
-function Field({ label, optional, children, className = "" }) {
+function Field({ label, optional, required, children, className = "" }) {
   return (
     <div className={className}>
       {label && (
         <p className={`${LABEL} mb-[6px]`}>
           {label}
+          {required && <span className="text-[#E53935]"> *</span>}
           {optional && <span className="font-normal text-[#6B7280]"> (Optional)</span>}
         </p>
       )}
@@ -78,8 +79,8 @@ function Select({ value, options, className = "" }) {
 }
 
 /* textarea with the italic counter sitting directly beneath, right aligned */
-function TextArea({ value, max, rows = 2, small, className = "" }) {
-  const len = value.length;
+function TextArea({ value, max, rows = 2, small, count, className = "" }) {
+  const len = count ?? value.length;
   return (
     <div>
       <textarea
@@ -96,7 +97,7 @@ function TextArea({ value, max, rows = 2, small, className = "" }) {
 }
 
 /* single-line field with the counter inside the right edge of the field */
-function InlineCounterInput({ value, max }) {
+function InlineCounterInput({ value, max, count }) {
   return (
     <div className="relative">
       <input
@@ -106,7 +107,7 @@ function InlineCounterInput({ value, max }) {
         className={`${FIELD} ${INPUT_H} pr-[64px]`}
       />
       <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[11px] italic text-[#6B7280]">
-        {value.length}/{max}
+        {count ?? value.length}/{max}
       </span>
     </div>
   );
@@ -201,7 +202,7 @@ const STEP_LIST = [
 
 function StepListCard() {
   return (
-    <div className={`${CARD} pt-[17px] pr-[18px] pb-[17px] pl-[15px]`} style={{ height: 249 }}>
+    <div className={`${CARD} pt-[17px] pr-[18px] pb-[17px] pl-[15px]`}>
       <div className="flex flex-col" style={{ gap: 10 }}>
         {STEP_LIST.map((s) => (
           <div
@@ -393,7 +394,7 @@ export default function AddEditMemoryVerse() {
       style={{ backgroundColor: PAGE_BG }}
     >
       {/* ---------------- page header ---------------- */}
-      <div className="px-[18px] pt-[18px]">
+      <div className="mx-auto w-full max-w-[1090px] px-[18px] pt-[18px]">
         {/* breadcrumb row + back button */}
         <div className="flex items-center" style={{ gap: 10 }}>
           <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full border-[0.75px] border-[#E2DFFC] bg-white">
@@ -489,6 +490,7 @@ export default function AddEditMemoryVerse() {
                   small
                   rows={3}
                   max={1000}
+                  count={133}
                   value="Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go."
                 />
               </Field>
@@ -496,6 +498,7 @@ export default function AddEditMemoryVerse() {
               <Field label="Short Instruction">
                 <InlineCounterInput
                   max={100}
+                  count={99}
                   value="Listen to the verse and choose the correct one."
                 />
               </Field>
@@ -548,7 +551,7 @@ export default function AddEditMemoryVerse() {
                   <Field label="Instruction Text">
                     <TextArea
                       max={100}
-                      rows={2}
+                      rows={3}
                       value="Well done, faithful servant! Keep God's Word in your heart."
                     />
                   </Field>
@@ -574,7 +577,7 @@ export default function AddEditMemoryVerse() {
                 {/* inner column B */}
                 <div className="flex flex-col" style={{ gap: 10 }}>
                   <Field label="Instruction Text">
-                    <div className="flex flex-col" style={{ gap: 8 }}>
+                    <div className="flex flex-wrap items-center" style={{ gap: 16 }}>
                       {["A", "B", "C", "D"].map((k, i) => (
                         <label
                           key={k}
@@ -673,22 +676,22 @@ export default function AddEditMemoryVerse() {
               <p className="text-[14px] font-semibold text-[#1E1B4B]">Completion &amp; Reward</p>
 
               <div className="mt-[10px] flex flex-col" style={{ gap: 10 }}>
-                <Field label="Reward Points *">
+                <Field label="Reward Points" required>
                   <TextInput value="50" readOnly />
                 </Field>
-                <Field label="Completion Title *">
+                <Field label="Completion Title" required>
                   <TextInput value="Verse Memorized!" readOnly />
                 </Field>
-                <Field label="Completion Button Label *">
+                <Field label="Completion Button Label" required>
                   <TextInput value="I Recited It" readOnly />
                 </Field>
-                <Field label="Success Page *">
+                <Field label="Success Page" required>
                   <Select
                     value="Use standard reward success page"
                     options={["Use standard reward success page", "Use custom success page"]}
                   />
                 </Field>
-                <Field label="Next Action *">
+                <Field label="Next Action" required>
                   <Select
                     value="Collect Reward & Continue"
                     options={["Collect Reward & Continue", "Return to Home"]}
@@ -704,10 +707,10 @@ export default function AddEditMemoryVerse() {
               </div>
             </div>
 
-            {/* ---- Card 6 : Publishing (height 494) ---- */}
+            {/* ---- Card 6 : Publishing ---- */}
             <div
               className={`${CARD} p-3`}
-              style={{ height: 494, display: "flex", flexDirection: "column", gap: 10 }}
+              style={{ display: "flex", flexDirection: "column", gap: 10 }}
             >
               <p className="text-[14px] font-semibold text-[#1E1B4B]">Publishing</p>
 

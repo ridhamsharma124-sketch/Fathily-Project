@@ -13,12 +13,6 @@ import {
   LuX,
 } from "react-icons/lu";
 import { Breadcrumb } from "../Activities/quizShared";
-import {
-  labelClass,
-  pageBodyClass,
-  pageShellClass,
-  Toggle,
-} from "../Activities/activityFormShared";
 import trustInLord1 from "../../../assets/Trust in the Lord 1.png";
 import trustInLord2 from "../../../assets/Trust in the Lord 2.png";
 
@@ -54,7 +48,7 @@ const AI_CHECKLIST = [
 const GENERATED = [
   {
     id: 1,
-    title: "Trust in the Lord 1",
+    title: "Trust in the Lord —",
     reference: "Proverbs 3:5–6",
     description:
       "Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.",
@@ -75,6 +69,27 @@ const GENERATED = [
 ];
 
 /* ==========================================================================
+   STYLE TOKENS (Figma: Memory Verse -> AI Generate)
+   navy #001984 | heading #0A0847 | border #E1DFFC | white #FFFFFF
+   ========================================================================== */
+const shellClass = "min-h-[calc(100vh-72px)] bg-[#F9FAFE] font-inter text-[#0A0847]";
+const bodyClass = "mx-auto w-full max-w-[1107px] space-y-5 px-5 py-6";
+
+const fieldLabelClass = "mb-[8px] block text-[12px] font-semibold text-[#0A0847]";
+
+const outlineBtn =
+  "flex h-[43px] cursor-pointer items-center justify-center gap-2 rounded-[7.5px] border border-[#001984] bg-white px-4 text-[12px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+
+const outlineBtnSm =
+  "flex h-[30px] cursor-pointer items-center justify-center gap-2 rounded-[7.5px] border border-[#001984] bg-white px-3 text-[11px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+
+const filledBtn =
+  "flex h-[43px] cursor-pointer items-center justify-center gap-2 rounded-[7.5px] bg-[#001984] px-4 text-[12px] font-semibold text-white transition-colors hover:bg-[#030F63]";
+
+const rowBtn =
+  "flex h-[28px] w-full cursor-pointer items-center justify-start gap-[6px] rounded-[6px] border border-[#001984] bg-white px-[10px] text-[11px] font-medium text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+
+/* ==========================================================================
    SMALL PIECES
    ========================================================================== */
 function Dropdown({ value, onChange, options, ariaLabel }) {
@@ -84,7 +99,7 @@ function Dropdown({ value, onChange, options, ariaLabel }) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label={ariaLabel}
-        className="h-[38px] w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white py-0 pr-8 pl-3 text-[12px] text-[#0A0847] outline-none transition focus:border-[#041581]"
+        className="h-[40px] w-full cursor-pointer appearance-none rounded-[7.5px] border border-[#E1DFFC] bg-white py-0 pr-8 pl-3 text-[13px] font-medium text-[#4A4D6A] outline-none transition focus:border-[#001984]"
       >
         {options.map((o) => (
           <option key={o}>{o}</option>
@@ -92,7 +107,7 @@ function Dropdown({ value, onChange, options, ariaLabel }) {
       </select>
       <LuChevronDown
         size={14}
-        className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#0A084799]"
+        className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#6B6F8D]"
       />
     </div>
   );
@@ -101,25 +116,19 @@ function Dropdown({ value, onChange, options, ariaLabel }) {
 function LabelledField({ label, children }) {
   return (
     <div>
-      <p className={labelClass}>{label}</p>
+      <p className={fieldLabelClass}>{label}</p>
       {children}
     </div>
   );
 }
 
-const outlineBtn =
-  "flex h-[38px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#041581] bg-white px-4 text-[12px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
-
-const filledBtn =
-  "flex h-[38px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#041581] px-4 text-[12px] font-semibold text-white transition-colors hover:bg-[#030F63]";
-
 function StepCircles() {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-[6px]">
       {[1, 2, 3, 4, 5].map((n) => (
         <span
           key={n}
-          className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#041581] text-[10px] font-bold text-white"
+          className="flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#001984] text-[9px] font-semibold text-white"
         >
           {n}
         </span>
@@ -128,11 +137,32 @@ function StepCircles() {
   );
 }
 
+function ToggleSwitch({ checked, onChange, label }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
+      onClick={() => onChange(!checked)}
+      className={`relative h-5 w-9 shrink-0 cursor-pointer rounded-full transition-colors ${
+        checked ? "bg-[#1D4ED8]" : "bg-[#D1D5DB]"
+      }`}
+    >
+      <span
+        className={`absolute top-[2px] h-4 w-4 rounded-full bg-white shadow-sm transition-all ${
+          checked ? "left-[18px]" : "left-[2px]"
+        }`}
+      />
+    </button>
+  );
+}
+
 function ToggleRow({ label, checked, onChange }) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <p className="text-[12px] font-semibold text-[#0A0847]">{label}</p>
-      <Toggle checked={checked} onChange={onChange} label={label} />
+      <p className="min-w-0 text-[12px] leading-[1.4] font-normal text-[#6C6B91]">{label}</p>
+      <ToggleSwitch checked={checked} onChange={onChange} label={label} />
     </div>
   );
 }
@@ -170,16 +200,16 @@ export default function AddEditMemoryVerseAI() {
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   return (
-    <div className={`${pageShellClass} min-h-[calc(100vh-72px)]`}>
-      <div className={`${pageBodyClass} max-w-[1068px] space-y-5`}>
+    <div className={shellClass}>
+      <div className={bodyClass}>
         {/* ---------------- header ---------------- */}
         <Breadcrumb items={["Bible Content", "Memory Verses", "Add / Edit"]} />
 
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex min-h-[56px] flex-wrap items-center justify-between gap-4">
           <h1 className="text-[22px] font-bold text-[#0A0847]">Add / Edit Memory Verse</h1>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <button type="button" className={outlineBtn}>
+          <div className="flex items-center gap-4">
+            <button type="button" className={`${outlineBtn} w-[120px]`}>
               <LuSave size={14} /> Save draft
             </button>
             <button type="button" className={outlineBtn}>
@@ -192,34 +222,38 @@ export default function AddEditMemoryVerseAI() {
         </div>
 
         {/* ---------------- tabs ---------------- */}
-        <div className="flex items-center gap-6 border-b border-[#E5E4EC]">
+        <div className="flex items-center gap-6 border-b border-[#E1DFFC]">
           {TABS.map((t) => (
             <button
               key={t}
               type="button"
               className={`relative cursor-pointer pb-3 text-[13px] font-semibold transition-colors ${
-                t === "AI Generate" ? "text-[#041581]" : "text-[#0A084799] hover:text-[#0A0847]"
+                t === "AI Generate"
+                  ? "text-[#001984]"
+                  : "text-[#0A084799] hover:text-[#0A0847]"
               }`}
             >
               {t}
               {t === "AI Generate" && (
-                <span className="absolute right-0 -bottom-px left-0 h-[2px] rounded-full bg-[#041581]" />
+                <span className="absolute right-0 -bottom-px left-0 h-[2px] rounded-full bg-[#001984]" />
               )}
             </button>
           ))}
         </div>
 
         {/* ---------------- form section ---------------- */}
-        <section className="rounded-xl border border-[#E5E4EC] bg-white p-6">
-          <h2 className="text-[16px] font-bold text-[#0A0847]">AI Memory Verse Generator</h2>
-          <p className="mt-1 text-[13px] text-[#0A084799]">
+        <section className="flex w-[1065px] max-w-full flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-[20px] pr-[15px] pb-[20px] pl-[15px]">
+          <h2 className="text-[14px] font-semibold leading-none text-[#0A0847]">
+            AI Memory Verse Generator
+          </h2>
+          <p className="text-[12px] leading-none text-[#6C6B91]">
             Choose the activity type and how you want to create it.
           </p>
 
-          <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+          <div className="grid grid-cols-1 gap-[24px] lg:grid-cols-[546px_minmax(0,1fr)]">
             {/* LEFT — form fields */}
-            <div className="flex flex-col gap-5">
-              <div className="grid grid-cols-3 gap-4">
+            <div className="flex flex-col gap-[16px]">
+              <div className="grid grid-cols-3 gap-[24px]">
                 <LabelledField label="Testament">
                   <Dropdown
                     value={testament}
@@ -250,7 +284,7 @@ export default function AddEditMemoryVerseAI() {
                 />
               </LabelledField>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-[24px]">
                 <LabelledField label="Number of Memory Verses">
                   <Dropdown
                     value={verseCount}
@@ -271,79 +305,77 @@ export default function AddEditMemoryVerseAI() {
 
               {/* assigned levels */}
               <div>
-                <p className={labelClass}>Assign to Levels</p>
-                <div className="flex flex-wrap items-center gap-2">
-                  {levels.map((lvl) => (
-                    <button
-                      key={lvl}
-                      type="button"
-                      onClick={() => toggleLevel(lvl)}
-                      className={`flex h-[30px] cursor-pointer items-center gap-1.5 rounded-full border px-3 text-[11px] font-semibold transition ${
-                        lvl === "Level 3"
-                          ? "border-[#041581] bg-[#041581] text-white"
-                          : "border-[#E5E4EC] bg-white text-[#0A0847] hover:border-[#041581]"
-                      }`}
-                    >
-                      {lvl}
-                      <LuX size={11} />
-                    </button>
-                  ))}
+                <p className={fieldLabelClass}>Assign to Levels</p>
+                <div className="relative">
+                  <div className="flex h-[40px] w-full items-center gap-[8px] rounded-[7.5px] border border-[#E1DFFC] bg-white pr-2.5 pl-3">
+                    {levels.map((lvl) => (
+                      <button
+                        key={lvl}
+                        type="button"
+                        onClick={() => toggleLevel(lvl)}
+                        className={`flex h-[26px] min-w-[75px] shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-[8px] border px-[10px] text-[11px] font-medium transition ${
+                          lvl === "Level 3"
+                            ? "border-[#001984] bg-[#001984] text-white"
+                            : "border-[#E1DFFC] bg-white text-[#0A0847] hover:border-[#001984]"
+                        }`}
+                      >
+                        {lvl}
+                        <LuX size={11} />
+                      </button>
+                    ))}
 
-                  <div className="relative">
                     <button
                       type="button"
                       aria-label="Add level"
                       onClick={() => setLevelMenuOpen((o) => !o)}
-                      className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-full border border-dashed border-[#041581] text-[#041581] transition hover:bg-[#F1F1F9]"
+                      className="ml-auto flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center text-[#6B6F8D] transition hover:text-[#001984]"
                     >
-                      <LuChevronDown size={14} />
+                      <LuChevronDown size={16} />
                     </button>
-
-                    {levelMenuOpen && (
-                      <>
-                        <div
-                          className="fixed inset-0 z-10"
-                          onClick={() => setLevelMenuOpen(false)}
-                          aria-hidden
-                        />
-                        <div className="absolute top-9 left-0 z-20 w-[150px] rounded-lg border border-[#E5E4EC] bg-white py-1 shadow-[0_8px_24px_rgba(10,8,71,0.12)]">
-                          {availableLevels.length === 0 && (
-                            <p className="px-3 py-2 text-[11px] text-[#0A084799]">
-                              All levels added
-                            </p>
-                          )}
-                          {availableLevels.map((lvl) => (
-                            <button
-                              key={lvl}
-                              type="button"
-                              onClick={() => toggleLevel(lvl)}
-                              className="flex w-full cursor-pointer px-3 py-2 text-left text-[12px] text-[#0A0847] transition hover:bg-[#F7F7FC]"
-                            >
-                              {lvl}
-                            </button>
-                          ))}
-                        </div>
-                      </>
-                    )}
                   </div>
+
+                  {levelMenuOpen && (
+                    <>
+                      <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setLevelMenuOpen(false)}
+                        aria-hidden
+                      />
+                      <div className="absolute top-[44px] right-0 z-20 w-[150px] rounded-[7.5px] border border-[#E1DFFC] bg-white py-1 shadow-[0_8px_24px_rgba(10,8,71,0.12)]">
+                        {availableLevels.length === 0 && (
+                          <p className="px-3 py-2 text-[11px] text-[#6C6B91]">All levels added</p>
+                        )}
+                        {availableLevels.map((lvl) => (
+                          <button
+                            key={lvl}
+                            type="button"
+                            onClick={() => toggleLevel(lvl)}
+                            className="flex w-full cursor-pointer px-3 py-2 text-left text-[12px] text-[#0A0847] transition hover:bg-[#F7F7FC]"
+                          >
+                            {lvl}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
               {/* create as */}
               <div>
-                <p className={labelClass}>Create as</p>
+                <p className={fieldLabelClass}>Create as</p>
                 <div className="flex items-center gap-6">
                   {["New Levels", "Existing Levels"].map((opt) => (
                     <label
                       key={opt}
-                      className="flex cursor-pointer items-center gap-2 text-[12px] text-[#0A0847]"
+                      className="flex h-[22px] cursor-pointer items-center gap-2 text-[13px] font-medium text-[#0A0847]"
                     >
                       <input
                         type="radio"
                         name="create-as"
                         checked={createMode === opt}
                         onChange={() => setCreateMode(opt)}
-                        className="h-[14px] w-[14px] accent-[#041581]"
+                        className="h-[18px] w-[18px] accent-[#001984]"
                       />
                       {opt}
                     </label>
@@ -352,133 +384,152 @@ export default function AddEditMemoryVerseAI() {
               </div>
             </div>
 
-            {/* RIGHT — AI checklist + toggles */}
-            <div className="flex flex-col gap-5">
-              <div>
-                <p className="mb-3 text-[13px] font-bold text-[#0A0847]">AI Will Create</p>
-                <ul className="flex flex-col gap-2.5">
+            {/* RIGHT — AI checklist card, with toggles + generate beside it */}
+            <div className="flex items-start gap-[16px]">
+              <div className="flex h-[331px] w-[201px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-[12px] pr-[27px] pb-[12px] pl-[12px]">
+                <p className="text-[14px] font-semibold text-[#0A0847]">AI Will Create</p>
+                <ul className="flex flex-col gap-[10px]">
                   {AI_CHECKLIST.map((item) => (
-                    <li key={item} className="flex items-center gap-2.5">
-                      <LuCheck size={15} className="shrink-0 text-[#041581]" />
-                      <span className="text-[12px] text-[#0A0847]">{item}</span>
+                    <li key={item} className="flex items-start gap-[8px]">
+                      <span className="mt-[1px] flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full bg-[#001984]">
+                        <LuCheck size={9} strokeWidth={3} className="text-white" />
+                      </span>
+                      <span className="text-[12px] font-medium leading-[1.4] text-[#6C6B91]">
+                        {item}
+                      </span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <ToggleRow
-                  label="Generate unique AI image for every verse"
-                  checked={genImages}
-                  onChange={setGenImages}
-                />
-                <ToggleRow
-                  label="Generate audio narration (optional)"
-                  checked={genAudio}
-                  onChange={setGenAudio}
-                />
-              </div>
+              <div className="flex min-w-0 flex-1 flex-col gap-[16px] pt-[4px]">
+                <div className="flex flex-col gap-4">
+                  <ToggleRow
+                    label="Generate unique AI image for every verse"
+                    checked={genImages}
+                    onChange={setGenImages}
+                  />
+                  <ToggleRow
+                    label="Generate audio narration (optional)"
+                    checked={genAudio}
+                    onChange={setGenAudio}
+                  />
+                </div>
 
-              <button type="button" className={`${filledBtn} w-full`}>
-                <LuSparkles size={15} /> Generate Memory Verses
-              </button>
+                <button
+                  type="button"
+                  className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[7.5px] bg-[#001984] text-[13px] font-semibold text-white transition-colors hover:bg-[#030F63]"
+                >
+                  <LuSparkles size={15} /> Generate Memory Verses
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ---------------- generated verses preview ---------------- */}
-        <section className="rounded-xl border border-[#E5E4EC] bg-white p-6">
+        <section className="w-[1065px] max-w-full rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-[#F8F8FF] p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <p className="text-[13px] font-bold text-[#0A0847]">AI Memory Verse Generator</p>
-              <p className="mt-1 text-[12px] text-[#0A084799]">
+              <p className="text-[13px] font-semibold text-[#0A0847]">AI Memory Verse Generator</p>
+              <p className="mt-1 text-[12px] text-[#6C6B91]">
                 Review your AI-generated verses before publishing.
               </p>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <label className="flex cursor-pointer items-center gap-2 text-[12px] text-[#0A0847]">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleAll}
-                  className="h-[14px] w-[14px] accent-[#041581]"
+                  className="h-[14px] w-[14px] accent-[#001984]"
                 />
                 Select all
               </label>
-              <span className="text-[12px] text-[#0A084799]">{selected.length} selected</span>
-              <button type="button" className={outlineBtn}>
-                <LuRefreshCw size={14} /> Regenerate All
+              <span className="text-[12px] text-[#6C6B91]">{selected.length} selected</span>
+              <button type="button" className={outlineBtnSm}>
+                <LuRefreshCw size={13} /> Regenerate All
               </button>
             </div>
           </div>
 
-          <div className="mt-6 flex flex-col gap-6">
+          <div className="mt-6 flex flex-col gap-[24px]">
             {GENERATED.map((v) => (
-              <div key={v.id} className="border-b border-[#E5E4EC] pb-6 last:border-b-0 last:pb-0">
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_168px_172px]">
+              <div
+                key={v.id}
+                className="border-b border-[#E5E7EB] pb-[24px] last:border-b-0 last:pb-0"
+              >
+                <div className="grid grid-cols-1 gap-[24px] lg:grid-cols-[467px_minmax(0,1fr)_283px] lg:gap-0">
                   {/* left: checkbox + thumb + meta + steps */}
-                  <div className="flex gap-3">
+                  <div className="flex gap-[12px] lg:pr-[24px]">
                     <input
                       type="checkbox"
                       checked={selected.includes(v.id)}
                       onChange={() => toggleOne(v.id)}
                       aria-label={`Select ${v.title}`}
-                      className="mt-1 h-[14px] w-[14px] shrink-0 accent-[#041581]"
+                      className="mt-1 h-[14px] w-[14px] shrink-0 accent-[#001984]"
                     />
 
-                    <img
-                      src={v.image}
-                      alt=""
-                      className="h-[70px] w-[90px] shrink-0 rounded-lg bg-[#F1F2F8] object-cover"
-                    />
+                    <div className="flex w-full max-w-[417px] gap-[12px]">
+                      <img
+                        src={v.image}
+                        alt=""
+                        className="h-[95px] w-[129px] shrink-0 rounded-[6px] bg-[#F1F2F8] object-cover"
+                      />
 
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <p className="text-[13px] font-bold text-[#0A0847]">{v.title}</p>
-                        <span className="rounded-full bg-[#F1F2F8] px-2 py-0.5 text-[10px] font-semibold text-[#6B668F]">
-                          AI
-                        </span>
-                        <span className="text-[12px] italic text-[#0A084799]">{v.reference}</span>
-                      </div>
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <p className="text-[13px] font-semibold text-[#0A0847]">{v.title}</p>
+                          <span className="rounded-[4px] bg-[#F1EFFD] px-[6px] py-[2px] text-[10px] font-semibold text-[#6B668F]">
+                            AI
+                          </span>
+                        </div>
 
-                      <p className="mt-1.5 text-[12px] leading-[1.5] text-[#0A084799]">
-                        {v.description}
-                      </p>
+                        <p className="mt-[2px] text-[12px] font-semibold italic text-[#6C6B91]">
+                          {v.reference}
+                        </p>
 
-                      <div className="mt-3">
-                        <StepCircles />
+                        <p className="mt-[6px] line-clamp-3 max-w-[360px] text-[12px] leading-[1.5] text-[#6C6B91]">
+                          {v.description}
+                        </p>
+
+                        <div className="mt-[8px]">
+                          <StepCircles />
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   {/* middle: reward + assigned levels */}
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 lg:border-l lg:border-[#E5E7EB] lg:pl-[24px]">
                     <div>
-                      <p className="text-[11px] text-[#0A084799]">Reward</p>
-                      <p className="mt-1 text-[13px] font-bold text-[#0A0847]">{v.reward}</p>
+                      <p className="text-[11px] text-[#6C6B91]">Reward</p>
+                      <p className="mt-[2px] text-[20px] font-medium text-[#0A0847]">
+                        {v.reward}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-[11px] text-[#0A084799]">Assigned Levels</p>
-                      <span className="mt-1.5 inline-block rounded-full bg-[#F3EEFE] px-3 py-1 text-[11px] font-semibold text-[#6D28D9]">
+                      <p className="text-[11px] text-[#6C6B91]">Assigned Levels</p>
+                      <span className="mt-[6px] inline-flex h-[25px] w-[92px] items-center justify-center rounded-[8px] border border-[#E1DFFC] bg-[#F1EFFD] text-[11px] font-medium text-[#0A0847]">
                         {v.level}
                       </span>
                     </div>
                   </div>
 
                   {/* right: 4 stacked outline buttons */}
-                  <div className="flex flex-col gap-2">
-                    <button type="button" className={outlineBtn}>
-                      <LuPencil size={13} /> Edit
+                  <div className="flex flex-col gap-[8px] lg:border-l lg:border-[#E5E7EB] lg:pl-[24px]">
+                    <button type="button" className={rowBtn}>
+                      <LuPencil size={12} /> Edit
                     </button>
-                    <button type="button" className={outlineBtn}>
-                      <LuRefreshCw size={13} /> Regenerate Verse
+                    <button type="button" className={rowBtn}>
+                      <LuRefreshCw size={12} /> Regenerate Verse
                     </button>
-                    <button type="button" className={outlineBtn}>
-                      <LuImage size={13} /> Regenerate Image
+                    <button type="button" className={rowBtn}>
+                      <LuImage size={12} /> Regenerate Image
                     </button>
-                    <button type="button" className={outlineBtn}>
-                      <LuRefreshCw size={13} /> Replace Image
+                    <button type="button" className={rowBtn}>
+                      <LuRefreshCw size={12} /> Replace Image
                     </button>
                   </div>
                 </div>
@@ -487,11 +538,14 @@ export default function AddEditMemoryVerseAI() {
           </div>
 
           {/* ---------------- bottom bar ---------------- */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#E5E4EC] pt-5">
-            <p className="flex items-center gap-2 text-[12px] text-[#0A084799]">
-              <LuInfo size={15} /> {selected.length} verses selected for publishing.
+          <div className="-mx-6 -mb-6 mt-6 flex flex-wrap items-center justify-between gap-3 bg-[#F1F2F8] px-6 py-[14px]">
+            <p className="flex items-center gap-2 text-[12px] text-[#6C6B91]">
+              <LuInfo size={14} /> {selected.length} verses selected for publishing.
             </p>
-            <button type="button" className={filledBtn}>
+            <button
+              type="button"
+              className="flex h-[40px] cursor-pointer items-center justify-center gap-2 rounded-[7.5px] bg-[#001984] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#030F63]"
+            >
               <LuSend size={14} /> Publish Selected
             </button>
           </div>

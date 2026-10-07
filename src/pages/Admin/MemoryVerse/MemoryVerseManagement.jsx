@@ -8,34 +8,81 @@ import {
   LuChevronRight,
   LuCircleCheck,
   LuCopy,
+  LuEllipsisVertical,
   LuFileText,
   LuFilter,
-  LuEllipsisVertical,
   LuPlus,
   LuScroll,
   LuSearch,
   LuTrash2,
 } from "react-icons/lu";
-import { pageBodyClass, pageShellClass, Toggle } from "../Activities/activityFormShared";
+import { pageShellClass } from "../Activities/activityFormShared";
 import beStrongAndCourageous from "../../../assets/Be strong and courageous.png";
-import harpImg from "../../../assets/harp.png";
-import ruinsImg from "../../../assets/ruins.png";
-import coverImg from "../../../assets/cover-img.png";
+
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+const PURPLE = "#7C3AED";const GREEN = "#21AC1C";
+const ORANGE = "#C65406";
+
+const PURPLE_TINT = "rgba(124, 58, 237, 0.10)";
+const GREEN_TINT = "rgba(33, 172, 28, 0.10)";
+const ORANGE_TINT = "rgba(198, 84, 6, 0.10)";
 
 /* ==========================================================================
    MOCK DATA
    ========================================================================== */
 const STATS = [
-  { label: "Total Verses", value: "128", icon: LuScroll, tint: "bg-[#EDE9FE] text-[#7C3AED]" },
-  { label: "Published", value: "94", icon: LuCircleCheck, tint: "bg-[#DCFCE7] text-[#16A34A]" },
-  { label: "Drafts", value: "18", icon: LuFileText, tint: "bg-[#FFEDD5] text-[#EA8C00]" },
-  { label: "Scheduled", value: "16", icon: LuCalendar, tint: "bg-[#EDE9FE] text-[#7C3AED]" },
+  {
+    label: "Total Verses",
+    value: "128",
+    icon: LuScroll,
+    size: 32,
+    color: PURPLE,
+    tint: PURPLE_TINT,
+  },
+  {
+    label: "Published",
+    value: "94",
+    icon: LuCircleCheck,
+    size: 28,
+    color: GREEN,
+    tint: GREEN_TINT,
+  },
+  {
+    label: "Drafts",
+    value: "18",
+    icon: LuFileText,
+    size: 28,
+    color: ORANGE,
+    tint: ORANGE_TINT,
+  },
+  {
+    label: "Scheduled",
+    value: "16",
+    icon: LuCalendar,
+    size: 28,
+    color: PURPLE,
+    tint: PURPLE_TINT,
+  },
 ];
 
 const STATUS_STYLES = {
-  Published: "bg-[#E9F8E8] text-[#29C31E] border-[#C6EFC3]",
-  Scheduled: "bg-[#F3EEFE] text-[#6D28D9] border-[#DCC9FB]",
-  Draft: "bg-[#FDF0E4] text-[#B45309] border-[#F7D9BE]",
+  Published: {
+    color: GREEN,
+    background: GREEN_TINT,
+    border: "rgba(33, 172, 28, 0.20)",
+  },
+  Scheduled: {
+    color: PURPLE,
+    background: PURPLE_TINT,
+    border: "rgba(124, 58, 237, 0.20)",
+  },
+  Draft: {
+    color: ORANGE,
+    background: ORANGE_TINT,
+    border: "rgba(198, 84, 6, 0.20)",
+  },
 };
 
 const ROW_MENU = [
@@ -62,12 +109,12 @@ const VERSES = [
     id: 2,
     title: "Trust in the Lord",
     subtitle: "Trust in the Lord with all your...",
-    location: "Proverbs 3:5-6",
+    location: "Proverbs 3:5–6",
     reward: "50 pts",
     status: "Scheduled",
     updatedDate: "May 6, 2024",
     updatedTime: "11:15 AM",
-    image: harpImg,
+    image: beStrongAndCourageous,
     live: true,
   },
   {
@@ -79,8 +126,8 @@ const VERSES = [
     status: "Draft",
     updatedDate: "May 3, 2024",
     updatedTime: "9:45 AM",
-    image: ruinsImg,
-    live: false,
+    image: beStrongAndCourageous,
+    live: true,
   },
   {
     id: 4,
@@ -91,46 +138,51 @@ const VERSES = [
     status: "Published",
     updatedDate: "Apr 28, 2024",
     updatedTime: "4:20 PM",
-    image: coverImg,
-    live: true,
+    image: beStrongAndCourageous,
+    live: false,
   },
 ];
 
 const PAGE_NUMBERS = [1, 2, 3, 4, 5];
 const PAGE_SIZES = ["10", "25", "50", "100"];
 
+const COLS =
+  "grid grid-cols-[minmax(200px,1.4fr)_110px_155px_70px_105px_95px_210px] items-center";
+
 /* ==========================================================================
    SMALL PIECES
    ========================================================================== */
-function FilterSelect({ label, options, value, onChange, width = "w-[124px]" }) {
+function FilterGroup({ label, value, onChange, options }) {
   return (
-    <div className={`relative ${width} shrink-0`}>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        aria-label={label}
-        className="h-[38px] w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white py-0 pr-8 pl-3 text-[12px] text-[#0A0847] outline-none transition focus:border-[#041581]"
-      >
-        {options.map((o) => (
-          <option key={o}>{o}</option>
-        ))}
-      </select>
-      <LuChevronDown
-        size={14}
-        className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#0A084799]"
-      />
+    <div className="flex shrink-0 flex-col gap-[10px]">
+      <span className="text-[12px] font-medium text-[#0A0847]/80">{label}</span>
+      <div className="relative w-[130px]">
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          aria-label={label}
+          className="h-[36px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white py-0 pr-[50px] pl-[12px] text-[13px] font-medium text-[#0A0847] outline-none"
+        >
+          {options.map((o) => (
+            <option key={o}>{o}</option>
+          ))}
+        </select>
+        <LuChevronDown
+          size={16}
+          className="pointer-events-none absolute top-1/2 right-[16px] -translate-y-1/2 text-[#0A0847]/60"
+        />
+      </div>
     </div>
   );
 }
 
-/* the five numbered learning-step circles, filled navy */
 function StepDots() {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-[4px]">
       {[1, 2, 3, 4, 5].map((n) => (
         <span
           key={n}
-          className="flex h-[19px] w-[19px] items-center justify-center rounded-full bg-[#041581] text-[10px] font-bold text-white"
+          className="flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#001984] text-[12px] font-medium text-white"
         >
           {n}
         </span>
@@ -139,16 +191,52 @@ function StepDots() {
   );
 }
 
+function StatusPill({ status }) {
+  const s = STATUS_STYLES[status];
+  return (
+    <span
+      className="inline-flex h-[25px] items-center rounded-[8px] border px-[12px] py-[4px] text-[12px] font-medium"
+      style={{ color: s.color, background: s.background, borderColor: s.border }}
+    >
+      {status}
+    </span>
+  );
+}
+
+function RowToggle({ on, onChange, label }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={onChange}
+      className={`relative h-[20px] w-[36px] shrink-0 cursor-pointer rounded-full transition-colors ${
+        on ? "bg-[#001984]" : "bg-[#C9CBD6]"
+      }`}
+    >
+      <span
+        className={`absolute top-[2px] h-[16px] w-[16px] rounded-full bg-white shadow-sm transition-all ${
+          on ? "left-[18px]" : "left-[2px]"
+        }`}
+      />
+    </button>
+  );
+}
+
 function StatCard({ stat }) {
   const Icon = stat.icon;
   return (
-    <div className="flex h-[127px] min-w-0 flex-col justify-between rounded-lg border border-[#E5E4EC] bg-white p-4 xl:p-5">
-      <span className={`flex h-10 w-10 items-center justify-center rounded-lg ${stat.tint}`}>
-        <Icon size={19} />
+    <div className="flex h-[123px] min-w-0 items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] py-0 pr-[29px] pl-[16px]">
+      <span
+        className="flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] p-[7px]"
+        style={{ background: stat.tint }}
+      >
+        <Icon size={stat.size} style={{ color: stat.color }} />
       </span>
-      <div>
-        <p className="text-[24px] leading-none font-bold text-[#0A0847]">{stat.value}</p>
-        <p className="mt-1.5 text-[12px] text-[#0A084799]">{stat.label}</p>
+      <div className="flex w-[138px] flex-col gap-[8px]">
+        <p className="text-[14px] font-medium text-[#0A0847]/80">{stat.label}</p>
+        <p className="text-[24px] leading-none font-bold text-[#001984]">{stat.value}</p>
       </div>
     </div>
   );
@@ -160,13 +248,14 @@ function StatCard({ stat }) {
 export default function MemoryVerseManagement() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
-  const [testament, setTestament] = useState("Testament: All");
-  const [book, setBook] = useState("Book: All");
-  const [chapter, setChapter] = useState("Chapter: All");
-  const [status, setStatus] = useState("Status: All");
+  const [testament, setTestament] = useState("All");
+  const [book, setBook] = useState("All");
+  const [chapter, setChapter] = useState("All");
+  const [status, setStatus] = useState("All");
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
   const [page, setPage] = useState(1);
   const [openMenu, setOpenMenu] = useState(null);
+  const [toggles, setToggles] = useState({ 1: true, 2: true, 3: true, 4: false });
 
   const rows = VERSES.filter((v) => {
     const q = query.trim().toLowerCase();
@@ -175,205 +264,237 @@ export default function MemoryVerseManagement() {
       v.title.toLowerCase().includes(q) ||
       v.subtitle.toLowerCase().includes(q) ||
       v.location.toLowerCase().includes(q);
-    const matchesStatus = status === "Status: All" || v.status === status;
+    const matchesStatus = status === "All" || v.status === status;
     return matchesQuery && matchesStatus;
   });
 
   return (
-    <div className={`${pageShellClass} min-h-[calc(100vh-72px)]`}>
-      <div className={`${pageBodyClass} max-w-[1068px] space-y-6`}>
+    <div className={`${pageShellClass} min-h-[calc(100vh-72px)] w-full min-w-0`}>
+      <div className="flex w-full min-w-0 flex-col gap-[24px] p-6">
         {/* ---------------- header ---------------- */}
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <h1 className="text-[22px] font-bold text-[#0A0847]">Memory Verse Management</h1>
-            <p className="mt-1.5 text-[14px] text-[#0A084799]">
+        <div className="flex flex-wrap items-start justify-between gap-[16px]">
+          <div className="flex flex-col gap-[8px]">
+            <h1 className="text-[22px] leading-none font-semibold text-[#0A0847]">
+              Memory Verse Management
+            </h1>
+            <p className="text-[14px] font-medium text-[#0A0847]/60">
               Create, organize, and publish five-step memory activities.
             </p>
           </div>
 
           <button
             type="button"
-            onClick={() => navigate("/admin/memory-verse/add-edit")}
-            className="flex h-[38px] cursor-pointer items-center gap-2 rounded-lg bg-[#041581] px-4 text-[13px] font-semibold text-white transition hover:bg-[#030F63]"
+            onClick={() => navigate("/admin/memory-verse/add-edit/ai-generate")}
+            className="flex h-[42px] min-w-[178px] cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] bg-[#001984] px-[16px] py-[10px] text-[14px] font-medium text-white"
           >
-            <LuPlus size={15} /> Add Memory Verse
+            <LuPlus size={16} /> Add Memory Verse
           </button>
         </div>
 
         {/* ---------------- stat cards ---------------- */}
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid w-full grid-cols-4 gap-[16px]">
           {STATS.map((s) => (
             <StatCard key={s.label} stat={s} />
           ))}
         </div>
 
         {/* ---------------- filter row ---------------- */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative min-w-[220px] flex-1">
+        <div className="flex flex-wrap items-end justify-between gap-[16px]">
+          <div className="relative w-[234px] shrink-0">
             <LuSearch
-              size={15}
-              className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[#0A084799]"
+              size={16}
+              className="pointer-events-none absolute top-1/2 left-[12px] -translate-y-1/2 text-[#0A0847]/60"
             />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search verses..."
-              className="h-[38px] w-full rounded-lg border border-[#E5E4EC] bg-white pr-3 pl-9 text-[12px] text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]"
+              className="h-[42px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pr-[50px] pl-[44px] text-[14px] font-medium text-[#0A0847] outline-none placeholder:text-[#0A0847]/60"
             />
           </div>
 
-          <FilterSelect
-            value={testament}
-            onChange={setTestament}
-            options={["Testament: All", "Old Testament", "New Testament"]}
-          />
-          <FilterSelect value={book} onChange={setBook} options={["Book: All", "Joshua", "Proverbs"]} />
-          <FilterSelect value={chapter} onChange={setChapter} options={["Chapter: All", "1", "3", "4", "23"]} />
-          <FilterSelect value={status} onChange={setStatus} options={["Status: All", "Published", "Scheduled", "Draft"]} />
+          <div className="flex flex-wrap items-end gap-[10px]">
+            <FilterGroup
+              label="Testament"
+              value={testament}
+              onChange={setTestament}
+              options={["All"]}
+            />
+            <FilterGroup label="Book" value={book} onChange={setBook} options={["All"]} />
+            <FilterGroup
+              label="Chapter"
+              value={chapter}
+              onChange={setChapter}
+              options={["All"]}
+            />
+            <FilterGroup
+              label="Status"
+              value={status}
+              onChange={setStatus}
+              options={["All", "Published", "Scheduled", "Draft"]}
+            />
 
-          <button
-            type="button"
-            className="flex h-[38px] shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-[#E5E4EC] bg-white px-4 text-[12px] font-semibold text-[#0A0847] transition hover:border-[#041581]"
-          >
-            <LuFilter size={14} /> Filters
-          </button>
+            <button
+              type="button"
+              className="flex h-[36px] shrink-0 cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#E6E7F7] px-[16px] py-[10px] text-[12px] font-medium text-[#0A0847]"
+            >
+              <LuFilter size={14} /> Filters
+            </button>
+          </div>
         </div>
 
-        {/* ---------------- table ---------------- */}
-        <div className="w-full rounded-xl border border-[#E5E4EC] bg-white px-6 py-6">
-          <div className="overflow-x-auto">
-            <div className="min-w-[900px]">
-          <div className="grid grid-cols-[minmax(230px,1fr)_150px_140px_84px_112px_128px_150px] items-center gap-4 pb-4">
-            {["Verse", "Bible Location", "Steps", "Reward", "Status", "Updated", "Actions"].map(
+        {/* ---------------- table card ---------------- */}
+        <div className="w-full overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
+          {/* header row */}
+          <div
+            className={`${COLS} h-[50px] border-b-[0.75px] border-[#E2DFFC] bg-[#F3F7FD]`}
+          >
+            <span className="flex items-center pr-[7.85px] pl-[20px] text-[12px] font-medium text-[#0A0847]/80">
+              Verse
+            </span>
+            {["Bible Location", "Steps", "Reward", "Status", "Updated", "Actions"].map(
               (h) => (
-                <span key={h} className="text-[13px] font-bold text-[#0A0847]">
+                <span
+                  key={h}
+                  className="flex items-center justify-center px-[7.85px] text-[12px] font-medium text-[#0A0847]/80 last:pr-[20px]"
+                >
                   {h}
                 </span>
               ),
             )}
           </div>
-          <div className="border-b border-[#E5E4EC]" />
 
-          <div className="flex flex-col gap-6 pt-6">
-            {rows.map((v) => (
-              <div
-                key={v.id}
-                className="grid grid-cols-[minmax(230px,1fr)_150px_140px_84px_112px_128px_150px] items-center gap-4"
-              >
-                {/* verse + thumbnail */}
-                <div className="flex min-w-0 items-center gap-3">
-                  <img
-                    src={v.image}
-                    alt=""
-                    className="h-12 w-12 shrink-0 rounded-lg bg-[#F1F2F8] object-cover"
-                  />
-                  <div className="min-w-0">
-                    <p className="truncate text-[13px] font-bold text-[#0A0847]">{v.title}</p>
-                    <p className="mt-0.5 truncate text-[11px] text-[#0A084799]">{v.subtitle}</p>
-                  </div>
-                </div>
-
-                <span className="text-[12px] text-[#0A0847]">{v.location}</span>
-
-                {/* steps */}
-                <div>
-                  <StepDots />
-                  <p className="mt-1.5 text-[11px] text-[#0A084799]">5/5 Ready</p>
-                </div>
-
-                <span className="text-[12px] font-semibold text-[#0A0847]">{v.reward}</span>
-
-                <span
-                  className={`w-fit rounded-full border px-2.5 py-1 text-[11px] font-semibold ${STATUS_STYLES[v.status]}`}
-                >
-                  {v.status}
-                </span>
-
-                <div>
-                  <p className="text-[12px] text-[#0A0847]">{v.updatedDate}</p>
-                  <p className="mt-0.5 text-[11px] text-[#0A084799]">{v.updatedTime}</p>
-                </div>
-
-                {/* actions */}
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    className="cursor-pointer text-[12px] font-semibold text-[#041581] transition hover:underline"
-                  >
-                    Preview
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/admin/memory-verse/add-edit")}
-                    className="cursor-pointer text-[12px] font-semibold text-[#041581] transition hover:underline"
-                  >
-                    Edit
-                  </button>
-
-                  <Toggle checked={v.live} onChange={() => {}} label={`Toggle ${v.title}`} />
-
-                  <div className="relative">
-                    <button
-                      type="button"
-                      aria-label={`Actions for ${v.title}`}
-                      onClick={() => setOpenMenu(openMenu === v.id ? null : v.id)}
-                      className="flex h-7 w-7 cursor-pointer items-center justify-center rounded-md text-[#0A084799] transition hover:bg-[#F1F2F8] hover:text-[#0A0847]"
-                    >
-                      <LuEllipsisVertical size={16} />
-                    </button>
-
-                    {openMenu === v.id && (
-                      <>
-                        <div
-                          className="fixed inset-0 z-10"
-                          onClick={() => setOpenMenu(null)}
-                          aria-hidden
-                        />
-                        <div className="absolute top-8 right-0 z-20 w-[152px] rounded-lg border border-[#E5E4EC] bg-white py-1 shadow-[0_8px_24px_rgba(10,8,71,0.12)]">
-                          {ROW_MENU.map((item) => {
-                            const Icon = item.icon;
-                            return (
-                              <button
-                                key={item.id}
-                                type="button"
-                                onClick={() => setOpenMenu(null)}
-                                className={`flex w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-left text-[12px] transition hover:bg-[#F7F7FC] ${
-                                  item.danger ? "text-[#D92D20]" : "text-[#0A0847]"
-                                }`}
-                              >
-                                <Icon size={14} />
-                                {item.label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </>
-                    )}
-                  </div>
+          {/* body rows */}
+          {rows.map((v) => (
+            <div
+              key={v.id}
+              className={`${COLS} h-[92px] border-b-[0.75px] border-[#E2DFFC] bg-white`}
+            >
+              {/* verse */}
+              <div className="flex min-w-0 items-center gap-[8px] pr-[7.85px] pl-[20px]">
+                <img
+                  src={v.image}
+                  alt=""
+                  className="h-[48px] w-[48px] shrink-0 rounded-[4px] bg-[#F1F2F8] object-cover"
+                />
+                <div className="w-[144px] min-w-0">
+                  <p className="truncate text-[10px] font-medium text-[#0A0847]/80">
+                    {v.title}
+                  </p>
+                  <p className="truncate text-[10px] font-medium text-[#0A0847]/80">
+                    {v.subtitle}
+                  </p>
                 </div>
               </div>
-            ))}
 
-            {rows.length === 0 && (
-              <p className="py-6 text-center text-[12px] text-[#0A084799]">
-                No memory verses match your filters.
-              </p>
-            )}
-          </div>
+              {/* bible location */}
+              <span className="flex items-center justify-center px-[7.85px] text-center text-[12px] font-medium text-[#0A0847]">
+                {v.location}
+              </span>
+
+              {/* steps */}
+              <div className="flex flex-col items-center gap-[6px] px-[7.85px]">
+                <StepDots />
+                <p className="text-[11px] font-medium text-[#0A0847]/80">5/5 Ready</p>
+              </div>
+
+              {/* reward */}
+              <span className="flex items-center justify-center px-[7.85px] text-center text-[12px] font-medium text-[#0A0847]">
+                {v.reward}
+              </span>
+
+              {/* status */}
+              <span className="flex items-center justify-center px-[7.85px]">
+                <StatusPill status={v.status} />
+              </span>
+
+              {/* updated */}
+              <div className="flex flex-col items-center gap-[2px] px-[7.85px] text-center">
+                <p className="text-[12px] font-medium text-[#0A0847]">{v.updatedDate}</p>
+                <p className="text-[12px] font-medium text-[#0A0847]">{v.updatedTime}</p>
+              </div>
+
+              {/* actions */}
+              <div className="relative flex h-[30px] items-center justify-center gap-[4px] pr-[20px] pl-[7.85px]">
+                <button
+                  type="button"
+                  className="cursor-pointer rounded-[4px] border border-[#E2DFFC] bg-white px-[8px] py-[4px] text-[11px] font-medium text-[#0A0847]"
+                >
+                  Preview
+                </button>
+                <button
+                  type="button"
+                onClick={() => navigate("/admin/memory-verse/add-edit")}
+                  className="cursor-pointer rounded-[4px] border border-[#E2DFFC] bg-white px-[8px] py-[4px] text-[11px] font-medium text-[#0A0847]"
+                >
+                  Edit
+                </button>
+
+                <RowToggle
+                  on={toggles[v.id]}
+                  onChange={() => setToggles((t) => ({ ...t, [v.id]: !t[v.id] }))}
+                  label={`Toggle ${v.title}`}
+                />
+
+                <button
+                  type="button"
+                  aria-label={`Actions for ${v.title}`}
+                  onClick={() => setOpenMenu(openMenu === v.id ? null : v.id)}
+                  className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-[4px] bg-[#E6E7F7] text-[#0A0847]"
+                >
+                  <LuEllipsisVertical size={14} />
+                </button>
+
+                {openMenu === v.id && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-10"
+                      onClick={() => setOpenMenu(null)}
+                      aria-hidden
+                    />
+                    <div className="absolute top-[32px] right-[20px] z-20 h-[165px] w-[116px] rounded-[4px] border border-[#E2DFFC] bg-white pt-[12px] pr-[20px] pb-[37px] pl-[12px] shadow-[0_6px_18px_rgba(10,8,71,0.12)]">
+                      <div className="flex flex-col gap-[10px]">
+                        {ROW_MENU.map((item) => {
+                          const Icon = item.icon;
+                          return (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => setOpenMenu(null)}
+                              className={`flex cursor-pointer items-center gap-[8px] text-left text-[12px] font-medium ${
+                                item.danger ? "text-[#D92D20]" : "text-[#0A0847]"
+                              }`}
+                            >
+                              <Icon size={14} />
+                              {item.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
+          ))}
 
-          {/* ---------------- table footer ---------------- */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#E5E4EC] pt-5">
-            <div className="flex items-center gap-2">
-              <span className="text-[12px] text-[#0A084799]">Display</span>
-              <div className="relative w-[68px]">
+          {rows.length === 0 && (
+            <p className="border-b-[0.75px] border-[#E2DFFC] py-[24px] text-center text-[12px] font-medium text-[#0A0847]/60">
+              No memory verses match your filters.
+            </p>
+          )}
+
+          {/* ---------------- footer ---------------- */}
+          <div className="flex flex-wrap items-center justify-between gap-[12px] px-[20px] py-[16px]">
+            <div className="flex items-center gap-[8px]">
+              <span className="text-[12px] font-medium text-[#0A0847]/80">Display</span>
+              <div className="relative w-[64px]">
                 <select
                   value={pageSize}
                   onChange={(e) => setPageSize(e.target.value)}
                   aria-label="Entries per page"
-                  className="h-[32px] w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white py-0 pr-7 pl-2.5 text-[12px] text-[#0A0847] outline-none focus:border-[#041581]"
+                  className="h-[28px] w-full cursor-pointer appearance-none rounded-[4px] border border-[#E2DFFC] bg-white py-0 pr-[22px] pl-[8px] text-[12px] font-medium text-[#0A0847] outline-none"
                 >
                   {PAGE_SIZES.map((s) => (
                     <option key={s}>{s}</option>
@@ -381,18 +502,23 @@ export default function MemoryVerseManagement() {
                 </select>
                 <LuChevronDown
                   size={13}
-                  className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 text-[#0A084799]"
+                  className="pointer-events-none absolute top-1/2 right-[6px] -translate-y-1/2 text-[#0A0847]/60"
                 />
               </div>
-              <span className="text-[12px] text-[#0A084799]">Entries</span>
+              <span className="text-[12px] font-medium text-[#0A0847]/80">Entries</span>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-[6px]">
               <button
                 type="button"
                 aria-label="Previous page"
+                disabled={page === 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
+                className={`flex h-[28px] w-[28px] items-center justify-center rounded-[4px] border border-[#E2DFFC] text-[#0A0847]/80 ${
+                  page === 1
+                    ? "cursor-not-allowed opacity-40"
+                    : "cursor-pointer hover:border-[#001984] hover:text-[#001984]"
+                }`}
               >
                 <LuChevronLeft size={14} />
               </button>
@@ -402,10 +528,10 @@ export default function MemoryVerseManagement() {
                   key={n}
                   type="button"
                   onClick={() => setPage(n)}
-                  className={`h-8 w-8 cursor-pointer rounded-md text-[12px] font-semibold transition ${
+                  className={`h-[28px] w-[28px] cursor-pointer rounded-[4px] text-[12px] font-medium ${
                     page === n
-                      ? "bg-[#041581] text-white"
-                      : "border border-[#E5E4EC] text-[#0A0847CC] hover:border-[#041581] hover:text-[#041581]"
+                      ? "border border-[#001984] bg-[#001984] text-white"
+                      : "border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:border-[#001984] hover:text-[#001984]"
                   }`}
                 >
                   {n}
@@ -416,7 +542,7 @@ export default function MemoryVerseManagement() {
                 type="button"
                 aria-label="Next page"
                 onClick={() => setPage((p) => Math.min(PAGE_NUMBERS.length, p + 1))}
-                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847CC] transition hover:border-[#041581] hover:text-[#041581]"
+                className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:border-[#001984] hover:text-[#001984]"
               >
                 <LuChevronRight size={14} />
               </button>
