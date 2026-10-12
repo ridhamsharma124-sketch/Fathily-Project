@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
-  FiEdit,
   FiPlus,
   FiTrash2,
   FiCalendar,
   FiStar,
   FiCheck,
-  FiSave,
-  FiInfo,
-  FiEye,
-  FiGrid,
-  FiGift,
   FiSettings,
   FiClock,
   FiCreditCard,
-  FiPlay,
-  FiTrendingDown,
-  FiMessageSquare,
 } from "react-icons/fi";
-import { BsGrid, BsFillInfoCircleFill, BsFillEyeFill } from "react-icons/bs";
+import { BsGrid, BsFillInfoCircleFill } from "react-icons/bs";
 import { BiSolidEditAlt, BiDollar } from "react-icons/bi";
-import { MdOutlineDragIndicator } from "react-icons/md";
 import { TbFileOff } from "react-icons/tb";
-import { FaCalendarDays } from "react-icons/fa6";
+import { FaCalendarDays, FaPlay } from "react-icons/fa6";
+import { PiToggleRightFill, PiEyeFill } from "react-icons/pi";
 
 /* ==========================================================================
    MOCK API FETCH (Returns full page payload)
@@ -126,7 +117,6 @@ const fetchSubscriptionData = () =>
    REUSABLE UI COMPONENTS
    ========================================================================== */
 
-/** 1. Reusable Price Input Row */
 /** 1. Reusable Price Input Row */
 const PriceInputRow = ({
   label,
@@ -266,8 +256,125 @@ const ToggleSwitch = ({ enabled, onChange }) => (
   </button>
 );
 
+/** 3b. Drag Handle — 6 solid dots filling the Figma 9.2 x 15.2 vector box.
+ *  (react-icons' MdOutlineDragIndicator has padding inside its 24x24 viewBox,
+ *  so forcing it to 9.2px made the dots tiny. This SVG fills the whole box.) */
+const DragHandle = ({ className = "" }) => (
+  <svg
+    width="9.2"
+    height="15.2"
+    viewBox="0 0 9.2 15.2"
+    fill="currentColor"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    {[1.6, 7.6, 13.6].map((cy) => (
+      <g key={cy}>
+        <circle cx="1.6" cy={cy} r="1.6" />
+        <circle cx="7.6" cy={cy} r="1.6" />
+      </g>
+    ))}
+  </svg>
+);
+
+/** 3c. Bar-chart icon from Figma (41.9 x 37.3): 3 rising bars + up-arrow.
+ *  Replaces FiBarChart2, which only draws 3 thin lines. */
+const BarTrendIcon = ({ width = 42, height = 38, className = "" }) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 42 38"
+    fill="currentColor"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    <rect x="1" y="29" width="6.5" height="8" rx="1.5" />
+    <rect x="10" y="22" width="6.5" height="15" rx="1.5" />
+    <rect x="19" y="15" width="6.5" height="22" rx="1.5" />
+    <rect x="31" y="9" width="4.5" height="28" rx="1.5" />
+    <path
+      d="M33.25 1.5 L40 10.5 H26.5 Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+/** 3d. Two-tone gift icon from Figma (32 x 32).
+ *  Ribbon gradient: #BBDEFB -> #64B5F6 (6px wide). Box body: solid blue. */
+const GiftIcon = ({ size = 32, className = "" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 32 32"
+    fill="none"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    <defs>
+      <linearGradient id="giftRibbon" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stopColor="#BBDEFB" />
+        <stop offset="1" stopColor="#64B5F6" />
+      </linearGradient>
+    </defs>
+    {/* box */}
+    <rect x="4" y="15" width="24" height="15" rx="2" fill="#4A8BF0" />
+    {/* lid */}
+    <rect x="2" y="9" width="28" height="7" rx="2" fill="#3B7BE8" />
+    {/* bow */}
+    <path
+      d="M16 9 C16 9 9.5 9.5 9.5 5.5 C9.5 2.5 14.5 2.5 16 9 Z"
+      fill="url(#giftRibbon)"
+    />
+    <path
+      d="M16 9 C16 9 22.5 9.5 22.5 5.5 C22.5 2.5 17.5 2.5 16 9 Z"
+      fill="url(#giftRibbon)"
+    />
+    {/* vertical ribbon: 6 wide, gradient */}
+    <rect x="13" y="3" width="6" height="27" rx="1" fill="url(#giftRibbon)" />
+  </svg>
+);
+
+/** 3e. Save (floppy) icon from Figma (16 x 16): thick outline with clipped
+ *  top-right corner, L-shaped shutter line top-left, solid label block bottom.
+ *  Replaces FiSave, which is thinner and has a different shape. */
+const SaveIcon = ({ size = 16, className = "" }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    {/* outer body with cut corner */}
+    <path d="M5 3 H15.5 L21 8.5 V19 A2 2 0 0 1 19 21 H5 A2 2 0 0 1 3 19 V5 A2 2 0 0 1 5 3 Z" />
+    {/* L-shaped shutter */}
+    <path d="M7.5 3.5 V8.5 H15.5" />
+    {/* solid label block */}
+    <rect
+      x="7"
+      y="12.5"
+      width="12"
+      height="8"
+      fill="currentColor"
+      stroke="none"
+    />
+  </svg>
+);
+
 /** 4. Reusable Add Item Form Row */
-const AddItemInput = ({ placeholder, buttonText = "Add", onAdd }) => {
+const AddItemInput = ({
+  placeholder,
+  buttonText = "Add",
+  onAdd,
+  inputClassName = "",
+}) => {
   const [value, setValue] = useState("");
 
   const handleAdd = () => {
@@ -284,7 +391,7 @@ const AddItemInput = ({ placeholder, buttonText = "Add", onAdd }) => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-        className="flex-1 border border-[#E2DFFC] rounded-lg px-4 py-2.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984]"
+        className={`flex-1 border border-[#E2DFFC] rounded-lg px-4 py-2.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] ${inputClassName}`}
       />
       <button
         onClick={handleAdd}
@@ -358,7 +465,9 @@ export default function Subscription() {
     <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
       {/* Title Header */}
       <div>
-        <h1 className="text-xl font-semibold text-[#0A0847]">Plans & Features</h1>
+        <h1 className="text-xl font-semibold text-[#0A0847]">
+          {activeTab === "plans" ? "Plans & Features" : "Cancellation & Free Trial"}
+        </h1>
         <p className="text-sm text-[#0A084799] font-medium mt-2">
           {activeTab === "plans"
             ? "Manage subscription pricing and features."
@@ -523,6 +632,7 @@ export default function Subscription() {
               placeholder="Enter new feature..."
               buttonText="Add"
               onAdd={handleAddFeature}
+              inputClassName="text-[13.07px] placeholder:italic placeholder:font-normal placeholder:text-[13.07px] placeholder:text-[#0A0847]/60"
             />
           </div>
         </div>
@@ -532,32 +642,32 @@ export default function Subscription() {
       {activeTab === "cancellation" && (
         <div className="space-y-6">
           {/* Top Metrics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-white rounded-lg border border-[#E2DFFC] px-5 py-8 flex items-center gap-4">
-              <div className="w-18 h-18 rounded-xl bg-[#6897F8] text-white flex items-center justify-center">
-                <FiTrendingDown size={32} />
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+            <div className="flex h-[145px] w-full max-w-[520px] items-center gap-[10px] rounded-[8px] border border-[var(--cancel-border)] bg-white pl-[20px] pr-[29px]">
+              <div className="flex h-[79px] w-[80px] shrink-0 items-center justify-center rounded-[18px] bg-[var(--cancel-tile-blue)] p-[7px] text-white">
+                <BarTrendIcon width={42} height={38} />
               </div>
-              <div>
-                <p className="text-xs font-semibold text-[#0A084799]">
+              <div className="min-w-0">
+                <p className="text-[13px] font-medium text-[#0A0847]/60">
                   Total Cancellations
                 </p>
-                <p className="text-2xl font-bold text-[#001984] mt-0.5">
+                <p className="mt-[2px] text-[32px] font-bold leading-none text-[#0A0847]">
                   {cancellationMetrics?.totalCancellations}
                 </p>
               </div>
             </div>
 
-            <div className="bg-white rounded-lg border border-[#E2DFFC] px-5 py-8 flex items-center gap-4">
-              <div className="w-18 h-18 rounded-xl bg-[#9E6AF2] text-white flex items-center justify-center">
-                <FiStar size={32} className="fill-white" />
+            <div className="flex h-[145px] w-full max-w-[520px] items-center gap-[10px] rounded-[8px] border border-[var(--cancel-border)] bg-white pl-[20px] pr-[29px]">
+              <div className="flex h-[79px] w-[80px] shrink-0 items-center justify-center rounded-[18px] bg-[#9E6AF2] p-[7px] text-white">
+                <FiStar size={40} className="fill-white" />
               </div>
-              <div>
-                <p className="text-xs font-semibold text-[#0A084799]">
+              <div className="min-w-0">
+                <p className="text-[13px] font-medium text-[#0A0847]/60">
                   Most Common Reason
                 </p>
-                <p className="text-xl font-bold text-[#001984] mt-0.5">
+                <p className="mt-[2px] text-[26px] font-bold leading-none text-[#0A0847]">
                   {cancellationMetrics?.mostCommonReason}{" "}
-                  <span className="text-xl font-semibold text-[#001984]">
+                  <span className="text-[26px] font-bold text-[#0A0847]">
                     ({cancellationMetrics?.mostCommonPercentage})
                   </span>
                 </p>
@@ -572,21 +682,20 @@ export default function Subscription() {
               Cancellation Reasons
             </h3>
 
-            <div className="space-y-3">
+            <div className="space-y-[10px]">
               {reasons.map((reason, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  {/* Drag Indicator */}
-                  <MdOutlineDragIndicator
-                    size={28}
-                    className="text-[#001984] cursor-grab shrink-0"
-                  />
+                <div key={index} className="flex w-full items-center gap-3">
+                  {/* Drag Indicator 9.2 x 15.2 (Figma frame 9.2 x 20.4) */}
+                  <div className="flex h-[20.4px] w-[9.2px] shrink-0 items-center justify-center">
+                    <DragHandle className="text-[#001984] cursor-grab" />
+                  </div>
 
-                  {/* Text Input Container */}
-                  <div className="flex-1 flex items-center gap-3 border border-[#E2DFFC] rounded-md px-3 py-2.5 bg-white">
+                  {/* Text Input Container — row height 43px */}
+                  <div className="flex h-[43px] flex-1 items-center gap-3 border border-[#E2DFFC] rounded-md px-3 bg-white">
                     <span className="w-6 h-6 rounded bg-[#EEF2FF] text-[#001984] font-bold text-xs flex items-center justify-center shrink-0">
                       {index + 1}
                     </span>
-                    <span className="text-xs font-medium text-[#0A0847CC]">
+                    <span className="text-[13px] font-semibold leading-none tracking-[0.005em] text-[#0A0847]/80">
                       {reason}
                     </span>
                   </div>
@@ -607,25 +716,28 @@ export default function Subscription() {
               placeholder="Enter new reason..."
               buttonText="Add"
               onAdd={handleAddReason}
+              inputClassName="text-[13.07px] placeholder:italic placeholder:font-normal placeholder:text-[13.07px] placeholder:text-[#0A0847]/60"
             />
           </div>
 
           {/* Free Trial Settings */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
-            <h3 className="font-bold text-sm text-[#0A0847] flex items-center gap-2">
-              <FiGift size={26} className="text-[#001984]" />
-              Free Trial Settings{" "}
-              <span className="text-xs font-normal">
-                (Applies to All Plans)
+            <h3 className="font-semibold text-base text-[#0A0847] flex items-center gap-3">
+              <GiftIcon size={32} />
+              <span>
+                Free Trial Settings{" "}
+                <span className="text-xs font-normal text-[#0A0847]">
+                  (Applies to All Plans)
+                </span>
               </span>
             </h3>
 
             <div className="divide-y divide-[#0019841A] text-xs font-[Inter]">
               {/* Row 1: Enable Free Trial */}
-              <div className="py-3 flex items-center justify-between border-t border-[#0019841A]">
-                <div className="flex items-center gap-2.5 font-semibold text-[#0A0847]">
-                  <span className="p-1.5 rounded-lg bg-[#10B981] text-white">
-                    <FiGift size={14} />
+              <div className="py-5 flex items-center justify-between border-t border-[#0019841A]">
+                <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
+                    <PiToggleRightFill size={20} />
                   </span>
                   Enable Free Trial
                 </div>
@@ -638,10 +750,10 @@ export default function Subscription() {
               </div>
 
               {/* Row 2: Trial Duration */}
-              <div className="py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2.5 font-semibold text-[#0A0847]">
-                  <span className="p-1.5 rounded-lg bg-[#3B82F6] text-white">
-                    <FiClock size={14} />
+              <div className="py-5 flex items-center justify-between">
+                <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
+                  <span className="cancel-grad-clock flex h-[22.5px] w-[22.5px] shrink-0 items-center justify-center rounded-full text-white">
+                    <FiClock size={16} />
                   </span>
                   Trial Duration
                 </div>
@@ -664,10 +776,10 @@ export default function Subscription() {
               </div>
 
               {/* Row 3: Require Payment Method */}
-              <div className="py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2.5 font-semibold text-[#0A0847]">
-                  <span className="p-1.5 rounded-lg bg-[#10B981] text-white">
-                    <FiCreditCard size={14} />
+              <div className="py-5 flex items-center justify-between">
+                <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
+                  <span className="cancel-grad-card flex h-[21px] w-[18.7px] shrink-0 items-center justify-center rounded-[3px] text-white">
+                    <FiCreditCard size={15} />
                   </span>
                   Require Payment Method
                 </div>
@@ -680,10 +792,10 @@ export default function Subscription() {
               </div>
 
               {/* Row 4: Auto-start paid plan */}
-              <div className="py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2.5 font-semibold text-[#0A0847]">
-                  <span className="p-1.5 rounded-lg bg-[#10B981] text-white">
-                    <FiPlay size={14} />
+              <div className="py-5 flex items-center justify-between">
+                <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
+                    <FaPlay size={11} />
                   </span>
                   Auto-start paid plan after trial
                 </div>
@@ -697,8 +809,11 @@ export default function Subscription() {
             </div>
 
             {/* Info Callout */}
-            <div className="bg-[#F3F7FD99] rounded-xl p-3 flex items-center gap-2 text-xs text-[#001984] font-medium border border-[#E2DFFC]">
-              <BsFillInfoCircleFill size={20} className="shrink-0 text-bold" />
+            <div className="bg-[#F3F7FD99] rounded-lg px-4 py-3 flex items-center gap-3 text-[13px] leading-none tracking-[0.005em] text-[var(--cancel-navy)] font-medium border border-[var(--cancel-border)]">
+              <BsFillInfoCircleFill
+                size={24}
+                className="shrink-0 text-[var(--cancel-navy)]"
+              />
               <span className="italic">
                 Users will be notified before the trial ends and before
                 conversion to a paid plan.
@@ -706,15 +821,15 @@ export default function Subscription() {
             </div>
 
             {/* Trial Preview Banner */}
-            <div className="bg-[#F3F7FD] rounded-xl p-3.5 flex items-center gap-3 border border-[#E2DFFC]">
-              <div className="p-3 rounded-full bg-[#9E6AF2] text-white shrink-0">
-                <BsFillEyeFill size={20} />
+            <div className="bg-[#F3F7FD] rounded-lg px-4 py-2 flex items-center gap-3 border border-[var(--cancel-border)]">
+              <div className="cancel-grad-eye ring-4 ring-[var(--cancel-eye-ring)] flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full text-white">
+                <PiEyeFill size={24} />
               </div>
               <div>
-                <p className="text-base font-semibold text-[#001984]">
+                <p className="text-base leading-none font-semibold tracking-[0.005em] text-[var(--cancel-navy)]">
                   Trial Preview
                 </p>
-                <p className="text-sm text-[#001984] font-medium mt-0.5">
+                <p className="text-[13px] leading-[23px] font-medium text-[var(--cancel-navy)] mt-[7px]">
                   {trialSettings.trialDays} days free → Paid plan starts
                   automatically
                 </p>
@@ -726,8 +841,8 @@ export default function Subscription() {
 
       {/* Save Button Bar */}
       <div className="pt-2">
-        <button className="w-full bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold text-sm py-3.5 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer">
-          <FiSave size={18} />
+        <button className="flex h-12 w-full items-center justify-center gap-[10px] rounded-lg bg-[var(--cancel-navy)] px-[15px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-[var(--cancel-navy-hover)] cursor-pointer">
+          <SaveIcon size={16} />
           Save Plan Changes
         </button>
       </div>

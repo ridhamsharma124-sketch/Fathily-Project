@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -105,10 +105,10 @@ const fetchDashboardData = () =>
         ],
         userGrowth: [
           { month: "Aug", users: 6000 },
-          { month: "Sep", users: 7800 },
-          { month: "Oct", users: 9200 },
-          { month: "Nov", users: 10600 },
-          { month: "Dec", users: 11900 },
+          { month: "Sep", users: 7400 },
+          { month: "Oct", users: 8800 },
+          { month: "Nov", users: 10200 },
+          { month: "Dec", users: 11500 },
           { month: "Jan", users: 12847 },
         ],
         devices: [
@@ -239,29 +239,29 @@ export default function Dashboard() {
             return (
               <div
                 key={item.key}
-                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-3 font-[Inter]"
+                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC] h-[142px] px-4 flex items-center gap-4 font-[Inter]"
               >
                 <div
-                  className={`p-3 rounded-xl flex items-center justify-center ${colorMap[item.color]}`}
+                  className={`h-[60px] w-[60px] shrink-0 rounded-[18px] flex items-center justify-center ${colorMap[item.color]}`}
                 >
-                  <Icon size={20} />
+                  <Icon size={28} />
                 </div>
-                <div>
-                  <p className="text-sm font-[Inter] font-semibold text-[#001984]">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[13px] font-[Inter] font-semibold text-[#001984]">
                     {item.label}
                   </p>
-                  <div className="flex items-center justify-between gap-2 mt-1">
-                    <p className="text-xl font-semibold font-[Inter] text-[#0A0847]">
+                  <div className="flex items-center gap-6 mt-1">
+                    <p className="text-[22px] leading-none font-semibold font-[Inter] text-[#0A0847]">
                       {typeof item.value === "number"
                         ? item.value.toLocaleString()
                         : item.value}
                     </p>
                     {item.change !== null ? (
-                      <span className="text-sm font-medium text-[#4EB179]">
+                      <span className="text-xs font-semibold text-[#4EB179]">
                         ↑ {item.change}%
                       </span>
                     ) : (
-                      <span className="text-xs font-medium text-[#FF9E01]">
+                      <span className="text-xs font-semibold text-[#FF9E01]">
                         {item.note}
                       </span>
                     )}
@@ -352,7 +352,7 @@ export default function Dashboard() {
                 />
 
                 <Area
-                  type="monotone"
+                  type="linear"
                   dataKey="users"
                   stroke="#1E3A8A"
                   strokeWidth={1.5}
@@ -383,9 +383,9 @@ export default function Dashboard() {
             </h3>
           </div>
 
-          <div className="p-6 grid grid-cols-2 items-center gap-4 flex-1">
+          <div className="p-6 flex flex-wrap items-center justify-center gap-x-[43px] gap-y-6 flex-1">
             {/* Left: Donut Chart */}
-            <div className="relative w-full h-[220px] flex items-center justify-center">
+            <div className="relative w-[220px] h-[220px] shrink-0 flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -415,22 +415,21 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Right: Legend */}
-            <div className="space-y-4">
+            {/* Right: Legend — Figma: 167px wide, names col 70px, 64px gap, 38px row gap */}
+            <div className="grid grid-cols-[70px_auto] gap-x-16 gap-y-[38px] items-center">
               {data.devices.map((d) => (
-                <div
-                  key={d.name}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <span className="flex items-center gap-2.5 text-[#7A7A7A] font-medium">
+                <Fragment key={d.name}>
+                  <span className="flex items-center gap-2.5 text-[13px] leading-4 font-semibold text-[#7A7A7A]">
                     <span
-                      className="w-3 h-3 rounded-full shrink-0"
+                      className="w-2.5 h-2.5 rounded-full shrink-0"
                       style={{ backgroundColor: d.color }}
                     />
                     {d.name}
                   </span>
-                  <span className="font-bold text-[#0A0847]">{d.value}%</span>
-                </div>
+                  <span className="text-[13px] leading-4 font-bold text-[#0A0847]">
+                    {d.value}%
+                  </span>
+                </Fragment>
               ))}
             </div>
           </div>

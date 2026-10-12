@@ -111,6 +111,67 @@
   --toggle-blue: #0b5ed7;
 }
 
+/* ==========================================================================
+   AUTH PAGES (Login / Forgot / Reset) — Figma design tokens
+   Central source for font, colors, radii and card spacing used by the auth
+   screens (AuthLayout + components/auth/*). Keeps values out of the JSX.
+   ========================================================================== */
+:root {
+  --auth-font: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* text */
+  --auth-ink: #0a1f6b;        /* headings: Welcome Back, Admin Login */
+  --auth-subtitle: #39406e;   /* darker subtitle / helper text */
+  --auth-label: #26305c;      /* field labels */
+  --auth-placeholder: #9aa1bd;/* lighter grey placeholders */
+  --auth-muted: #6b7280;      /* footnote */
+
+  /* action */
+  --auth-button: #0a1f8f;     /* royal navy (saturated) */
+  --auth-button-hover: #081672;
+  --auth-footer: #0a2463;     /* footer navy bar */
+
+  /* surfaces / lines */
+  --auth-input-border: #e5e7eb;
+  --auth-input-focus: #0a1f8f;
+  --auth-quote-bg: #eef4ff;
+  --auth-quote-border: #dce7fa;
+
+  /* shape */
+  --auth-radius: 7px;         /* inputs, button, quote box */
+  --auth-card-radius: 20px;   /* white card */
+  --auth-card-max: 680px;     /* ~47-48% of a 1440 viewport */
+  --auth-card-pad-x: 80px;    /* ~12% of card width on desktop */
+}
+
+/* ==========================================================================
+   SUBSCRIPTION — Cancellation & Free Trial tab (Figma tokens)
+   ========================================================================== */
+:root {
+  --cancel-border: #e2dffc;
+  --cancel-navy: #001984;
+  --cancel-navy-hover: #001266;
+  --cancel-ink: #0a0847;
+  --cancel-tile-blue: #6897f8;
+  --cancel-green: #22c55e;
+
+  /* gradient icon fills */
+  --cancel-grad-clock: linear-gradient(135deg, #00c0ff 0%, #5558ff 100%);
+  --cancel-grad-card: linear-gradient(135deg, #9cffac 0%, #00859c 100%);
+  --cancel-grad-eye: linear-gradient(135deg, #9e6af2 0%, #6d55fa 100%);
+  --cancel-eye-ring: #ede9fe;
+}
+
+.cancel-grad-clock {
+  background-image: var(--cancel-grad-clock);
+}
+.cancel-grad-card {
+  background-image: var(--cancel-grad-card);
+}
+.cancel-grad-eye {
+  background-image: var(--cancel-grad-eye);
+}
+
 /* Article modal scope: its Figma palette differs from the page it sits in. */
 .am-theme {
   --heading: #0d083f;
@@ -249,6 +310,7 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-poppins: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --color-navy: #0f1a4a;
   --color-navy-deep: #13214f;

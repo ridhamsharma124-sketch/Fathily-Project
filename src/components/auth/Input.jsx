@@ -1,14 +1,23 @@
 import { useState } from "react";
 import { PiEye, PiEyeSlash } from "react-icons/pi";
 
-export default function Input({ label, id, type = "text", placeholder, ...props }) {
+export default function Input({
+  label,
+  id,
+  type = "text",
+  placeholder,
+  ...props
+}) {
   const [show, setShow] = useState(false);
   const isPassword = type === "password";
 
   return (
-    <div className="mt-[12px] w-full">
+    <div className="mt-6 w-full first:mt-0">
       {label && (
-        <label htmlFor={id} className="mb-[6px] block text-[11px] font-semibold text-[#0B1250]">
+        <label
+          htmlFor={id}
+          className="mb-1 block text-xs font-semibold leading-[18px] text-[#0A0847]"
+        >
           {label}
         </label>
       )}
@@ -17,17 +26,17 @@ export default function Input({ label, id, type = "text", placeholder, ...props 
           id={id}
           type={isPassword && show ? "text" : type}
           placeholder={placeholder}
-          className="h-[40px] w-full rounded-[8px] border border-[#E5E7EB] bg-white px-[14px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]"
+          className="h-12 w-full rounded-[4px] border border-[#E8E8E8] bg-white px-5 text-sm font-semibold text-[#0A0847] outline-none transition placeholder:font-semibold placeholder:text-[#0A0847]/60 focus:border-[#001984]"
           {...props}
         />
         {isPassword && (
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
-            className="absolute right-[12px] top-1/2 -translate-y-1/2 text-[#0B1250]"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-[#0A0847]"
             aria-label={show ? "Hide password" : "Show password"}
           >
-            {show ? <PiEye size={16} /> : <PiEyeSlash size={16} />}
+            {show ? <PiEye size={18} /> : <PiEyeSlash size={18} />}
           </button>
         )}
       </div>

@@ -180,7 +180,7 @@ function App() {
         <Route path="memory-verse" element={<MemoryVerseManagement />} />
         <Route path="memory-verse/add-edit" element={<AddEditMemoryVerse />} />
         <Route path="memory-verse/add-edit/ai-generate" element={<AddEditMemoryVerseAI />} />
-{/* mystery-card */}
+{/* mystery-card */} 
       <Route path="/admin/mystery-card" element={<MysteryCardDashboard />} />
       <Route path="/admin/mystery-card/create" element={<CreateMysteryCard />} />
       <Route path="/admin/mystery-card/edit" element={<EditMysteryCard />} />

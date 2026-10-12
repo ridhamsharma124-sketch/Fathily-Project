@@ -34,25 +34,27 @@ export default function Login() {
           required
         />
 
-        <div className="mt-[12px] flex items-center justify-between">
-          <label className="flex cursor-pointer items-center gap-[6px] text-[11px] text-[#5B5F8C]">
+        <div className="mt-4 flex h-[18px] items-center justify-between">
+          <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold leading-[18px] text-[#0A0847]/60">
             <input
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              className="h-[14px] w-[14px] accent-[#0B1F7A]"
+              className="h-4 w-4 accent-[#001984]"
             />
             Remember me
           </label>
           <Link
             to="/forgot-password"
-            className="text-[11px] font-semibold text-[#0B1250] transition hover:underline"
+            className="text-xs font-semibold leading-[18px] text-[#001984] transition hover:underline"
           >
             Forgot Password?
           </Link>
         </div>
 
-        <Button type="submit">Sign in</Button>
+        <Button type="submit" className="mt-8">
+          Sign in
+        </Button>
       </form>
     </AuthCard>
   );
