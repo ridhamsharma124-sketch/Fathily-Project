@@ -8,14 +8,15 @@ import {
   LuChevronRight,
   LuPencil,
   LuTrash2,
-  LuRocket,
-  LuBookOpen,
-  LuHandHeart,
-  LuScrollText,
-  LuCrown,
-  LuBook,
-  LuUsers,
 } from "react-icons/lu";
+// Badge illustrations cut from the Figma frame (transparent circular PNGs)
+import firstStepsIcon from "../../../assets/badges/first-steps.png";
+import dailyDevotionIcon from "../../../assets/badges/daily-devotion.png";
+import prayerWarriorIcon from "../../../assets/badges/prayer-warrior.png";
+import verseMasterIcon from "../../../assets/badges/verse-master.png";
+import faithfulFriendIcon from "../../../assets/badges/faithful-friend.png";
+import bibleScholarIcon from "../../../assets/badges/bible-scholar.png";
+import communityLeaderIcon from "../../../assets/badges/community-leader.png";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -34,8 +35,7 @@ const BADGES = [
     tier: "Seed",
     points: "Subscription & Billing",
     requirement: "Complete your first quiz",
-    badgeClass: "bg-gradient-to-br from-[#1116A5] to-[#041581]",
-    Glyph: LuRocket,
+    iconSrc: firstStepsIcon,
   },
   {
     id: 2,
@@ -44,8 +44,7 @@ const BADGES = [
     tier: "Seed",
     points: "Subscription & Billing",
     requirement: "Maintain a 7-day reading streak",
-    badgeClass: "bg-gradient-to-br from-[#F43F5E] to-[#BE123C]",
-    Glyph: LuBookOpen,
+    iconSrc: dailyDevotionIcon,
   },
   {
     id: 3,
@@ -54,8 +53,7 @@ const BADGES = [
     tier: "Sprout",
     points: "Gift Codes",
     requirement: "Log 30 prayers",
-    badgeClass: "bg-gradient-to-br from-[#FB923C] to-[#EA580C]",
-    Glyph: LuHandHeart,
+    iconSrc: prayerWarriorIcon,
   },
   {
     id: 4,
@@ -64,8 +62,7 @@ const BADGES = [
     tier: "Sprout",
     points: "Account Settings",
     requirement: "Read all Bible chapters",
-    badgeClass: "bg-gradient-to-br from-[#60A5FA] to-[#2973F8]",
-    Glyph: LuScrollText,
+    iconSrc: verseMasterIcon,
   },
   {
     id: 5,
@@ -74,8 +71,7 @@ const BADGES = [
     tier: "Sprout",
     points: "Account Settings",
     requirement: "Invite 3 friends",
-    badgeClass: "bg-gradient-to-br from-[#F87171] to-[#B91C1C]",
-    Glyph: LuCrown,
+    iconSrc: faithfulFriendIcon,
   },
   {
     id: 6,
@@ -84,8 +80,7 @@ const BADGES = [
     tier: "Tree",
     points: "Account Settings",
     requirement: "Mentor 10 new users",
-    badgeClass: "bg-gradient-to-br from-[#A78BFA] to-[#8043E6]",
-    Glyph: LuBook,
+    iconSrc: bibleScholarIcon,
   },
   {
     id: 7,
@@ -94,8 +89,7 @@ const BADGES = [
     tier: "Tree",
     points: "Account Settings",
     requirement: "Log 365 prayers",
-    badgeClass: "bg-gradient-to-br from-[#C4B5FD] to-[#7C3AED]",
-    Glyph: LuUsers,
+    iconSrc: communityLeaderIcon,
   },
 ];
 
@@ -123,9 +117,11 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
+/* Figma: table header 14px / 500, body 12px / 500, line-height 100%, vertical middle */
 const TH_CLASS =
-  "px-4 text-[15px] font-medium text-[#0A0847]/80";
-const TD_CLASS = "px-4 text-[15px] font-medium text-[#0A0847]/80";
+  "px-4 text-[14px] font-medium leading-none text-[#0A0847]/80";
+const TD_CLASS =
+  "px-4 text-[12px] font-medium leading-none text-[#0A0847]/80 align-middle";
 
 /* ==========================================================================
    PAGE 1 — BADGES MANAGEMENT
@@ -152,7 +148,8 @@ export default function Badges() {
           {/* header row */}
           <div className="flex items-start justify-between gap-6">
             <div>
-              <h1 className="text-[24px] leading-none font-semibold text-[#0A0847]">
+              {/* Figma: Inter 600, 22px, line-height 100% */}
+              <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
                 Badges Management
               </h1>
               <p className="mt-[18px] text-[16px] leading-none text-[#0A0847]/60">
@@ -173,15 +170,15 @@ export default function Badges() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="relative w-[407px]">
               <LuSearch
-                size={17}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]"
+                size={15}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
               />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search badges..."
-                className="h-[42px] w-full rounded-lg border border-[#E5E4EC] bg-white pl-9 pr-3 text-[13px] text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/80 focus:border-[#041581]"
+                className="h-[42px] w-full rounded-lg border border-[#E2DFFC] bg-white pl-9 pr-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#041581]"
               />
             </div>
 
@@ -202,7 +199,7 @@ export default function Badges() {
                 <div key={select.id} className={`relative ${select.w}`}>
                   <select
                     id={select.id}
-                    className="h-[42px] w-full cursor-pointer appearance-none rounded-lg border border-[#E5E4EC] bg-white pl-3 pr-8 text-[15px] font-medium text-[#0A0847] outline-none transition focus:border-[#041581]"
+                    className="h-[42px] w-full cursor-pointer appearance-none rounded-lg border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#041581]"
                   >
                     {select.options.map((option) => (
                       <option key={option} value={option}>
@@ -219,12 +216,12 @@ export default function Badges() {
             </div>
           </div>
 
-          {/* table card */}
-          <div className="overflow-hidden rounded-xl border border-[#EFEDF8] bg-white">
+          {/* table card — Figma: radius 7.5px, border 0.75px #E2DFFC */}
+          <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
             <div className="px-[13px] pt-[13px]">
               <table className="w-full min-w-[880px] border-collapse">
                 <thead>
-                  <tr className="h-[48px] bg-[#EFEDF8]">
+                  <tr className="h-[50px] bg-[#EFEDF8]">
                     <th scope="col" className={`${TH_CLASS} text-left`}>
                       Badges
                     </th>
@@ -247,41 +244,40 @@ export default function Badges() {
                 </thead>
                 <tbody>
                   {visible.map((badge) => {
-                    const Glyph = badge.Glyph;
                     return (
                       <tr
                         key={badge.id}
                         className="h-[61px] border-t border-[#EFEDF8] transition-colors hover:bg-[#F9FAFE]"
                       >
-                        <td className="px-4">
+                        <td className="px-4 align-middle">
                           <div className="flex items-center gap-3">
-                            <span
-                              className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${badge.badgeClass}`}
-                            >
-                              <Glyph size={17} className="text-white" />
-                            </span>
+                            <img
+                              src={badge.iconSrc}
+                              alt=""
+                              className="h-10 w-10 shrink-0"
+                            />
                             <div>
-                              <p className="text-[15px] font-medium text-[#0A0847]/80">
+                              <p className="text-[14px] font-medium leading-none text-[#0A0847]/80">
                                 {badge.title}
                               </p>
-                              <p className="text-[13px] text-[#0A0847]/60">
+                              <p className="mt-1 text-[10px] font-medium leading-none text-[#0A0847]/60">
                                 {badge.subtitle}
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 text-center">
+                        <td className="px-4 text-center align-middle">
                           <span
-                            className={`inline-block rounded-lg border px-3 py-1 text-[14px] font-medium ${TIER_CLASS[badge.tier]}`}
+                            className={`inline-block rounded-lg border px-3 py-1 text-[12px] font-medium leading-none ${TIER_CLASS[badge.tier]}`}
                           >
                             {badge.tier}
                           </span>
                         </td>
                         <td className={TD_CLASS}>{badge.points}</td>
                         <td className={TD_CLASS}>{badge.requirement}</td>
-                        <td className="px-4">
+                        <td className="px-4 align-middle">
                           <div className="flex items-center gap-2">
-                            <span className="text-[14px] text-[#0A0847]/80">
+                            <span className="text-[12px] font-medium leading-none text-[#0A0847]/80">
                               Active
                             </span>
                             <Toggle
@@ -291,19 +287,19 @@ export default function Badges() {
                             />
                           </div>
                         </td>
-                        <td className="px-4">
+                        <td className="px-4 align-middle">
                           <div className="flex items-center justify-center gap-2">
                             <button
                               type="button"
                               aria-label={`Edit ${badge.title}`}
-                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E5E4EC] bg-white text-[#001984] transition-colors hover:bg-[#F9FAFE]"
+                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#001984] transition-colors hover:bg-[#F9FAFE]"
                             >
                               <LuPencil size={15} />
                             </button>
                             <button
                               type="button"
                               aria-label={`Delete ${badge.title}`}
-                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E5E4EC] bg-white text-[#E11D48] transition-colors hover:bg-[#F9FAFE]"
+                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#E11D48] transition-colors hover:bg-[#F9FAFE]"
                             >
                               <LuTrash2 size={15} />
                             </button>
@@ -317,7 +313,7 @@ export default function Badges() {
                     <tr>
                       <td
                         colSpan={6}
-                        className="px-4 py-10 text-center text-[14px] text-[#0A0847]/60"
+                        className="px-4 py-10 text-center text-[12px] font-medium text-[#0A0847]/60"
                       >
                         No badges found.
                       </td>
@@ -329,10 +325,11 @@ export default function Badges() {
 
             {/* footer */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#EFEDF8] px-[13px] py-3">
-              <div className="flex items-center gap-2 text-[13px] text-[#0A0847]/60">
+              {/* Figma: Inter 400, 12px, #0A0847 60% */}
+              <div className="flex items-center gap-2 text-[12px] font-normal leading-none text-[#0A0847]/60">
                 Display
                 <div className="relative">
-                  <select className="h-[32px] w-[64px] cursor-pointer appearance-none rounded-md border border-[#E5E4EC] bg-white pl-2 pr-6 text-[13px] text-[#0A0847]/80 outline-none">
+                  <select className="h-[32px] w-[64px] cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white pl-2 pr-6 text-[12px] font-normal text-[#0A0847]/80 outline-none">
                     <option>10</option>
                     <option>20</option>
                     <option>50</option>
@@ -345,12 +342,13 @@ export default function Badges() {
                 Badges
               </div>
 
+              {/* Figma: pagination squares 24px, radius 3px, active #001984 */}
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"
                   disabled
                   aria-label="Previous page"
-                  className="flex h-[26px] w-[26px] cursor-not-allowed items-center justify-center rounded-md border border-[#E5E4EC] text-[#0A0847]/30"
+                  className="flex h-6 w-6 cursor-not-allowed items-center justify-center rounded-[3px] border border-[#E2DFFC] text-[#0A0847]/30"
                 >
                   <LuChevronLeft size={14} />
                 </button>
@@ -359,10 +357,10 @@ export default function Badges() {
                     key={page}
                     type="button"
                     aria-current={page === 1 ? "page" : undefined}
-                    className={`flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-md text-[13px] ${
+                    className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] text-[12px] leading-none ${
                       page === 1
                         ? "bg-[#001984] font-semibold text-white"
-                        : "border border-[#E5E4EC] text-[#0A0847]/80 transition-colors hover:bg-[#F9FAFE]"
+                        : "border border-[#E2DFFC] font-medium text-[#0A0847]/80 transition-colors hover:bg-[#F9FAFE]"
                     }`}
                   >
                     {page}
@@ -371,7 +369,7 @@ export default function Badges() {
                 <button
                   type="button"
                   aria-label="Next page"
-                  className="flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-md border border-[#001984] text-[#001984] transition-colors hover:bg-[#F1F1F9]"
+                  className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] border border-[#001984] text-[#001984] transition-colors hover:bg-[#F1F1F9]"
                 >
                   <LuChevronRight size={14} />
                 </button>

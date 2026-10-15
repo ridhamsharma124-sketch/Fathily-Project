@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   PiCaretRight,
-  PiFloppyDisk,
   PiPencilSimple,
   PiPlus,
   PiShieldWarning,
@@ -14,9 +13,9 @@ import {
    SHARED STYLES
    ========================================================================== */
 const thCls =
-  "whitespace-nowrap border-b border-[color:var(--line)] bg-[#F3F4FB] px-[16px] py-[12px] text-left align-middle text-[14px] font-medium text-[color:var(--text)]";
+  "whitespace-nowrap border-b border-[color:var(--line)] bg-[#F3F4FB] px-[20px] py-[16px] text-left align-middle text-[14px] font-medium text-[color:var(--text-80)]";
 const tdCls =
-  "px-[16px] py-[12px] align-middle text-[12px] font-medium text-[color:var(--text-80)]";
+  "h-[62px] border-b-[0.75px] border-[#E9E9E9] px-[20px] py-[16px] align-middle text-[12px] font-medium text-[color:var(--text-80)]";
 
 function StatusPill({ children }) {
   return (
@@ -28,7 +27,7 @@ function StatusPill({ children }) {
 
 function RowActions() {
   return (
-    <div className="flex items-center justify-end gap-[10px]">
+    <div className="flex items-center justify-end gap-[14px]">
       <button
         type="button"
         aria-label="Edit"
@@ -50,14 +49,14 @@ function RowActions() {
 function SelectedRadio({ selected }) {
   return (
     <span
-      className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border ${
+      className={`flex h-[15.2px] w-[15.2px] items-center justify-center rounded-full border ${
         selected
-          ? "border-2 border-[color:var(--navy)]"
-          : "border border-[#C9CDD6]"
+          ? "border-[#001984] bg-white"
+          : "border-[#001984]"
       }`}
     >
       {selected && (
-        <span className="h-[8px] w-[8px] rounded-full bg-[color:var(--navy)]" />
+        <span className="h-[6.4px] w-[6.4px] rounded-full bg-[color:var(--navy)]" />
       )}
     </span>
   );
@@ -68,7 +67,7 @@ function OutlineButton({ children, className = "", gap = 9 }) {
     <button
       type="button"
       style={{ gap: `${gap}px` }}
-      className={`flex h-[42px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-[color:var(--border-soft)] bg-[color:var(--card-bg)] px-[18px] text-[14px] font-semibold text-[color:var(--text)] transition hover:bg-[color:var(--hover-soft)] ${className}`}
+      className={`flex h-[42px] shrink-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] border border-[color:var(--border-soft)] bg-[color:var(--card-bg)] px-[18px] text-[14px] font-semibold text-[color:var(--text)] transition hover:bg-[color:var(--hover-soft)] ${className}`}
     >
       <PiPlus size={16} />
       {children}
@@ -87,7 +86,7 @@ function SectionCard({ title, subtitle, action, className = "", style, gap = 24,
           <h2 className="text-[16px] font-semibold text-[color:var(--text)]">
             {title}
           </h2>
-          <p className="text-[12px] font-normal text-[color:var(--text-60)]">
+          <p className="text-[12px] font-normal leading-[19px] text-[color:var(--text-60)]">
             {subtitle}
           </p>
         </div>
@@ -148,6 +147,15 @@ const MODERATION = [
     Icon: PiSlidersHorizontal,
   },
 ];
+
+/* Save icon traced to match the Figma floppy (rounded body, top shutter, bottom label) */
+const SaveIcon = ({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 3h11l5 5v10a3 3 0 0 1-3 3H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+    <path d="M8 3v5h7V3" />
+    <rect x="7" y="13" width="10" height="8" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 /* ==========================================================================
    PAGE
@@ -240,7 +248,7 @@ export default function AIExperience() {
                 {STYLES.map((s) => (
                   <tr key={s.name}>
                     <td className={tdCls}>{s.name}</td>
-                    <td className="px-[16px] py-[12px] align-middle text-[12px] font-normal text-[color:var(--text-60)]">
+                    <td className="h-[62px] border-b-[0.75px] border-[#E9E9E9] px-[20px] py-[16px] align-middle text-[12px] font-normal text-[color:var(--text-60)]">
                       {s.desc}
                     </td>
                     <td className={tdCls}>
@@ -256,13 +264,13 @@ export default function AIExperience() {
           </div>
 
           <div>
-            <OutlineButton>Add New</OutlineButton>
+            <OutlineButton className="w-[141px]">Add New</OutlineButton>
           </div>
         </div>
       </SectionCard>
 
       {/* Two column row */}
-      <div className="mx-auto flex w-full flex-col gap-[24px] xl:w-[1066px] xl:max-w-full xl:flex-row xl:items-start">
+      <div className="mx-auto flex w-full flex-col gap-[24px] xl:w-[1066px] xl:max-w-full xl:flex-row xl:items-stretch">
         {/* Left: Homepage Prompt Suggestions */}
         <SectionCard
           title="Bible Version Management"
@@ -295,7 +303,7 @@ export default function AIExperience() {
           </div>
 
           <div>
-            <OutlineButton>Add Prompt</OutlineButton>
+            <OutlineButton className="w-[141px]">Add Prompt</OutlineButton>
           </div>
         </SectionCard>
 
@@ -322,7 +330,7 @@ export default function AIExperience() {
                     <span className="text-[14px] font-semibold text-[color:var(--text)]">
                       {m.title}
                     </span>
-                    <span className="text-[12px] font-normal text-[color:var(--text-60)]">
+                    <span className="text-[12px] font-normal leading-[19px] text-[color:var(--text-60)]">
                       {m.desc}
                     </span>
                   </span>
@@ -344,7 +352,7 @@ export default function AIExperience() {
           type="button"
           className="flex h-[42px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[color:var(--navy)] px-[20px] text-[14px] font-semibold text-white transition hover:bg-[#0a1c68]"
         >
-          <PiFloppyDisk size={16} />
+          <SaveIcon size={16} />
           Save All Changes
         </button>
       </div>

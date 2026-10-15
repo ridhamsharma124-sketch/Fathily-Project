@@ -40,6 +40,7 @@ const INTRO_TIME = "00:10 / 00:10";
 
 /* ==========================================================================
    STORY ENTRY PREVIEW (right card)
+   Figma: card 465 wide, radius 8, border 1px #E2DFFC, bg #F9F9FF
    ========================================================================== */
 const PREVIEW_TRUNCATE_AT = 74;
 
@@ -51,10 +52,11 @@ function StoryEntryPreview({ title, description, image }) {
     <section className="w-full min-w-0 shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-8">
       <div className="flex flex-col gap-3">
         <div>
-          <h2 className="text-[22px] font-bold text-[#0A0847]">
+          {/* Figma: Inter 600 / 22px / lh 100% */}
+          <h2 className="text-[22px] font-semibold leading-none text-[#0A0847]">
             Story Entry Preview
           </h2>
-          <p className="mt-1 text-[16px] text-[#0A084799]">
+          <p className="mt-2 text-[16px] text-[#0A084799]">
             This is how the story will appear to users.
           </p>
         </div>
@@ -67,22 +69,29 @@ function StoryEntryPreview({ title, description, image }) {
           />
         )}
 
-        <p className="mt-1 text-[15px] font-bold text-[#0A0847]">{title}</p>
+        {/* Figma: Inter 600 / 16px / lh 30px */}
+        <p className="mt-1 text-[16px] font-semibold leading-[30px] text-[#0A0847]">
+          {title}
+        </p>
 
-        <p className="text-[13px] font-bold italic text-[#041581]">John 3</p>
+        {/* Figma: Inter italic / 14px / lh 30px */}
+        <p className="text-[14px] font-semibold italic leading-[30px] text-[#041581]">
+          John 3
+        </p>
 
         <div className="flex items-center gap-2">
           <LuHeadphones size={14} className="shrink-0 text-[#0A084799]" aria-hidden />
-          <p className="text-[12px] italic text-[#0A084799]">
-            <span className="font-bold">09:48</span> • 24 Plays
+          <p className="text-[14px] font-medium italic leading-[30px] text-[#0A084799]">
+            <span className="font-semibold">09:48</span> • 24 Plays
           </p>
         </div>
 
-        <p className="line-clamp-2 text-[12px] italic leading-[1.5] text-[#0A084799]">
+        {/* Figma: Inter 500 italic / 14px */}
+        <p className="line-clamp-2 text-[14px] font-medium italic leading-[21px] text-[#0A084799]">
           {truncate(description, PREVIEW_TRUNCATE_AT)}
         </p>
 
-        <AudioPlayer time={INTRO_TIME} />
+        <AudioPlayer time={INTRO_TIME} variant="preview" />
       </div>
     </section>
   );
@@ -131,7 +140,8 @@ export default function AddChapterAudioStory() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 max={500}
-                className="h-[100px]"
+                /* Figma: textarea height is 116px (was 100px) */
+                className="h-[116px]"
               />
             </Field>
 
@@ -150,23 +160,29 @@ export default function AddChapterAudioStory() {
             </div>
 
             <div>
-              <AudioFileCard />
-              <p className="mt-2 text-[11px] leading-[1.6] text-[#0A0847]">
-                This audio will be used as the story narration.
-                <br />
-                Supported formats: MP3, WAV, AAC (max 25 MB)
-              </p>
+              {/* Figma: helper text sits INSIDE the card, below a divider.
+                  Inter 500 / 12px, 2 lines = 30px tall */}
+              <AudioFileCard>
+                <p className="pt-[26px] pr-4 pb-[44px] pl-[82px] text-[12px] font-medium leading-[15px] text-[#0A0847]">
+                  This audio will be used as the story narration.
+                  <br />
+                  Supported formats: MP3, WAV, AAC (max 25 MB)
+                </p>
+              </AudioFileCard>
             </div>
 
             <div>
-              <p className="text-[12px] font-semibold text-[#0A0847]">
+              {/* Figma: label Inter 600 / 14px, value Inter 500 / 12px */}
+              <p className="text-[14px] font-semibold text-[#0A0847]">
                 Duration (Based on Audio)
               </p>
-              <p className="mt-1 text-[11px] text-[#0A084799]">{DURATION_LABEL}</p>
+              <p className="mt-1 text-[12px] font-medium text-[#0A084799]">
+                {DURATION_LABEL}
+              </p>
             </div>
 
             <div>
-              <p className="mb-[6px] text-[12px] font-semibold text-[#0A0847]">
+              <p className="mb-[6px] text-[14px] font-semibold text-[#0A0847]">
                 10-Second Intro/Preview
               </p>
               <AudioPlayer time={INTRO_TIME} />
@@ -193,7 +209,7 @@ export default function AddChapterAudioStory() {
             </Field>
 
             <div className="flex items-center gap-[60px]">
-              <p className="text-[12px] font-semibold text-[#0A0847]">
+              <p className="text-[14px] font-semibold text-[#0A0847]">
                 Enable Transcriber
               </p>
               <Toggle

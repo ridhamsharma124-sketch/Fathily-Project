@@ -1,13 +1,4 @@
-/* ==========================================================================
-   CUSTOM ACTIVITY GLYPHS
-   Hand-built SVGs matching the Figma designs. These are multi-colour
-   illustrations (so they ignore any inherited `color` / `style`) but still
-   accept `size` so they can drop into the existing icon slots.
-   ========================================================================== */
 
-/* -------------------------------------------------------------------------
-   WORD SEARCH — 2x2 puzzle tiles in darker green, each with a white mark
-   ---------------------------------------------------------------------- */
 export function WordSearchGlyph({ size = 24, ...rest }) {
   const TILE = "fill-[#16A34A]";
   return (

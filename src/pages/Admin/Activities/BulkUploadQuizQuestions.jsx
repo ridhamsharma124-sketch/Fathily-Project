@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
+import selectorBookIcon from "../../../assets/activities/selector_book.png";
+import uploadCloudIcon from "../../../assets/activities/upload_cloud.png";
 import {
   LuDownload,
-  LuCloudUpload,
   LuSearch,
   LuFileSpreadsheet,
   LuFileText,
@@ -9,7 +10,6 @@ import {
   LuTriangleAlert,
   LuPencil,
   LuTrash2,
-  LuBookOpen,
   LuChevronDown,
   LuChevronRight,
 } from "react-icons/lu";
@@ -97,7 +97,7 @@ const TABLE_ROWS = [
 ];
 
 /* ==========================================================================
-   PAGE-LOCAL STYLES (quizShared.jsx left untouched for other pages)
+   PAGE-LOCAL STYLES
    ========================================================================== */
 const labelCls = "mb-1.5 block text-[12px] font-semibold text-[#0A0847]";
 
@@ -105,7 +105,7 @@ const fieldCls =
   "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
 
 const stepButton =
-  "flex h-12 min-w-[152px] w-fit shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 py-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-10 min-w-[133px] w-fit shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-4 py-2 text-[13px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
 
 const outlineButton =
   "flex h-12 w-[152px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
@@ -115,7 +115,7 @@ const purpleButton =
 
 const formatSize = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
 
-/* columns: checkbox | No. | Description | Correct Answer | Bible Reference | Status | Actions */
+/* Columns: checkbox | No. | Description | Correct Answer | Bible Reference | Status | Actions */
 const TABLE_GRID =
   "grid grid-cols-[48px_56px_minmax(0,1fr)_120px_130px_100px_104px] items-center gap-3 px-4";
 
@@ -145,7 +145,11 @@ function Breadcrumb({ items }) {
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
     <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
-      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
+      <img
+        src={selectorBookIcon}
+        alt="Book Icon"
+        className="h-4 w-4 shrink-0 object-contain"
+      />
       <p className="text-[13px] leading-[22px]">
         {parts.map((part, index) => (
           <span key={part}>
@@ -160,7 +164,7 @@ function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
 
 function StepRow({ step, title, description, headerRight, children }) {
   return (
-    <section className="flex w-full flex-col gap-2.5 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
+    <section className="flex w-full flex-col gap-3 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3.5">
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] font-semibold text-white">
@@ -192,7 +196,6 @@ export default function BulkUploadQuizQuestions() {
 
   const openPicker = () => fileInputRef.current?.click();
 
-  /* the picker is filtered by accept=".csv", but a drop is not — validate here */
   const acceptFiles = (files) => {
     const picked = files?.[0];
     if (!picked) return;
@@ -205,7 +208,7 @@ export default function BulkUploadQuizQuestions() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="flex w-full min-w-0 flex-col px-5 py-6">
+      <div className="flex w-full min-w-0 flex-col px-6 py-6">
         <Breadcrumb
           items={[
             "Bible Content",
@@ -221,7 +224,7 @@ export default function BulkUploadQuizQuestions() {
           Bulk Upload Quiz Questions
         </h1>
 
-        {/* TOP — chip (hug) + question type select */}
+        {/* TOP — Location Chip + Question Type Select */}
         <div className="mt-5">
           <LocationChip />
 
@@ -262,7 +265,7 @@ export default function BulkUploadQuizQuestions() {
           onChange={(e) => acceptFiles(e.target.files)}
         />
 
-        {/* STEP CARDS — 16px between cards */}
+        {/* STEP CARDS */}
         <div className="mt-5 flex flex-col gap-4">
           {/* STEP 1 */}
           <StepRow
@@ -277,7 +280,7 @@ export default function BulkUploadQuizQuestions() {
             }
           />
 
-          {/* STEP 2 — clickable / drag-and-drop dropzone */}
+          {/* STEP 2 — Drag-and-drop dropzone */}
           <StepRow
             step={2}
             title="Upload Completed CSV"
@@ -321,7 +324,12 @@ export default function BulkUploadQuizQuestions() {
               }`}
             >
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3">
-                <LuCloudUpload size={40} className="shrink-0 text-[#001984]" aria-hidden />
+                {/* Figma cloud-upload icon (cut from Figma frame) */}
+                <img
+                  src={uploadCloudIcon}
+                  alt=""
+                  className="h-[52px] w-auto shrink-0"
+                />
                 <div className="text-center">
                   <p className="text-[16px] font-semibold text-[#0A0847]">
                     Drag and drop your file here
@@ -345,10 +353,9 @@ export default function BulkUploadQuizQuestions() {
               </button>
             </div>
           </StepRow>
-
-          {/* STEP 3 — lives inside the combined card below */}
         </div>
-        {/* COMBINED CARD — Validate Results → file row → stats → table */}
+
+        {/* COMBINED CARD — Validate Results + File Row + Stats + Table */}
         <section className="mt-4 flex w-full flex-col gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3.5">
@@ -370,119 +377,117 @@ export default function BulkUploadQuizQuestions() {
 
           {/* FILE ROW */}
           <div className="flex h-[72px] items-center justify-between gap-3 rounded-lg bg-[#F9F9FF] pr-[31px] pl-5">
-          <div className="flex min-w-0 items-center gap-3">
-            <LuFileSpreadsheet size={20} className="shrink-0 text-[#16A34A]" aria-hidden />
-            <div className="min-w-0">
-              <p className="truncate text-[14px] font-semibold text-[#001984]">
-                {fileName}
-              </p>
-              <p className="mt-0.5 text-[12px] text-[#0A0847]/60">{fileMeta}</p>
-            </div>
-          </div>
-          <LuCircleCheck
-            size={20}
-            className="shrink-0 text-[#16A34A]"
-            aria-label="File validated"
-          />
-        </div>
-
-        {/* STAT CARDS — 3 equal columns filling full width */}
-        <div className="grid grid-cols-3 gap-4">
-          {STAT_CARDS.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={stat.key}
-                className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[22px]"
-              >
-                <span
-                  className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-xl ${stat.iconWrap}`}
-                >
-                  <Icon size={26} className={stat.iconColor} aria-hidden />
-                </span>
-                <div className="flex min-w-0 flex-col gap-2.5">
-                  <p className="text-[22px] leading-none font-semibold text-[#0A0847]">
-                    {stat.value}
-                  </p>
-                  <p className="text-[14px] font-medium text-[#0A0847]/60">
-                    {stat.label}
-                  </p>
-                </div>
+            <div className="flex min-w-0 items-center gap-3">
+              <LuFileSpreadsheet size={20} className="shrink-0 text-[#16A34A]" aria-hidden />
+              <div className="min-w-0">
+                <p className="truncate text-[14px] font-semibold text-[#001984]">
+                  {fileName}
+                </p>
+                <p className="mt-0.5 text-[12px] text-[#0A0847]/60">{fileMeta}</p>
               </div>
-            );
-          })}
-        </div>
-
-        {/* VALIDATION TABLE */}
-        <div className="w-full overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
-          {/* header */}
-          <div
-            className={`${TABLE_GRID} h-[50px] bg-[#F3F7FD] text-[14px] font-medium text-[#0A0847]/80`}
-          >
-            <div className="flex items-center justify-start">
-              <input
-                type="checkbox"
-                aria-label="Select all rows"
-                className="h-4 w-4 cursor-pointer rounded-[4px] border border-[#E2DFFC] accent-[#001984]"
-              />
             </div>
-            <div className="text-center">No.</div>
-            <div className="text-center">Description</div>
-            <div className="text-center">Correct Answer</div>
-            <div className="text-center">Bible Reference</div>
-            <div className="text-center">Status</div>
-            <div className="text-center">Actions</div>
+            <LuCircleCheck
+              size={20}
+              className="shrink-0 text-[#16A34A]"
+              aria-label="File validated"
+            />
           </div>
 
-          {/* rows */}
-          {TABLE_ROWS.map((row) => (
+          {/* STAT CARDS */}
+          <div className="grid grid-cols-3 gap-4">
+            {STAT_CARDS.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={stat.key}
+                  className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[22px]"
+                >
+                  <span
+                    className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-xl ${stat.iconWrap}`}
+                  >
+                    <Icon size={26} className={stat.iconColor} aria-hidden />
+                  </span>
+                  <div className="flex min-w-0 flex-col gap-2.5">
+                    <p className="text-[22px] leading-none font-semibold text-[#0A0847]">
+                      {stat.value}
+                    </p>
+                    <p className="text-[14px] font-medium text-[#0A0847]/60">
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* VALIDATION TABLE */}
+          <div className="w-full overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
             <div
-              key={row.no}
-              className={`${TABLE_GRID} h-[63px] border-b-[0.75px] border-[#E9E9E9] bg-white text-[12px] font-medium text-[#0A0847]/80 last:border-b-0`}
+              className={`${TABLE_GRID} h-[50px] bg-[#F3F7FD] text-[14px] font-medium text-[#0A0847]/80`}
             >
               <div className="flex items-center justify-start">
                 <input
                   type="checkbox"
-                  aria-label={`Select row ${row.no}`}
+                  aria-label="Select all rows"
                   className="h-4 w-4 cursor-pointer rounded-[4px] border border-[#E2DFFC] accent-[#001984]"
                 />
               </div>
-              <div className="text-center">{row.no}</div>
-              <div className="text-center leading-4">{row.description}</div>
-              <div className="text-center">{row.answer}</div>
-              <div className="text-center">{row.reference}</div>
-              <div className="flex items-center justify-center">
-                <span
-                  className={`flex h-[28px] w-fit items-center rounded-lg px-3 text-[12px] font-medium ${
-                    row.status === "Valid"
-                      ? "bg-[#21AC1C]/10 text-[#21AC1C]"
-                      : "bg-[#FEE2E2] text-[#DC2626]"
-                  }`}
-                >
-                  {row.status}
-                </span>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="flex w-[72px] gap-2">
-                  <button
-                    type="button"
-                    aria-label={`Edit row ${row.no}`}
-                    className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]"
+              <div className="text-center">No.</div>
+              <div className="text-center">Description</div>
+              <div className="text-center">Correct Answer</div>
+              <div className="text-center">Bible Reference</div>
+              <div className="text-center">Status</div>
+              <div className="text-center">Actions</div>
+            </div>
+
+            {TABLE_ROWS.map((row) => (
+              <div
+                key={row.no}
+                className={`${TABLE_GRID} h-[63px] border-b-[0.75px] border-[#E9E9E9] bg-white text-[12px] font-medium text-[#0A0847]/80 last:border-b-0`}
+              >
+                <div className="flex items-center justify-start">
+                  <input
+                    type="checkbox"
+                    aria-label={`Select row ${row.no}`}
+                    className="h-4 w-4 cursor-pointer rounded-[4px] border border-[#E2DFFC] accent-[#001984]"
+                  />
+                </div>
+                <div className="text-center">{row.no}</div>
+                <div className="text-center leading-4">{row.description}</div>
+                <div className="text-center">{row.answer}</div>
+                <div className="text-center">{row.reference}</div>
+                <div className="flex items-center justify-center">
+                  <span
+                    className={`flex h-[28px] w-fit items-center rounded-lg px-3 text-[12px] font-medium ${
+                      row.status === "Valid"
+                        ? "bg-[#21AC1C]/10 text-[#21AC1C]"
+                        : "bg-[#FEE2E2] text-[#DC2626]"
+                    }`}
                   >
-                    <LuPencil size={16} />
-                  </button>
-                  <button
-                    type="button"
-                    aria-label={`Delete row ${row.no}`}
-                    className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#DC2626] transition hover:border-[#DC2626]"
-                  >
-                    <LuTrash2 size={16} />
-                  </button>
+                    {row.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-center">
+                  <div className="flex w-[72px] gap-2">
+                    <button
+                      type="button"
+                      aria-label={`Edit row ${row.no}`}
+                      className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]"
+                    >
+                      <LuPencil size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label={`Delete row ${row.no}`}
+                      className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#DC2626] transition hover:border-[#DC2626]"
+                    >
+                      <LuTrash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         </section>
 
         {/* BOTTOM ACTION ROW */}

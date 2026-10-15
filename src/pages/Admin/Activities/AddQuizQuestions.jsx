@@ -1,47 +1,153 @@
 import { useState } from "react";
+import { LuDownload, LuChevronDown, LuPencil } from "react-icons/lu";
 import {
-  LuBookOpen,
-  LuChevronRight,
-  LuChevronDown,
-  LuList,
-  LuSquareCheck,
-  LuCaseUpper,
-  LuCircleX,
-  LuAlignLeft,
-  LuImage,
-  LuRepeat2,
-  LuUser,
-  LuShuffle,
-  LuSpeaker,
-  LuCirclePlay,
-  LuChartColumn,
-  LuSparkles,
-  LuPencilLine,
-  LuFileSpreadsheet,
-  LuDownload,
-  LuUpload,
-} from "react-icons/lu";
+  FiCheckSquare,
+  FiXCircle,
+  FiAlignLeft,
+  FiUser,
+  FiExternalLink,
+  FiVolume2,
+} from "react-icons/fi";
+import { RiListUnordered } from "react-icons/ri";
+import { IoImage } from "react-icons/io5";
+import { BsBarChart } from "react-icons/bs";
+
+/* Figma icon: src/assets/activities/selector_book.png */
+import selectorBookIcon from "../../../assets/activities/selector_book.png";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   CUSTOM ICONS (Figma jaisa look)
+   ========================================================================== */
+
+// 4-point concave star ka path
+function starPath(cx, cy, r) {
+  const k = r * 0.22;
+  return `M${cx} ${cy - r} Q${cx + k} ${cy - k} ${cx + r} ${cy} Q${cx + k} ${cy + k} ${cx} ${cy + r} Q${cx - k} ${cy + k} ${cx - r} ${cy} Q${cx - k} ${cy - k} ${cx} ${cy - r}Z`;
+}
+
+function SparklesIcon({ size = 62, ...props }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 62 62"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
+      aria-hidden
+      {...props}
+    >
+      <path d={starPath(20, 40, 19)} />
+      <path d={starPath(44, 14, 11)} />
+      <path d={starPath(48, 44, 9)} />
+    </svg>
+  );
+}
+
+function CsvFileIcon({ size = 62, ...props }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 62 62"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      aria-hidden
+      {...props}
+    >
+      {/* back page */}
+      <path d="M22 8h20l10 10v32a2 2 0 0 1-2 2h-4" />
+      {/* front page */}
+      <path d="M12 12h20l10 10v32a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V14a2 2 0 0 1 2-2Z" />
+      <path d="M32 12v10h10" />
+      {/* CSV label */}
+      <rect x="5" y="30" width="30" height="14" rx="2" fill="#fff" />
+      <text
+        x="20"
+        y="41"
+        textAnchor="middle"
+        fontSize="10"
+        fontWeight="700"
+        fontFamily="Inter, sans-serif"
+        fill="currentColor"
+        stroke="none"
+      >
+        CSV
+      </text>
+    </svg>
+  );
+}
+
+function FillBlankIcon() {
+  return (
+    <span className="text-[15px] font-bold leading-none tracking-tighter">
+      A...
+    </span>
+  );
+}
+
+function FlipMatchIcon({ size = 18 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      aria-hidden
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2.5" strokeDasharray="3 2.4" />
+      <path d="M9 8.5 17 11.5l-3.5 1.5L12 16.5Z" />
+    </svg>
+  );
+}
+
+function VideoIcon({ size = 18 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      aria-hidden
+    >
+      <rect x="3" y="3" width="18" height="18" rx="3" />
+      <path d="M10 8.5 16 12l-6 3.5Z" />
+    </svg>
+  );
+}
+
+/* ==========================================================================
+   MOCK DATA
    ========================================================================== */
 const BREADCRUMBS = ["Dashboard", "Activities", "John", "Chapter 3", "Quiz"];
 
 const LOCATION_PARTS = ["New Testament", "John", "Chapter 3"];
 
 const QUESTION_TYPES = [
-  { id: "multiple-choice", label: "Multiple Choice", Glyph: LuList },
-  { id: "multiple-select", label: "Multiple Select", Glyph: LuSquareCheck },
-  { id: "fill-blank", label: "Fill in the Blank", Glyph: LuCaseUpper },
-  { id: "true-false", label: "True / False", Glyph: LuCircleX },
-  { id: "short-answer", label: "Short Answer", Glyph: LuAlignLeft },
-  { id: "image-based", label: "Image Based", Glyph: LuImage },
-  { id: "flip-and-match", label: "Flip And Match", Glyph: LuRepeat2 },
-  { id: "who-am-i", label: "Who Am I", Glyph: LuUser },
-  { id: "match-following", label: "Match the Following", Glyph: LuShuffle },
-  { id: "audio-quiz", label: "Audio Quiz", Glyph: LuSpeaker },
-  { id: "video-questions", label: "Video Questions", Glyph: LuCirclePlay },
-  { id: "instant-analytics", label: "Instant Analytics", Glyph: LuChartColumn },
+  { id: "multiple-choice", label: "Multiple Choice", Icon: RiListUnordered },
+  { id: "multiple-select", label: "Multiple Select", Icon: FiCheckSquare },
+  { id: "fill-blank", label: "Fill in the Blank", Icon: FillBlankIcon },
+  { id: "true-false", label: "True / False", Icon: FiXCircle },
+  { id: "short-answer", label: "Short Answer", Icon: FiAlignLeft },
+  { id: "image-based", label: "Image Based", Icon: IoImage },
+  { id: "flip-and-match", label: "Flip And Match", Icon: FlipMatchIcon },
+  { id: "who-am-i", label: "Who Am I", Icon: FiUser },
+  { id: "match-following", label: "Match the Following", Icon: FiExternalLink },
+  { id: "audio-quiz", label: "Audio Quiz", Icon: FiVolume2 },
+  { id: "video-questions", label: "Video Questions", Icon: VideoIcon },
+  { id: "instant-analytics", label: "Instant Analytics", Icon: BsBarChart },
 ];
 
 /* ==========================================================================
@@ -50,20 +156,13 @@ const QUESTION_TYPES = [
 function Breadcrumb() {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-1.5 text-[13px] text-[#0A084799]">
+      <ol className="flex flex-wrap items-center gap-x-2.5 text-[18px] font-medium leading-[22px] text-[#0A084799]">
         {BREADCRUMBS.map((crumb, index) => {
           const isLast = index === BREADCRUMBS.length - 1;
           return (
-            <li key={crumb} className="flex items-center gap-1.5">
-              {index > 0 && (
-                <LuChevronRight size={13} className="text-[#0A084766]" aria-hidden />
-              )}
-              <span
-                aria-current={isLast ? "page" : undefined}
-                className={isLast ? "font-bold text-[#0A0847]" : undefined}
-              >
-                {crumb}
-              </span>
+            <li key={crumb} className="flex items-center gap-2.5">
+              {index > 0 && <span aria-hidden>&gt;</span>}
+              <span aria-current={isLast ? "page" : undefined}>{crumb}</span>
             </li>
           );
         })}
@@ -74,15 +173,19 @@ function Breadcrumb() {
 
 function LocationChip() {
   return (
-    <div className="inline-flex items-center gap-2.5 rounded-lg bg-[#F3F3F7] px-4 py-2.5">
-      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
-      <p className="text-[13px]">
+    <div className="flex h-[49px] w-[396px] max-w-full items-center gap-2.5 rounded-lg border border-[#E5E3EB] bg-[#F7F7F9] pt-[13px] pr-3 pb-3 pl-[15px]">
+      <img
+          src={selectorBookIcon}
+          alt=""
+          width={24}
+          height={24}
+          className="h-6 w-6 shrink-0"
+        />
+      <p className="flex items-center gap-4 text-[16px] font-semibold leading-6 text-[#0A0847CC]">
         {LOCATION_PARTS.map((part, index) => (
-          <span key={part}>
-            {index > 0 && (
-              <span className="px-1.5 text-[#0A084766]">&gt;</span>
-            )}
-            <span className="font-bold text-[#0A0847]">{part}</span>
+          <span key={part} className="flex items-center gap-4">
+            {index > 0 && <span aria-hidden>&gt;</span>}
+            <span>{part}</span>
           </span>
         ))}
       </p>
@@ -90,45 +193,62 @@ function LocationChip() {
   );
 }
 
-function QuestionTypeRow({ type, selected, onSelect }) {
-  const { Glyph } = type;
+function SectionHeader({ title, required, subtitle }) {
   return (
-    <label
-      className="flex cursor-pointer items-center gap-3 px-4 py-2.5 transition-colors hover:bg-[#FAFAFE]"
-    >
+    <div className="flex flex-col gap-[14px]">
+      <h2 className="text-[22px] font-semibold leading-[27px] text-[#0A0847CC]">
+        {title}
+        {required && <span className="text-[#D4001A]"> *</span>}
+      </h2>
+      <p className="text-[16px] font-medium leading-[19px] text-[#0A084799]">
+        {subtitle}
+      </p>
+    </div>
+  );
+}
+
+function QuestionTypeRow({ type, selected, onSelect }) {
+  const { Icon } = type;
+  return (
+    <label className="flex h-[46.7px] cursor-pointer items-center px-[18px] transition-colors hover:bg-[#FAFAFE]">
       <input
         type="radio"
         name="question-type"
         value={type.id}
         checked={selected}
         onChange={() => onSelect(type.id)}
-        className="h-[18px] w-[18px] shrink-0 cursor-pointer accent-[#041581]"
+        className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border-2 border-[#0A0847B3] bg-white checked:border-[#001984] checked:bg-[#001984] checked:shadow-[inset_0_0_0_3px_#fff]"
       />
-      <Glyph size={17} className="shrink-0 text-[#041581]" aria-hidden />
-      <span
-        className={`text-[13px] text-[#041581] ${
-          selected ? "font-semibold" : ""
-        }`}
-      >
+      <span className="ml-[14px] flex h-5 w-6 shrink-0 items-center justify-center text-[#0A0847]">
+        <Icon size={18} aria-hidden />
+      </span>
+      <span className="ml-2 text-[14px] font-semibold leading-5 text-[#0A0847CC]">
         {type.label}
       </span>
     </label>
   );
 }
 
-function MethodCard({ title, description, Glyph, iconColor, children, active }) {
+function MethodCard({ title, description, icon, iconColor, active, children }) {
   return (
     <div
-      className={`flex flex-col items-center rounded-xl border bg-white p-6 text-center ${
-        active ? "border-2 border-[#2563EB]" : "border-[#E5E4EC]"
+      className={`flex h-[374px] flex-col items-center rounded-lg border bg-[#F9F8FD] px-5 pt-12 pb-[22px] text-center ${
+        active ? "border-[#0A54AB]" : "border-[#E4DFFA]"
       }`}
     >
-      <Glyph size={30} style={{ color: iconColor }} aria-hidden />
-      <h3 className="mt-3 text-[16px] font-bold text-[#0A0847]">{title}</h3>
-      <p className="mt-1.5 text-[13px] leading-relaxed text-[#0A084799]">
+      <div
+        className="flex h-[60px] items-center justify-center"
+        style={{ color: iconColor }}
+      >
+        {icon}
+      </div>
+      <h3 className="mt-5 text-[16px] font-semibold leading-4 text-[#0A0847CC]">
+        {title}
+      </h3>
+      <p className="mt-3 w-[200px] text-[14px] font-medium leading-[21px] text-[#0A0847CC]">
         {description}
       </p>
-      <div className="mt-5 flex w-full flex-col gap-2.5">{children}</div>
+      <div className="mt-auto flex w-full flex-col gap-4">{children}</div>
     </div>
   );
 }
@@ -141,48 +261,49 @@ export default function AddQuizQuestions() {
   const selectedType = QUESTION_TYPES.find((type) => type.id === questionType);
 
   return (
-    <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="mx-auto max-w-[1200px] space-y-6 px-5 py-6">
+    <div className="min-h-screen bg-[#F8F9FE] font-[Inter] text-[#0A0847]">
+      <div className="max-w-[1067px] px-5 py-6">
+        {/* header */}
         <Breadcrumb />
 
-        {/* header */}
-        <div>
-          <h1 className="text-[22px] font-bold text-[#0A0847]">
+        <div className="mt-2.5 flex flex-col gap-[15px]">
+          <h1 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
             Add Quiz Questions
           </h1>
-          <p className="mt-[6px] text-[14px] text-[#0A084799]">
+          <p className="text-[16px] font-medium leading-[19px] text-[#0A084799]">
             Engage and track activities for each chapter.
           </p>
         </div>
 
-        <LocationChip />
+        <div className="mt-5">
+          <LocationChip />
+        </div>
 
         {/* section 1 */}
-        <section className="rounded-xl border border-[#E5E4EC] bg-white p-6">
-          <h2 className="text-[17px] font-bold text-[#0A0847]">
-            1. Choose Question Type <span className="text-[#E11D48]">*</span>
-          </h2>
-          <p className="mt-[6px] text-[13.5px] text-[#0A084799]">
-            Engage and track activities for each chapter.
-          </p>
+        <section className="mt-5 rounded-lg border border-[#E2DFFC] bg-white px-[33px] py-[29px]">
+          <SectionHeader
+            title="1. Choose Question Type"
+            required
+            subtitle="Engage and track activities for each chapter."
+          />
 
-          <div className="mt-4 w-full bg-white sm:max-w-[340px]">
-            <div className="relative flex h-11 w-full items-center rounded-lg border border-[#041581] bg-white pr-10 pl-4">
+          <div className="mt-9 w-full sm:w-[540px]">
+            <div className="relative flex h-[39px] w-full items-center rounded-lg border border-[#0A0847] bg-white pl-[23px]">
               <span
-                className={`text-[13px] ${
-                  selectedType ? "text-[#0A0847]" : "text-[#0A084799]"
+                className={`text-[14px] font-medium ${
+                  selectedType ? "text-[#0A0847CC]" : "text-[#0A084799]"
                 }`}
               >
                 {selectedType ? selectedType.label : "Select Question Type"}
               </span>
               <LuChevronDown
-                size={16}
-                className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#0A0847CC]"
+                size={14}
                 aria-hidden
+                className="pointer-events-none absolute top-1/2 right-[19px] -translate-y-1/2 text-[#0A0847]"
               />
             </div>
 
-            <div className="mt-1 overflow-hidden rounded-xl border border-[#E5E4EC] bg-white py-1">
+            <div className="mt-0.5 overflow-hidden rounded-lg border border-[#E2DFFC] bg-white pt-2.5 pb-[13px]">
               {QUESTION_TYPES.map((type) => (
                 <QuestionTypeRow
                   key={type.id}
@@ -196,25 +317,22 @@ export default function AddQuizQuestions() {
         </section>
 
         {/* section 2 */}
-        <section>
-          <h2 className="text-[17px] font-bold text-[#0A0847]">
-            2. Choose How to Add Questions
-          </h2>
-          <p className="mt-[6px] text-[13.5px] text-[#0A084799]">
-            You can add questions manually, upload from a file, or generate
-            with AI.
-          </p>
+        <section className="mt-6 rounded-lg border border-[#E2DFFC] bg-white px-[33px] py-[29px]">
+          <SectionHeader
+            title="2. Choose How to Add Questions"
+            subtitle="You can add questions manually, upload from a file, or generate with AI."
+          />
 
-          <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-[25px] lg:grid-cols-3">
             <MethodCard
               title="AI Generation"
               description="Generate questions automatically using AI assistant"
-              Glyph={LuSparkles}
-              iconColor="#7C3AED"
+              icon={<SparklesIcon size={60} />}
+              iconColor="#4B1ECB"
             >
               <button
                 type="button"
-                className="h-10 w-full cursor-pointer rounded-lg bg-[#6D28D9] text-[13px] font-semibold text-white transition-colors hover:bg-[#5B21B6]"
+                className="h-[47px] w-full cursor-pointer rounded-lg bg-[#4B1ECB] text-[14px] font-semibold text-white transition-colors hover:bg-[#3F17AD]"
               >
                 Run AI Generate ✨
               </button>
@@ -223,12 +341,12 @@ export default function AddQuizQuestions() {
             <MethodCard
               title="Manual or File Upload"
               description="Add questions manually or upload questions from a file"
-              Glyph={LuPencilLine}
-              iconColor="#16A34A"
+              icon={<LuPencil size={46} strokeWidth={1.6} aria-hidden />}
+              iconColor="#189227"
             >
               <button
                 type="button"
-                className="h-10 w-full cursor-pointer rounded-lg bg-[#16A34A] text-[13px] font-semibold text-white transition-colors hover:bg-[#15803D]"
+                className="h-[47px] w-full cursor-pointer rounded-lg bg-[#189227] text-[14px] font-semibold text-white transition-colors hover:bg-[#137A20]"
               >
                 Add Manually
               </button>
@@ -237,22 +355,21 @@ export default function AddQuizQuestions() {
             <MethodCard
               title="Bulk Upload (CSV)"
               description="Upload a CSV file with your quiz questions"
-              Glyph={LuFileSpreadsheet}
-              iconColor="#2563EB"
+              icon={<CsvFileIcon size={62} />}
+              iconColor="#0A54AB"
               active
             >
               <button
                 type="button"
-                className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#2563EB] bg-white text-[13px] font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/5"
+                className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[#0A54AB] bg-white text-[14px] font-semibold text-[#0A54AB] transition-colors hover:bg-[#0A54AB]/5"
               >
-                <LuDownload size={15} />
+                <LuDownload size={12} aria-hidden />
                 Download Template
               </button>
               <button
                 type="button"
-                className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#2563EB] bg-white text-[13px] font-semibold text-[#2563EB] transition-colors hover:bg-[#2563EB]/5"
+                className="flex h-[42px] w-full cursor-pointer items-center justify-center rounded-lg border border-[#0A54AB] bg-white text-[14px] font-semibold text-[#0A54AB] transition-colors hover:bg-[#0A54AB]/5"
               >
-                <LuUpload size={15} />
                 Upload CSV
               </button>
             </MethodCard>

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { LuBookOpen, LuGift, LuShuffle } from "react-icons/lu";
+import giftIcon from "../../../assets/activities/mv_gift.png";
+import shuffleIcon from "../../../assets/activities/mv_shuffle.png";
+import bookIcon from "../../../assets/activities/mv_book.png";
 import memoryVerseBg from "../../../assets/memory-verse-bg.png";
 import liveQuestionImage from "../../../assets/live question img.png";
 import {
@@ -122,9 +124,9 @@ function MemoryVersePreview({ reference, verseText, translation, image }) {
           </p>
           <button
             type="button"
-            className={`${purpleButton} w-full`}
+            className={`${purpleButton} w-full gap-2 text-[14px] font-semibold`}
           >
-            <LuGift size={15} aria-hidden />
+            <img src={giftIcon} alt="" className="h-[15px] w-auto" />
             10 Pts
           </button>
         </div>
@@ -135,9 +137,9 @@ function MemoryVersePreview({ reference, verseText, translation, image }) {
           </p>
           <button
             type="button"
-            className={`${outlineButton} w-full`}
+            className={`${outlineButton} w-full gap-2 text-[14px] font-semibold text-[#0A0847]/60`}
           >
-            <LuShuffle size={15} aria-hidden />
+            <img src={shuffleIcon} alt="" className="h-auto w-[16px]" />
             Begin Review
           </button>
         </div>
@@ -148,9 +150,9 @@ function MemoryVersePreview({ reference, verseText, translation, image }) {
           </p>
           <button
             type="button"
-            className={`${outlineButton} w-full`}
+            className={`${outlineButton} w-full gap-2 text-[14px] font-semibold text-[#0A0847]/60`}
           >
-            <LuBookOpen size={15} aria-hidden />
+            <img src={bookIcon} alt="" className="h-[15px] w-auto" />
             Begin Practice
           </button>
         </div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import liveQuestionImage from "../../../assets/live question img.png";
-import { LuChevronDown, LuBookOpen, LuChevronRight } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import selectorBookIcon from "../../../assets/activities/selector_book.png";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified (unchanged)
@@ -65,7 +66,11 @@ function Breadcrumb({ items }) {
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
     <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
-      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
+      <img
+        src={selectorBookIcon}
+        alt="Book Icon"
+        className="h-4 w-4 shrink-0 object-contain"
+      />
       <p className="text-[13px] leading-[22px]">
         {parts.map((part, index) => (
           <span key={part}>
