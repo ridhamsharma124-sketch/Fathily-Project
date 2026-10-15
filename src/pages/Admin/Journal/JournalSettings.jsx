@@ -14,10 +14,28 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { MdOutlineTextFields } from "react-icons/md";
+import MicroPhone from "../../../assets/JournalSvgs/MicroPhone.svg";
+import ImageUpload from "../../../assets/JournalSvgs/ImageUpload.svg";
+import AudioRecordingIcon from "../../../assets/JournalSvgs/AudioRecordingIcon.svg";
+import StatCalendar from "../../../assets/JournalSvgs/StatCalendar.svg";
+import MicIcon from "../../../assets/JournalSvgs/MicIcon.svg";
+import AIcon from "../../../assets/JournalSvgs/AIcon.svg";
+import ImgUpload from "../../../assets/JournalSvgs/ImgUpload.svg";
+import TrashIcon from "../../../assets/JournalSvgs/TrashIcon.svg";
+import UploadIcon from "../../../assets/JournalSvgs/UploadIcon.svg";
+import LockIcon from "../../../assets/JournalSvgs/LockIcon.svg";
+import PinnedIcon from "../../../assets/JournalSvgs/PinnedIcon.svg";
+import SaveIcon from "../../../assets/JournalSvgs/SaveIcon.svg";
+import EntryIcon from "../../../assets/JournalSvgs/EntryIcon.svg";
 
 /* ==========================================================================
    ATOMS (same classes as the rest of the app)
    ========================================================================== */
+
+const FeatureIcon = ({ src }) => (
+  <img src={src} alt="" className="w-8 h-8 shrink-0" />
+);
+
 const Toggle = ({ checked, onChange, green = false }) => (
   <button
     type="button"
@@ -153,7 +171,7 @@ export default function JournalSettingsPage() {
   const summary = [
     {
       title: "Audio Recording",
-      icon: FiMic,
+      icon: MicroPhone,
       iconBg: "bg-[#E8E9FB] text-[#001984]",
       status: s.audioRecording ? "Enabled" : "Disabled",
       desc: "Allow users to record voice entries.",
@@ -161,14 +179,14 @@ export default function JournalSettingsPage() {
     },
     {
       title: "Audio Recording",
-      icon: MdOutlineTextFields,
+      icon: AudioRecordingIcon,
       iconBg: "bg-[#E8E9FB] text-[#001984]",
       status: s.audioRecording ? "Enabled" : "Disabled",
       desc: "Allow users to record voice entries.",
     },
     {
       title: "Image Upload",
-      icon: FiImage,
+      icon: ImageUpload,
       iconBg: "bg-[#E8E9FB] text-[#001984]",
       status: s.imageUpload ? "Enabled" : "Disabled",
       desc: "Allow users to upload images.",
@@ -176,7 +194,7 @@ export default function JournalSettingsPage() {
     },
     {
       title: "Retention Period",
-      icon: FiCalendar,
+      icon: StatCalendar,
       iconBg: "bg-[#E8E9FB] text-[#001984]",
       status: `${s.retentionDays || 0} Days`,
       desc: "How long journal entries are kept",
@@ -207,7 +225,7 @@ export default function JournalSettingsPage() {
             onClick={handleSave}
             className="px-5 py-2.5 bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer"
           >
-            <FiSave size={15} /> Save Changes
+            <img src={SaveIcon} alt="" className="w-4 h-4" /> Save Changes
           </button>
         </div>
       </div>
@@ -222,7 +240,7 @@ export default function JournalSettingsPage() {
             <div
               className={`w-14 h-14 rounded-2xl ${c.iconBg} flex items-center justify-center shrink-0`}
             >
-              <c.icon size={26} />
+                <img src={c.icon} alt="" className="w-8 h-8" />
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-semibold text-[#001984]">{c.title}</p>
@@ -251,7 +269,7 @@ export default function JournalSettingsPage() {
         <Card title="Journal Feature Configuration" className="lg:min-h-[665px]">
           <div className="divide-y divide-[#E2DFFC]">
             <FeatureRow
-              icon={<IconBadge icon={FiMic} bg="bg-[#4B5BC9]" />}
+              icon={<FeatureIcon src={MicIcon} />}  
               title="Audio Recording"
               desc="Allow users to record and save audio journal entries."
             >
@@ -259,7 +277,7 @@ export default function JournalSettingsPage() {
             </FeatureRow>
 
             <FeatureRow
-              icon={<IconBadge icon={MdOutlineTextFields} bg="bg-[#001984]" />}
+              icon={<FeatureIcon src={AIcon} />}   
               title="Character Limit"
               desc="Set the maximum number of characters allowed for text entries."
               footer={
@@ -278,7 +296,7 @@ export default function JournalSettingsPage() {
 
             <div className="pt-1">
               <FeatureRow
-                icon={<IconBadge icon={FiImage} bg="bg-[#C026D3]" />}
+                icon={<FeatureIcon src={ImgUpload} />}  
                 title="Image Upload"
                 desc="Allow users to upload images while composing journal entries."
               >
@@ -286,7 +304,7 @@ export default function JournalSettingsPage() {
               </FeatureRow>
 
               <FeatureRow
-                icon={<IconBadge icon={FiCalendar} bg="bg-[#0891B2]" />}
+                icon={<FeatureIcon src={EntryIcon} />}   
                 title="Entry Retention Period"
                 desc="Set the number of days to keep journal entries."
                 footer={
@@ -311,28 +329,28 @@ export default function JournalSettingsPage() {
 
             <div className="pt-1">
               <FeatureRow
-                icon={<IconBadge icon={FiTrash2} bg="bg-[#E53935]" />}
+                icon={<FeatureIcon src={TrashIcon} />}  
                 title="Auto Delete Expired Entries"
                 desc="Automatically delete entries after the retention period."
               >
                 <Toggle checked={s.autoDelete} onChange={(v) => set("autoDelete", v)} />
               </FeatureRow>
               <FeatureRow
-                icon={<IconBadge icon={FiUpload} bg="bg-[#0EA5E9]" />}
+                icon={<FeatureIcon src={UploadIcon} />}
                 title="Export Entries"
                 desc="Allow users to export their journal entries."
               >
                 <Toggle checked={s.exportEntries} onChange={(v) => set("exportEntries", v)} />
               </FeatureRow>
               <FeatureRow
-                icon={<IconBadge icon={FiLock} bg="bg-[#14B8A6]" />}
+                icon={<FeatureIcon src={LockIcon} />}  
                 title="Private by Default"
                 desc="New journal entries will be private by default."
               >
                 <Toggle checked={s.privateDefault} onChange={(v) => set("privateDefault", v)} />
               </FeatureRow>
               <FeatureRow
-                icon={<IconBadge icon={FiBookmark} bg="bg-[#22C55E]" />}
+                icon={<FeatureIcon src={PinnedIcon} />} 
                 title="Pin Important Entries"
                 desc="Allow users to pin and highlight important journal entries."
               >

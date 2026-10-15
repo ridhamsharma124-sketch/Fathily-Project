@@ -23,10 +23,29 @@ import {
   FiPause,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import PublishWhiteIcon from "../../../assets/SeasonalJourneys/PublishWhiteIcon.svg";
+import SaveIcon from "../../../assets/SeasonalJourneys/SaveIcon.svg";
+import CalanderIcon from "../../../assets/SeasonalJourneys/CalanderIcon.svg";
+import UploadIcon from "../../../assets/SeasonalJourneys/UploadIcon.svg";
+import ImagePreview from "../../../assets/SeasonalJourneys/ImagePreview.png";
+import EditIcon from "../../../assets/SeasonalJourneys/Edit.svg";
+import TrashRedIcon from "../../../assets/SeasonalJourneys/TrashRedIcon.svg";
 
 /* ==========================================================================
    REUSABLE ATOMS (same styling as your AddDailyVerseWizard)
    ========================================================================== */
+
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+   const SaveIconSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
+   const PublishWhiteIconSvg = (p) => <SvgIcon src={PublishWhiteIcon} {...p} />;
+   const CalanderIconSvg = (p) => <SvgIcon src={CalanderIcon} {...p} />;
+   const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+   const EditIconSvg = (p) => <SvgIcon src={EditIcon} {...p} />;
+   const TrashRedIconSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+
 const Input = ({ className = "", ...props }) => (
   <input
     className={`w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] transition-all ${className}`}
@@ -74,7 +93,7 @@ const DateField = ({ value, onChange, placeholder = "mm/dd/yyyy" }) => (
       onChange={(e) => onChange(e.target.value)}
       className="w-full h-11 bg-white border border-[#E2DFFC] rounded-md px-3.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
     />
-    <FiCalendar
+    <CalanderIconSvg
       size={14}
       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
     />
@@ -444,7 +463,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
     timeZone: "America/New_York",
     season: "Easter",
     displayStartDate: "2026-03-29",
-    coverImage: "",
+    coverImage: ImagePreview,
     accentColor: "#001984",
     scheduleDays: [0],
     contentAccessBehavior: "Unlock content daily",
@@ -612,7 +631,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             onClick={() => handleAction("Save draft")}
             className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer"
           >
-            <FiSave size={14} /> Save draft
+            <SaveIconSvg size={14} /> Save draft
           </button>
           <button
             type="button"
@@ -626,7 +645,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             onClick={() => handleAction("Publish Journey")}
             className="px-4 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold hover:bg-[#001266] flex items-center gap-2 transition-colors cursor-pointer"
           >
-            <FiSend size={14} /> Publish Journey
+            <PublishWhiteIconSvg size={14} /> Publish Journey
           </button>
         </div>
       </div>
@@ -772,10 +791,10 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             />
             <div
               onClick={() => coverImageRef.current?.click()}
-              className="border border-dashed border-[#CBC6F8] rounded-lg h-28 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
+              className="border border-dashed border-[#CBC6F8] rounded-lg h-22 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
             >
-              <FiUploadCloud size={24} className="text-[#001984]" />
-              <span className="text-sm font-semibold text-[#0A0847]">
+              <UploadIconSvg size={40} className="text-[#001984]" />
+              <span className="text-sm text-[#0A0847]">
                 Upload / Replace Image
               </span>
             </div>
@@ -792,7 +811,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
               </p>
               <div className="flex items-center gap-2 border border-[#E2DFFC] rounded-md px-3 py-2.5">
                 <label
-                  className="w-6 h-6 rounded-full shrink-0 cursor-pointer border border-black/10"
+                  className="w-6 h-6 rounded-lg shrink-0 cursor-pointer border border-black/10"
                   style={{ backgroundColor: formData.accentColor }}
                 >
                   <input
@@ -817,7 +836,8 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             <h3 className="text-base font-semibold text-[#0A0847] mb-4">
               Start Preview (Web)
             </h3>
-            <div className="relative rounded-2xl overflow-hidden bg-gray-100 min-h-[320px] flex flex-col justify-end">
+            <div className="p-3 border border-[#E2DFFC] rounded-2xl">
+            <div className="relative rounded-2xl overflow-hidden bg-gray-100 min-h-[280px] flex flex-col justify-end">
               {hasCoverImage ? (
                 <img
                   src={formData.coverImage}
@@ -879,6 +899,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                 </button>
               </div>
             </div>
+            </div>
           </div>
         </div>
       </div>
@@ -911,7 +932,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                   );
                 })}
               </div>
-              <p className="text-sm text-[#0A084799] font-medium mt-2">
+              <p className="text-lg text-[#0A084799] font-medium mt-2">
                 Select the days of the week when content will be released. You
                 can still edit individual release dates in the content section
                 if needed.
@@ -1004,7 +1025,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                   onClick={() => audioRef.current?.click()}
                   className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
                 >
-                  <FiUploadCloud size={20} className="text-[#001984]" />
+                  <UploadIconSvg size={20} className="text-[#001984]" />
                   <span className="text-xs font-semibold text-[#0A0847]">
                     Upload Audio
                   </span>
@@ -1041,7 +1062,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                   onClick={() => thumbnailRef.current?.click()}
                   className="h-24 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer border border-dashed border-[#001984]"
                 >
-                  <FiUploadCloud size={40} className="text-[#001984]" />
+                  <UploadIconSvg size={40} className="text-[#001984]" />
                   <span className="text-sm font-normal text-[#0A0847]">
                     Upload / Replace Image
                   </span>
@@ -1202,14 +1223,14 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                               onClick={openEditDay}
                               className="w-7 h-7 rounded-md border border-[#E2DFFC] text-[#001984] flex items-center justify-center hover:bg-[#EEF2FF] transition-colors cursor-pointer"
                             >
-                              <FiEdit2 size={12} />
+                              <EditIconSvg size={16} />
                             </button>
                             <button
                               type="button"
                               onClick={() => deleteDay(item.id)}
                               className="w-7 h-7 rounded-md border border-[#E2DFFC] text-[#D80027] flex items-center justify-center hover:bg-red-50 transition-colors cursor-pointer"
                             >
-                              <FiTrash2 size={12} />
+                              <TrashRedIconSvg size={16} />
                             </button>
                           </div>
                         </td>
@@ -1231,7 +1252,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                       setEntriesPerPage(e.target.value);
                       setPage(1);
                     }}
-                    className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs font-semibold text-[#0A0847] outline-none cursor-pointer"
+                    className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs text-[#0A0847] outline-none cursor-pointer"
                   >
                     <option value="05">05</option>
                     <option value="10">10</option>

@@ -5,6 +5,13 @@ import {
   FiEdit2, FiTrash2, FiMoreVertical, FiInfo, FiBookOpen, FiCheckCircle, FiFileText,
 } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
+import BlueBook from "../../../assets/BibbleBookSvgs/BlueBook.svg"
+import GreenBook from "../../../assets/BibbleBookSvgs/GreenBook.svg"
+import PurpleBook from "../../../assets/BibbleBookSvgs/PurpleBook.svg"
+import OrangeFile from "../../../assets/BibbleBookSvgs/OrangeFile.svg"
+import CheckMarkIcon from "../../../assets/BibbleBookSvgs/CheckMarkIcon.svg"
+import EditIcon from "../../../assets/BibbleBookSvgs/Edit.svg"
+import TrashRedIcon from "../../../assets/BibbleBookSvgs/TrashRedIcon.svg"
 
 const INITIAL_BOOKS = [
   { id: "1", name: "Genesis", testament: "Old Testament", chapters: 50, articles: 142, status: "Published", updated: "May 18, 2024" },
@@ -22,10 +29,17 @@ const INITIAL_BOOKS = [
 // Replace with API totals
 const STATS = { all: 66, old: 39, new: 27, newChapters: 27, published: 66 };
 
-const StatCard = ({ icon: Icon, iconBg, value, label }) => (
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+           <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+         );
+         
+    const EditIconSvg = (p) => <SvgIcon src={EditIcon} {...p} />;
+    const TrashRedIconSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+
+const StatCard = ({ icon, iconBg, value, label }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-6 flex items-center gap-4">
     <div className={`w-14 h-14 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={26} />
+       <img src={icon} alt="" className="w-8 h-8" />
     </div>
     <div>
       <p className="text-2xl font-semibold text-[#001984] leading-none">{value}</p>
@@ -141,11 +155,11 @@ export default function BibleBooksPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiBookOpen} iconBg="bg-[#EDE9FE] text-[#7C3AED]" value={STATS.all} label="All Books" />
-        <StatCard icon={FiBookOpen} iconBg="bg-[#DCFCE7] text-[#16A34A]" value={STATS.old} label="Old Testament" />
-        <StatCard icon={FiBookOpen} iconBg="bg-[#DBEAFE] text-[#2563EB]" value={STATS.new} label="New Testament" />
-        <StatCard icon={FiFileText} iconBg="bg-[#FFEDD5] text-[#EA580C]" value={STATS.newChapters} label="New Chapters" />
-        <StatCard icon={FiCheckCircle} iconBg="bg-[#DCFCE7] text-[#16A34A]" value={STATS.published} label="Published" />
+        <StatCard icon={PurpleBook} iconBg="bg-[#EDE9FE] text-[#7C3AED]" value={STATS.all} label="All Books" />
+        <StatCard icon={GreenBook} iconBg="bg-[#DCFCE7] text-[#16A34A]" value={STATS.old} label="Old Testament" />
+        <StatCard icon={BlueBook} iconBg="bg-[#DBEAFE] text-[#2563EB]" value={STATS.new} label="New Testament" />
+        <StatCard icon={OrangeFile} iconBg="bg-[#FFEDD5] text-[#EA580C]" value={STATS.newChapters} label="New Chapters" />
+        <StatCard icon={CheckMarkIcon} iconBg="bg-[#DCFCE7] text-[#16A34A]" value={STATS.published} label="Published" />
       </div>
 
       {/* Tabs + filters */}
@@ -240,20 +254,20 @@ export default function BibleBooksPage() {
                           onClick={() => navigate(`/admin/bible-books/edit/${b.id}`)}
                           className="w-8 h-8 rounded-md border border-[#E2DFFC] text-[#001984] flex items-center justify-center hover:bg-[#EEF2FF] transition-colors cursor-pointer"
                         >
-                          <FiEdit2 size={14} />
+                          <EditIconSvg size={16} />
                         </button>
                         <button
                           type="button"
                           onClick={() => deleteBook(b.id)}
-                          className="w-8 h-8 rounded-md border border-red-200 bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-100 transition-colors cursor-pointer"
+                          className="w-8 h-8 rounded-md border border-[#E2DFFC] text-red-500 flex items-center justify-center hover:bg-red-100 transition-colors cursor-pointer"
                         >
-                          <FiTrash2 size={14} />
+                          <TrashRedIconSvg size={16} />
                         </button>
                         <button
                           type="button"
                           className="w-8 h-8 rounded-md bg-[#E9E9E9] text-gray-600 flex items-center justify-center hover:bg-gray-300 transition-colors cursor-pointer"
                         >
-                          <FiMoreVertical size={14} />
+                          <FiMoreVertical size={18} />
                         </button>
                       </div>
                     </td>

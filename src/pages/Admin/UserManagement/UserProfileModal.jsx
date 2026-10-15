@@ -2,8 +2,30 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import {
   FiUser, FiCheckCircle, FiCalendar, FiClock, FiGlobe, FiLock,
-  FiExternalLink, FiX, FiAward, FiZap, FiHelpCircle, FiFileText, FiUserCheck,
+  FiExternalLink, FiX, FiAward, FiZap, FiHelpCircle, FiFileText, FiUserCheck, FiCheck, 
 } from "react-icons/fi";
+import StreakIcon from "../../../assets/UserManagementSvgs/StreakIcon.svg";
+import TotalScoreIcon from "../../../assets/UserManagementSvgs/TotalScoreIcon.svg";
+import QuizCompleteIcon from "../../../assets/UserManagementSvgs/QuizCompleteIcon.svg";
+import UserIdIcon from "../../../assets/UserManagementSvgs/UserIdIcon.svg";
+import UserRoleIcon from "../../../assets/UserManagementSvgs/UserRoleIcon.svg";
+import CountryIcon from "../../../assets/UserManagementSvgs/Country.svg";
+import JoinedIcon from "../../../assets/UserManagementSvgs/JoinedIcon.svg";
+import LastActive from "../../../assets/UserManagementSvgs/LastActive.svg";
+import UserIconSvg from "../../../assets/UserManagementSvgs/UserIconSvg.svg";
+
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+    const StreakIconSvg = (p) => <SvgIcon src={StreakIcon} {...p} />;
+    const TotalScoreIconSvg = (p) => <SvgIcon src={TotalScoreIcon} {...p} />;
+    const QuizCompleteIconSvg = (p) => <SvgIcon src={QuizCompleteIcon} {...p} />;
+    const UserIdIconSvg = (p) => <SvgIcon src={UserIdIcon} {...p} />;
+    const UserRoleIconSvg = (p) => <SvgIcon src={UserRoleIcon} {...p} />;
+    const CountryIconSvg = (p) => <SvgIcon src={CountryIcon} {...p} />;
+    const JoinedIconSvg = (p) => <SvgIcon src={JoinedIcon} {...p} />;
+    const LastActiveSvg = (p) => <SvgIcon src={LastActive} {...p} />;
 
 const TABS = ["Overview", "Security", "Subscription", "Activity", "Audit Log"];
 
@@ -33,7 +55,9 @@ const Line = ({ label, value, valueCls = "" }) => (
 
 const Check = ({ ok = true, children }) => (
   <div className="flex items-center gap-3 text-sm font-semibold text-[#0A0847CC]">
-    <FiCheckCircle size={22} className={ok ? "text-[#21AC1C]" : "text-gray-300"} />
+    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#21AC1C]">
+    <FiCheck size={14} strokeWidth={3} className="text-white" />
+  </span>
     {children}
   </div>
 );
@@ -86,8 +110,8 @@ export default function UserProfileModal({ user, onClose, onEdit }) {
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-full bg-[#E8E9FB] text-[#001984] text-xl font-semibold flex items-center justify-center shrink-0">
-              {initials}
+            <div className="w-16 h-16 rounded-full text-xl font-semibold flex items-center justify-center shrink-0">
+              <img src={UserIconSvg} alt="" width={64} height={64} />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-[#0A0847]">{user.name}</h2>
@@ -123,15 +147,15 @@ export default function UserProfileModal({ user, onClose, onEdit }) {
           <>
             <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-6">
               <div className="border border-[#E2DFFC] rounded-lg p-5 space-y-6">
-                <Row icon={FiUser} label="User ID">{p.userId}</Row>
-                <Row icon={FiUserCheck} label="Role">
+                <Row icon={UserIdIconSvg} label="User ID">{p.userId}</Row>
+                <Row icon={UserRoleIconSvg} label="Role">
                   <span className="px-3 py-0.5 rounded bg-[#E8E9FB] text-[#001984] text-xs font-semibold">{user.role}</span>
                 </Row>
-                <Row icon={FiGlobe} label="Country">
+                <Row icon={CountryIconSvg} label="Country">
                   <span className="mr-2">{p.flag}</span>{p.country}
                 </Row>
-                <Row icon={FiCalendar} label="Joined">{user.joined}</Row>
-                <Row icon={FiClock} label="Last Active">
+                <Row icon={JoinedIconSvg} label="Joined">{user.joined}</Row>
+                <Row icon={LastActiveSvg} label="Last Active">
                   <span className="text-[#21AC1C]">{user.lastActive}</span>
                 </Row>
               </div>
@@ -155,9 +179,9 @@ export default function UserProfileModal({ user, onClose, onEdit }) {
 
               <div className="border border-[#E2DFFC] rounded-lg p-5 space-y-5">
                 <h4 className="text-base font-semibold text-[#0A0847]">Activity Summary</h4>
-                <Row icon={FiFileText} label="Total Score">{p.score}</Row>
-                <Row icon={FiZap} label="Streak">{p.streak}</Row>
-                <Row icon={FiHelpCircle} label="Quizzes Completed">{p.quizzes}</Row>
+                <Row icon={TotalScoreIconSvg} label="Total Score">{p.score}</Row>
+                <Row icon={StreakIconSvg} label="Streak">{p.streak}</Row>
+                <Row icon={QuizCompleteIconSvg} label="Quizzes Completed">{p.quizzes}</Row>
               </div>
             </div>
 

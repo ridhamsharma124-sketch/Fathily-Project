@@ -297,14 +297,14 @@ export default function AddUserPage() {
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="px-10 py-2 bg-white border border-[#001984] text-[#0A0847] rounded-md text-sm font-semibold hover:bg-gray-50 cursor-pointer"
+          className="px-10 py-2.5 bg-white border border-[#001984] text-[#0A0847] rounded-md text-sm font-semibold hover:bg-gray-50 cursor-pointer"
         >
           Cancel
         </button>
         <button
           type="button"
           onClick={handleNext}
-          className="px-8 py-2 bg-[#4A2BD0] hover:bg-[#3B21A8] text-white rounded-md text-sm font-semibold cursor-pointer"
+          className="px-8 py-2.5 bg-[#4D2ED1] hover:bg-[#3B21A8] text-white rounded-md text-sm font-semibold cursor-pointer"
         >
           Save &amp; Next: Roles
         </button>

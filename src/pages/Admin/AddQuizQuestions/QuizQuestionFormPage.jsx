@@ -25,6 +25,19 @@ import { FaRoute } from "react-icons/fa6";
 import { CompactReward, CompactStatus } from "./Shared/CompactCard";
 import AIGeneratorPanel from "./ai/AIGeneratorPanel";
 import { AI_TYPES } from "./ai/types";
+import MultipleChoice from "../../../assets/AddQuizIcons/MultipleChoice.svg";
+import FillInTheBlank from "../../../assets/AddQuizIcons/FillinTheBlank.svg";
+import TruFalse from "../../../assets/AddQuizIcons/TruFalse.svg";
+import TrueFalse from "../../../assets/AddQuizIcons/TrueFalse.svg";
+import TapInOrder from "../../../assets/AddQuizIcons/TapInOrder.svg";
+import VerseBuilder from "../../../assets/AddQuizIcons/VerseBuilder.svg";
+import WhoAmI from "../../../assets/AddQuizIcons/WhoAmI.svg";
+import MatchThePair from "../../../assets/AddQuizIcons/MatchThePair.svg";
+import AudioQuiz from "../../../assets/AddQuizIcons/AudioQuiz.svg";
+import StorySequence from "../../../assets/AddQuizIcons/StorySequence.svg";
+import SpeedChallenge from "../../../assets/AddQuizIcons/SpeedChallenge.svg";
+import LocationSummary from "../../../assets/AddQuizIcons/LocationSummary.svg";
+import AiIcon from "../../../assets/AddQuizIcons/AiIcon.svg";
 
 const META_DEFAULTS = {
   testament: "Old Testament",
@@ -33,19 +46,26 @@ const META_DEFAULTS = {
   level: "Level 2",
 };
 
+  const SvgIcon = ({ src, size = 16, className = "" }) => (
+                <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+              );
+  
+  const LocationSummarySvg = (p) => <SvgIcon src={LocationSummary} {...p} />;
+  const AiIconSvg = (p) => <SvgIcon src={AiIcon} {...p} />;
+
 const TYPE_CARDS = [
-  { key: "multiple_choice", label: "Multiple Choice", icon: FiList },
-  { key: "multiple_select", label: "Multiple Select", icon: FiCheckCircle },
-  { key: "fill_blanks", label: "Fill in Blanks", icon: FiEdit3 },
-  { key: "tru_false", label: "Tru / False", icon: FiCheckSquare },
-  { key: "true_false", label: "True / False", icon: FiCheckSquare },
-  { key: "tap_order", label: "Tap in Order", icon: FiHash },
-  { key: "verse_builder", label: "Verse Builder", icon: FiBookOpen },
-  { key: "who_am_i", label: "Who Am I", icon: FiUser },
-  { key: "match_pair", label: "Match the Pair", icon: FiShare2 },
-  { key: "audio_quiz", label: "Audio Quiz", icon: FiHeadphones },
-  { key: "story_sequence", label: "Story Sequence", icon: FiFileText },
-  { key: "speed_challenge", label: "Speed Challenge", icon: FiClock },
+  { key: "multiple_choice", label: "Multiple Choice", icon: MultipleChoice },
+  { key: "multiple_select", label: "Multiple Select", icon: MultipleChoice },
+  { key: "fill_blanks", label: "Fill in Blanks", icon: FillInTheBlank },
+  { key: "tru_false", label: "Tru / False", icon: TruFalse },
+  { key: "true_false", label: "True / False", icon: TrueFalse },
+  { key: "tap_order", label: "Tap in Order", icon: TapInOrder },
+  { key: "verse_builder", label: "Verse Builder", icon: VerseBuilder },
+  { key: "who_am_i", label: "Who Am I", icon: WhoAmI },
+  { key: "match_pair", label: "Match the Pair", icon: MatchThePair },
+  { key: "audio_quiz", label: "Audio Quiz", icon: AudioQuiz },
+  { key: "story_sequence", label: "Story Sequence", icon: StorySequence },
+  { key: "speed_challenge", label: "Speed Challenge", icon: SpeedChallenge },
 ];
 
 export default function QuizQuestionFormPage() {
@@ -187,7 +207,7 @@ export default function QuizQuestionFormPage() {
               Choose Question Type
             </h3>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {TYPE_CARDS.map(({ key, label, icon: Icon }) => {
+              {TYPE_CARDS.map(({ key, label, icon }) => {
                 const active = type === key;
                 const built = isAI ? !!AI_TYPES[key] : !!QUESTION_TYPES[key];
                 return (
@@ -203,9 +223,10 @@ export default function QuizQuestionFormPage() {
                         : "bg-white border-[#E2DFFC] hover:bg-gray-50"
                     } ${built ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
                   >
-                    <span className="w-14 h-14 rounded-full bg-[#001984] text-white flex items-center justify-center">
+                    {/* <span className="w-14 h-14 rounded-full bg-[#001984] text-white flex items-center justify-center">
                       <Icon size={24} />
-                    </span>
+                    </span> */}
+                    <img src={icon} alt="" className="w-14 h-14 shrink-0" />
                     <span className="text-sm font-medium text-[#0A0847CC]">
                       {label}
                     </span>
@@ -217,7 +238,7 @@ export default function QuizQuestionFormPage() {
 
           {/* Summary */}
           <div className="bg-[#EEF0FB] border border-[#C9CDE8] rounded-md px-5 py-5 flex items-center gap-4">
-            <FaRoute size={32} className="text-[#001984] shrink-0" />
+            <LocationSummarySvg size={32} className="text-[#001984] shrink-0" />
             <div>
               <p className="text-sm font-semibold text-[#0A0847CC]">
                 Selected Location Summary

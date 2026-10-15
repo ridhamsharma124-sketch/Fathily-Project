@@ -19,6 +19,12 @@ import {
 import { BsCheckCircle } from "react-icons/bs";
 import { HiOutlineChartBar } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import BlueFlag from "../../../assets/SeasonalJourneys/BlueFlag.svg";
+import OrangeFile from "../../../assets/SeasonalJourneys/OrangeFile.svg";
+import PurpleBars from "../../../assets/SeasonalJourneys/PurpleBars.svg";
+import WhiteAddIcon from "../../../assets/SeasonalJourneys/WhiteAddIcon.svg";
+import PublishWhiteIcon from "../../../assets/SeasonalJourneys/PublishWhiteIcon.svg";
+import CheckMarkIcon from "../../../assets/SeasonalJourneys/CheckMarkIcon.svg";
 
 /* ==========================================================================
    MOCK DATA
@@ -107,13 +113,19 @@ const INITIAL_JOURNEYS = [
    REUSABLE UI COMPONENTS
    ========================================================================== */
 
+    const SvgIcon = ({ src, size = 16, className = "" }) => (
+     <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+   );
+   
+      const WhiteAddIconSvg = (p) => <SvgIcon src={WhiteAddIcon} {...p} />;
+
 /** 1. Stat Summary Card */
-const StatCard = ({ icon: Icon, iconBg, label, value, hint }) => (
+const StatCard = ({ icon, iconBg, label, value, hint }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div
       className={`w-13 h-13 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}
     >
-      <Icon size={28} />
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#001984]">{label}</p>
@@ -206,7 +218,7 @@ const ActionsMenu = ({ isOpen, onToggle, onDelete }) => {
       <button
         ref={btnRef}
         onClick={onToggle}
-        className="p-1.5 rounded-lg bg-[#E9E9E9] hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
+        className="p-1.5 rounded-sm bg-[#E9E9E9] hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
       >
         <FiMoreHorizontal size={18} />
       </button>
@@ -300,37 +312,37 @@ export default function SeasonalJourneysPage() {
         </div>
         <button
           onClick={() => navigate("/admin/seasonal-journey/add")}
-          className="bg-[#001984] hover:bg-[#001266] text-white text-xs font-medium px-4 py-1.5 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
+          className="bg-[#001984] hover:bg-[#001266] text-white text-xs font-medium px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
         >
-          <FiPlus size={24} /> Add New Journey
+          <WhiteAddIconSvg size={16} /> Add New Journey
         </button>
       </div>
 
       {/* Top 4 Stat Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          icon={HiOutlineChartBar}
+          icon={PurpleBars}
           iconBg="bg-[#E8E9FB] text-[#3231DB]"
           label="All Journeys"
           value={allCount}
           hint="Total journeys"
         />
         <StatCard
-          icon={BsCheckCircle}
+          icon={CheckMarkIcon}
           iconBg="bg-[#2BA4521A] text-[#2BA452]"
           label="Active"
           value={activeCount}
           hint="Currently active"
         />
         <StatCard
-          icon={FiFlag}
+          icon={BlueFlag}
           iconBg="bg-[#E8E9FB] text-[#3231DB]"
           label="Scheduled"
           value={scheduledCount}
           hint="Upcoming journeys"
         />
         <StatCard
-          icon={FiFileText}
+          icon={OrangeFile}
           iconBg="bg-[#F3E8D8] text-[#C65406]"
           label="Drafts"
           value={draftCount}

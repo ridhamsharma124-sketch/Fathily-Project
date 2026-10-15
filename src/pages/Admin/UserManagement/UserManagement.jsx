@@ -12,6 +12,14 @@ import UserProfileModal from "./UserProfileModal";
 import EditUserSecurityModal from "./EditUserSecurityModal";
 import ChangeRoleModal from "./ChangeRoleModal";
 import ChangePlanModal from "./ChangePlanModal";
+import AddIconWhite from "../../../assets/UserManagementSvgs/AddIconWhite.svg";
+import CheckMarkIcon from "../../../assets/UserManagementSvgs/CheckMarkIcon.svg";
+import DownloadIcon from "../../../assets/UserManagementSvgs/DownloadIcon.svg";
+import GuardCheck from "../../../assets/UserManagementSvgs/GuardCheck.svg";
+import PendingInviteIcon from "../../../assets/UserManagementSvgs/PendingInviteIcon.svg";
+import PremiumIcon from "../../../assets/UserManagementSvgs/PremiumIcon.svg";
+import SuspendedIcon from "../../../assets/UserManagementSvgs/SuspendedIcon.svg";
+import TwoUsers from "../../../assets/UserManagementSvgs/TwoUsers.svg";
 
 const INITIAL_USERS = [
   { id: "1", name: "John Doe", email: "john.doe@daily.com", role: "Admin", plan: "Premium", verified: true, status: "Active", mfa: true, lastActive: "2h ago", joined: "Jan 12, 2024" },
@@ -26,6 +34,15 @@ const INITIAL_USERS = [
 // Replace with API totals
 const STATS = { total: "12,842", active: "8,234", premium: "3,451", suspended: "352", pending: "805" };
 
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+    const AddIconWhiteSvg = (p) => <SvgIcon src={AddIconWhite} {...p} />;
+    const GuardCheckSvg = (p) => <SvgIcon src={GuardCheck} {...p} />;
+    const DownloadIconSvg = (p) => <SvgIcon src={DownloadIcon} {...p} />;
+    const CheckMarkIconSvg = (p) => <SvgIcon src={CheckMarkIcon} {...p} />;
+
 const STATUS_STYLES = {
   Active: "bg-[#21AC1C1A] text-[#21AC1C] border-[#DAF3C8]",
   Invited: "bg-[#7C3AED1A] text-[#7C3AED] border-[#E4D7FB]",
@@ -34,10 +51,10 @@ const STATUS_STYLES = {
   Suspended: "bg-[#EB0C101A] text-[#EB0C10] border-[#FBD0D1]",
 };
 
-const StatCard = ({ icon: Icon, iconBg, label, value }) => (
+const StatCard = ({ icon, iconBg, label, value }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-6 flex items-center gap-4">
     <div className={`w-14 h-14 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={26} />
+       <img src={icon} alt="" className="w-8 h-8" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#0A084799]">{label}</p>
@@ -255,11 +272,11 @@ export default function UserManagementPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiUsers} iconBg="bg-[#EDE9FE] text-[#7C3AED]" label="Total Users" value={STATS.total} />
-        <StatCard icon={FiCheckCircle} iconBg="bg-[#DCFCE7] text-[#16A34A]" label="Active" value={STATS.active} />
-        <StatCard icon={FaCrown} iconBg="bg-[#FFEDD5] text-[#F59E0B]" label="Premium" value={STATS.premium} />
-        <StatCard icon={FiXCircle} iconBg="bg-[#FEE2E2] text-[#DC2626]" label="Suspended" value={STATS.suspended} />
-        <StatCard icon={FiSend} iconBg="bg-[#EDE9FE] text-[#7C3AED]" label="Pending Invite" value={STATS.pending} />
+        <StatCard icon={TwoUsers} iconBg="bg-[#6209FD1A] text-[#7C3AED]" label="Total Users" value={STATS.total} />
+        <StatCard icon={CheckMarkIcon} iconBg="bg-[#2BA4521A] text-[#16A34A]" label="Active" value={STATS.active} />
+        <StatCard icon={PremiumIcon} iconBg="bg-[#F165221A] text-[#F59E0B]" label="Premium" value={STATS.premium} />
+        <StatCard icon={SuspendedIcon} iconBg="bg-[#D715141A] text-[#DC2626]" label="Suspended" value={STATS.suspended} />
+        <StatCard icon={PendingInviteIcon} iconBg="bg-[#7D3BD61A] text-[#7C3AED]" label="Pending Invite" value={STATS.pending} />
       </div>
 
       {/* Filters */}
@@ -285,13 +302,13 @@ export default function UserManagementPage() {
 
         <div className="flex flex-wrap justify-end gap-3">
           <button onClick={()=>navigate('/admin/users/add')} type="button" className="px-8 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-[#001266] cursor-pointer">
-            <FiPlus size={16} /> Add User
+            <AddIconWhiteSvg size={16} /> Add User
           </button>
           <button type="button" className="px-8 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847CC] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-            <FiDownload size={14} /> Export
+            <DownloadIconSvg size={14} /> Export
           </button>
           <button type="button" className="px-6 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847CC] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-            <FiShield size={14} /> Manage Roles
+            <GuardCheckSvg size={14} /> Manage Roles
           </button>
         </div>
       </div>
@@ -358,7 +375,7 @@ export default function UserManagementPage() {
                   <td className="p-4 font-medium">{u.plan}</td>
                   <td className="p-4 text-center">
                     {u.verified ? (
-                      <FiCheckCircle size={26} className="text-[#21AC1C] mx-auto" />
+                      <CheckMarkIconSvg size={26} className="text-[#21AC1C] mx-auto" />
                     ) : (
                       <span className="px-2.5 py-1 rounded-md text-[11px] font-medium border inline-block bg-[#F59E0B1A] text-[#C65406] border-[#FADCC7]">
                         Unverified
@@ -403,7 +420,7 @@ export default function UserManagementPage() {
             <select
               value={entriesPerPage}
               onChange={(e) => { setEntriesPerPage(e.target.value); setPage(1); }}
-              className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs font-semibold text-[#0A0847] bg-white outline-none cursor-pointer"
+              className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs text-[#0A0847] bg-white outline-none cursor-pointer"
             >
               <option value="05">05</option>
               <option value="10">10</option>

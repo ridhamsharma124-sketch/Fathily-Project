@@ -3,12 +3,16 @@ import { createPortal } from "react-dom";
 import {
   FiAlertTriangle, FiCheckCircle, FiInfo, FiX, FiStar, FiUser, FiSettings, FiShield,
 } from "react-icons/fi";
+import AdminIcon from "../../../assets/UserManagementSvgs/AdminRolesvg.svg"
+import ModeratorIcon from "../../../assets/UserManagementSvgs/ModerartorSvg.svg"
+import UserRoleIcon from "../../../assets/UserManagementSvgs/UserRoleIcon.svg"
+import CustomRoleIcon from "../../../assets/UserManagementSvgs/Customrole.svg"
 
 const ROLE_OPTIONS = [
-  { value: "Admin", desc: "Full system access", icon: FiStar, iconCls: "text-[#2563EB]" },
-  { value: "Moderator", desc: "Content and community management", icon: FiShield, iconCls: "text-[#8B5CF6]" },
-  { value: "User", desc: "Standard app access", icon: FiUser, iconCls: "text-[#6B6F9B]" },
-  { value: "Custom Role", desc: "Define custom permissions", icon: FiSettings, iconCls: "text-[#6B6F9B]" },
+  { value: "Admin", desc: "Full system access", icon: AdminIcon },
+  { value: "Moderator", desc: "Content and community management", icon: ModeratorIcon },
+  { value: "User", desc: "Standard app access", icon: UserRoleIcon },
+  { value: "Custom Role", desc: "Define custom permissions", icon: CustomRoleIcon },
 ];
 
 const ELEVATED = ["Admin", "Moderator", "Custom Role"];
@@ -66,7 +70,7 @@ export default function ChangeRoleModal({ user, onClose, onSave }) {
 
         {/* Role options */}
         <div className="space-y-4">
-          {ROLE_OPTIONS.map(({ value, desc, icon: Icon, iconCls }) => {
+          {ROLE_OPTIONS.map(({ value, desc, icon }) => {
             const active = selected === value;
             return (
               <label
@@ -82,7 +86,7 @@ export default function ChangeRoleModal({ user, onClose, onSave }) {
                   onChange={() => { setSelected(value); setError(false); }}
                   className="accent-[#001984] w-5 h-5 shrink-0"
                 />
-                <Icon size={34} className={`shrink-0 ${iconCls}`} />
+                <img src={icon} alt="" width={34} height={34} className="shrink-0" />
                 <div>
                   <p className={`text-xl font-semibold ${active ? "text-[#001984]" : "text-[#0A0847CC]"}`}>{value}</p>
                   <p className="text-sm font-medium text-[#0A084799]">{desc}</p>

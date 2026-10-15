@@ -7,10 +7,24 @@ import {
 } from "react-icons/fi";
 import { MdFormatIndentIncrease, MdFormatIndentDecrease, MdFormatColorText, MdFormatColorFill } from "react-icons/md";
 import { useNavigate, useLocation } from "react-router-dom";
+import PublishWhiteIcon from "../../../assets/SeasonalJourneys/PublishWhiteIcon.svg";
+import SaveIcon from "../../../assets/SeasonalJourneys/SaveIcon.svg";
+import Calendar2Icon from "../../../assets/SeasonalJourneys/Calendar2Icon.svg";
+import UploadIcon from "../../../assets/SeasonalJourneys/UploadIcon.svg";
 
 /* ==========================================================================
    ATOMS
    ========================================================================== */
+
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+   const SaveIconSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
+   const PublishWhiteIconSvg = (p) => <SvgIcon src={PublishWhiteIcon} {...p} />;
+   const CalendarIconSvg = (p) => <SvgIcon src={Calendar2Icon} {...p} />;
+   const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+
 const Input = ({ className = "", ...props }) => (
   <input
     className={`w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] transition-all ${className}`}
@@ -38,13 +52,13 @@ const Label = ({ children, required }) => (
 
 const DateField = ({ value, onChange }) => (
   <div className="relative">
+     <CalendarIconSvg size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
     <input
       type="date"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full bg-white border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+      className="w-full bg-white border border-[#E2DFFC] rounded-md px-9 py-3 text-xs text-[#0A0847] outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
     />
-    <FiCalendar size={13} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
   </div>
 );
 
@@ -189,7 +203,7 @@ const AudioBlock = ({ fileName, fileUrl, duration, thumbnail, onUploadFile, onUp
             onClick={() => fileRef.current?.click()}
             className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-white hover:bg-[#FAFAFF] transition-colors cursor-pointer"
           >
-            <FiUploadCloud size={20} className="text-[#001984]" />
+            <UploadIconSvg size={20} className="text-[#001984]" />
             <span className="text-xs font-semibold text-[#0A0847]">Upload Audio</span>
           </div>
         )}
@@ -209,7 +223,7 @@ const AudioBlock = ({ fileName, fileUrl, duration, thumbnail, onUploadFile, onUp
               onClick={() => thumbRef.current?.click()}
               className="absolute top-1.5 right-1.5 p-1 rounded-full bg-[#001984] text-white hover:bg-[#001266] cursor-pointer"
             >
-              <FiUploadCloud size={11} />
+              <UploadIconSvg size={11} />
             </button>
           </div>
         ) : (
@@ -217,7 +231,7 @@ const AudioBlock = ({ fileName, fileUrl, duration, thumbnail, onUploadFile, onUp
             onClick={() => thumbRef.current?.click()}
             className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#E9EAF7] hover:bg-[#E0E1F5] transition-colors cursor-pointer"
           >
-            <FiUploadCloud size={20} className="text-[#001984]" />
+            <UploadIconSvg size={28} className="text-[#001984]" />
             <span className="text-xs font-semibold text-[#0A0847]">Upload / Replace Image</span>
           </div>
         )}
@@ -361,13 +375,13 @@ const [days, setDays] = useState(() =>
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={() => handleAction("Save draft")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer">
-            <FiSave size={14} /> Save draft
+            <SaveIconSvg size={16} /> Save draft
           </button>
           <button type="button" onClick={() => handleAction("Preview")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer">
-            <FiEye size={14} /> Preview
+            <FiEye size={16} /> Preview
           </button>
           <button type="button" onClick={() => handleAction("Publish Journey")} className="px-4 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold hover:bg-[#001266] flex items-center gap-2 transition-colors cursor-pointer">
-            <FiSend size={14} /> Publish Journey
+            <PublishWhiteIconSvg size={16} /> Publish Journey
           </button>
         </div>
       </div>
@@ -477,9 +491,9 @@ const [days, setDays] = useState(() =>
             ) : (
               <div
                 onClick={() => dayImageRef.current?.click()}
-                className="border border-dashed border-[#CBC6F8] rounded-lg h-32 flex items-center justify-center gap-3 bg-white hover:bg-[#FAFAFF] transition-colors cursor-pointer"
+                className="border border-dashed border-[#CBC6F8] rounded-lg h-24 flex items-center justify-center gap-3 bg-[#F5F6FF] hover:bg-[#FAFAFF] transition-colors cursor-pointer"
               >
-                <FiUploadCloud size={24} className="text-[#001984]" />
+                <UploadIconSvg size={42} className="text-[#001984]" />
                 <span className="text-sm font-semibold text-[#0A0847]">Upload / Replace Image</span>
               </div>
             )}

@@ -11,6 +11,24 @@ import {
   FiImage,
 } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
+import InformationFilledIcon from "../../../assets/PrayWithMeSvgs/InformationFilledIcon.svg";
+import Edit from "../../../assets/PrayWithMeSvgs/Edit.svg";
+import TrashRedIcon from "../../../assets/PrayWithMeSvgs/TrashRedIcon.svg";
+import ReplaceIcon from "../../../assets/PrayWithMeSvgs/ReplaceIcon.svg";
+import UploadIcon2 from "../../../assets/PrayWithMeSvgs/UploadIcon2.svg";
+import SaveIcon from "../../../assets/PrayWithMeSvgs/SaveIcon.svg";
+
+
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+   const InformationIconSvg = (p) => <SvgIcon src={InformationFilledIcon} {...p} />;
+   const EditSvg = (p) => <SvgIcon src={Edit} {...p} />;
+   const TrashRedSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+   const ReplaceSvg = (p) => <SvgIcon src={ReplaceIcon} {...p} />;
+   const UploadIcon2Svg = (p) => <SvgIcon src={UploadIcon2} {...p} />;
+    const SaveSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
 
 /* ==========================================================================
    REUSABLE COMPONENTS
@@ -61,8 +79,8 @@ const SectionTitle = ({ n, title }) => (
 const ToggleRow = ({ title, desc, checked, onChange }) => (
   <div className="flex items-center justify-between gap-4 py-3">
     <div>
-      <p className="text-xs font-semibold text-[#0A0847]">{title}</p>
-      {desc && <p className="text-[11px] text-[#0A084799] font-medium mt-1">{desc}</p>}
+      <p className="text-sm font-semibold text-[#0A0847]">{title}</p>
+      {desc && <p className="text-xs text-[#0A084799] font-medium mt-1">{desc}</p>}
     </div>
     <Toggle checked={checked} onChange={onChange} />
   </div>
@@ -245,14 +263,14 @@ export default function PrayWithMeSettingsPage() {
                           onClick={() => (editingId === c.id ? saveEdit() : startEdit(c))}
                           className="w-8 h-8 rounded-lg border border-[#E2DFFC] text-[#001984] flex items-center justify-center hover:bg-[#EEF2FF] transition-colors cursor-pointer"
                         >
-                          {editingId === c.id ? <FiCheck size={16} /> : <FiEdit2 size={16} />}
+                          {editingId === c.id ? <FiCheck size={16} /> : <EditSvg size={18} />}
                         </button>
                         <button
                           type="button"
                           onClick={() => deleteCategory(c.id)}
                           className="w-8 h-8 rounded-lg border border-[#E2DFFC] text-[#DE2128] flex items-center justify-center hover:bg-red-50 transition-colors cursor-pointer"
                         >
-                          <FiTrash2 size={16} />
+                          <TrashRedSvg size={16} />
                         </button>
                       </div>
                     </td>
@@ -349,7 +367,7 @@ export default function PrayWithMeSettingsPage() {
             </label>
 
             <div className="flex items-start gap-2 bg-[#F1F2F9] border border-[#E2DFFC] rounded-lg p-3 text-sm font-normal text-[#001984]">
-              <FiInfo size={16} className="shrink-0 mt-0.5" />
+              <InformationIconSvg size={18} className="shrink-0 mt-0.5" />
               <span>
                 A custom deletion date can be set on any post from the management page.
               </span>
@@ -462,7 +480,7 @@ export default function PrayWithMeSettingsPage() {
               onClick={() => imageRef.current?.click()}
               className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <FiUpload size={16} /> Upload New Image
+              <UploadIcon2Svg size={16} /> Upload New Image
             </button>
             <p className="text-[11px] text-[#0A084799] font-medium mt-2 mb-3">
               JPG or PNG • Recommended 1600 × 900
@@ -474,7 +492,7 @@ export default function PrayWithMeSettingsPage() {
                 onClick={() => imageRef.current?.click()}
                 className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
-                <FiRefreshCw size={16} /> Replace
+                <ReplaceSvg size={16} /> Replace
               </button>
               <button
                 type="button"
@@ -484,7 +502,7 @@ export default function PrayWithMeSettingsPage() {
                 }}
                 className="h-11 w-full border border-[#DE2128] bg-white text-[#DE2128] font-semibold text-xs rounded-lg hover:bg-red-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
-                <FiTrash2 size={16} /> Remove
+                <TrashRedSvg size={16} /> Remove
               </button>
             </div>
 
@@ -515,7 +533,7 @@ export default function PrayWithMeSettingsPage() {
           onClick={handleSave}
           className="w-full sm:w-auto px-8 py-3 bg-[#001984] text-white font-semibold text-xs rounded-lg hover:bg-[#001266] flex items-center justify-center gap-2 transition-colors cursor-pointer"
         >
-          <FiSave size={14} /> Save draft
+          <SaveSvg size={16} /> Save draft
         </button>
       </div>
     </div>

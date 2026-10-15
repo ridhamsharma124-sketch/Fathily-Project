@@ -12,6 +12,11 @@ import {
   FiEdit2,
   FiCheck,
 } from "react-icons/fi";
+import UserIcon from "../../../assets/DonationGiftSvg/UserIcon.svg";
+import MessageIcon from "../../../assets/DonationGiftSvg/MessageIcon.svg";
+import NoteIcon from "../../../assets/DonationGiftSvg/NoteIcon.svg";
+import CancelSubIcon from "../../../assets/DonationGiftSvg/CancelSubIcon.svg";
+import CancelIcon from "../../../assets/DonationGiftSvg/CancelIcon.svg";
 
 /* ==========================================================================
    HELPERS
@@ -25,6 +30,16 @@ const fmtLongDate = (iso) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
     month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
   });
+
+  const SvgIcon = ({ src, size = 16, className = "" }) => (
+                <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+              );
+  
+  const UserIconSvg = (p) => <SvgIcon src={UserIcon} {...p} />;
+  const MessageIconSvg = (p) => <SvgIcon src={MessageIcon} {...p} />;
+  const NoteIconSvg = (p) => <SvgIcon src={NoteIcon} {...p} />;
+  const CancelSubIconSvg = (p) => <SvgIcon src={CancelSubIcon} {...p} />;
+  const CancelIconSvg = (p) => <SvgIcon src={CancelIcon} {...p} />;
 
 const STATUS_STYLES = {
   Paid: "bg-[#21AC1C1A] text-[#21AC1C] border-[#DAF3C8]",
@@ -148,11 +163,11 @@ export default function DonationDetailsPage() {
   const refund = () => setDonation((d) => ({ ...d, status: "Refunded" }));
 
   const actions = [
-    { label: "View Donor", icon: FiUser, onClick: () => console.log("View donor", donation.donor) },
-    { label: "Resend Receipt", icon: FiMail, onClick: () => alert(`Receipt sent to ${donation.email || "donor"}`) },
-    { label: "Add Internal Note", icon: FiFileText, onClick: addNote },
-    { label: "Cancel Recurring", icon: FiXSquare, onClick: cancelRecurring },
-    { label: "Refund Payment", icon: FiDollarSign, onClick: refund, danger: true },
+    { label: "View Donor", icon: UserIconSvg, onClick: () => console.log("View donor", donation.donor) },
+    { label: "Resend Receipt", icon: MessageIconSvg, onClick: () => alert(`Receipt sent to ${donation.email || "donor"}`) },
+    { label: "Add Internal Note", icon: NoteIconSvg, onClick: addNote },
+    { label: "Cancel Recurring", icon: CancelIconSvg, onClick: cancelRecurring },
+    { label: "Refund Payment", icon: CancelSubIconSvg, onClick: refund, danger: true },
   ];
 
   const amount = `$${Number(donation.amount).toFixed(2)}`;
@@ -334,10 +349,10 @@ export default function DonationDetailsPage() {
 
         {/* RIGHT: Actions */}
         <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 min-h-[300px]">
-          <h3 className="text-base font-semibold text-[#0A0847] pb-3 border-b border-[#E2DFFC]">
+          <h3 className="text-base font-semibold text-[#0A0847] pb-3 border-b border-[#0019841A]">
             Actions
           </h3>
-          <div className="divide-y divide-[#E2DFFC]">
+          <div className="divide-y divide-[#0019841A]">
             {actions.map(({ label, icon: Icon, onClick, danger }) => (
               <button
                 key={label}

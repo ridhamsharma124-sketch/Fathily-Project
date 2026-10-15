@@ -10,8 +10,26 @@ import bibleBook from "../../../assets/bibleBook.svg";
 import StreakSvg from "../../../assets/StreakSvg.svg";
 import graduationCap from "../../../assets/graduationCap.svg";
 import bbook from "../../../assets/bbook.svg";
+import TrashRedIcon from "../../../assets/BibbleBookSvgs/TrashRedIcon.svg"
+import SaveIcon from "../../../assets/BibbleBookSvgs/Saveicon.svg";
+import editBook from "../../../assets/BibbleBookSvgs/editBook.png";
+import EyeIcon from "../../../assets/BibbleBookSvgs/EyeIcon.svg";
+import Leafs from "../../../assets/BibbleBookSvgs/Leafs.svg";
+import UploadIcon from "../../../assets/BibbleBookSvgs/UploadIcon.svg"
+
 
 /* ---------- atoms ---------- */
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+           <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+         );
+         
+    const TrashRedIconSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+    const SaveIconSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
+    const EyeIconSvg = (p) => <SvgIcon src={EyeIcon} {...p} />;
+    const LeafsIconSvg = (p) => <SvgIcon src={Leafs} {...p} />;
+    const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+
 const inputCls =
   "w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] transition-all";
 
@@ -120,7 +138,7 @@ export default function EditBookPage() {
     subtitle: "A Journey of Deliverance",
     published: true,
     images: [
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+      editBook,
     ],
     journeyCount: "206+",
     chapterCount: "40",
@@ -165,14 +183,14 @@ export default function EditBookPage() {
             onClick={() => handleAction("Preview as User")}
             className="px-5 py-2.5 bg-white border border-[#001984] text-[#001984] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-[#EEF2FF] cursor-pointer"
           >
-            <FiEye size={14} /> Preview as User
+            <EyeIconSvg size={14} /> Preview as User
           </button>
           <button
             type="button"
             onClick={() => handleAction("Save Changes")}
             className="px-5 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-[#001266] cursor-pointer"
           >
-            <FiSave size={14} /> Save Changes
+            <SaveIconSvg size={14} /> Save Changes
           </button>
         </div>
       </div>
@@ -224,7 +242,7 @@ export default function EditBookPage() {
                         onClick={() => removeImage(i)}
                         className="w-full mt-2 py-2 border border-red-300 text-red-500 rounded-md text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-red-50 cursor-pointer"
                       >
-                        <FiTrash2 size={13} /> Remove
+                        <TrashRedIconSvg size={16} /> Remove
                       </button>
                     </div>
                   ))}
@@ -232,7 +250,7 @@ export default function EditBookPage() {
                     onClick={() => fileRef.current?.click()}
                     className="h-54 rounded-md border border-[#E2DFFC] bg-[#FAFAFF] hover:bg-[#F1F2F9] flex flex-col items-center justify-center text-center px-3 cursor-pointer transition-colors"
                   >
-                    <FiUploadCloud size={28} className="text-[#001984] mb-2" />
+                    <UploadIconSvg size={28} className="text-[#001984] mb-2" />
                     <p className="text-[11px] font-semibold text-[#0A0847]">Upload More Images</p>
                     <p className="text-[9px] text-gray-400 mt-1">Recommended JPG or PNG upto 5MB</p>
                   </div>
@@ -377,9 +395,9 @@ export default function EditBookPage() {
     <div className="rounded-lg bg-gradient-to-b from-[#E4E8FA] to-[#F1F3FC] px-4 py-9 text-center">
       <p className="text-[10px] font-bold text-[#001984] uppercase tracking-wide mb-3 py-2">Featured Verse</p>
       <div className="flex items-center justify-center gap-2">
-        <GiLaurels size={28} className="text-[#3231DB] shrink-0" />
-        <p className="text-xs text-[#0A084799] italic leading-relaxed">{form.verseText}</p>
-        <GiLaurels size={28} className="text-[#3231DB] shrink-0 -scale-x-100" />
+        <LeafsIconSvg size={28} className="text-[#3231DB] shrink-0" />
+        <p className="text-sm text-[#0A084799]  leading-relaxed">{form.verseText}</p>
+        <LeafsIconSvg size={28} className="text-[#3231DB] shrink-0 -scale-x-100" />
       </div>
       <div className="flex items-center justify-center gap-2 mt-6">
         <span className="h-px w-8 bg-[#001984]" />
@@ -406,7 +424,7 @@ export default function EditBookPage() {
           onClick={() => handleAction("Delete Book")}
           className="px-5 py-3 bg-white border border-red-400 text-red-500 rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-red-50 cursor-pointer"
         >
-          <FiTrash2 size={14} /> Delete Book
+          <TrashRedIconSvg size={16} /> Delete Book
         </button>
         <button
           type="button"

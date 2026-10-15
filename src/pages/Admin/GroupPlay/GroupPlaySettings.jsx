@@ -16,6 +16,17 @@ import {
   FiMoreHorizontal
 } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
+import ThreeUsers from "../../../assets/GroupPlaysvgs/threeusersUnfilled.svg";
+import CogIcon from "../../../assets/GroupPlaysvgs/CogIcon.svg";
+import GameRemoteIcon from "../../../assets/GroupPlaysvgs/GameRemoteicon.svg";
+import MessageIcon from "../../../assets/GroupPlaysvgs/MessageIcon.svg";
+import GreenChatIcon from "../../../assets/GroupPlaysvgs/GreenChatIcon.svg";
+import PurpleTime from "../../../assets/GroupPlaysvgs/PurpleTime.svg";
+import ThreeUsersIcon from "../../../assets/GroupPlaysvgs/ThreeUsers.svg";
+import TwoUsersIcon from "../../../assets/GroupPlaysvgs/TwoUsersIcon.svg";
+import UploadIcon from "../../../assets/GroupPlaysvgs/UploadIcon.svg";
+import TrashRedIcon from "../../../assets/GroupPlaysvgs/TrashRedIcon.svg";
+import EditIcon from "../../../assets/GroupPlaysvgs/Edit.svg";
 
 // ==========================================
 // MOCK API DATA (Simulated Backend Response)
@@ -95,14 +106,26 @@ const INITIAL_SETTINGS_API_DATA = {
 // REUSABLE COMPONENTS
 // ==========================================
 
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+           <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+         );
+         
+    const CogIconSvg = (p) => <SvgIcon src={CogIcon} {...p} />;
+    const ThreeUsersSvg = (p) => <SvgIcon src={ThreeUsers} {...p} />;
+    const GameRemoteIconSvg = (p) => <SvgIcon src={GameRemoteIcon} {...p} />;
+    const MessageIconSvg = (p) => <SvgIcon src={MessageIcon} {...p} />;
+    const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+    const TrashIconSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+    const EditIconSvg = (p) => <SvgIcon src={EditIcon} {...p} />;
+
 // 1. Reusable Card Header (Title, Subtitle, Icon)
 const CardHeader = ({ icon: Icon, title, subtitle, rightElement }) => (
   <div className="flex items-center justify-between pb-2 border-b border-gray-100">
     <div className="flex items-center gap-2.5">
-      {Icon && <Icon className="text-[#001984]" size={22} />}
+      {Icon && <Icon className="text-[#001984]" size={24} />}
       <div>
-        <h3 className="text-xs font-semibold text-[#0A0847]">{title}</h3>
-        {subtitle && <p className="text-[10px] text-[#0A084799] font-medium">{subtitle}</p>}
+        <h3 className="text-sm font-semibold text-[#0A0847]">{title}</h3>
+        {subtitle && <p className="text-xs text-[#0A084799] font-medium">{subtitle}</p>}
       </div>
     </div>
     {rightElement}
@@ -154,12 +177,12 @@ const SelectField = ({ label, required, value, options, onChange, helperText }) 
   </div>
 );
 
-const StatCard = ({ icon: Icon, iconBg, label, value, hint }) => (
+const StatCard = ({ icon, iconBg, label, value, hint }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-6 flex items-center gap-4">
     <div
       className={`w-13 h-13 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}
     >
-      <Icon size={28} />
+         <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#0A084799]">{label}</p>
@@ -262,29 +285,29 @@ const GroupPlaySettings = () => {
       {/* 2. Top Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard
-                icon={FiUsers}
-                iconBg="bg-[#E8E9FB] text-[#3231DB]"
+                icon={TwoUsersIcon}
+                iconBg="bg-[#6209FD1A] text-[#3231DB]"
                 label="Max Members per Room"
                 value={apiData.stats.maxMembers}
                 hint="members"
               />
               <StatCard
-                icon={FiClock}
-                iconBg="bg-[#2BA4521A] text-[#2BA452]"
+                icon={PurpleTime}
+                iconBg="bg-[#6209FD1A] "
                 label="Default Room Expiry"
                 value={apiData.stats.roomExpiryHours}
                 hint="hours"
               />
               <StatCard
-                icon={FiMessageSquare}
-                iconBg="bg-[#E8E9FB] text-[#3231DB]"
+                icon={GreenChatIcon}
+                iconBg="bg-[#0895351A] text-[#3231DB]"
                 label="Chat"
                 value={apiData.stats.chatAllowed ? "Allowed" : "Disabled"}
                 hint=""
               />
               <StatCard
-                icon={FiUsers}
-                iconBg="bg-[#F3E8D8] text-[#C65406]"
+                icon={ThreeUsersIcon}
+                iconBg="bg-[#6209FD1A] text-[#C65406]"
                 label="Team Mode"
                 value={apiData.stats.teamModeAllowed ? "Allowed" : "Disabled"}
                 hint=""
@@ -297,7 +320,7 @@ const GroupPlaySettings = () => {
         {/* Card 1: Room Configuration */}
         <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
           <CardHeader
-            icon={FiSettings}
+            icon={CogIconSvg}
             title="Room Configuration"
             subtitle="Set default rules for all rooms."
           />
@@ -424,7 +447,7 @@ const GroupPlaySettings = () => {
         {/* Card 3: Chat Settings */}
         <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
           <CardHeader
-            icon={FiMessageSquare}
+            icon={MessageIconSvg}
             title="Chat Settings"
             subtitle="Control chat and communication."
           />
@@ -471,7 +494,7 @@ const GroupPlaySettings = () => {
         {/* Card 4: Team Mode Settings */}
         <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
           <CardHeader
-            icon={FiUsers}
+            icon={ThreeUsersSvg}
             title="Team Mode Settings"
             subtitle="Configure team play options."
           />
@@ -570,13 +593,13 @@ const GroupPlaySettings = () => {
           type="button"
           className="w-7 h-7 flex items-center justify-center rounded-lg border border-[#E2DFFC] bg-white text-[#001984] hover:bg-[#EEF2FF] transition-colors"
         >
-          <FiEdit2 size={12} />
+          <EditIconSvg size={16} />
         </button>
         <button
           type="button"
           className="w-7 h-7 flex items-center justify-center rounded-lg border border-red-200 text-red-500 hover:bg-red-100 transition-colors"
         >
-          <FiTrash2 size={12} />
+          <TrashIconSvg size={16} />
         </button>
       </div>
     </div>
@@ -585,7 +608,7 @@ const GroupPlaySettings = () => {
 
           <button
   type="button"
-  className="w-full py-2.5 border-1 border-[#001984] rounded-lg text-sm font-semibold text-[#001984] hover:bg-[#EEF2FF] transition-colors flex items-center justify-center gap-2"
+  className="w-full py-2.5 border-1 border-[#001984] rounded-lg text-xs font-semibold text-[#001984] hover:bg-[#EEF2FF] transition-colors flex items-center justify-center gap-2"
 >
   <FiPlus size={16} /> Add New {openingPrayerTab ? "Opening" : "Closing"} Prayer
 </button>
@@ -594,7 +617,7 @@ const GroupPlaySettings = () => {
         {/* Card 6: Other Game Settings */}
         <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
           <CardHeader
-            icon={FiSliders}
+            icon={GameRemoteIconSvg}
             title="Other Game Settings"
             subtitle="Additional game behavior settings."
           />
@@ -729,7 +752,7 @@ const GroupPlaySettings = () => {
     ))}
 
     <div className="border border-dashed border-[#D1D5DB] hover:border-[#001984] rounded-lg p-3 flex flex-col items-center justify-center text-center cursor-pointer bg-white transition-colors aspect-[4/3] group">
-      <FiUpload
+      <UploadIconSvg
         className="text-[#001984] mb-1.5"
         size={24}
       />

@@ -20,6 +20,23 @@ import {
 } from "react-icons/fi";
 import { MdUnfoldMore, MdOutlinePayments } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import DollarIcon from "../../../assets/DonationGiftSvg/DollarIcon.svg"
+import File from "../../../assets/DonationGiftSvg/File.svg";
+import ManualIcon from "../../../assets/DonationGiftSvg/ManualIcon.svg";
+import CalendarSvg from "../../../assets/DonationGiftSvg/CalendarSvg.svg";
+import RecurringIcon from "../../../assets/DonationGiftSvg/RecurringIcon.svg";
+import StatCalendar from "../../../assets/DonationGiftSvg/StatCalendar.svg"
+import ActiveRecurringIcon from "../../../assets/DonationGiftSvg/ActiveRecurringIcon.svg"
+
+
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+
+const CalendarIconSvg = (p) => <SvgIcon src={CalendarSvg} {...p} />;
+const FileSvg = (p) => <SvgIcon src={File} {...p} />;
+
 
 /* ==========================================================================
    MOCK DATA (34 rows, all dated Aug 1 - Aug 17, 2026)
@@ -47,13 +64,13 @@ const INITIAL_DONATIONS = Array.from({ length: 34 }, (_, i) => {
 });
 
 const STAT_CARDS_ROW1 = [
-  { label: "Total Donations", value: "$12,480", hint: "All time", icon: FiDollarSign, bg: "bg-[#3B5BDB]" },
-  { label: "This Month", value: "$1,845", hint: "Aug 1 – Aug 17, 2026", icon: FiCalendar, bg: "bg-[#0B3D91]" },
-  { label: "Recurring (Monthly)", value: "$740", hint: "Per month", icon: FiRefreshCw, bg: "bg-[#0A84E8]" },
+  { label: "Total Donations", value: "$12,480", hint: "All time", icon: DollarIcon, bg: "bg-[#3B5BDB]" },
+  { label: "This Month", value: "$1,845", hint: "Aug 1 – Aug 17, 2026", icon: StatCalendar, bg: "bg-[#0B3D91]" },
+  { label: "Recurring (Monthly)", value: "$740", hint: "Per month", icon: RecurringIcon, bg: "bg-[#0A84E8]" },
 ];
 const STAT_CARDS_ROW2 = [
-  { label: "Active Recurring Donors", value: "38", hint: "Donors with active plans", icon: FiUsers, bg: "bg-[#FB923C]" },
-  { label: "Manual (Cash/Check)", value: "$620", hint: "Record only donations", icon: MdOutlinePayments, bg: "bg-[#F5B82E]" },
+  { label: "Active Recurring Donors", value: "38", hint: "Donors with active plans", icon: ActiveRecurringIcon, bg: "bg-[#FB923C]" },
+  { label: "Manual (Cash/Check)", value: "$620", hint: "Record only donations", icon: ManualIcon, bg: "bg-[#F5B82E]" },
 ];
 
 const FILTER_CHIPS = [
@@ -81,12 +98,12 @@ const fmtAmount = (n) => `$${n.toFixed(2)}`;
 /* ==========================================================================
    REUSABLE UI COMPONENTS
    ========================================================================== */
-const StatCard = ({ icon: Icon, iconBg, label, value, hint }) => (
+const StatCard = ({ icon, iconBg, label, value, hint }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-6 flex items-center gap-4">
     <div
       className={`w-16 h-16 rounded-full ${iconBg} text-white flex items-center justify-center shrink-0`}
     >
-      <Icon size={30} />
+       <img src={icon} alt="" className="w-8 h-8" />
     </div>
     <div>
       <p className="text-sm font-semibold text-[#001984]">{label}</p>
@@ -180,7 +197,7 @@ const DateRangeField = ({ from, to, onChange }) => {
         className="w-full flex items-center justify-between gap-6 bg-white border border-[#E2DFFC] rounded-md px-3.5 py-3 text-xs font-medium text-[#0A0847CC] hover:border-[#001984] transition-colors cursor-pointer"
       >
         <span className="whitespace-nowrap">{label}</span>
-        <FiCalendar size={16} className="text-gray-500 shrink-0" />
+        <CalendarIconSvg size={16} className="text-gray-500 shrink-0" />
       </button>
 
       {open && (
@@ -472,7 +489,7 @@ export default function DonationsDashboardPage() {
       {/* Table Card */}
       <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden p-5">
         <div className="flex items-center gap-2 mb-4">
-          <FiFileText size={18} className="text-[#001984]" />
+          <FileSvg size={18} className="text-[#001984]" />
           <h3 className="text-sm font-semibold text-[#001984]">Total articles</h3>
         </div>
 

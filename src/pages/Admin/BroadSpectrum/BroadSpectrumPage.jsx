@@ -16,10 +16,39 @@ import {
   FiGift,
 } from "react-icons/fi";
 import { HiOutlineFire } from "react-icons/hi2";
+import QuestionMark from "../../../assets/BroadSpectrumSvgs/QuestionMark.svg"
+import GreenGroupIcons from "../../../assets/BroadSpectrumSvgs/GreenGroupIcons.svg"
+import GoldenHands from "../../../assets/BroadSpectrumSvgs/GoldenHands.svg"
+import BlueBook from "../../../assets/BroadSpectrumSvgs/BlueBook.svg"
+import CalendarIcon from "../../../assets/BroadSpectrumSvgs/CalendarSvg.svg"
+import PurpleHands from "../../../assets/BroadSpectrumSvgs/PurplePrayerHands.svg"
+import MusicSvg from "../../../assets/BroadSpectrumSvgs/MusicSvg.svg";
+import FileSvg from "../../../assets/BroadSpectrumSvgs/FileSvg.svg";
+import GiftSvg from "../../../assets/BroadSpectrumSvgs/GiftPurple.svg";
+import StreakPurpleSvg from "../../../assets/BroadSpectrumSvgs/StreakPurple.svg";
+import DollarCoin from "../../../assets/BroadSpectrumSvgs/DollarCoin.svg";
+import EditSvg from "../../../assets/BroadSpectrumSvgs/Edit.svg";
+import TrashIcon from "../../../assets/BroadSpectrumSvgs/TrashRedIcon.svg";
 
 /* ==========================================================================
    ATOMS
    ========================================================================== */
+
+    const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+       const CalendarIconSvg = (p) => <SvgIcon src={CalendarIcon} {...p} />;
+       const PurpleHandsIconSvg = (p) => <SvgIcon src={PurpleHands} {...p} />;
+       const MusicIconSvg = (p) => <SvgIcon src={MusicSvg} {...p} />;
+       const FileIconSvg = (p) => <SvgIcon src={FileSvg} {...p} />;
+       const GiftIconSvg = (p) => <SvgIcon src={GiftSvg} {...p} />;
+       const StreakIconSvg = (p) => <SvgIcon src={StreakPurpleSvg} {...p} />;
+       const DollarCoinSvg = (p) => <SvgIcon src={DollarCoin} {...p} />;
+       const EditIconSvg = (p) => <SvgIcon src={EditSvg} {...p} />;
+       const TrashIconSvg = (p) => <SvgIcon src={TrashIcon} {...p} />;
+
+
 const Toggle = ({ checked, onChange }) => (
   <button
     type="button"
@@ -84,10 +113,10 @@ const SettingRow = ({ title, desc, children, inline, required }) => (
   </div>
 );
 
-const StatCard = ({ icon: Icon, iconBg, value, label }) => (
+const StatCard = ({ icon, iconBg, value, label }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-6 flex items-center gap-4">
-    <div className={`w-11 h-11 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={18} />
+    <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className="text-base font-semibold text-[#0A0847CC]">{value}</p>
@@ -136,7 +165,7 @@ const PrayerList = ({ title, desc, prayers, onAdd, onEdit, onDelete, total, onVi
       <div className="flex items-start justify-between gap-4 pb-5">
         <div className="flex items-start gap-3">
           <span className=" text-[#7C3AED] flex items-center justify-center shrink-0">
-            <FiGift size={32} />
+            <PurpleHandsIconSvg size={28} />
           </span>
           <div>
             <h3 className="text-sm font-semibold text-[#0A0847]">{title}</h3>
@@ -171,7 +200,7 @@ const PrayerList = ({ title, desc, prayers, onAdd, onEdit, onDelete, total, onVi
                 <td className="px-6 py-4 font-medium text-[#001984]">{p.title}</td>
                 <td className="px-6 py-4 text-[#0A0847CC]">
                   <span className=" flex items-center ">
-                    {p.type === "audio" ? <FiMusic size={24} /> : <FiFileText size={24} />}
+                    {p.type === "audio" ? <MusicIconSvg size={24} /> : <FileIconSvg size={24} />}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -186,14 +215,14 @@ const PrayerList = ({ title, desc, prayers, onAdd, onEdit, onDelete, total, onVi
                       onClick={() => onEdit(p)}
                       className="w-8 h-8 rounded-md border border-[#E2DFFC] text-[#001984] flex items-center justify-center hover:bg-gray-50 cursor-pointer"
                     >
-                      <FiEdit2 size={13} />
+                      <EditIconSvg size={16} />
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(p.id)}
                       className="w-8 h-8 rounded-md border border-[#E2DFFC] text-[#E11D2E] flex items-center justify-center hover:bg-red-50 cursor-pointer"
                     >
-                      <FiTrash2 size={13} />
+                      <TrashIconSvg size={16} />
                     </button>
                   </div>
                 </td>
@@ -318,16 +347,16 @@ export default function BroadSpectrumPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiHelpCircle} iconBg="bg-[#EFE7FD] text-[#7C3AED]" value="10 per week" label="Daily Questions" />
-        <StatCard icon={FiUsers} iconBg="bg-[#DCF5DA] text-[#21AC1C]" value="12 active" label="Journey Prayers" />
-        <StatCard icon={HiOutlineFire} iconBg="bg-[#FEF3E2] text-[#F59E0B]" value="10 active" label="Closing Prayers" />
-        <StatCard icon={FiBookOpen} iconBg="bg-[#DBEAFE] text-[#1D6FE0]" value="5,632 across" label="Total Devotions" />
+        <StatCard icon={QuestionMark} iconBg="bg-[#EFE7FD] text-[#7C3AED]" value="10 per week" label="Daily Questions" />
+        <StatCard icon={GreenGroupIcons} iconBg="bg-[#DCF5DA] text-[#21AC1C]" value="12 active" label="Journey Prayers" />
+        <StatCard icon={GoldenHands} iconBg="bg-[#FEF3E2] text-[#F59E0B]" value="10 active" label="Closing Prayers" />
+        <StatCard icon={BlueBook} iconBg="bg-[#DBEAFE] text-[#1D6FE0]" value="5,632 across" label="Total Devotions" />
       </div>
 
       {/* Row: Daily Journey Settings x2 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <Card
-          icon={<span className=" text-[#7C3AED] flex items-center justify-center"><FiCalendar size={32} /></span>}
+          icon={<span className=" text-[#7C3AED] flex items-center justify-center"><CalendarIconSvg size={28} /></span>}
           title="Daily Journey Settings"
           desc="Configure the daily limit and flow for users."
         >
@@ -368,7 +397,7 @@ export default function BroadSpectrumPage() {
         </Card>
 
         <Card
-          icon={<span className=" text-[#7C3AED] flex items-center justify-center"><FiCalendar size={32} /></span>}
+          icon={<span className=" text-[#7C3AED] flex items-center justify-center"><CalendarIconSvg size={28} /></span>}
           title="Daily Journey Settings"
           desc="Configure the daily limit and flow for users."
         >
@@ -446,7 +475,7 @@ export default function BroadSpectrumPage() {
       {/* Rewards / Streaks */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         <Card
-          icon={<span className="text-[#7C3AED] flex items-center justify-center"><FiGift size={32} /></span>}
+          icon={<span className="text-[#7C3AED] flex items-center justify-center"><GiftIconSvg size={28} /></span>}
           title="Rewards & Points"
           desc="Set rewards for questions and daily completion."
         >
@@ -462,7 +491,7 @@ export default function BroadSpectrumPage() {
                 onChange={(e) => set("coinsPerAnswer", e.target.value.replace(/\D/g, ""))}
                 className="w-full border border-[#E2DFFC] rounded-md px-3 py-2.5 pr-9 text-xs text-[#0A0847] outline-none focus:border-[#001984]"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F59E0B] text-sm">$</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#F59E0B] text-sm"> <DollarCoinSvg size={20} /> </span>
             </div>
           </div>
           <div className="mt-4">
@@ -498,7 +527,7 @@ export default function BroadSpectrumPage() {
         </Card>
 
         <Card
-          icon={<span className="text-[#F59E0B] flex items-center justify-center"><HiOutlineFire size={32} /></span>}
+          icon={<span className="text-[#F59E0B] flex items-center justify-center"><StreakIconSvg size={28} /></span>}
           title="Streaks"
           desc="Configure streak rules and bonuses."
         >

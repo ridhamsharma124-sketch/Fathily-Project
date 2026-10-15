@@ -15,10 +15,28 @@ import {
   FiHelpCircle,
 } from "react-icons/fi";
 import Breadcrumb from "../../../components/UIComponents/BreadCrumb";
+import DollarTag from "../../../assets/CouponCode/DollarTag.svg";
+import PieChartIcon from "../../../assets/CouponCode/PieChart.svg";
+import Twousers from "../../../assets/CouponCode/Twousers.svg";
+import UserPulseCircle from "../../../assets/CouponCode/UserPulseCircle.svg";
+import YellowQuestionMark from "../../../assets/CouponCode/YellowQuestionMark.svg";
 
 /* ==========================================================================
    ATOMS (same classes as the rest of the app)
    ========================================================================== */
+
+   
+    const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+       const DollarTagIconSvg = (p) => <SvgIcon src={DollarTag} {...p} />;
+       const PieChartIconSvg = (p) => <SvgIcon src={PieChartIcon} {...p} />;
+       const TwousersIconSvg = (p) => <SvgIcon src={Twousers} {...p} />;
+       const UserPulseCircleIconSvg = (p) => <SvgIcon src={UserPulseCircle} {...p} />;
+       const YellowQuestionMarkSvg = (p) => <SvgIcon src={YellowQuestionMark} {...p} />;
+
+
 const Input = ({ className = "", ...props }) => (
   <input
     className={`w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] transition-all ${className}`}
@@ -352,14 +370,14 @@ export default function CreateCouponPage() {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-[#F1F2F9] rounded-lg p-4 flex items-center gap-3">
-              <FiUsers size={28} className="text-[#001984]" />
+              <TwousersIconSvg size={28} className="text-[#001984]" />
               <div>
                 <p className="text-[11px] font-medium text-[#0A084799]">Current Usage</p>
                 <p className="text-lg font-bold text-[#0A0847]">{f.currentUsage}</p>
               </div>
             </div>
             <div className="bg-[#F1F2F9] rounded-lg p-4 flex items-center gap-3">
-              <FiPieChart size={28} className="text-[#3231DB]" />
+              <PieChartIconSvg size={28} className="text-[#3231DB]" />
               <div>
                 <p className="text-[11px] font-medium text-[#0A084799]">Remaining Uses</p>
                 <p className="text-lg font-bold text-[#0A0847]">{remaining}</p>
@@ -457,7 +475,7 @@ export default function CreateCouponPage() {
         <Card n={9} title="Summary (Preview)">
           <div className="flex gap-4">
             <span className="w-12 h-12 rounded-lg bg-[#E8E9FB] text-[#001984] flex items-center justify-center shrink-0">
-              <FiTag size={22} />
+              <DollarTagIconSvg size={28} />
             </span>
             <div className="space-y-3 flex-1">
               <SummaryRow label="Code Name:">{f.name}</SummaryRow>
@@ -477,7 +495,7 @@ export default function CreateCouponPage() {
         <div className="bg-[#FFFBEA] rounded-lg border border-[#F6EBC0] p-6">
           <div className="flex items-center gap-3 pb-4 mb-5 border-b border-[#F0E4B0]">
             <span className="w-8 h-8 rounded-full bg-[#FBBF24] text-white flex items-center justify-center shrink-0">
-              <FiHelpCircle size={18} />
+              <YellowQuestionMarkSvg size={36} />
             </span>
             <h3 className="text-base font-semibold text-[#0A0847]">Need Help?</h3>
           </div>
@@ -503,7 +521,7 @@ export default function CreateCouponPage() {
           {SECURITY.map(([k, title, desc]) => (
             <div key={k} className="flex items-start gap-3">
               <span className="w-11 h-11 rounded-lg bg-[#E8E9FB] text-[#3231DB] flex items-center justify-center shrink-0">
-                <FiUser size={20} />
+                <UserPulseCircleIconSvg size={32} />
               </span>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-[#0A0847]">{title}</p>

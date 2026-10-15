@@ -12,6 +12,13 @@ import FaithfulLearner from "../../../assets/StreakManagemnetSvgs/FaithfulServan
 import SteadyGrowth from "../../../assets/StreakManagemnetSvgs/SteadyGrowth.svg";
 import FaithfulHeart from "../../../assets/StreakManagemnetSvgs/FaithfulHeart.svg";
 import FaithfulServant from "../../../assets/StreakManagemnetSvgs/FaithfulServant.svg";
+import StreakFeatureIcon from "../../../assets/StreakManagemnetSvgs/StreakFeatureIcon.svg";
+import GuardIcon from "../../../assets/StreakManagemnetSvgs/GuardIcon.svg";
+import StarIcon from "../../../assets/StreakManagemnetSvgs/StarIcon.svg";
+import TrophyIcon from "../../../assets/StreakManagemnetSvgs/ThrophyIcon.svg";
+import TimeIcon from "../../../assets/StreakManagemnetSvgs/TimeIcon.svg";
+import UserIcon from "../../../assets/StreakManagemnetSvgs/UserIcon.svg";
+import WhiteSaveIcon from "../../../assets/StreakManagemnetSvgs/WhiteSaveIcon.svg"
 
 
 const RESET_TIMES = ["12:00 AM (User's local time)", "3:00 AM (User's local time)", "6:00 AM (User's local time)"];
@@ -39,6 +46,18 @@ const INITIAL = {
 ],
 };
 
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+    const StreakFeatureIconSvg = (p) => <SvgIcon src={StreakFeatureIcon} {...p} />;
+    const GuardIconSvg = (p) => <SvgIcon src={GuardIcon} {...p} />;
+    const StarIconSvg = (p) => <SvgIcon src={StarIcon} {...p} />;
+    const TrophyIconSvg = (p) => <SvgIcon src={TrophyIcon} {...p} />;
+    const TimeIconSvg = (p) => <SvgIcon src={TimeIcon} {...p} />;
+    const UserIconSvg = (p) => <SvgIcon src={UserIcon} {...p} />;
+    const WhiteSaveIconSvg = (p) => <SvgIcon src={WhiteSaveIcon} {...p} />;
+
 const Toggle = ({ checked, onChange }) => (
   <button
     type="button"
@@ -51,7 +70,7 @@ const Toggle = ({ checked, onChange }) => (
 
 const IconBox = ({ icon: Icon }) => (
   <div className="w-11 h-11 rounded-lg border border-[#E2DFFC] bg-white flex items-center justify-center shrink-0 text-[#001984]">
-    <Icon size={20} />
+    <Icon size={24} />
   </div>
 );
 
@@ -157,13 +176,13 @@ export default function StreakManagementPage() {
               </div>
               <button type="button" onClick={save}
                 className="px-6 py-3 bg-[#001984] hover:bg-[#001266] text-white rounded-md text-xs font-semibold flex items-center gap-2 cursor-pointer shrink-0">
-                <FiSave size={14} /> Streak Settings
+                <WhiteSaveIconSvg size={14} /> Streak Settings
               </button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="flex items-start gap-4">
-                <IconBox icon={FiHexagon} />
+                <IconBox icon={StreakFeatureIconSvg} />
                 <div className="flex-1 flex items-start justify-between gap-3">
                   <div>
                     <p className="text-base font-semibold text-[#0A0847CC]">Streak Feature</p>
@@ -174,7 +193,7 @@ export default function StreakManagementPage() {
               </Card>
 
               <Card className="flex items-start gap-4">
-                <IconBox icon={FiClock} />
+                <IconBox icon={TimeIconSvg} />
                 <div className="flex-1 space-y-3">
                   <p className="text-base font-semibold text-[#0A0847CC]">Daily Reset Time</p>
                   <SelectField value={s.resetTime} onChange={(v) => set("resetTime", v)} options={RESET_TIMES} />
@@ -215,7 +234,7 @@ export default function StreakManagementPage() {
 
               <Card className="flex items-start gap-4">
                 <div className="w-11 h-11 rounded-lg border border-[#E2DFFC] bg-white flex items-center justify-center shrink-0 text-[#001984]">
-                  <FiStar size={20} className="fill-[#001984]" />
+                  <StarIconSvg size={20} className="fill-[#001984]" />
                 </div>
                 <div className="flex-1 space-y-3">
                   <p className="text-base font-semibold text-[#0A0847CC]">Minimum Completion Requirement</p>
@@ -224,7 +243,7 @@ export default function StreakManagementPage() {
               </Card>
 
               <Card className="flex items-start gap-4">
-                <IconBox icon={FiClock} />
+                <IconBox icon={TimeIconSvg} />
                 <div className="flex-1 space-y-3">
                   <p className="text-base font-semibold text-[#0A0847CC]">Grace Period</p>
                   <SelectField value={s.gracePeriod} onChange={(v) => set("gracePeriod", v)} options={GRACE_PERIODS} />
@@ -237,7 +256,7 @@ export default function StreakManagementPage() {
               </Card>
 
               <Card className="flex items-start gap-4">
-                <IconBox icon={FiUser} />
+                <IconBox icon={UserIconSvg} />
                 <div className="flex-1 flex items-start justify-between gap-3">
                   <div>
                     <p className="text-base font-semibold text-[#0A0847CC]">Login Alone Counts?</p>
@@ -254,7 +273,7 @@ export default function StreakManagementPage() {
           {/* Milestones */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
             <div className="flex items-start gap-3">
-              <FiAward size={28} className="text-[#001984] mt-0.5" />
+              <TrophyIconSvg size={28} className="text-[#001984] mt-0.5" />
               <div>
                 <h2 className="text-lg font-semibold text-[#001984]">Streak Milestones &amp; Rewards</h2>
                 <p className="text-xs text-[#0A084799] font-medium mt-1">Points and badges awarded at each milestone.</p>
@@ -297,7 +316,7 @@ export default function StreakManagementPage() {
           {/* Protection */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 flex items-center justify-between gap-4">
             <div className="flex items-start gap-3">
-              <FiShield size={28} className="text-[#001984] mt-0.5" />
+              <GuardIconSvg size={28} className="text-[#001984] mt-0.5" />
               <div>
                 <h2 className="text-lg font-semibold text-[#001984]">Streak Protection</h2>
                 <p className="text-xs text-[#0A084799] font-medium mt-1">

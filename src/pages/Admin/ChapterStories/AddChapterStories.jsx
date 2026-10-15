@@ -14,10 +14,22 @@ import {
   FiMoreVertical,
   FiImage,
 } from "react-icons/fi";
+import UploadIcon from "../../../assets/ChapterStories/UploadIcon.svg";
+import Upload2Icon from "../../../assets/ChapterStories/UploadIcon2.svg";
+import TrashRedIcon from "../../../assets/ChapterStories/TrashRedIcon.svg";
 
 /* ==========================================================================
    ATOMS (same classes as the rest of the app)
    ========================================================================== */
+
+     const SvgIcon = ({ src, size = 16, className = "" }) => (
+           <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+         );
+         
+    const Upload2IconSvg = (p) => <SvgIcon src={Upload2Icon} {...p} />;
+    const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+    const TrashRedIconSvg = (p) => <SvgIcon src={TrashRedIcon} {...p} />;
+
 const Input = ({ className = "", ...props }) => (
   <input
     className={`w-full border border-[#E2DFFC] rounded-md px-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 bg-white outline-none focus:border-[#001984] transition-all ${className}`}
@@ -320,7 +332,7 @@ export default function AddChapterStoryPage() {
                 onClick={() => imageRef.current?.click()}
                 className="px-4 py-1.5 border border-[#E2DFFC] bg-white text-[#0A0847] text-sm font-semibold rounded-md flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer"
               >
-                <FiUploadCloud size={15} /> {hasImage ? "Replace Image" : "Upload Image"}
+                <Upload2IconSvg size={15} /> {hasImage ? "Replace Image" : "Upload Image"}
               </button>
               <button
                 type="button"
@@ -331,7 +343,7 @@ export default function AddChapterStoryPage() {
                 }}
                 className="px-4 py-1.5 border border-[#E11D2E] bg-white text-[#E11D2E] text-sm font-semibold rounded-md flex items-center gap-2 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
-                <FiTrash2 size={15} /> Remove
+                <TrashRedIconSvg size={15} /> Remove
               </button>
             </div>
             <p className="text-[11px] text-[#0A084799] font-medium mt-2">
@@ -353,7 +365,7 @@ export default function AddChapterStoryPage() {
                 dragOver ? "bg-[#E9EAF7]" : "bg-[#F6F7FF] hover:bg-[#F1F2F9]"
               }`}
             >
-              <FiUploadCloud size={26} className="text-[#001984]" />
+              <UploadIconSvg size={26} className="text-[#001984]" />
               <span className="text-sm font-medium text-[#0A0847CC] text-center leading-snug">
                 Drag and drop your audio file here
                 <br />
@@ -377,7 +389,7 @@ export default function AddChapterStoryPage() {
                     className="text-[#E11D2E] hover:opacity-70 cursor-pointer shrink-0"
                     title="Remove audio"
                   >
-                    <FiTrash2 size={15} />
+                    <TrashRedIconSvg size={15} />
                   </button>
                 </div>
 
@@ -403,7 +415,7 @@ export default function AddChapterStoryPage() {
 
             <div className="mt-4">
               <Label>15-second preview</Label>
-              <div className="border border-[#E2DFFC] rounded-md px-3 py-3 flex items-center gap-3">
+              <div className="border border-[#E2DFFC] rounded-md bg-[#F9FAFC] px-3 py-3 flex items-center gap-3">
                 <button
                   type="button"
                   disabled={!form.audioUrl}

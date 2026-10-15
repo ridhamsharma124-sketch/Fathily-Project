@@ -25,6 +25,13 @@ import {
   FiImage,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import CheckMarkIcon from "../../../assets/DivineCounselSvgs/CheckMarkIcon.svg";
+import Headphones from "../../../assets/DivineCounselSvgs/Headphone.svg";
+import OrangeFile from "../../../assets/DivineCounselSvgs/OrangeFile.svg";
+import PurpleBook from "../../../assets/DivineCounselSvgs/PurpleBook.svg";
+import UploadIcon from "../../../assets/DivineCounselSvgs/UploadIcon.svg";
+import Edit from "../../../assets/DivineCounselSvgs/Edit.svg";
+
 
 /* ==========================================================================
    MOCK DATA
@@ -47,10 +54,21 @@ const DEFAULT_HERO =
 /* ==========================================================================
    ATOMS
    ========================================================================== */
-const StatCard = ({ icon: Icon, iconBg, valueClass, value, label }) => (
+
+
+    const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+       const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+       const EditIconSvg = (p) => <SvgIcon src={Edit} {...p} />;
+
+
+
+const StatCard = ({ icon, iconBg, valueClass, value, label }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={26} />
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className={`text-xl font-semibold ${valueClass}`}>{value}</p>
@@ -249,10 +267,10 @@ export default function DivineCounselManagementPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiBookOpen} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#001984]" value={topics.length} label="Total Stories" />
-        <StatCard icon={FiCheckCircle} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#001984]" value={publishedCount} label="Published" />
-        <StatCard icon={FiFileText} iconBg="bg-[#F3E8D8] text-[#C65406]" valueClass="text-[#001984]" value={draftCount} label="Drafts" />
-        <StatCard icon={FiHeadphones} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#001984]" value="1h 12m" label="Audio" />
+        <StatCard icon={PurpleBook} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#001984]" value={topics.length} label="Total Stories" />
+        <StatCard icon={CheckMarkIcon} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#001984]" value={publishedCount} label="Published" />
+        <StatCard icon={OrangeFile} iconBg="bg-[#F3E8D8] text-[#C65406]" valueClass="text-[#001984]" value={draftCount} label="Drafts" />
+        <StatCard icon={Headphones} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#001984]" value="1h 12m" label="Audio" />
       </div>
 
       {/* Filters */}
@@ -405,7 +423,7 @@ export default function DivineCounselManagementPage() {
             )}
           </div>
           <button type="button" onClick={() => heroRef.current?.click()} className="flex flex-col items-center gap-2 text-[#0A0847CC] cursor-pointer">
-            <FiUploadCloud size={28} className="text-[#001984]" />
+            <UploadIconSvg size={28} className="text-[#001984]" />
             <span className="text-xs font-medium text-center">Recommended<br />1600 × 400 • JPG<br />or PNG</span>
           </button>
         </div>
@@ -413,7 +431,7 @@ export default function DivineCounselManagementPage() {
         <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
           <div className="flex items-center gap-3">
             <button type="button" className="px-5 py-2.5 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-              <FiEdit2 size={15} /> Edit Welcome Text
+              <EditIconSvg size={15} /> Edit Welcome Text
             </button>
             <button type="button" onClick={() => heroRef.current?.click()} className="px-5 py-2.5 bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold rounded-md flex items-center gap-2 cursor-pointer">
               <FiImage size={15} /> Replace Cover Image

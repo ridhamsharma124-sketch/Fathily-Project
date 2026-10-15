@@ -23,6 +23,15 @@ import {
 } from "react-icons/fi";
 import { BsCheckCircle, BsPlayCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import BlueMusicIcon from "../../../assets/PrayWithMeSvgs/BlueMusicIcon.svg";
+import CheckMarkicon from "../../../assets/PrayWithMeSvgs/CheckMarkIcon.svg";
+import OrangeFlagIcon from "../../../assets/PrayWithMeSvgs/OrangeFlagIcon.svg";
+import DeleteIcon from "../../../assets/PrayWithMeSvgs/DeleteBlue.svg";
+import CalendaIcon from "../../../assets/PrayWithMeSvgs/CalanderIcon.svg";
+import GuardCheck from "../../../assets/PrayWithMeSvgs/GuardCheck.svg";
+import EyeClose from '../../../assets/PrayWithMeSvgs/EyeClose.svg';
+import TrashWhite from "../../../assets/PrayWithMeSvgs/TrashWhite.svg";
+import InformationIcon from "../../../assets/PrayWithMeSvgs/InformationIcon.svg";
 
 /* ==========================================================================
    MOCK DATA
@@ -104,13 +113,23 @@ const INITIAL_PRAYERS = [
    REUSABLE UI COMPONENTS
    ========================================================================== */
 
+   const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+   const CalendarSvg = (p) => <SvgIcon src={CalendaIcon} {...p} />;
+   const GuardCheckSvg = (p) => <SvgIcon src={GuardCheck} {...p} />;
+   const EyeCloseSvg = (p) => <SvgIcon src={EyeClose} {...p} />;
+    const TrashWhiteSvg = (p) => <SvgIcon src={TrashWhite} {...p} />;
+    const InformationIconSvg = (p) => <SvgIcon src={InformationIcon} {...p} />;
+
 /** Stat Summary Card */
-const StatCard = ({ icon: Icon, iconBg, label, value }) => (
+const StatCard = ({ icon, iconBg, label, value }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div
       className={`w-13 h-13 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}
     >
-      <Icon size={28} />
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#001984]">{label}</p>
@@ -262,7 +281,7 @@ const ActionsMenu = ({
       <button
         ref={btnRef}
         onClick={onToggle}
-        className="p-1.5 rounded-lg bg-[#E9E9E9] hover:bg-gray-200 text-gray-500 transition-colors cursor-pointer"
+        className="p-1.5 rounded-sm bg-[#E9E9E9] hover:bg-gray-200 text-gray-500 transition-colors cursor-pointer"
       >
         <FiMoreHorizontal size={18} />
       </button>
@@ -431,7 +450,7 @@ const ReviewPrayerModal = ({ item, onClose, onUpdate, onDelete }) => {
             <span className={lbl}>Auto-delete date</span>
             <div className="h-11 flex items-center justify-between border border-[#E2DFFC] rounded-lg px-3 text-xs font-medium text-[#0A0847]">
               {item.autoDelete}
-              <FiCalendar size={16} className="text-gray-500" />
+              <CalendarSvg size={16} className="text-gray-500" />
             </div>
           </div>
 
@@ -452,26 +471,26 @@ const ReviewPrayerModal = ({ item, onClose, onUpdate, onDelete }) => {
             onClick={() => onUpdate(item.id, { reports: 0, status: "Active" })}
             className="w-full h-11 border border-[#E2DFFC] rounded-lg text-xs font-semibold text-[#0A0847CC] flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer"
           >
-            <FiShield size={16} /> Dismiss Reports
+            <GuardCheckSvg size={16} /> Dismiss Reports
           </button>
           <button
             type="button"
             onClick={() => onUpdate(item.id, { status: "Disabled" })}
             className="w-full h-11 border border-[#E2DFFC] rounded-lg text-xs font-semibold text-[#0A0847CC] flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer"
           >
-            <FiEyeOff size={16} /> Disable Post
+            <EyeCloseSvg size={18} /> Disable Post
           </button>
           <button
             type="button"
             onClick={() => onDelete(item.id)}
             className="w-full h-11 bg-[#D80027] hover:bg-[#B8002A] rounded-lg text-xs font-semibold text-white flex items-center justify-center gap-2 cursor-pointer"
           >
-            <FiTrash2 size={16} /> Delete Permanently
+            <TrashWhiteSvg size={18} /> Delete Permanently
           </button>
         </div>
 
         <div className="mt-4 flex items-start gap-2 bg-[#0019840D] border border-[#DBE2FF] rounded-lg p-3 text-[11px] font-medium text-[#001984]">
-          <FiInfo size={16} className="text-[#001984] shrink-0 mt-0.5" />
+          <InformationIconSvg size={16} className="text-[#001984] shrink-0 mt-0.5" />
           <span>
             Disabled posts are hidden from users and can be restored at any
             time.
@@ -619,25 +638,25 @@ export default function PrayWithMePage() {
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          icon={FiMusic}
+          icon={BlueMusicIcon}
           iconBg="bg-[#EEF2FF] text-[#1617E3]"
           label="Total Posts"
           value="2,481"
         />
         <StatCard
-          icon={BsCheckCircle}
+          icon={CheckMarkicon}
           iconBg="bg-[#2BA4521A] text-[#2BA452]"
           label="Active"
           value="2,306"
         />
         <StatCard
-          icon={FiFlag}
+          icon={OrangeFlagIcon}
           iconBg="bg-[#EF44441A] text-[#EF4444]"
           label="Flagged"
           value="18"
         />
         <StatCard
-          icon={FiTrash2}
+          icon={DeleteIcon}
           iconBg="bg-[#E8E9FB] text-[#3231DB]"
           label="Scheduled to Delete"
           value="157"
@@ -699,7 +718,7 @@ export default function PrayWithMePage() {
               className="relative bg-white border border-[#E2DFFC] rounded-md px-3.5 py-2.5 text-xs font-medium text-[#0A0847CC] flex items-center gap-3 cursor-pointer hover:border-[#001984] transition-colors"
             >
               <span>{featuredDate || "Featured Date"}</span>
-              <FiCalendar size={16} className="text-gray-500" />
+              <CalendarSvg size={16} className="text-gray-500" />
               <input
                 ref={dateRef}
                 type="date"

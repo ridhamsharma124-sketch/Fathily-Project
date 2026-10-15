@@ -40,10 +40,47 @@ import {
   BsFillInfoCircleFill,
   BsCheckCircleFill,
 } from "react-icons/bs";
+import CalendarIcon from "../../../assets/dailyVerseSvgs/CalenderIcon.svg";
+import EarthIcon from "../../../assets/dailyVerseSvgs/EarthIcon.svg";
+import SaveIcon from "../../../assets/dailyVerseSvgs/SaveIcon.svg";
+import TimeIcon from "../../../assets/dailyVerseSvgs/TimeIcon.svg";
+import UploadIcon from "../../../assets/dailyVerseSvgs/UploadIcon.svg";
+import VerseAction from "../../../assets/dailyVerseSvgs/VerseAction.svg";
+import ChurchBookIcon from "../../../assets/dailyVerseSvgs/ChurchBookIcon.svg";
+import HeadPhoneIcon from "../../../assets/dailyVerseSvgs/HeadPhoneIcon.svg";
+import DeleteIcon from "../../../assets/dailyVerseSvgs/DeleteIcon.svg"
+import ReplaceIcon from "../../../assets/dailyVerseSvgs/ReplaceIcon.svg"
+import PauseIcon from "../../../assets/dailyVerseSvgs/PauseIcon.svg"
+import Uploadicon2 from "../../../assets/dailyVerseSvgs/Uploadicon2.svg"
+import Coin from "../../../assets/dailyVerseSvgs/Coin.png";
+import PublishingIcon from "../../../assets/dailyVerseSvgs/PublishingIcon.svg";
+import RewardsIcon from "../../../assets/dailyVerseSvgs/RewardsIcon.svg";
+import VideoPlay from "../../../assets/dailyVerseSvgs/VideoPlay.svg";
+import TableImg from "../../../assets/dailyVerseSvgs/tableImg.png";
 
 /* ==========================================================================
    REUSABLE ATOMIC & STYLED COMPONENTS
    ========================================================================== */
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+const SaveSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
+const TimeSvg = (p) => <SvgIcon src={TimeIcon} {...p} />;
+const EarthSvg = (p) => <SvgIcon src={EarthIcon} {...p} />;
+const CalendarSvg = (p) => <SvgIcon src={CalendarIcon} {...p} />;
+const UploadSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+const VerseActionSvg = (p) => <SvgIcon src={VerseAction} {...p} />;
+const ChurchBookSvg = (p) => <SvgIcon src={ChurchBookIcon} {...p} />;
+const HeadPhoneSvg = (p) => <SvgIcon src={HeadPhoneIcon} {...p} />;
+const DeleteSvg = (p) => <SvgIcon src={DeleteIcon} {...p} />;
+const ReplaceSvg = (p) => <SvgIcon src={ReplaceIcon} {...p} />;
+const PauseSvg = (p) => <SvgIcon src={PauseIcon} {...p} />;
+const UploadSvg2 = (p) => <SvgIcon src={Uploadicon2} {...p} />;
+const PublishingSvg = (p) => <SvgIcon src={PublishingIcon} {...p} />;
+const RewardsSvg = (p) => <SvgIcon src={RewardsIcon} {...p} />;
+const VideoPlaySvg = (p) => <SvgIcon src={VideoPlay} {...p} />;
+
 
 /** Reusable Input Styling */
 const Input = ({ className = "", ...props }) => (
@@ -149,7 +186,7 @@ const TimePickerPopover = ({
         className="flex items-center justify-between h-10 bg-white border border-[#E2DFFC] rounded-md px-3.5 cursor-pointer hover:border-[#001984] transition-colors"
       >
         <div className="flex items-center gap-2.5">
-          <FiClock size={16} className="text-[#001984] shrink-0" />
+          <TimeSvg size={18} />
           <span
             className={`text-xs  ${value ? "text-[#0A0847]" : "text-gray-400"}`}
           >
@@ -430,7 +467,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             onClick={() => handleSave("Draft Saved")}
             className="px-4 py-2 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <FiSave size={18} /> Save draft
+            <SaveSvg size={18} /> Save draft
           </button>
           <button
             onClick={() => handleSave("Preview 3 Screens")}
@@ -509,7 +546,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* Card 1: Schedule & Display */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
             <SectionHeader
-              icon={FiCalendar}
+              icon={CalendarSvg}
               title="Schedule & Display"
               subtitle="Set when and how your verse will be displayed"
             />
@@ -519,17 +556,18 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <div className="w-full sm:w-56">
                 <Label>Display Date</Label>
                 <div className="relative">
+                  <CalendarSvg size={16} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="date"
                     placeholder="mm/dd/yyyy"
                     value={formData.displayDate}
                     onChange={(e) => updateField("displayDate", e.target.value)}
-                    className="w-full h-10 bg-white border border-[#E2DFFC] rounded-md px-3.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
+                    className="w-full h-10 bg-white border border-[#E2DFFC] rounded-md px-9 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] appearance-none [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer"
                   />
-                  <FiCalendar
+                  {/* <FiCalendar
                     size={14}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
-                  />
+                  /> */}
                 </div>
               </div>
 
@@ -555,10 +593,11 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <div className="flex-1 w-[240px]">
                 <Label>Time Zone</Label>
                 <div className="relative inline-block">
+                  <EarthSvg size={16} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <select
                     value={formData.timeZone}
                     onChange={(e) => updateField("timeZone", e.target.value)}
-                    className="h-10 appearance-none bg-white border border-[#E2DFFC] rounded-md px-3.5 pr-8 text-xs text-[#0A0847] outline-none focus:border-[#001984] cursor-pointer"
+                    className="h-10 appearance-none bg-white border border-[#E2DFFC] rounded-md px-9 pr-8 text-xs text-[#0A0847] outline-none focus:border-[#001984] cursor-pointer"
                   >
                     <option value="America/New_York">
                       (UTC-04:00) US/Eastern Time
@@ -618,9 +657,9 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 />
                 <div
                   onClick={() => bgImageRef.current?.click()}
-                  className="border border-dashed border-[#001984] h-32 flex items-center justify-center gap-3 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  className="border border-dashed border-[#001984] h-26 flex items-center justify-center gap-3 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
                 >
-                  <FiUploadCloud size={36} className="text-[#001984]" />
+                  <UploadSvg size={36} />
                   <span className="text-sm font-semibold text-[#0A0847]">
                     Upload / Replace Image
                   </span>
@@ -674,7 +713,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* Card 3: Today's Verse */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
             <SectionHeader
-              icon={BsBook}
+              icon={ChurchBookSvg}
               title="Today's Verse"
               subtitle="Enter the verse details"
             />
@@ -706,12 +745,10 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
             <div className="mb-4">
               <Label>Verse Text</Label>
-              <textarea
-                rows={2}
+              <Input
                 placeholder="Enter full verse text..."
                 value={formData.verseText}
                 onChange={(e) => updateField("verseText", e.target.value)}
-                className="w-full border border-[#E2DFFC] rounded-lg p-3 text-sm font-medium text-[#0A0847] placeholder-gray-400 outline-none resize-none focus:border-[#001984]"
               />
             </div>
 
@@ -766,7 +803,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* Card 4: Verse Audio & Accessibility */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
             <SectionHeader
-              icon={BsVolumeUp}
+              icon={HeadPhoneSvg}
               title="Verse Audio & Accessibility"
               subtitle="Enhance accessibility and user experience"
             />
@@ -787,7 +824,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   onClick={() => audioFileRef.current?.click()}
                   className={`${audioBtn} border-[#E2DFFC] bg-[#F5F5FF] text-[#0A0847] hover:bg-[#EEEEFF]`}
                 >
-                  <FiUpload size={16} /> Upload Audio
+                  <UploadSvg2 size={16} /> Upload Audio
                 </button>
                 <button
                   type="button"
@@ -800,14 +837,14 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   }
                   className={`${audioBtn} border-[#E2DFFC] bg-white text-[#0A0847CC] hover:bg-gray-50`}
                 >
-                  <FiPlay size={16} /> Preview
+                  <PauseSvg size={16} /> Preview
                 </button>
                 <button
                   type="button"
                   onClick={() => audioFileRef.current?.click()}
                   className={`${audioBtn} border-[#E2DFFC] bg-white text-[#0A0847CC] hover:bg-gray-50`}
                 >
-                  <FiRefreshCw size={16} /> Replace
+                  <ReplaceSvg size={16} /> Replace
                 </button>
                 <button
                   type="button"
@@ -817,7 +854,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   }}
                   className={`${audioBtn} border-[#FECACA] bg-[#FEF2F2] text-[#EF4444] hover:bg-red-100`}
                 >
-                  <FiTrash2 size={16} /> Remove
+                  <DeleteSvg size={16} /> Remove
                 </button>
               </div>
               {formData.audioFileName && (
@@ -885,7 +922,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           {/* Card 5: Verse Actions */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
             <SectionHeader
-              icon={BsShare}
+              icon={VerseActionSvg}
               title="Verse Actions"
               subtitle="Set where and how this verse will appear"
             />
@@ -925,7 +962,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 checked={formData.enableShare}
                 onChange={(val) => updateField("enableShare", val)}
               />
-              <button className="px-4 py-2 border border-[#001984] text-[#001984] font-bold text-xs rounded-md flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer">
+              <button className="px-4 py-2 border border-[#001984] text-[#001984] text-xs rounded-md flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer">
                 <FiShare2 size={14} /> Preview Share Card
               </button>
             </div>
@@ -970,7 +1007,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             {/* Card 1: Today's Verse Rotation */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
               <SectionHeader
-                icon={BsBook}
+                icon={ChurchBookSvg}
                 title="Today's Verse"
                 subtitle="Enter the verse details"
               />
@@ -1221,7 +1258,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                     onClick={() => mediaFileRef.current?.click()}
                     className="h-11 w-full border border-[#E2DFFC] bg-white text-[#0A0847] font-medium text-sm rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
-                    <FiUpload size={18} /> Upload
+                    <UploadSvg2 size={18} /> Upload
                   </button>
                   <button
                     type="button"
@@ -1235,14 +1272,14 @@ export default function AddDailyVerseWizard({ onCancel }) {
                     onClick={() => mediaFileRef.current?.click()}
                     className="h-11 w-full border border-[#E2DFFC] bg-[#F5F5FF] text-[#001984] font-medium text-sm rounded-lg hover:bg-[#EEEEFF] flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
-                    <FiVideo size={18} /> Video
+                    <VideoPlaySvg size={18} /> Video
                   </button>
                   <button
                     type="button"
                     onClick={() => updateField("appliedMedia", [])}
                     className="h-11 w-full border border-[#FECACA] bg-[#FEF2F2] text-[#DE2128] font-medium text-sm rounded-lg hover:bg-red-100 flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
-                    <FiTrash2 size={18} /> Remove
+                    <DeleteSvg size={18} /> Remove
                   </button>
                 </div>
 
@@ -1279,7 +1316,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                   >
                     <div className="flex items-center gap-3">
                       <img
-                        src={item.url}
+                        src={TableImg}
                         alt="Media thumb"
                         className="w-12 h-12 rounded-lg object-cover shrink-0"
                       />
@@ -1324,7 +1361,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             {/* Card 1: Reflection & Prayer Options */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <SectionHeader
-                icon={BsChatSquareQuote}
+                icon={ChurchBookSvg}
                 title="Reflection & Prayer"
                 subtitle="Help users reflect and connect"
               />
@@ -1393,7 +1430,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             {/* Card 2: Reward */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <SectionHeader
-                icon={BsAward}
+                icon={RewardsSvg}
                 title="Reward"
                 subtitle="Encourage engagement"
               />
@@ -1412,9 +1449,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <div className="mb-8">
                 <Label>Amount</Label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#F59E0B] text-white text-[10px] font-bold flex items-center justify-center">
-                    $
-                  </span>
+                   <img src={Coin} alt="coin" className="absolute top-1/2 -translate-y-1/2 w-12 h-12 object-contain" />
                   <Input
                     type="number"
                     placeholder="50"
@@ -1422,7 +1457,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                     onChange={(e) =>
                       updateField("rewardAmount", e.target.value)
                     }
-                    className="pl-9"
+                    className="pl-11"
                   />
                 </div>
               </div>
@@ -1432,7 +1467,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <div className="flex items-center justify-between pb-3">
                 <SectionHeader
-                  icon={BsHeart}
+                  icon={ChurchBookSvg}
                   title="Personal Prayer"
                   subtitle="Enable Personal & Daily Prayer"
                 />
@@ -1471,7 +1506,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             {/* Card 4: Publishing */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <SectionHeader
-                icon={BsSend}
+                icon={PublishingSvg}
                 title="Publishing"
                 subtitle="Set schedule details"
               />

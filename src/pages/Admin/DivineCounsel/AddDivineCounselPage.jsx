@@ -23,15 +23,34 @@ import {
   FiCheckCircle,
   FiAlertTriangle,
   FiInfo,
-  FiImage
+  FiImage,
+  FiCheck
 } from "react-icons/fi";
 // import { MdDragIndicator } from "react-[#0A0847CC]"; // Standard grid handle placeholder icon
 import Breadcrumb from "../../../components/UIComponents/BreadCrumb";
 import AddJournelPreviewImg from "../../../assets/AddJournelPreviewImg.png";
+import GreenBird from "../../../assets/DivineCounselSvgs/GreenBird.svg";
+import HandsPurple from "../../../assets/DivineCounselSvgs/HandsPurple.svg";
+import YellowHands from "../../../assets/DivineCounselSvgs/YellowHands.svg";
+import HeartHandsPurple from "../../../assets/DivineCounselSvgs/HeartHnadsPurple.svg"
+import SaveIcon from "../../../assets/DivineCounselSvgs/SaveIcon.svg";
 
 /* ==========================================================================
    ATOMS & FORM HELPERS
    ========================================================================== */
+
+  
+      const SvgIcon = ({ src, size = 16, className = "" }) => (
+                <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+              );
+              
+         const GreenBirdIconSvg = (p) => <SvgIcon src={GreenBird} {...p} />;
+         const HandsPurpleIconSvg = (p) => <SvgIcon src={HandsPurple} {...p} />;
+         const YellowHandsIconSvg = (p) => <SvgIcon src={YellowHands} {...p} />;
+         const HeartHandsPurpleIconSvg = (p) => <SvgIcon src={HeartHandsPurple} {...p} />;
+         const SaveIconSvg = (p) => <SvgIcon src={SaveIcon} {...p} />;
+
+
 const Input = (props) => (
   <input
     {...props}
@@ -441,7 +460,7 @@ const removeCover = () => {
               type="button"
               className="px-4 py-2 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded flex items-center gap-2 hover:bg-gray-50"
             >
-              <FiSave size={14} /> Save Draft
+              <SaveIconSvg size={14} /> Save Draft
             </button>
             <button
               type="button"
@@ -561,40 +580,40 @@ const removeCover = () => {
                 </div>
 
                 <div>
-  {f.coverImage && !imgError ? (
-    <div className="rounded-lg overflow-hidden border border-[#E2DFFC] bg-gray-100 h-28 relative">
-      <img
-        src={f.coverImage}
-        alt="Cover"
-        onError={() => setImgError(true)}
-        className="w-full h-full object-cover"
-      />
-      <button
-        type="button"
-        onClick={removeCover}
-        className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 cursor-pointer"
-      >
-        <FiX size={13} />
-      </button>
-    </div>
-  ) : (
-    <div
-      onClick={() => imageRef.current?.click()}
-      className="h-28 rounded-lg border border-dashed border-[#CBC6F8] bg-[#FAFAFF] hover:bg-[#F1F2F9] flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors"
-    >
-      <FiImage size={20} className="text-[#001984]" />
-      <span className="text-xs font-semibold text-[#0A0847]">Upload Cover Image</span>
-    </div>
-  )}
-  <p className="text-[10px] text-[#0A084799] font-medium mt-1">Recommended 1600 × 400 • JPG or PNG</p>
-  <button
-    type="button"
-    onClick={() => imageRef.current?.click()}
-    className="w-full mt-2 py-2 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer"
-  >
-    <FiRefreshCw size={13} /> {f.coverImage && !imgError ? "Replace Image" : "Upload Image"}
-  </button>
-</div>
+              {f.coverImage && !imgError ? (
+                <div className="rounded-lg overflow-hidden border border-[#E2DFFC] bg-gray-100 h-28 relative">
+                  <img
+                    src={f.coverImage}
+                    alt="Cover"
+                    onError={() => setImgError(true)}
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={removeCover}
+                    className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 cursor-pointer"
+                  >
+                    <FiX size={13} />
+                  </button>
+                </div>
+              ) : (
+                <div
+                  onClick={() => imageRef.current?.click()}
+                  className="h-28 rounded-lg border border-dashed border-[#CBC6F8] bg-[#FAFAFF] hover:bg-[#F1F2F9] flex flex-col items-center justify-center gap-1 cursor-pointer transition-colors"
+                >
+                  <FiImage size={20} className="text-[#001984]" />
+                  <span className="text-xs font-semibold text-[#0A0847]">Upload Cover Image</span>
+                </div>
+              )}
+              <p className="text-[10px] text-[#0A084799] font-medium mt-1">Recommended 1600 × 400 • JPG or PNG</p>
+              <button
+                type="button"
+                onClick={() => imageRef.current?.click()}
+                className="w-full mt-2 py-2 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer"
+              >
+                <FiRefreshCw size={13} /> {f.coverImage && !imgError ? "Replace Image" : "Upload Image"}
+              </button>
+            </div>
               </div>
             </SectionCard>
 
@@ -658,7 +677,6 @@ const removeCover = () => {
                     className="border border-[#E2DFFC] rounded-lg p-3 space-y-3 bg-[#F8FAFC]"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-400 cursor-grab">⋮⋮</span>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
                         <div>
                           <Label required>Subtopic Title</Label>
@@ -1019,20 +1037,28 @@ const removeCover = () => {
                   value={f.howAreYouFeeling}
                   onChange={(e) => set("howAreYouFeeling", e.target.value)}
                 />
-                <p className="text-xs font-semibold text-[#0A0847] mt-3 mb-1.5">
-                  Feelings (Multiple select)
-                </p>
-                <div className="flex flex-wrap gap-1.5 mb-2">
-                  {f.feelings.map((fe) => (
-                    <span
-                      key={fe}
-                      className="px-2 py-0.5 bg-[#EEF2FF] rounded-full text-[11px] font-medium text-[#0A0847] flex items-center gap-1 border border-[#E2DFFC]"
-                    >
-                      {FEELING_ICONS[fe] || "✨"} {fe}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-1">
+                <p className="text-xs font-semibold text-[#0A0847CC] mt-3 mb-1.5">
+                    Feelings (Multiple select)
+                  </p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { label: "Peaceful", Icon: GreenBirdIconSvg, bg: "bg-[#E8F7E8]" },
+                      { label: "Grateful", Icon: YellowHandsIconSvg, bg: "bg-[#FFF4DC]" },
+                      { label: "Encouraged", Icon: HandsPurpleIconSvg, bg: "bg-[#EEF2FF]" },
+                      { label: "Add Feeling", Icon: HeartHandsPurpleIconSvg, bg: "bg-[#F3E8FF]" },
+                    ].map(({ label, Icon, bg }) => (
+                      <div
+                        key={label}
+                        className="flex items-center gap-2 px-2.5 py-2 border border-[#E2DFFC] rounded-lg bg-white text-[11px] font-medium text-[#0A0847CC] cursor-pointer hover:bg-gray-50"
+                      >
+                        <span className={`w-6 h-6 rounded-full ${bg} flex items-center justify-center shrink-0`}>
+                          <Icon size={14} />
+                        </span>
+                        {label}
+                      </div>
+                    ))}
+                  </div>
+                {/* <div className="flex items-center gap-1">
                   <Input
                     placeholder="Add Feeling"
                     value={newFeeling}
@@ -1045,7 +1071,7 @@ const removeCover = () => {
                   >
                     <FiPlus size={12} />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -1339,22 +1365,24 @@ const removeCover = () => {
 
           {/* Publishing Checklist Card */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-3">
-            <h4 className="text-xs font-semibold text-[#0A0847] mb-2.5">
+            <h4 className="text-base font-semibold text-[#0A0847] mb-2.5">
               Publishing Checklist
             </h4>
             <div className="space-y-2">
               {checklist.map((c) => (
                 <div
                   key={c.label}
-                  className="flex items-center gap-2 text-xs text-[#0A0847CC]"
+                  className="flex items-center gap-2 text-sm text-[#0A0847CC]"
                 >
-                  <FiCheckCircle size={14} className="text-[#21AC1C]" />
+                   <span className="flex h-5 w-5 items-center justify-center font-medium rounded-[4px] bg-[#259147]">
+                      <FiCheck size={14} strokeWidth={3} className="text-white" />
+                    </span>
                   {c.label}
                 </div>
               ))}
-              <div className="flex items-start gap-2 text-[11px] text-[#0A0847CC] pt-1 border-t border-[#E2DFFC]">
+              <div className="flex items-start gap-2 text-sm text-[#0A0847CC] font-medium pt-1 border-t border-[#E2DFFC]">
                 <FiAlertTriangle
-                  size={14}
+                  size={18}
                   className="text-[#F59E0B] shrink-0 mt-0.5"
                 />
                 Preview on mobile before publishing.
@@ -1378,7 +1406,7 @@ const removeCover = () => {
             type="button"
             className="px-4 py-2 border border-[#E2DFFC] bg-white text-[#0A0847] font-semibold text-xs rounded hover:bg-gray-50 flex items-center gap-1.5"
           >
-            <FiSave size={13} /> Save draft
+            <SaveIconSvg size={13} /> Save draft
           </button>
           <button
             type="button"

@@ -10,10 +10,18 @@ import {
   FiCheck,
 } from "react-icons/fi";
 import { HiOutlineLightBulb } from "react-icons/hi2";
+import UploadIcon from "../../../assets/DivineCounselSvgs/UploadIcon.svg";
 
 /* ==========================================================================
    ATOMS (same classes as the rest of the app)
    ========================================================================== */
+
+   const SvgIcon = ({ src, size = 16, className = "" }) => (
+                 <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+               );
+   
+   const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+
 const Card = ({ children, className = "" }) => (
   <div
     className={`bg-white rounded-lg border border-[#E2DFFC] p-6 ${className}`}
@@ -124,7 +132,7 @@ const MediaUpload = ({
               drag ? "bg-[#E9EAF7]" : "bg-[#F6F7FF] hover:bg-[#F1F2F9]"
             }`}
           >
-            <FiUploadCloud size={28} className="text-[#001984]" />
+            <UploadIconSvg size={28} className="text-[#001984]" />
             <span className="text-sm font-medium text-[#0A0847CC] mt-1">
               {isVideo ? "Upload Video" : "Upload Image"}
             </span>

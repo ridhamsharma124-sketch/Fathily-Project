@@ -3,18 +3,36 @@ import {
   FiPlus, FiEdit2, FiEye, FiChevronDown, FiCheck, FiCheckCircle,
   FiX, FiAlertTriangle, FiUsers, FiUser, FiShield,
 } from "react-icons/fi";
+import AddIcon from "../../../assets/RolePermissionsSvgs/AddIcon.svg";
+import AdminSvg from "../../../assets/RolePermissionsSvgs/AdminSvg.svg";
+import EditIcon from "../../../assets/RolePermissionsSvgs/EditIcon.svg";
+import EyeIcon from "../../../assets/RolePermissionsSvgs/EyeIcon.svg";
+import InfoIcon from "../../../assets/RolePermissionsSvgs/InfoIcon.svg";
+import ModeratorSvg from "../../../assets/RolePermissionsSvgs/ModeratorSvg.svg"
+import RolesBasedIcon from "../../../assets/RolePermissionsSvgs/RolesBasedIcon.svg";
+import UsersSvg from "../../../assets/RolePermissionsSvgs/UsersSvg.svg";
 
 const PERMISSIONS = [
   "Dashboard", "Manage Users", "Manage Roles", "Manage Plans", "View Subscriptions",
   "Manage Content", "Manage Orders", "View Analytics", "Send Notifications",
 ];
 
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+    const AddIconSvg = (p) => <SvgIcon src={AddIcon} {...p} />;
+    const EditIconSvg = (p) => <SvgIcon src={EditIcon} {...p} />;
+    const EyeIconSvg = (p) => <SvgIcon src={EyeIcon} {...p} />;
+    const InfoIconSvg = (p) => <SvgIcon src={InfoIcon} {...p} />;
+    const RolesBasedIconSvg = (p) => <SvgIcon src={RolesBasedIcon} {...p} />;
+
 const INITIAL_ROLES = [
   {
     id: "admin", name: "Admin", tag: "Super Admin", summary: "Full system access",
     description: "Full system access with all permissions.",
     sessionTimeout: "15 minutes (recommended)", loginSettings: "",
-    locked: true, icon: FiShield, iconBg: "bg-[#EDE9FE] text-[#7C3AED]",
+    locked: true, icon: AdminSvg, iconBg: "bg-[#EDE9FE] text-[#7C3AED]",
     permissions: Object.fromEntries(PERMISSIONS.map((p) => [p, true])),
   },
   {
@@ -22,7 +40,7 @@ const INITIAL_ROLES = [
     description: "Can manage and edit content but cannot access user management.",
     sessionTimeout: "15 minutes (recommended)",
     loginSettings: "Require re-authentication for sensitive operations.",
-    icon: FiUsers, iconBg: "bg-[#EDE9FE] text-[#7C3AED]",
+    icon: ModeratorSvg, iconBg: "bg-[#EDE9FE] text-[#7C3AED]",
     permissions: {
       Dashboard: true, "Manage Users": true, "Manage Roles": true, "Manage Plans": false,
       "View Subscriptions": true, "Manage Content": true, "Manage Orders": true,
@@ -33,7 +51,7 @@ const INITIAL_ROLES = [
     id: "user", name: "User", summary: "Basic access with limited privileges",
     description: "Basic access with limited privileges.",
     sessionTimeout: "30 minutes", loginSettings: "",
-    icon: FiUser, iconBg: "bg-[#E8EBF7] text-[#001984]",
+    icon: UsersSvg, iconBg: "bg-[#E8EBF7] text-[#001984]",
     permissions: {
       ...Object.fromEntries(PERMISSIONS.map((p) => [p, false])),
       "View Analytics": true,
@@ -178,7 +196,7 @@ export default function RolesPermissionsPage() {
               }`}
             >
               <div className={`w-14 h-14 rounded-xl ${r.iconBg} flex items-center justify-center shrink-0`}>
-                <Icon size={26} />
+                <img src={Icon} alt="" className="w-8 h-8" />
               </div>
               <div>
                 <p className="text-xl font-semibold text-[#001984]">{r.name}</p>
@@ -194,15 +212,15 @@ export default function RolesPermissionsPage() {
       <div className="flex flex-wrap justify-end gap-3">
         <button type="button" onClick={addCustomRole}
           className="px-5 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847CC] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-          <FiPlus size={15} /> New Custom Role
+          <AddIconSvg size={15} /> New Custom Role
         </button>
         <button type="button" onClick={() => document.getElementById("role-desc")?.focus()}
           className="px-5 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847CC] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-          <FiEdit2 size={14} /> Edit Role Info
+          <EditIconSvg size={14} /> Edit Role Info
         </button>
         <button type="button" onClick={() => setShowAll((s) => !s)}
           className="px-5 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847CC] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
-          <FiEye size={14} /> {showAll ? "Hide Details" : "View All Permissions"}
+          <EyeIconSvg size={14} /> {showAll ? "Hide Details" : "View All Permissions"}
         </button>
       </div>
 
@@ -252,13 +270,13 @@ export default function RolesPermissionsPage() {
           )}
 
           <div className="flex items-center gap-3 bg-[#FEF6E7] border border-[#FADCC7] rounded-md px-4 py-3.5">
-            <FiAlertTriangle size={22} className="text-[#F59E0B] shrink-0" />
+            <InfoIconSvg size={24} className="text-[#F59E0B] shrink-0" />
             <p className="text-sm font-semibold text-[#001984]">Admin role cannot be modified.</p>
           </div>
 
           <div className="flex items-center gap-4 bg-[#F1F0F0] border border-[#E2E2E2] rounded-md px-4 py-4">
             <div className="w-12 h-12 rounded-lg bg-[#E4E7F5] text-[#001984] flex items-center justify-center shrink-0">
-              <FiShield size={22} />
+              <RolesBasedIconSvg size={28} />
             </div>
             <div>
               <p className="text-sm font-semibold text-[#001984]">Roles are role-based to control access levels.</p>

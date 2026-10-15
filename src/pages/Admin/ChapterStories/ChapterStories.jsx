@@ -25,6 +25,13 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import chapterStoryBg from "../../../assets/ChapterStoryBg.png";
+import AddWhiteIcon from "../../../assets/ChapterStories/WhiteAddIcon.svg"
+import CheckMarkIcon from "../../../assets/ChapterStories/CheckMarkIcon.svg";
+import Headphone from "../../../assets/ChapterStories/Headphone.svg";
+import PurpleBook from "../../../assets/ChapterStories/PurpleBook.svg";
+import OrangeFile from "../../../assets/ChapterStories/OrangeFile.svg";
+import UploadIcon from "../../../assets/ChapterStories/UploadIcon.svg";
+import ReplaceIcon from "../../../assets/ChapterStories/ReplaceIcon.svg";
 
 /* ==========================================================================
    MOCK DATA
@@ -53,10 +60,20 @@ const DEFAULT_HERO = chapterStoryBg;
 /* ==========================================================================
    REUSABLE UI
    ========================================================================== */
-const StatCard = ({ icon: Icon, iconBg, valueClass, value, label }) => (
+
+
+    const SvgIcon = ({ src, size = 16, className = "" }) => (
+        <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+      );
+      
+         const WhiteAddIconSvg = (p) => <SvgIcon src={AddWhiteIcon} {...p} />;
+         const UploadIconSvg = (p) => <SvgIcon src={UploadIcon} {...p} />;
+         const ReplaceIconSvg = (p) => <SvgIcon src={ReplaceIcon} {...p} />;
+
+const StatCard = ({ icon, iconBg, valueClass, value, label }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div className={`w-12 h-12 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={28} />
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className={`text-xl font-semibold ${valueClass}`}>{value}</p>
@@ -137,7 +154,7 @@ const ActionsMenu = ({ isOpen, onToggle, onDelete, onToggleDisable, onDuplicate,
       <button
         ref={btnRef}
         onClick={onToggle}
-        className="p-1.5 rounded-lg bg-[#E9E9E9] hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer"
+        className="p-1.5 rounded-md bg-[#E9E9E9] hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer"
       >
         <FiMoreVertical size={18} />
       </button>
@@ -348,18 +365,18 @@ export default function ChapterStoriesPage() {
         </div>
         <button
           onClick={() => navigate("/admin/chapter-stories/add")}
-          className="bg-[#001984] hover:bg-[#001266] text-white text-xs font-medium px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
+          className="bg-[#001984] hover:bg-[#001266] text-white text-xs font-medium px-4 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer self-start sm:self-auto"
         >
-          <FiPlus size={18} /> Add Chapter Story
+          <WhiteAddIconSvg size={16} /> Add Chapter Story
         </button>
       </div>
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiBookOpen} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#6209FD]" value="1,189" label="Total Stories" />
-        <StatCard icon={FiCheckCircle} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#2BA452]" value="1,124" label="Published" />
-        <StatCard icon={FiFileText} iconBg="bg-[#F3E8D8] text-[#C65406]" valueClass="text-[#C65406]" value="42" label="Drafts" />
-        <StatCard icon={FiHeadphones} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#1617E3]" value="96h 18m" label="Total Audio" />
+        <StatCard icon={PurpleBook} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#6209FD]" value="1,189" label="Total Stories" />
+        <StatCard icon={CheckMarkIcon} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#2BA452]" value="1,124" label="Published" />
+        <StatCard icon={OrangeFile} iconBg="bg-[#F3E8D8] text-[#C65406]" valueClass="text-[#C65406]" value="42" label="Drafts" />
+        <StatCard icon={Headphone} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#1617E3]" value="96h 18m" label="Total Audio" />
       </div>
 
       {/* Homepage image card */}
@@ -391,7 +408,7 @@ export default function ChapterStoriesPage() {
             onClick={() => heroRef.current?.click()}
             className="flex flex-col items-center gap-2 text-[#0A0847CC] cursor-pointer"
           >
-            <FiUploadCloud size={30} className="text-[#001984]" />
+            <UploadIconSvg size={30} className="text-[#001984]" />
             <span className="text-xs font-medium text-center">
               Recommended
               <br />
@@ -416,7 +433,7 @@ export default function ChapterStoriesPage() {
             onClick={() => heroRef.current?.click()}
             className="px-5 py-3 bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer"
           >
-            <FiRefreshCw size={16} /> Replace Image
+            <ReplaceIconSvg size={16} /> Replace Image
           </button>
         </div>
       </div>

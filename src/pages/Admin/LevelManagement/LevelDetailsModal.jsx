@@ -4,6 +4,18 @@ import {
   FiArrowRight, FiEye, FiChevronDown, FiShuffle, FiTrash2, FiCopy, FiMove,
   FiCheck, FiLock, FiGift, FiCircle, FiEdit2, FiArrowUp, FiArrowDown, FiHelpCircle,
 } from "react-icons/fi";
+import EightDotsIcon from "../../../assets/LevelManagementSvgs/EightDots.svg";
+import Quiz from "../../../assets/LevelManagementSvgs/Quiz.svg";
+import CopyIcon from "../../../assets/LevelManagementSvgs/CopyIcon.svg";
+import GoldCoin from "../../../assets/LevelManagementSvgs/GoldCoin.svg";
+import GoldenGift from "../../../assets/LevelManagementSvgs/GoldenGift.svg";
+import LockIcon from "../../../assets/LevelManagementSvgs/LockIcon.svg";
+import RedGift from "../../../assets/LevelManagementSvgs/RedGift.svg";
+import ReplaceIcon from "../../../assets/LevelManagementSvgs/ReplaceIcon.svg";
+import TickMark from "../../../assets/LevelManagementSvgs/TickMark.svg";
+import DirectionSvg from "../../../assets/LevelManagementSvgs/DirectionIcon.svg";
+
+
 
 /* ---------------- Mock API response ---------------- */
 const LEVEL_DETAILS_API = {
@@ -35,9 +47,25 @@ const LEVEL_DETAILS_API = {
 };
 
 const STATUS_STYLES = {
-  Published: "bg-[#DFF5DC] text-[#21AC1C]",
+  Published: "bg-[#E0F8E6] text-[#2BA452]",
   Draft: "bg-[#FBE8D8] text-[#C65406]",
 };
+
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+
+const EightDotsIconSvg = (p) => <SvgIcon src={EightDotsIcon} {...p} />;
+const QuizSvg = (p) => <SvgIcon src={Quiz} {...p} />;
+const CopyIconSvg = (p) => <SvgIcon src={CopyIcon} {...p} />;
+const GoldCoinSvg = (p) => <SvgIcon src={GoldCoin} {...p} />;
+const GoldenGiftSvg = (p) => <SvgIcon src={GoldenGift} {...p} />;
+const LockIconSvg = (p) => <SvgIcon src={LockIcon} {...p} />;
+const RedGiftSvg = (p) => <SvgIcon src={RedGift} {...p} />;
+const ReplaceIconSvg = (p) => <SvgIcon src={ReplaceIcon} {...p} />;
+const TickMarkSvg = (p) => <SvgIcon src={TickMark} {...p} />;
+const DirectionIconSvg = (p) => <SvgIcon src={DirectionSvg} {...p} />;
 
 /* ---------------- Small pieces ---------------- */
 const Section = ({ title, children }) => (
@@ -81,11 +109,11 @@ const FlowCard = ({ title, state, mystery }) => {
     : "bg-[#F3F2FF] border-[#CBC6F8]";
   return (
     <div className={`flex-1 min-w-[120px] h-28 rounded-md border flex flex-col items-center justify-center gap-2 text-sm font-semibold text-[#0A0847CC] ${cls}`}>
-      {mystery && <FiGift size={22} className="text-[#F59E0B]" />}
+      {mystery && <GoldenGiftSvg size={22} className="text-[#F59E0B]" />}
       {title}
-      {state === "done" && <FiCheck size={24} strokeWidth={3} className="text-[#21AC1C]" />}
+      {state === "done" && <TickMarkSvg size={24} strokeWidth={3} className="text-[#21AC1C]" />}
       {state === "current" && <FiCircle size={20} className="text-[#001984] fill-[#001984]" />}
-      {state === "locked" && <FiLock size={20} />}
+      {state === "locked" && <LockIconSvg size={20} />}
     </div>
   );
 };
@@ -181,11 +209,11 @@ export default function LevelDetailsModal({
         {/* Summary */}
         <div className="border border-[#E2DFFC] rounded-lg p-5">
           <div className="flex items-center gap-4">
-            <span className="px-4 py-2.5 rounded-md bg-[#EEF0FB] text-[#001984] text-base font-medium flex items-center gap-2">
-              <FiHelpCircle size={22} /> {level.activity}
+            <span className="px-4 py-2 rounded-md bg-[#F2EFFF] text-[#001984] text-base font-medium flex items-center gap-2">
+              <QuizSvg size={22} /> {level.activity}
             </span>
             <span className="text-base font-medium text-[#0A0847CC]">{level.level}</span>
-            <span className={`px-4 py-2 rounded-md text-base font-semibold ${STATUS_STYLES[level.status] || "bg-gray-100 text-gray-500"}`}>
+            <span className={`px-4 py-1 rounded-md text-sm font-semibold ${STATUS_STYLES[level.status] || "bg-gray-100 text-gray-500"}`}>
               {level.status}
             </span>
           </div>
@@ -198,11 +226,11 @@ export default function LevelDetailsModal({
             </div>
             <div className="text-right">
               <p className="text-base font-semibold text-[#0A0847] flex items-center justify-end gap-2">
-                <span className="w-5 h-5 rounded-full bg-[#F5B301] border-2 border-[#FFD96B]" /> {level.points} pts
+                <GoldCoinSvg size={24} /> {level.points} pts
               </p>
               {level.mysteryCard && (
                 <p className="text-xs text-[#0A084799] font-medium mt-1 flex items-center justify-end gap-1.5">
-                  {level.mysteryLabel} <FiGift size={15} className="text-[#EB0C10]" />
+                  {level.mysteryLabel} <RedGiftSvg size={18} className="text-[#EB0C10]" />
                 </p>
               )}
             </div>
@@ -222,7 +250,7 @@ export default function LevelDetailsModal({
                 reorder ? "bg-[#001984] text-white border-[#001984]" : "bg-white border-[#E2DFFC] text-[#0A0847CC] hover:bg-gray-50"
               }`}
             >
-              {reorder ? <FiCheck size={14} /> : <FiShuffle size={14} />}
+              {reorder ? <FiCheck size={14} /> : <ReplaceIconSvg size={14} />}
               {reorder ? "Done" : "Reorder Questions"}
             </button>
           </div>
@@ -265,8 +293,8 @@ export default function LevelDetailsModal({
           <div className="flex items-center justify-between mb-1.5">
             <label className="text-xs font-semibold text-[#0A0847CC]">Unlock Rule</label>
             <span
-              className={`px-4 py-1.5 rounded-md text-base font-semibold ${
-                published ? "bg-[#DFF5DC] text-[#21AC1C]" : "bg-gray-100 text-gray-500"
+              className={`px-4 py-1 rounded-md text-sm font-medium ${
+                published ? "bg-[#E0F8E6] text-[#2BA452]" : "bg-gray-100 text-gray-500"
               }`}
             >
               {published ? level.unlockedLabel : "Hidden from users"}
@@ -308,7 +336,7 @@ export default function LevelDetailsModal({
             <button
               type="button"
               onClick={onToggleStatus}
-              className="px-12 py-3 bg-white border border-[#001984] rounded-md text-sm font-semibold text-[#0A0847] hover:bg-[#EEF2FF] cursor-pointer"
+              className="px-12 py-2 bg-white border border-[#001984] rounded-md text-sm font-semibold text-[#0A0847] hover:bg-[#EEF2FF] cursor-pointer"
             >
               {published ? "Unpublish" : "Publish"}
             </button>
@@ -318,8 +346,8 @@ export default function LevelDetailsModal({
         {/* Quick actions */}
         <Section title="Quick Actions">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <QuickBtn onClick={onDuplicate}><FiCopy size={14} /> Duplicate Level</QuickBtn>
-            <QuickBtn onClick={() => console.log("move level", level.id)}><FiMove size={14} /> Move Level</QuickBtn>
+            <QuickBtn onClick={onDuplicate}><CopyIconSvg size={14} /> Duplicate Level</QuickBtn>
+            <QuickBtn onClick={() => console.log("move level", level.id)}><DirectionIconSvg size={18} /> Move Level</QuickBtn>
             <QuickBtn onClick={() => onPreview?.(level)}><FiEye size={14} /> Preview Level</QuickBtn>
             <QuickBtn danger onClick={onDelete}><FiTrash2 size={14} /> Delete Level</QuickBtn>
           </div>

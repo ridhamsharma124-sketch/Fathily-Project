@@ -4,6 +4,8 @@ import {
   FiArrowRight, FiEye, FiChevronDown, FiPlus, FiTrash2, FiInfo, FiCheck, FiX, FiZap,
 } from "react-icons/fi";
 import { MdDragIndicator } from "react-icons/md";
+import EightDotsIcon from "../../../assets/LevelManagementSvgs/EightDots.svg";
+import QuestionsparkelsIcon from "../../../assets/LevelManagementSvgs/Questionsparkels.svg";
 
 const ACTIVITIES = ["Quiz", "Puzzle", "Memory Verse", "Broad Spectrum", "Stories", "Audio Quiz"];
 const BOOKS = ["Genesis", "Exodus", "Leviticus", "Numbers"];
@@ -12,6 +14,15 @@ const SECTIONS = ["Creation", "Moses Is Born", "The Plagues"];
 const UNLOCK_RULES = ["Available", "Complete Previous Level", "After 3 Levels"];
 const QUIZ_COUNT = 3;
 const TITLE_MAX = 100;
+
+
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+
+const EightDotsIconSvg = (p) => <SvgIcon src={EightDotsIcon} {...p} />;
+const QuestionsparkelsIconSvg = (p) => <SvgIcon src={QuestionsparkelsIcon} {...p} />;
 
 // Replace with your question bank API
 const QUESTION_BANK = [
@@ -284,7 +295,7 @@ export default function LevelFormModal({ mode = "add", level, levels = [], onClo
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex items-start gap-3">
               <span className="w-9 h-9 rounded-full bg-[#E4E1F7] text-[#001984] flex items-center justify-center shrink-0">
-                <FiZap size={16} />
+                <QuestionsparkelsIconSvg size={16} />
               </span>
               <div>
                 <p className="text-sm font-semibold text-[#0A0847CC]">{form.activity || "Level"} Level</p>
@@ -316,7 +327,7 @@ export default function LevelFormModal({ mode = "add", level, levels = [], onClo
                 onDragEnd={() => setDragIdx(null)}
                 className={`flex items-center gap-3 bg-white border border-[#E2DFFC] rounded-md px-3 py-3 ${dragIdx === i ? "opacity-40" : ""}`}
               >
-                <MdDragIndicator size={20} className="text-gray-400 cursor-grab shrink-0" />
+                <EightDotsIconSvg size={10} className="text-gray-400 cursor-grab shrink-0" />
                 <span className="w-10 h-10 rounded-md bg-[#E4E1F7] text-[#0A0847CC] text-sm font-semibold flex items-center justify-center shrink-0">
                   {i + 1}
                 </span>
@@ -330,7 +341,7 @@ export default function LevelFormModal({ mode = "add", level, levels = [], onClo
                   <FiEye size={14} />
                 </button>
                 <button type="button" onClick={() => removeQuestion(q.id)}
-                  className="w-9 h-9 border border-red-200 bg-red-50 rounded-md text-red-500 flex items-center justify-center hover:bg-red-100 cursor-pointer">
+                  className="w-9 h-9 border border-red-200 rounded-md text-red-500 flex items-center justify-center hover:bg-red-100 cursor-pointer">
                   <FiTrash2 size={14} />
                 </button>
               </div>

@@ -20,6 +20,12 @@ import {
 } from "react-icons/bs";
 import { PiChurch } from "react-icons/pi";
 import { useNavigate } from "react-router-dom";
+import ChurchSymbol from "../../../assets/dailyVerseSvgs/ChurchSymbol.svg";
+import Checkmark from "../../../assets/dailyVerseSvgs/Checkmark.svg";
+import CalendarCheck from "../../../assets/dailyVerseSvgs/calenderCheck.svg";
+import Files from "../../../assets/dailyVerseSvgs/Files.svg";
+import Coin from "../../../assets/dailyVerseSvgs/Coin.png";
+import TableImg from "../../../assets/dailyVerseSvgs/tableImg.png";
 
 /* ==========================================================================
    MOCK DATA
@@ -29,7 +35,7 @@ const INITIAL_VERSES = [
     id: "1",
     date: "May 23, 2025",
     day: "Sat",
-    image: "https://images.unsplash.com/photo-1509021436468-1b2a38325b51?auto=format&fit=crop&w=80&q=80",
+    image: TableImg,
     scripture: "Psalm 23:4",
     status: "Live",
     version: "NIV",
@@ -39,7 +45,7 @@ const INITIAL_VERSES = [
     id: "2",
     date: "May 23, 2025",
     day: "Sat",
-    image: "https://images.unsplash.com/photo-1509021436468-1b2a38325b51?auto=format&fit=crop&w=80&q=80",
+    image: TableImg,
     scripture: "Philippians 4:13",
     status: "Scheduled",
     version: "NIV",
@@ -49,7 +55,7 @@ const INITIAL_VERSES = [
     id: "3",
     date: "May 23, 2025",
     day: "Sat",
-    image: "https://images.unsplash.com/photo-1509021436468-1b2a38325b51?auto=format&fit=crop&w=80&q=80",
+    image: TableImg,
     scripture: "Joshua 1:9",
     status: "Draft",
     version: "KJV",
@@ -59,7 +65,7 @@ const INITIAL_VERSES = [
     id: "4",
     date: "May 23, 2025",
     day: "Sat",
-    image: "https://images.unsplash.com/photo-1509021436468-1b2a38325b51?auto=format&fit=crop&w=80&q=80",
+    image: TableImg,
     scripture: "Matthew 6:33",
     status: "Scheduled",
     version: "NIV",
@@ -69,7 +75,7 @@ const INITIAL_VERSES = [
     id: "5",
     date: "May 23, 2025",
     day: "Sat",
-    image: "https://images.unsplash.com/photo-1509021436468-1b2a38325b51?auto=format&fit=crop&w=80&q=80",
+    image: TableImg,
     scripture: "John 10:11",
     status: "Draft",
     version: "ESV",
@@ -82,12 +88,12 @@ const INITIAL_VERSES = [
    ========================================================================== */
 
 /** 1. Stat Summary Card */
-const StatCard = ({ icon: Icon, iconBg, label, value }) => (
+const StatCard = ({ icon, iconBg, label, value }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div
       className={`w-13 h-13 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}
     >
-      <Icon size={28} />
+      <img src={icon} alt="" className="w-7 h-7" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#001984]">{label}</p>
@@ -181,7 +187,7 @@ const ActionsMenu = ({ isOpen, onToggle, onDelete }) => {
       <button
         ref={btnRef}
         onClick={onToggle}
-        className="p-1.5 rounded-lg bg-[#E9E9E9] hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
+        className="p-1.5 rounded-sm bg-[#E9E9E9] hover:bg-gray-50 text-gray-500 transition-colors cursor-pointer"
       >
         <FiMoreHorizontal size={18} />
       </button>
@@ -279,30 +285,10 @@ export default function DailyVersesPage() {
 
       {/* Top 4 Stat Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          icon={PiChurch}
-          iconBg="bg-[#EEF2FF] text-[#001984]"
-          label="All Verses"
-          value="348"
-        />
-        <StatCard
-          icon={BsFillPatchCheckFill}
-          iconBg="bg-[#2BA4521A] text-[#2BA452]"
-          label="Live"
-          value="9"
-        />
-        <StatCard
-          icon={BsCalendarCheck}
-          iconBg="bg-[#1617E31A] text-[#1617E3]"
-          label="Scheduled"
-          value="28"
-        />
-        <StatCard
-          icon={BsFileEarmarkText}
-          iconBg="bg-[#C654061A] text-[#C65406]"
-          label="Drafts"
-          value="6"
-        />
+        <StatCard icon={ChurchSymbol} iconBg="bg-[#EEF2FF]" label="All Verses" value="348" />
+        <StatCard icon={Checkmark} iconBg="bg-[#2BA4521A]" label="Live" value="9" />
+        <StatCard icon={CalendarCheck} iconBg="bg-[#1617E31A]" label="Scheduled" value="28" />
+        <StatCard icon={Files} iconBg="bg-[#C654061A]" label="Drafts" value="6" />
       </div>
 
       {/* Filter and Search Controls */}
@@ -409,8 +395,8 @@ export default function DailyVersesPage() {
                   </td>
                   <td className="p-4 font-semibold text-[#222222]">{item.version}</td>
                   <td className="p-4">
-                    <div className="flex items-center gap-1.5 text-[#0A0847CC] text-sm font-semibold">
-                        <span className="text-base leading-none">🪙</span>
+                    <div className="flex items-center text-[#0A0847CC] text-sm font-semibold">
+                        <img src={Coin} alt="coin" className="w-12 h-12 object-contain" />
                       {item.reward}
                     </div>
                   </td>
@@ -439,7 +425,7 @@ export default function DailyVersesPage() {
               <select
                 value={entriesPerPage}
                 onChange={(e) => setEntriesPerPage(e.target.value)}
-                className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs font-semibold text-[#0A0847] outline-none cursor-pointer"
+                className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs text-[#0A0847] outline-none cursor-pointer"
               >
                 <option value="05">05</option>
                 <option value="10">10</option>

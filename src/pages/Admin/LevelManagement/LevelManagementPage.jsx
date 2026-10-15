@@ -10,6 +10,18 @@ import {
 import { MdDragIndicator } from "react-icons/md";
 import LevelFormModal from "./LevelFormModal";
 import LevelDetailsModal from "./LevelDetailsModal";
+import AudioQuizIcon from "../../../assets/LevelManagementSvgs/AudioQuiz.svg";
+import BroadSpectrumIcon from "../../../assets/LevelManagementSvgs/BroadSpectrum.svg";
+import EightDotsIcon from "../../../assets/LevelManagementSvgs/EightDots.svg";
+import FourBlocksIcon from "../../../assets/LevelManagementSvgs/FourBlocks.svg";
+import GreenSendIcon from "../../../assets/LevelManagementSvgs/GreenSendIcon.svg";
+import LockIcon from "../../../assets/LevelManagementSvgs/Lock.svg";
+import MemoryVerseIcon from "../../../assets/LevelManagementSvgs/MemoryVerse.svg";
+import OrangeFileIcon from "../../../assets/LevelManagementSvgs/OrangeFile.svg";
+import PuzzleIcon from "../../../assets/LevelManagementSvgs/Puzzle.svg";
+import QuizIcon from "../../../assets/LevelManagementSvgs/Quiz.svg";
+import StackIcon from "../../../assets/LevelManagementSvgs/Stack.svg";
+import StoriesIcon from "../../../assets/LevelManagementSvgs/Stories.svg";
 
 const INITIAL_LEVELS = [
   { id: "1", level: "Level 1", activity: "Quiz", content: "3 Questions", reward: "30 pts", unlock: "Available", status: "Published" },
@@ -27,14 +39,32 @@ const INITIAL_LEVELS = [
 // Replace with API totals
 const STATS = { total: 42, published: 35, draft: 5, locked: 2 };
 
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+const AudioQuizIconSvg = (p) => <SvgIcon src={AudioQuizIcon} {...p} />;
+const BroadSpectrumIconSvg = (p) => <SvgIcon src={BroadSpectrumIcon} {...p} />;
+const EightDotsIconSvg = (p) => <SvgIcon src={EightDotsIcon} {...p} />;
+const FourBlocksIconSvg = (p) => <SvgIcon src={FourBlocksIcon} {...p} />;
+const GreenSendIconSvg = (p) => <SvgIcon src={GreenSendIcon} {...p} />;
+const LockIconSvg = (p) => <SvgIcon src={LockIcon} {...p} />;
+const MemoryVerseIconSvg = (p) => <SvgIcon src={MemoryVerseIcon} {...p} />;
+const OrangeFileIconSvg = (p) => <SvgIcon src={OrangeFileIcon} {...p} />;
+const PuzzleIconSvg = (p) => <SvgIcon src={PuzzleIcon} {...p} />;
+const QuizIconSvg = (p) => <SvgIcon src={QuizIcon} {...p} />;
+const StackIconSvg = (p) => <SvgIcon src={StackIcon} {...p} />;
+const StoriesIconSvg = (p) => <SvgIcon src={StoriesIcon} {...p} />;
+
 const TABS = [
-  { label: "All", icon: FiGrid },
-  { label: "Quiz", icon: FiHelpCircle },
-  { label: "Puzzle", icon: FiBox },
-  { label: "Memory Verse", icon: FiBookOpen },
-  { label: "Broad Spectrum", icon: FiTarget },
-  { label: "Stories", icon: FiFileText },
-  { label: "Audio Quiz", icon: FiHeadphones },
+  { label: "All", icon: FourBlocksIconSvg },
+  { label: "Quiz", icon: QuizIconSvg },
+  { label: "Puzzle", icon: PuzzleIconSvg },
+  { label: "Memory Verse", icon: MemoryVerseIconSvg },
+  { label: "Broad Spectrum", icon: BroadSpectrumIconSvg },
+  { label: "Stories", icon: StoriesIconSvg },
+  { label: "Audio Quiz", icon: AudioQuizIconSvg },
 ];
 
 const ACTIVITY_STYLES = {
@@ -52,10 +82,10 @@ const STATUS_STYLES = {
   Locked: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
-const StatCard = ({ icon: Icon, iconBg, label, value, hint }) => (
+const StatCard = ({ icon, iconBg, label, value, hint }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-5 flex items-center gap-4">
     <div className={`w-14 h-14 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={26} />
+          <img src={icon} alt="" className="w-8 h-8" />
     </div>
     <div>
       <p className="text-xs font-semibold text-[#0A084799]">{label}</p>
@@ -290,10 +320,10 @@ export default function LevelsPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiLayers} iconBg="bg-[#EDE9FE] text-[#7C3AED]" label="Total Levels" value={STATS.total} hint="All activities" />
-        <StatCard icon={FiSend} iconBg="bg-[#DCFCE7] text-[#16A34A]" label="Published" value={STATS.published} hint="Active levels" />
-        <StatCard icon={FiFileText} iconBg="bg-[#FFEDD5] text-[#EA580C]" label="Draft" value={STATS.draft} hint="Not published" />
-        <StatCard icon={FiLock} iconBg="bg-[#FEE2E2] text-[#DC2626]" label="Locked / Inactive" value={STATS.locked} hint="Hidden from users" />
+        <StatCard icon={StackIcon} iconBg="bg-[#EDE9FE] text-[#7C3AED]" label="Total Levels" value={STATS.total} hint="All activities" />
+        <StatCard icon={GreenSendIcon} iconBg="bg-[#2BA4521A] text-[#16A34A]" label="Published" value={STATS.published} hint="Active levels" />
+        <StatCard icon={OrangeFileIcon} iconBg="bg-[#FFEDD5] text-[#EA580C]" label="Draft" value={STATS.draft} hint="Not published" />
+        <StatCard icon={LockIcon} iconBg="bg-[#FEE2E2] text-[#DC2626]" label="Locked / Inactive" value={STATS.locked} hint="Hidden from users" />
       </div>
 
       {/* Table */}
@@ -328,7 +358,7 @@ export default function LevelsPage() {
                 >
                   <td className="p-4">
                     <div className="flex items-center gap-1.5">
-                      <MdDragIndicator size={18} className="text-gray-400 cursor-grab" />
+                      <EightDotsIconSvg size={10} className="text-gray-400 cursor-grab" />
                       <span className="font-medium">{orderOf(l)}</span>
                     </div>
                   </td>
@@ -369,7 +399,7 @@ export default function LevelsPage() {
             <select
               value={entriesPerPage}
               onChange={(e) => { setEntriesPerPage(e.target.value); setPage(1); }}
-              className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs font-semibold text-[#0A0847] bg-white outline-none cursor-pointer"
+              className="appearance-none border border-[#E2DFFC] rounded-lg px-2.5 py-1 pr-6 text-xs text-[#0A0847] bg-white outline-none cursor-pointer"
             >
               <option value="05">05</option>
               <option value="10">10</option>

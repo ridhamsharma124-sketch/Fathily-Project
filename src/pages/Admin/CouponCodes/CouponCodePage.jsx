@@ -20,6 +20,14 @@ import {
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import Breadcrumb from "../../../components/UIComponents/BreadCrumb";
+import DiscountTag from "../../../assets/CouponCode/DiscountTag.svg";
+import DiscountTicket from "../../../assets/CouponCode/DiscountTicket.svg";
+import FilterIcon from "../../../assets/CouponCode/FilterIcon.svg";
+import HeadphoneIcon from "../../../assets/CouponCode/HeadphoneIcon.svg";
+import PercentTicketIcon from "../../../assets/CouponCode/PercentTicket.svg";
+import RewardTagIcon from "../../../assets/CouponCode/RewardTags.svg";
+import ShoppingBagIcon from "../../../assets/CouponCode/ShoppingBag.svg";
+import UpTrend from "../../../assets/CouponCode/UpTrend.svg";
 
 /* ==========================================================================
    MOCK DATA
@@ -54,6 +62,15 @@ const STATUS_STYLES = {
   Inactive: "bg-[#0A08471A] text-[#0A0847CC] border-[#E2DFFC]",
 };
 
+ const SvgIcon = ({ src, size = 16, className = "" }) => (
+           <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+         );
+         
+    const FilterIconSvg = (p) => <SvgIcon src={FilterIcon} {...p} />;
+    const UpTrendIconSvg = (p) => <SvgIcon src={UpTrend} {...p} />;
+    const DiscountTagIconSvg = (p) => <SvgIcon src={DiscountTag} {...p} />;
+    const ShoppingBagIconSvg = (p) => <SvgIcon src={ShoppingBagIcon} {...p} />;
+
 const StatusBadge = ({ status, className = "" }) => (
   <span
     className={`px-3 py-1 rounded-md text-xs font-medium border inline-block min-w-[72px] text-center ${
@@ -64,10 +81,10 @@ const StatusBadge = ({ status, className = "" }) => (
   </span>
 );
 
-const StatCard = ({ icon: Icon, iconBg, valueClass, value, label }) => (
+const StatCard = ({ icon, iconBg, valueClass, value, label }) => (
   <div className="bg-white rounded-lg border border-[#E2DFFC] px-4 py-8 flex items-center gap-4">
     <div className={`w-14 h-14 rounded-2xl ${iconBg} flex items-center justify-center shrink-0`}>
-      <Icon size={26} />
+      <img src={icon} alt="" className="w-8 h-8" />
     </div>
     <div>
       <p className={`text-xl font-semibold ${valueClass}`}>{value}</p>
@@ -117,7 +134,7 @@ const ActionsMenu = ({ isOpen, onToggle, onView, onEdit, onDuplicate, onToggleAc
       <button
         ref={btnRef}
         onClick={onToggle}
-        className="p-1.5 rounded-lg bg-[#E9E9E9] hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer"
+        className="p-1.5 rounded-md bg-[#E9E9E9] hover:bg-gray-200 text-gray-600 transition-colors cursor-pointer"
       >
         <FiMoreVertical size={18} />
       </button>
@@ -232,9 +249,9 @@ const CouponDetailsModal = ({ coupon, onClose, onEdit, onDuplicate, onToggleActi
 
         {/* Stats */}
         <div className="space-y-3">
-          <MiniStat icon={FiTrendingUp} bg="bg-[#E8E9FB] text-[#3231DB]" tint="bg-[#F8F8FF]" label="Total Redemptions" value={coupon.uses} />
-          <MiniStat icon={FiTag} bg="bg-[#DCF5DA] text-[#21AC1C]" tint="bg-[#F5FDF4]" label="Total Discount Given" value={coupon.given} />
-          <MiniStat icon={FiShoppingBag} bg="bg-[#D6E8FB] text-[#1D6FE0]" tint="bg-[#F3F8FE]" label="Remaining Redemptions" value={`${remaining} / ${coupon.max.toLocaleString()}`} />
+          <MiniStat icon={UpTrendIconSvg} bg="bg-[#E8E9FB] text-[#3231DB]" tint="bg-[#F8F8FF]" label="Total Redemptions" value={coupon.uses} />
+          <MiniStat icon={DiscountTagIconSvg} bg="bg-[#DCF5DA] text-[#21AC1C]" tint="bg-[#F5FDF4]" label="Total Discount Given" value={coupon.given} />
+          <MiniStat icon={ShoppingBagIconSvg} bg="bg-[#D6E8FB] text-[#1D6FE0]" tint="bg-[#F3F8FE]" label="Remaining Redemptions" value={`${remaining} / ${coupon.max.toLocaleString()}`} />
         </div>
 
         {/* Applied dates */}
@@ -355,7 +372,7 @@ export default function CouponCodesPage() {
             type="button"
             className="px-8 py-2.5 border border-[#001984] bg-white text-[#001984] text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer"
           >
-            <FiFilter size={15} /> Preview
+            <FilterIconSvg size={18} /> Preview
           </button>
           <button
             type="button"
@@ -369,10 +386,10 @@ export default function CouponCodesPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={FiTag} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#6209FD]" value="28" label="Total Coupons" />
-        <StatCard icon={FiCheckCircle} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#2BA452]" value="18" label="Active Coupons" />
-        <StatCard icon={FiAward} iconBg="bg-[#FEF3E2] text-[#F59E0B]" valueClass="text-[#5B5BD6]" value="1,245" label="Total Redemptions" />
-        <StatCard icon={FiHeadphones} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#1617E3]" value="$12,540.00" label="Total Discounts Given" />
+        <StatCard icon={PercentTicketIcon} iconBg="bg-[#EFE7FD] text-[#6D28D9]" valueClass="text-[#6209FD]" value="28" label="Total Coupons" />
+        <StatCard icon={DiscountTicket} iconBg="bg-[#2BA4521A] text-[#2BA452]" valueClass="text-[#2BA452]" value="18" label="Active Coupons" />
+        <StatCard icon={RewardTagIcon} iconBg="bg-[#FEF3E2] text-[#F59E0B]" valueClass="text-[#5B5BD6]" value="1,245" label="Total Redemptions" />
+        <StatCard icon={HeadphoneIcon} iconBg="bg-[#E4EEFC] text-[#1D6FE0]" valueClass="text-[#1617E3]" value="$12,540.00" label="Total Discounts Given" />
       </div>
 
       {/* Table */}

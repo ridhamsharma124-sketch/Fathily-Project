@@ -17,6 +17,20 @@ import michaelRImg from "../../../assets/StreakManagemnetSvgs/Michael R..png";
 import emilyKImg from "../../../assets/StreakManagemnetSvgs/Emily K..png";
 import davidLImg from "../../../assets/StreakManagemnetSvgs/David L..png";
 import rachelMImg from "../../../assets/StreakManagemnetSvgs/Rachel M..png";
+import EditIcon from "../../../assets/StreakManagemnetSvgs/EditIcon.svg";
+import ExportIcon from "../../../assets/StreakManagemnetSvgs/ExportIcon.svg";
+import InfoIcon from "../../../assets/StreakManagemnetSvgs/InfoIcon.svg";
+import ViewIcon from "../../../assets/StreakManagemnetSvgs/ViewIcon.svg";
+
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+              <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+            );
+            
+    const EditIconSvg = (p) => <SvgIcon src={EditIcon} {...p} />;
+    const ExportIconSvg = (p) => <SvgIcon src={ExportIcon} {...p} />;
+    const InfoIconSvg = (p) => <SvgIcon src={InfoIcon} {...p} />;
+    const ViewIconSvg = (p) => <SvgIcon src={ViewIcon} {...p} />;
 
 /* Figma tokens for this page */
 const TEXT = "#0A0847";
@@ -219,7 +233,7 @@ function StreakTable() {
             type="button"
             className={`flex h-10 w-[162px] shrink-0 cursor-pointer items-center justify-center gap-[13px] rounded-[7.47px] bg-[#001984] text-[14px] font-medium text-white transition hover:opacity-90`}
           >
-            <FiDownload size={16} /> Export
+            <ExportIconSvg size={16} /> Export
           </button>
         </div>
       </div>
@@ -305,14 +319,14 @@ function StreakTable() {
                   aria-label={`View ${u.name}`}
                   className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
                 >
-                  <FiEye size={16} />
+                  <ViewIconSvg size={16} />
                 </button>
                 <button
                   type="button"
                   aria-label={`Edit ${u.name}`}
                   className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
                 >
-                  <FiEdit2 size={16} />
+                  <EditIconSvg size={16} />
                 </button>
               </div>
             </div>
@@ -459,13 +473,13 @@ export default function StreakMilestonesRewards() {
               className={`mt-6 flex w-full flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#F4F5FA] px-[25px] py-3`}
             >
               <div className="flex items-center gap-2">
-                <FiInfo size={16} className={`text-[#001984]`} />
+                <InfoIconSvg size={16} className={`text-[#001984]`} />
                 <h2 className={`text-[14px] font-semibold text-[#0A0847]`}>
                   How Streaks Work
                 </h2>
               </div>
 
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-2 ml-6">
                 {HOW_IT_WORKS.map((line) => (
                   <li
                     key={line}

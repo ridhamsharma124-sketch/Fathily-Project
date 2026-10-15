@@ -1,6 +1,13 @@
 import React from "react";
 import { FiChevronDown, FiEdit2, FiUpload } from "react-icons/fi";
 import { BsStars } from "react-icons/bs";
+import AiIcon from "../../../../assets/AddQuizIcons/AiIcon.svg";
+
+  const SvgIcon = ({ src, size = 16, className = "" }) => (
+                <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+              );
+  
+  const AiIconSvg = (p) => <SvgIcon src={AiIcon} {...p} />;
 
 // Mock API options
 export const META_OPTIONS = {
@@ -13,9 +20,10 @@ export const META_OPTIONS = {
   levels: ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5"],
 };
 
+
 const ENTRY_METHODS = [
   { key: "manual", label: "Manual", icon: FiEdit2 },
-  { key: "ai", label: "AI Generate", icon: BsStars },
+  { key: "ai", label: "AI Generate", icon: AiIconSvg },
   { key: "csv", label: "CSV Upload", icon: FiUpload },
 ];
 

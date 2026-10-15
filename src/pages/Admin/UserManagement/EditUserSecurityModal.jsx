@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { FiChevronDown, FiCheckCircle, FiX } from "react-icons/fi";
+import { FiChevronDown, FiCheckCircle, FiX, FiCheck } from "react-icons/fi";
 
 const COUNTRIES = [
   { name: "USA", flag: "🇺🇸" },
@@ -49,7 +49,9 @@ const StatusRow = ({ label, status, statusCls = "text-[#21AC1C]", icon = false, 
   <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr_281px] items-center gap-2 md:gap-0">
     <span className="text-sm font-semibold text-[#0A0847]">{label}</span>
     <span className={`flex items-center gap-2 text-sm font-semibold ${statusCls}`}>
-      {icon && <FiCheckCircle size={24} className="text-[#21AC1C]" />}
+      {icon && <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#21AC1C]">
+          <FiCheck size={14} strokeWidth={3} className="text-white" />
+        </span>}
       {status}
     </span>
     <div>{children}</div>
