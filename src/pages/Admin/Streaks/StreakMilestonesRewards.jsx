@@ -113,8 +113,8 @@ const USERS = [
 ];
 
 const STATUS_STYLES = {
-  Active: "bg-[rgba(33,172,28,0.1)] text-[#21AC1C]",
-  Inactive: "bg-[#F8EAEC] text-[#C44552]",
+  Active: "bg-[#21AC1C1A] text-[#21AC1C] border-[#DAF3C8]",
+  Inactive: "bg-[#F8EAEC] text-[#C44552] border-[#F3C9CE]",
 };
 
 const HOW_IT_WORKS = [
@@ -186,6 +186,7 @@ function StreakTable() {
   const [, setTier] = useState(TIER_OPTIONS[0]);
   const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
   const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState([]);
 
   const rows = USERS.filter((u) => {
     const q = query.trim().toLowerCase();
@@ -239,108 +240,90 @@ function StreakTable() {
       </div>
 
       {/* ---------------- table ---------------- */}
-      <div className="mt-8 w-full">
-        <div
-          className={`h-[50px] items-center bg-[#F3F7FD] px-5 text-[14px] font-medium text-[#0A0847CC] ${GRID}`}
-        >
-          <span className="text-left">Story</span>
-          {["Current Streak", "Longest Streak", "Last Activity", "Status", "Actions"].map(
-            (h) => (
-              <span key={h} className="text-center">
-                {h}
-              </span>
-            ),
-          )}
-        </div>
-
-        {rows.map((u) => (
-          <div
-            key={u.email}
-            className={`h-[63px] border-b-[0.75px] border-[#E9E9E9] bg-white px-5 ${GRID}`}
-          >
-            <div className="flex min-w-0 items-center gap-2.5">
+<div className="mt-8 overflow-x-auto">
+  <table className="w-full text-left text-xs min-w-[900px]">
+    <thead className="bg-[#F3F7FD] border-b border-[#E2DFFC]">
+      <tr>
+        <th className="p-4 w-10">
+          <input
+            type="checkbox"
+            checked={rows.length > 0 && rows.every((u) => selected.includes(u.email))}
+            onChange={(e) => {
+              const ids = rows.map((u) => u.email);
+              setSelected((p) => (e.target.checked ? [...new Set([...p, ...ids])] : p.filter((i) => !ids.includes(i))));
+            }}
+            className="rounded border-gray-300 accent-[#001984] cursor-pointer"
+          />
+        </th>
+        {["User", "Current Streak", "Longest Streak", "Last Activity", "Status"].map((h) => (
+          <th key={h} className="p-4 font-medium text-sm text-[#0A0847CC]">{h}</th>
+        ))}
+        <th className="p-4 font-medium text-sm text-[#0A0847CC] text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-[#E2DFFC] text-[#0A0847]">
+      {rows.length === 0 && (
+        <tr><td colSpan={7} className="p-8 text-center text-gray-400">No streak records match your filters.</td></tr>
+      )}
+      {rows.map((u) => (
+        <tr key={u.email} className="hover:bg-gray-50/50 transition-colors">
+          <td className="p-4">
+            <input
+              type="checkbox"
+              checked={selected.includes(u.email)}
+              onChange={() => setSelected((p) => (p.includes(u.email) ? p.filter((i) => i !== u.email) : [...p, u.email]))}
+              className="rounded border-gray-300 accent-[#001984] cursor-pointer"
+            />
+          </td>
+          <td className="p-4">
+            <div className="flex items-center gap-3">
               <Avatar initials={u.initials} tint={u.tint} src={u.avatar} name={u.name} />
               <div className="min-w-0">
-                <p
-                  className={`truncate text-[12px] font-semibold text-[#0A0847CC]`}
-                >
-                  {u.name}
-                </p>
-                <p className={`truncate text-[12px] font-medium text-[#0A084799]`}>
-                  {u.email}
-                </p>
+                <p className="font-medium text-[#0A0847CC] truncate">{u.name}</p>
+                <p className="font-medium text-[#0A084799] truncate">{u.email}</p>
               </div>
             </div>
-
-            <span
-              className={`text-center text-[12px] font-semibold text-[#0A0847CC]`}
-            >
-              {u.current}
+          </td>
+          <td className="p-4 font-medium text-[#0A0847CC] whitespace-nowrap">{u.current}</td>
+          <td className="p-4 font-medium text-[#0A0847CC] whitespace-nowrap">{u.longest}</td>
+          <td className="p-4 whitespace-nowrap">
+            {typeof u.lastActivity === "string" ? (
+              <p className="font-medium text-[#0A0847CC]">{u.lastActivity}</p>
+            ) : (
+              <>
+                <p className="font-medium text-[#0A0847CC]">{u.lastActivity.date}</p>
+                <p className="font-medium text-[#0A084799]">{u.lastActivity.source}</p>
+              </>
+            )}
+          </td>
+          <td className="p-4">
+            <span className={`w-24 py-1 rounded-md text-xs font-medium border inline-block text-center ${STATUS_STYLES[u.status]}`}>
+              {u.status}
             </span>
-            <span
-              className={`text-center text-[12px] font-semibold text-[#0A0847CC]`}
-            >
-              {u.longest}
-            </span>
-
-            <div className="flex min-w-0 flex-col items-center justify-center text-center">
-              {typeof u.lastActivity === "string" ? (
-                <span
-                  className={`text-[12px] font-semibold text-[#0A0847CC]`}
-                >
-                  {u.lastActivity}
-                </span>
-              ) : (
-                <>
-                  <p
-                    className={`text-[12px] font-semibold text-[#0A0847CC]`}
-                  >
-                    {u.lastActivity.date}
-                  </p>
-                  <p className={`text-[12px] font-medium text-[#0A084799]`}>
-                    {u.lastActivity.source}
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="flex justify-center">
-              <span
-                className={`flex h-[28px] w-fit items-center rounded-lg px-3 text-[12px] font-medium ${STATUS_STYLES[u.status]}`}
+          </td>
+          <td className="p-4">
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                aria-label={`View ${u.name}`}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]"
               >
-                {u.status}
-              </span>
+                <ViewIconSvg size={16} />
+              </button>
+              <button
+                type="button"
+                aria-label={`Edit ${u.name}`}
+                className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]"
+              >
+                <EditIconSvg size={16} />
+              </button>
             </div>
-
-            <div className="flex justify-center">
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  aria-label={`View ${u.name}`}
-                  className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
-                >
-                  <ViewIconSvg size={16} />
-                </button>
-                <button
-                  type="button"
-                  aria-label={`Edit ${u.name}`}
-                  className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#001984] transition hover:border-[#001984]`}
-                >
-                  <EditIconSvg size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {rows.length === 0 && (
-          <p
-            className={`py-6 text-center text-[13px] text-[#0A084799]`}
-          >
-            No streak records match your filters.
-          </p>
-        )}
-      </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
       {/* ---------------- table footer ---------------- */}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
@@ -423,12 +406,12 @@ export default function StreakMilestonesRewards() {
               <FiArrowLeft size={20} />
             </button>
             <h1
-              className={`text-[22px] font-semibold leading-none text-[#0A0847]`}
+              className="text-xl font-semibold text-[#0A0847]"
             >
               Streak Milestones &amp; Rewards
             </h1>
           </div>
-          <p className={`mt-2 text-[14px] font-medium text-[#0A084799]`}>
+            <p className="text-sm text-[#0A084799] font-medium mt-2">
             View and manage user streak records.
           </p>
         </div>
@@ -441,7 +424,7 @@ export default function StreakMilestonesRewards() {
                 key={t}
                 type="button"
                 onClick={() => setTab(t)}
-                className={`flex h-[42px] w-[187px] cursor-pointer items-center justify-center rounded-t-md text-[14px] font-medium transition ${
+                className={`px-12 py-3.5 text-sm font-semibold rounded-t-md cursor-pointer transition-colors ${
                   tab === t
                     ? `bg-[#001984] text-white`
                     : `bg-transparent text-[#0A0847CC] hover:text-[#001984]`

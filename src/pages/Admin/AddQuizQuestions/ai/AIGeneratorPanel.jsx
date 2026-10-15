@@ -7,6 +7,13 @@ import { COUNTS, DIFFICULTIES, makePreview } from "./shared/aiUtils";
 import { Sel, H, Row, Info } from "./shared/aiUi";
 import LevelsSection from "./shared/LevelsSection";
 import AIPreviewCard from "./shared/aiPreviewCard";
+import SaveIcon2 from "../../../../assets/AddQuizIcons/SaveIcon2.svg";
+
+  const SvgIcon = ({ src, size = 16, className = "" }) => (
+                 <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+               );
+   
+   const SaveIcon2Svg = (p) => <SvgIcon src={SaveIcon2} {...p} />;
 
 const BASE = {
   difficulty: "Medium",
@@ -117,7 +124,7 @@ const publish = () => console.log("AI publish:", { type, meta, settings: s, prev
   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
     <button type="button" onClick={draft}
       className="py-3.5 bg-white border border-[#E2DFFC] rounded-md text-sm font-semibold text-[#0A0847] flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
-      <FiSave size={15} /> Save draft
+      <SaveIcon2Svg size={15} /> Save draft
     </button>
     <button type="button" onClick={generate}
       className="py-3.5 bg-[#EEF0FB] border border-[#C9CDE8] rounded-md text-sm font-semibold text-[#0A0847] flex items-center justify-center gap-2 hover:bg-[#E4E8F8] cursor-pointer">
@@ -133,7 +140,7 @@ const publish = () => console.log("AI publish:", { type, meta, settings: s, prev
         {reg.showSaveDraft !== false && (
           <button type="button" onClick={draft}
             className="py-3.5 bg-white border border-[#E2DFFC] rounded-md text-sm font-semibold text-[#0A0847] flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
-            <FiSave size={15} /> Save draft
+            <SaveIcon2Svg size={15} /> Save draft
           </button>
         )}
         <button type="button" onClick={generate}

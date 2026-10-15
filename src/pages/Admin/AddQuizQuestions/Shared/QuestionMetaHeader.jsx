@@ -100,7 +100,9 @@ export default function QuestionMetaHeader({
       <div>
         <p className="text-xs font-semibold text-[#0A0847CC] mb-3">Entry Method</p>
         <div className="flex flex-wrap gap-4">
-          {ENTRY_METHODS.map(({ key, label, icon: Icon }) => (
+          {ENTRY_METHODS.map(({ key, label, icon: Icon }) =>{
+             const active = entryMethod === key;
+          return (
             <button
               key={key}
               type="button"
@@ -111,9 +113,9 @@ export default function QuestionMetaHeader({
                   : "bg-white border-[#E2DFFC] text-[#0A0847CC] hover:bg-gray-50"
               }`}
             >
-              <Icon size={16} /> {label}
+                {key === "ai" && active ? <BsStars size={16} /> : <Icon size={16} />} {label}
             </button>
-          ))}
+          )})}
         </div>
       </div>
     </div>

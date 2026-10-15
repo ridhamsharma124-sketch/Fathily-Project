@@ -147,7 +147,7 @@ export default function StreakManagementPage() {
             key={t}
             type="button"
             onClick={() => setTab(t)}
-            className={`px-12 py-3.5 text-xs font-semibold rounded-t-md cursor-pointer transition-colors ${
+            className={`px-12 py-3.5 text-sm font-semibold rounded-t-md cursor-pointer transition-colors ${
               tab === t ? "bg-[#001984] text-white" : "text-[#0A0847CC] hover:text-[#001984]"
             }`}
           >
