@@ -2,6 +2,9 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import harpImage from "../../../assets/harp.png";
 import ruinsImage from "../../../assets/ruins.png";
+// Icons cut from the Figma frame (transparent PNG)
+import floppyIcon from "../../../assets/addhistory/floppy.png";
+import eyeIcon from "../../../assets/addhistory/eye.png";
 import {
   PiArrowCircleRight,
   PiArrowRight,
@@ -14,7 +17,6 @@ import {
   PiClock,
   PiClockClockwise,
   PiEye,
-  PiFloppyDisk,
   PiHeart,
   PiInfo,
   PiLink,
@@ -24,6 +26,7 @@ import {
   PiPlay,
   PiPlayCircle,
   PiSpeakerHigh,
+  PiTextAlignJustify,
   PiTextB,
   PiTextItalic,
   PiTextUnderline,
@@ -31,18 +34,31 @@ import {
   PiUploadSimple,
   PiX,
 } from "react-icons/pi";
+// Icons cut from the Figma frames (src/assets/addhistory/)
+import replaceIcon from "../../../assets/addhistory/replace.png";
+import trashIcon from "../../../assets/addhistory/trash.png";
+import lockIcon from "../../../assets/addhistory/lock.png";
+import pencilIcon from "../../../assets/addhistory/pencil.png";
+import heartIcon from "../../../assets/addhistory/heart.png";
+import checkIcon from "../../../assets/addhistory/check.png";
+import speedIcon from "../../../assets/addhistory/speed.png";
+import clockIcon from "../../../assets/addhistory/clock.png";
 
 /* ==========================================================================
    SHARED STYLES
    ========================================================================== */
+// Step 2 (unchanged)
 const inputCls =
   "h-[40px] w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]";
 
-const s1Input =
-  "h-[44px] w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[14px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]";
+// Step 1 (Figma-matched)
+const s1InputBase =
+  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
+const s1Input = `h-[46px] ${s1InputBase}`;
+const s1Input52 = `h-[52px] ${s1InputBase}`;
 const s1Ta =
-  "w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[14px] py-[12px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]";
-const s1Label = "mb-[8px] block text-[12px] font-semibold text-[#0B1250]";
+  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[10px] text-[12px] font-medium text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
+const s1Label = "mb-[10px] block text-[12px] font-semibold text-[#0A0847CC]";
 
 /* ==========================================================================
    REUSABLE HELPERS
@@ -57,10 +73,10 @@ function Card({ className = "", children }) {
   );
 }
 
-function S1Card({ className = "", children }) {
+function S1Card({ className = "", pad = "p-[28px]", children }) {
   return (
     <div
-      className={`rounded-[10px] border border-[#E5E7EB] bg-white p-[28px] ${className}`}
+      className={`rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white ${pad} ${className}`}
     >
       {children}
     </div>
@@ -69,7 +85,7 @@ function S1Card({ className = "", children }) {
 
 function Field({ label, className = "", labelClassName = "", children }) {
   const labelCls =
-    labelClassName || "mb-[6px] block text-[11px] font-semibold text-[#0B1250]";
+    labelClassName || "mb-[6px] block text-[12px] font-semibold text-[#0B1250]";
   return (
     <div className={className}>
       <label className={labelCls}>{label}</label>
@@ -97,6 +113,32 @@ function Toggle({ checked, onChange, label = "" }) {
         />
       </span>
       {label && <span className="text-[12px] font-medium text-[#0B1250]">{label}</span>}
+    </button>
+  );
+}
+
+/** Step 1 toggle (Figma colors) */
+function S1Toggle({ checked, onChange, label = "" }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className="flex cursor-pointer items-center gap-[8px]"
+    >
+      <span
+        className={`inline-flex h-[18px] w-[32px] shrink-0 items-center rounded-full p-[2px] transition ${
+          checked ? "bg-[#001984]" : "bg-[#E2DFFC]"
+        }`}
+      >
+        <span
+          className={`h-[14px] w-[14px] rounded-full bg-white shadow transition ${
+            checked ? "translate-x-[14px]" : "translate-x-0"
+          }`}
+        />
+      </span>
+      {label && (
+        <span className="text-[12px] font-medium text-[#0A0847CC]">{label}</span>
+      )}
     </button>
   );
 }
@@ -132,6 +174,47 @@ function SelectBox({
   );
 }
 
+/** Step 1 select (Figma: 46px high, or 52px for the schedule row) */
+function S1Select({
+  value,
+  onChange,
+  options = [],
+  className = "",
+  height = "h-[46px]",
+  arrowRight = "right-[12px]",
+}) {
+  return (
+    <span className={`relative block ${className}`}>
+      <select
+        value={value}
+        onChange={onChange}
+        className={`${height} w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-[12px] pr-[36px] text-[12px] font-medium text-[#0A0847CC] outline-none transition focus:border-[#001984]`}
+      >
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
+          </option>
+        ))}
+      </select>
+      {/* Figma "ic_down arrow": 7.5 x 4.84, #0A0847 @ 60% */}
+      <span
+        className={`pointer-events-none absolute ${arrowRight} top-1/2 flex h-[18px] w-[18px] -translate-y-1/2 items-center justify-center`}
+      >
+        <svg width="7.5" height="4.84" viewBox="0 0 8 5" fill="none" aria-hidden="true">
+          <path
+            d="M0.7 0.7L4 4.1L7.3 0.7"
+            stroke="#0A0847"
+            strokeOpacity="0.6"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </span>
+    </span>
+  );
+}
+
 function Checkbox({ checked, onChange, label, labelClass = "" }) {
   return (
     <label className="flex cursor-pointer items-center gap-[8px]">
@@ -148,26 +231,20 @@ function Checkbox({ checked, onChange, label, labelClass = "" }) {
   );
 }
 
-function OutlineButton({ className = "", children, ...props }) {
+/** Step 1 checkbox (Figma: 20x20) */
+function S1Checkbox({ checked, onChange, label, labelClass = "" }) {
   return (
-    <button
-      {...props}
-      className={`flex h-[36px] cursor-pointer items-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white px-[14px] text-[12px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC] ${className}`}
-    >
-      {children}
-    </button>
-  );
-}
-
-function PrimaryButton({ className = "", children, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`flex h-[36px] cursor-pointer items-center gap-[6px] rounded-[6px] bg-[#0B1F7A] px-[16px] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68] ${className}`}
-    >
-      {children}
-    </button>
+    <label className="flex cursor-pointer items-center gap-[10px]">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="h-[20px] w-[20px] shrink-0 cursor-pointer rounded-[3px] border border-[#E2DFFC] accent-[#001984]"
+      />
+      <span className={`text-[12px] font-semibold text-[#0A0847CC] ${labelClass}`}>
+        {label}
+      </span>
+    </label>
   );
 }
 
@@ -205,23 +282,60 @@ function RichTextBox({ value, onChange, rows = 5 }) {
   );
 }
 
-function AudioPlayer({ time, fill, rightTime = false }) {
+/** Step 1 rich text box (Figma: joined grey toolbar group, 20px text padding) */
+function S1RichTextBox({ value, onChange }) {
+  const seg =
+    "flex cursor-pointer items-center justify-center text-[#333333] transition hover:bg-[#E4E4E4]";
   return (
-    <div className="mt-[12px] flex items-center gap-[10px] rounded-[6px] border border-[#E5E7EB] bg-[#EEF0FB] p-[10px]">
-      <button
-        type="button"
-        aria-label="Play"
-        className="flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#0B1F7A] text-white transition hover:bg-[#0a1c68]"
-      >
+    <div className="overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white">
+      <div className="border-b border-[#E2DFFC] px-[21px] py-[11px]">
+        <div className="inline-flex h-[26px] items-stretch divide-x divide-[#C9C9C9] overflow-hidden rounded-[4px] border border-[#B5B5B5] bg-[#EFEFEF]">
+          <button type="button" title="Bold" aria-label="Bold" className={`${seg} w-[34px] text-[15px] font-bold`}>
+            B
+          </button>
+          <button type="button" title="Italic" aria-label="Italic" className={`${seg} w-[32px] font-serif text-[15px] italic`}>
+            I
+          </button>
+          <button type="button" title="Underline" aria-label="Underline" className={`${seg} w-[46px] gap-[6px] text-[15px] underline`}>
+            U
+            <PiCaretDown size={8} weight="fill" />
+          </button>
+          <button type="button" title="Link" aria-label="Link" className={`${seg} w-[32px]`}>
+            <PiLink size={14} />
+          </button>
+          <button type="button" title="Align" aria-label="Align" className={`${seg} w-[33px]`}>
+            <PiTextAlignJustify size={14} />
+          </button>
+        </div>
+      </div>
+      <textarea
+        value={value}
+        onChange={onChange}
+        className="block h-[93px] w-full resize-none bg-white px-[20px] pb-[18px] pt-[18px] text-[12px] font-semibold leading-[1.3] text-[#0A084799] outline-none placeholder:text-[#0A084799]"
+      />
+    </div>
+  );
+}
+
+function AudioPlayer({ time, fill, rightTime = false, s1 = false }) {
+  const wrapCls = s1
+    ? "mt-[12px] flex h-[55px] items-center gap-[10px] rounded-[7.47px] border border-[#E4E2FF] bg-[#F3F3FF] px-[12px]"
+    : "mt-[12px] flex items-center gap-[10px] rounded-[6px] border border-[#E5E7EB] bg-[#EEF0FB] p-[10px]";
+  const playCls = s1
+    ? "flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#001984] text-white transition hover:bg-[#001266]"
+    : "flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#0B1F7A] text-white transition hover:bg-[#0a1c68]";
+  const fillCls = s1
+    ? "absolute inset-y-0 left-0 rounded-full bg-[#001984]"
+    : "absolute inset-y-0 left-0 rounded-full bg-[#0B1F7A]";
+  return (
+    <div className={wrapCls}>
+      <button type="button" aria-label="Play" className={playCls}>
         <PiPlay size={14} weight="fill" />
       </button>
       <span className="shrink-0 text-[11px] font-medium text-[#0B1250]">{time}</span>
       <PiSpeakerHigh size={15} color="#5B5F8C" className="shrink-0" />
       <div className="relative h-[6px] flex-1 rounded-full bg-[#D9D9E6]">
-        <div
-          className="absolute inset-y-0 left-0 rounded-full bg-[#0B1F7A]"
-          style={{ width: fill }}
-        />
+        <div className={fillCls} style={{ width: fill }} />
       </div>
       <PiSpeakerHigh size={15} color="#0B1250" className="shrink-0" />
       {rightTime && (
@@ -234,52 +348,61 @@ function AudioPlayer({ time, fill, rightTime = false }) {
 /* ==========================================================================
    TOP HEADER + STEPPER
    ========================================================================== */
+const headerOutlineBtn =
+  "flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[12px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]";
+const headerPrimaryBtn =
+  "flex h-[42px] w-[160px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition hover:bg-[#001266]";
+
 function TopHeader({ step, setStep }) {
   return (
     <>
       <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-[22px] font-bold text-[#0B1250]">Add Historical Story</h1>
+        <h1 className="text-[22px] font-semibold text-[#0A0847]">Add Historical Story</h1>
         <div className="flex flex-wrap items-center gap-[8px]">
-          <OutlineButton>
-            <PiFloppyDisk size={14} />Save draft
-          </OutlineButton>
-          <OutlineButton>
-            <PiEye size={14} />Preview All 3 Screens
-          </OutlineButton>
+          <button type="button" className={`${headerOutlineBtn} !text-[#0A0847CC]`}>
+            <img src={floppyIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
+            Save draft
+          </button>
+          <button type="button" className={headerOutlineBtn}>
+            <img src={eyeIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
+            Preview All 3 Screens
+          </button>
           {step === 1 ? (
-            <PrimaryButton onClick={() => setStep(2)}>
-              Next <PiArrowRight size={14} />
-            </PrimaryButton>
+            <button type="button" onClick={() => setStep(2)} className={headerPrimaryBtn}>
+              Next <PiArrowRight size={18} />
+            </button>
           ) : (
-            <PrimaryButton>Schedule Story</PrimaryButton>
+            <button type="button" className={headerPrimaryBtn}>
+              Schedule Story
+            </button>
           )}
         </div>
       </div>
 
       {/* Stepper */}
-      <div className="flex items-center gap-[12px]">
+      <div className="flex h-[32px] items-center gap-[12px]">
         <div className="flex items-center gap-[8px]">
-          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0B1F7A] text-[12px] font-semibold text-white">
+          <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-[#001984] text-[14px] font-semibold text-white">
             1
           </span>
-          <span className="text-[12px] font-semibold text-[#0B1250]">
+          <span className="text-[14px] font-semibold text-[#0A0847]">
             Homepage & Story
           </span>
         </div>
-        <span className="h-px max-w-[140px] flex-1 bg-[#E5E7EB]" />
+        <span className="h-px w-[135px] shrink-0 bg-[#0019841A]" />
         <div className="flex items-center gap-[8px]">
           <span
-            className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold transition ${
+            className={`flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full text-[14px] font-semibold transition ${
               step === 2
-                ? "bg-[#0B1F7A] text-white"
-                : "bg-[#E5E7EB] text-[#6B7280]"
+                ? "bg-[#001984] text-white"
+                : "bg-[#E2DFFC] text-[#0A084799]"
             }`}
           >
             2
           </span>
           <span
-            className={`text-[12px] font-semibold transition ${
-              step === 2 ? "text-[#0B1250]" : "text-[#6B7280]"
+            className={`text-[14px] font-semibold transition ${
+              step === 2 ? "text-[#0A0847]" : "text-[#0A084799]"
             }`}
           >
             Prayer & Completion
@@ -310,17 +433,22 @@ function StepOne({ v, upd, setStep, navigate }) {
     e.target.value = "";
   };
 
+  const audioActionBtn =
+    "flex h-[39px] cursor-pointer items-center justify-center gap-[8px] rounded-[7.47px] border border-[#E2DFFC] bg-white text-[14px] font-medium text-[#0A0847CC] transition hover:bg-[#F8FAFC]";
+  const uploadReplaceBtn =
+    "flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[7.47px] border border-[#001984] bg-white text-[14px] font-medium text-[#001984] transition hover:bg-[#001984]/5";
+
   return (
-    <div className="flex flex-col gap-[24px]">
+    <div className="flex flex-col gap-[26px]">
       {/* Card 1: Schedule & Display */}
       <S1Card>
         <div className="flex items-center gap-[12px]">
           <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-[#EEF4FF]">
-            <PiCalendarBlank size={18} color="#0B1F7A" />
+            <PiCalendarBlank size={20} color="#3231DB" />
           </div>
           <div>
-            <h2 className="text-[14px] font-bold text-[#0B1250]">Schedule & Display</h2>
-            <p className="text-[11px] italic text-[#5B5F8C]">
+            <h2 className="text-[16px] font-semibold text-[#0A0847]">Schedule & Display</h2>
+            <p className="text-[11px] italic text-[#0A084799]">
               Set when and how your story will be displayed
             </p>
           </div>
@@ -331,12 +459,12 @@ function StepOne({ v, upd, setStep, navigate }) {
             <div className="relative">
               <PiCalendarBlank
                 size={15}
-                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#5B5F8C]"
+                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
               />
               <input
                 value={v.featuredDate}
                 onChange={upd("featuredDate")}
-                className={`${s1Input} pl-[34px]`}
+                className={`${s1Input52} pl-[34px] pr-[50px]`}
               />
             </div>
           </Field>
@@ -344,12 +472,12 @@ function StepOne({ v, upd, setStep, navigate }) {
             <div className="relative">
               <PiClock
                 size={15}
-                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#5B5F8C]"
+                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
               />
               <input
                 value={v.startTime}
                 onChange={upd("startTime")}
-                className={`${s1Input} pl-[34px] pr-[30px]`}
+                className={`${s1Input52} pl-[34px] pr-[30px]`}
               />
               <button
                 type="button"
@@ -364,18 +492,19 @@ function StepOne({ v, upd, setStep, navigate }) {
             <div className="relative">
               <PiClock
                 size={15}
-                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#5B5F8C]"
+                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
               />
               <input
                 value={v.endTime}
                 onChange={upd("endTime")}
-                className={`${s1Input} pl-[34px]`}
+                className={`${s1Input52} pl-[34px] pr-[30px]`}
               />
             </div>
           </Field>
-          <Field label="Time Zone:" className="w-[224px]" labelClassName={s1Label}>
-            <SelectBox
-              large
+          <Field label="Time Zone:" className="w-[225px]" labelClassName={s1Label}>
+            <S1Select
+              height="h-[52px]"
+              arrowRight="right-[30px]"
               value={v.timeZone}
               onChange={upd("timeZone")}
               options={[
@@ -391,24 +520,24 @@ function StepOne({ v, upd, setStep, navigate }) {
         </div>
 
         <div className="mt-[20px] flex flex-wrap gap-[24px]">
-          <Toggle label="Show on Homepage" checked={v.showHomepage} onChange={upd("showHomepage")} />
-          <Toggle label="Show NEW Badge" checked={v.newBadge} onChange={upd("newBadge")} />
-          <Toggle label="Keep Available in Archive" checked={v.archive} onChange={upd("archive")} />
+          <S1Toggle label="Show on Homepage" checked={v.showHomepage} onChange={upd("showHomepage")} />
+          <S1Toggle label="Show NEW Badge" checked={v.newBadge} onChange={upd("newBadge")} />
+          <S1Toggle label="Keep Available in Archive" checked={v.archive} onChange={upd("archive")} />
         </div>
 
-        <div className="mt-[14px] flex items-center gap-[8px] text-[11px] text-[#5B5F8C]">
-          <PiInfo size={15} color="#0B1F7A" />
+        <div className="mt-[14px] flex items-center gap-[8px] text-[11px] text-[#0A084799]">
+          <PiInfo size={15} color="#001984" />
           Featured Date appears on the homepage card and both experience screens.
         </div>
       </S1Card>
 
       {/* Row 2: Form Card + Live Homepage Preview */}
-      <div className="grid grid-cols-1 items-stretch gap-[24px] lg:grid-cols-[1fr_370px]">
+      <div className="grid grid-cols-1 items-stretch gap-[26px] lg:grid-cols-[1fr_367px]">
         {/* Form Card (9 fields) */}
-        <div className="rounded-[10px] border border-[#E5E7EB] bg-white px-[28px] pb-[28px] pt-[80px]">
-          <div className="grid grid-cols-1 gap-[24px] sm:grid-cols-2">
+        <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[28px] pb-[28px] pt-[106px]">
+          <div className="grid grid-cols-1 gap-x-[22px] gap-y-[12px] sm:grid-cols-2">
             {/* Column 1 */}
-            <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col gap-[12px]">
               <Field label="Section Label:" labelClassName={s1Label}>
                 <input value={v.sectionLabel} onChange={upd("sectionLabel")} className={s1Input} />
               </Field>
@@ -419,12 +548,11 @@ function StepOne({ v, upd, setStep, navigate }) {
                 <textarea
                   value={v.cardDesc}
                   onChange={upd("cardDesc")}
-                  className={`${s1Ta} h-[64px] resize-none`}
+                  className={`${s1Ta} h-[60px] resize-none`}
                 />
               </Field>
               <Field label="Estimated Duration:" labelClassName={s1Label}>
-                <SelectBox
-                  large
+                <S1Select
                   value={v.duration}
                   onChange={upd("duration")}
                   options={["3 min", "5 min", "10 min"]}
@@ -436,7 +564,7 @@ function StepOne({ v, upd, setStep, navigate }) {
             </div>
 
             {/* Column 2 */}
-            <div className="flex flex-col gap-[16px]">
+            <div className="flex flex-col gap-[12px]">
               <Field label="Date Label:" labelClassName={s1Label}>
                 <input value={v.dateLabel} onChange={upd("dateLabel")} className={s1Input} />
               </Field>
@@ -451,13 +579,13 @@ function StepOne({ v, upd, setStep, navigate }) {
                 <button
                   type="button"
                   onClick={() => cardImageRef.current?.click()}
-                  className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#0B1F7A] bg-white text-[12px] font-semibold text-[#0B1F7A] transition hover:bg-[#0B1F7A]/5"
+                  className={uploadReplaceBtn}
                 >
-                  <PiUploadSimple size={15} />
+                  <PiUploadSimple size={18} />
                   Upload / Replace
                 </button>
               </Field>
-              <div className="h-[210px] overflow-hidden rounded-[6px] border border-[#E5E7EB]">
+              <div className="h-[210px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC]">
                 <img src={cardImage} alt={v.imageAlt} className="h-full w-full object-cover" />
               </div>
               <Field label="Image Alt Text:" labelClassName={s1Label}>
@@ -468,43 +596,45 @@ function StepOne({ v, upd, setStep, navigate }) {
         </div>
 
         {/* Live Homepage Preview */}
-        <aside className="flex flex-col rounded-[10px] border border-[#E5E7EB] bg-[#F5F8FF] p-[22px]">
-          <h3 className="text-[14px] font-bold text-[#0B1250]">Live Homepage Preview</h3>
+        <aside className="flex flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#F3F7FD] p-[22px]">
+          <h3 className="text-[16px] font-semibold text-[#0A0847]">Live Homepage Preview</h3>
           <div className="mt-[14px] flex items-center justify-between">
-            <span className="rounded-[4px] bg-[#0B1F7A] px-[12px] py-[4px] text-[11px] font-bold text-white">
+            <span className="flex h-[34px] w-[61px] items-center justify-center rounded-[4px] bg-[#001984] text-[16px] font-semibold text-white">
               NEW
             </span>
-            <PiBookmarkSimple size={18} color="#0B1F7A" />
+            <PiBookmarkSimple size={20} color="#001984" />
           </div>
-          <p className="mt-[14px] text-[20px] font-bold leading-snug text-[#0B1250]">
+          <p className="mt-[14px] text-[22px] font-semibold leading-none text-[#0A0847]">
             {v.sectionLabel}
           </p>
           <img
             src={cardImage}
             alt={v.imageAlt}
-            className="mt-[12px] h-[286px] w-full rounded-[6px] object-cover"
+            className="mt-[12px] h-[286px] w-full rounded-[7.47px] object-cover"
           />
-          <p className="mt-[12px] text-[16px] font-bold">
-            <span className="text-[#0B1250]">{v.dateLabel}: </span>
+          <p className="mt-[12px] text-[20px] font-semibold leading-none">
+            <span className="text-[#0A0847]">{v.dateLabel}: </span>
             <span className="text-[#E11D2E]">{v.shortTitle}</span>
           </p>
-          <p className="mt-[6px] text-[13px] leading-snug text-[#5B5F8C]">{v.cardDesc}</p>
-          <div className="mt-[6px] flex items-center justify-between">
-            <span className="flex items-center gap-[6px] text-[12px] text-[#5B5F8C]">
-              <PiClock size={14} />
+          <p className="mt-[8px] max-w-[220px] text-[14px] font-semibold leading-snug text-[#0A0847CC]">
+            {v.cardDesc}
+          </p>
+          <div className="mt-[10px] flex items-center gap-[36px]">
+            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#001984]">
+              <PiClock size={19} />
               {v.duration}
             </span>
-            <span className="flex items-center gap-[6px] text-[13px] font-semibold text-[#0B1F7A]">
+            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#001984]">
+              <PiArrowCircleRight size={19} />
               {v.ctaLabel}
-              <PiArrowCircleRight size={16} />
             </span>
           </div>
         </aside>
       </div>
 
       {/* Card 3: Story & Reflection */}
-      <S1Card>
-        <h2 className="text-[14px] font-bold text-[#0B1250]">Story & Reflection</h2>
+      <S1Card pad="p-[32px]">
+        <h2 className="text-[16px] font-semibold text-[#0A0847]">Story & Reflection</h2>
 
         <div className="mt-[16px] grid grid-cols-1 gap-[28px] md:grid-cols-3">
           <Field label="Session Header:" labelClassName={s1Label}>
@@ -530,7 +660,7 @@ function StepOne({ v, upd, setStep, navigate }) {
 
         <div className="mt-[16px] grid grid-cols-1 gap-[24px] lg:grid-cols-2">
           <Field label="Story Summary:" labelClassName={s1Label}>
-            <RichTextBox value={v.summary} onChange={upd("summary")} rows={4} />
+            <S1RichTextBox value={v.summary} onChange={upd("summary")} />
           </Field>
           <div className="flex flex-col gap-[16px]">
             <div className="grid grid-cols-2 gap-[16px]">
@@ -538,8 +668,7 @@ function StepOne({ v, upd, setStep, navigate }) {
                 <input value={v.verseRef} onChange={upd("verseRef")} className={s1Input} />
               </Field>
               <Field label="Bible Version:" labelClassName={s1Label}>
-                <SelectBox
-                  large
+                <S1Select
                   value={v.bibleVersion}
                   onChange={upd("bibleVersion")}
                   options={["KJV", "NIV", "ESV", "NKJV", "NASB"]}
@@ -547,41 +676,29 @@ function StepOne({ v, upd, setStep, navigate }) {
               </Field>
             </div>
             <Field label="Verse Text:" labelClassName={s1Label}>
-              <textarea
-                value={v.verseText}
-                onChange={upd("verseText")}
-                className={`${s1Ta} h-[72px] resize-none`}
-              />
+              <input value={v.verseText} onChange={upd("verseText")} className={s1Input} />
             </Field>
           </div>
         </div>
 
         <div className="mt-[16px] grid grid-cols-1 gap-[24px] lg:grid-cols-2">
-          <Field label="Why It Matters Today:" labelClassName={s1Label}>
-            <textarea
-              value={v.whyItMatters}
-              onChange={upd("whyItMatters")}
-              className={`${s1Ta} h-[72px] resize-none`}
-            />
+          <Field label="WHY IT MATTERS TODAY:" labelClassName={s1Label}>
+            <input value={v.whyItMatters} onChange={upd("whyItMatters")} className={s1Input} />
           </Field>
           <Field label="Reflection Prompt:" labelClassName={s1Label}>
-            <textarea
-              value={v.reflectionPrompt}
-              onChange={upd("reflectionPrompt")}
-              className={`${s1Ta} h-[72px] resize-none`}
-            />
+            <input value={v.reflectionPrompt} onChange={upd("reflectionPrompt")} className={s1Input} />
           </Field>
         </div>
       </S1Card>
 
       {/* Row 3: Bottom 3 cards */}
       <div className="grid grid-cols-1 gap-[20px] lg:grid-cols-[1fr_1fr_1.85fr]">
-        <S1Card>
-          <h3 className="text-[13px] font-bold text-[#0B1250]">Private Reflection</h3>
+        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+          <h3 className="text-[16px] font-semibold text-[#0A0847]">Private Reflection</h3>
           <div className="mt-[14px]">
-            <Toggle label="Enable Private Reflection" checked={v.privateReflection} onChange={upd("privateReflection")} />
+            <S1Toggle label="Enable Private Reflection" checked={v.privateReflection} onChange={upd("privateReflection")} />
           </div>
-          <div className="mt-[16px]">
+          <div className="mt-[14px]">
             <Field label="Placeholder:" labelClassName={s1Label}>
               <input value={v.privatePlaceholder} onChange={upd("privatePlaceholder")} className={s1Input} />
             </Field>
@@ -591,14 +708,14 @@ function StepOne({ v, upd, setStep, navigate }) {
               <input value={v.privacyMsg} onChange={upd("privacyMsg")} className={s1Input} />
             </Field>
           </div>
-          <p className="mt-[12px] flex items-center gap-[6px] text-[11px] text-[#5B5F8C]">
-            <PiLock size={13} />
+          <p className="mt-[12px] flex items-center gap-[6px] text-[11px] text-[#0A084799]">
+            <img src={lockIcon} alt="" className="h-[13px] w-[13px] shrink-0" />
             Admins cannot view private reflections.
           </p>
         </S1Card>
 
-        <S1Card>
-          <h3 className="text-[13px] font-bold text-[#0B1250]">Story Media & Actions</h3>
+        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+          <h3 className="text-[16px] font-semibold text-[#0A0847]">Story Media & Actions</h3>
           <div className="mt-[14px]">
             <Field label="Homepage Card Image:" labelClassName={s1Label}>
               <input
@@ -611,14 +728,14 @@ function StepOne({ v, upd, setStep, navigate }) {
               <button
                 type="button"
                 onClick={() => mediaImageRef.current?.click()}
-                className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#0B1F7A] bg-white text-[12px] font-semibold text-[#0B1F7A] transition hover:bg-[#0B1F7A]/5"
+                className={uploadReplaceBtn}
               >
-                <PiUploadSimple size={15} />
+                <PiUploadSimple size={18} />
                 Upload / Replace
               </button>
             </Field>
           </div>
-          <div className="mt-[12px] h-[200px] overflow-hidden rounded-[6px] border border-[#E5E7EB]">
+          <div className="mt-[12px] h-[203px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC]">
             <img src={mediaImage} alt={v.imageAlt2} className="h-full w-full object-cover" />
           </div>
           <div className="mt-[12px]">
@@ -628,44 +745,37 @@ function StepOne({ v, upd, setStep, navigate }) {
           </div>
         </S1Card>
 
-        <S1Card>
-          <h3 className="text-[13px] font-bold text-[#0B1250]">Story Audio</h3>
+        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+          <h3 className="text-[16px] font-semibold text-[#0A0847]">Story Audio</h3>
           <div className="mt-[14px]">
-            <p className="mb-[8px] text-[12px] font-semibold text-[#0B1250]">File Actions:</p>
-            <div className="grid grid-cols-3 gap-[8px]">
-              <button
-                type="button"
-                className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
-              >
-                <PiUploadSimple size={14} />
+            <p className={s1Label}>File Actions:</p>
+            <div className="grid grid-cols-3 gap-[12px]">
+              <button type="button" className={audioActionBtn}>
+                <PiUploadSimple size={18} />
                 Upload
               </button>
-              <button
-                type="button"
-                className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
-              >
-                <PiArrowsClockwise size={14} />
+              <button type="button" className={audioActionBtn}>
+                <img src={replaceIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 Replace
               </button>
               <button
                 type="button"
-                className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#DC2626] transition hover:bg-red-50"
+                className={`${audioActionBtn} !text-[#DC2626] hover:!bg-red-50`}
               >
-                <PiTrash size={14} />
+                <img src={trashIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 Remove
               </button>
             </div>
           </div>
 
-          <AudioPlayer time="0:30/2:48" fill="40%" />
+          <AudioPlayer s1 time="0:30/2:48" fill="40%" />
 
-          <div className="mt-[12px] flex items-center justify-between gap-[10px]">
-            <Checkbox label="Transcript / Captions" labelClass="whitespace-nowrap" checked={v.transcript1} onChange={upd("transcript1")} />
-            <div className="flex shrink-0 items-center gap-[8px]">
-              <span className="text-[11px] text-[#5B5F8C]">Playback Speed:</span>
-              <SelectBox
-                className="w-[72px]"
-                compact
+          <div className="mt-[14px] flex items-center justify-between gap-[10px]">
+            <S1Checkbox label="Transcript / Captions" labelClass="whitespace-nowrap" checked={v.transcript1} onChange={upd("transcript1")} />
+            <div className="flex shrink-0 items-center gap-[10px]">
+              <span className="text-[12px] font-semibold text-[#0A0847CC]">Playback Speed:</span>
+              <S1Select
+                className="w-[100px]"
                 value={v.playerSpeed1}
                 onChange={upd("playerSpeed1")}
                 options={["0.5x", "1.0x", "1.5x", "2.0x"]}
@@ -673,10 +783,9 @@ function StepOne({ v, upd, setStep, navigate }) {
             </div>
           </div>
 
-          <div className="mt-[12px]">
-            <Field label="Read Full Passage:" labelClassName={s1Label}>
-              <SelectBox
-                large
+          <div className="mt-[14px]">
+            <Field label="Read Full Passage Duration:" labelClassName={s1Label}>
+              <S1Select
                 value={v.readPassage}
                 onChange={upd("readPassage")}
                 options={["1 Samuel 30", "1 Samuel 30:1-6", "Psalm 30", "Genesis 30"]}
@@ -685,30 +794,46 @@ function StepOne({ v, upd, setStep, navigate }) {
           </div>
 
           <div className="mt-[14px] flex flex-wrap gap-[24px]">
-            <Toggle label="Enable Share" checked={v.enableShare} onChange={upd("enableShare")} />
-            <Toggle label="Enable Save" checked={v.enableSave} onChange={upd("enableSave")} />
+            <S1Toggle label="Enable Share" checked={v.enableShare} onChange={upd("enableShare")} />
+            <S1Toggle label="Enable Save" checked={v.enableSave} onChange={upd("enableSave")} />
           </div>
 
-          <div className="mt-[12px]">
-            <Checkbox label="Continue to Prayer" checked={v.continueToPrayer} onChange={upd("continueToPrayer")} />
+          <div className="mt-[14px]">
+            <S1Checkbox
+              label="Continue to Prayer"
+              labelClass="font-[Poppins] !font-semibold !text-[#0A084799]"
+              checked={v.continueToPrayer}
+              onChange={upd("continueToPrayer")}
+            />
           </div>
         </S1Card>
       </div>
 
       {/* Footer Actions */}
       <div className="flex flex-wrap items-center justify-between gap-[12px]">
-        <OutlineButton onClick={() => navigate("/admin/dailyreflection")}>
+        <button
+          type="button"
+          onClick={() => navigate("/admin/dailyreflection")}
+          className="flex h-[46px] cursor-pointer items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-white px-[32px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
+        >
           Cancel
-        </OutlineButton>
-        <div className="flex flex-wrap items-center gap-[8px]">
-          <OutlineButton className="border-[#0B1F7A] text-[#0B1F7A]">
-            <PiFloppyDisk size={14} />
+        </button>
+        <div className="flex flex-wrap items-center gap-[12px]">
+          <button
+            type="button"
+            className="flex h-[46px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-white px-[28px] text-[14px] font-semibold text-[#001984] transition hover:bg-[#001984]/5"
+          >
+            <img src={floppyIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
             Save draft
-          </OutlineButton>
-          <PrimaryButton onClick={() => setStep(2)} className="px-[20px]">
+          </button>
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="flex h-[46px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[#001984] px-[28px] text-[14px] font-semibold text-white transition hover:bg-[#001266]"
+          >
             Next: Reflection & Prayer
-            <PiArrowRight size={14} />
-          </PrimaryButton>
+            <PiArrowRight size={18} />
+          </button>
         </div>
       </div>
     </div>
@@ -716,7 +841,7 @@ function StepOne({ v, upd, setStep, navigate }) {
 }
 
 /* ==========================================================================
-   STEP 2 — PRAYER & COMPLETION
+   STEP 2 — PRAYER & COMPLETION  (unchanged)
    ========================================================================== */
 function StepTwo({ v, upd, setStep }) {
   const audioFileRef = useRef(null);
@@ -747,7 +872,7 @@ function StepTwo({ v, upd, setStep }) {
         {/* Left Column */}
         <div className="flex flex-col gap-[24px]">
           <Card>
-            <h3 className="text-[14px] font-bold text-[#0B1250]">Let's Pray</h3>
+            <h3 className="text-[16px] font-semibold text-[#0B1250]">Let's Pray</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px] sm:grid-cols-2">
               <Field label="Story Label:">
                 <input value={v.prayLabel} onChange={upd("prayLabel")} className={inputCls} />
@@ -766,7 +891,7 @@ function StepTwo({ v, upd, setStep }) {
                 <input
                   value={v.prayerTypeLabel}
                   onChange={upd("prayerTypeLabel")}
-                  className={`${inputCls} font-bold`}
+                  className="h-[40px] w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] text-[14px] font-semibold text-[#001984] outline-none transition focus:border-[#0B1F7A]"
                 />
               </Field>
             </div>
@@ -778,7 +903,7 @@ function StepTwo({ v, upd, setStep }) {
           </Card>
 
           <Card>
-            <h3 className="text-[13px] font-bold text-[#0B1250]">Player Audio & Accessibility</h3>
+            <h3 className="text-[16px] font-semibold text-[#0B1250]">Player Audio & Accessibility</h3>
             <div className="mt-[14px]">
               <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">File Actions:</p>
               <input
@@ -792,24 +917,24 @@ function StepTwo({ v, upd, setStep }) {
                 <button
                   type="button"
                   onClick={() => audioFileRef.current?.click()}
-                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
+                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[13px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
                   <PiUploadSimple size={14} />
                   Upload
                 </button>
                 <button
                   type="button"
-                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
+                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[13px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
-                  <PiEye size={14} />
+                  <img src={eyeIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
                   Preview
                 </button>
                 <button
                   type="button"
                   onClick={() => audioFileRef.current?.click()}
-                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
+                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[13px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
-                  <PiArrowsClockwise size={14} />
+                  <img src={replaceIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
                   Replace
                 </button>
                 <button
@@ -817,7 +942,7 @@ function StepTwo({ v, upd, setStep }) {
                   onClick={() => setAudio2(null)}
                   className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#DC2626] transition hover:bg-red-50"
                 >
-                  <PiTrash size={14} />
+                  <img src={trashIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
                   Remove
                 </button>
               </div>
@@ -850,7 +975,7 @@ function StepTwo({ v, upd, setStep }) {
           </Card>
 
           <Card>
-            <h3 className="text-[13px] font-bold text-[#0B1250]">Personal Prayer</h3>
+            <h3 className="text-[16px] font-semibold text-[#0B1250]">Personal Prayer</h3>
             <div className="mt-[14px]">
               <Toggle label="Enable Write My Own Prayer" checked={v.enableWriteOwn} onChange={upd("enableWriteOwn")} />
             </div>
@@ -864,14 +989,14 @@ function StepTwo({ v, upd, setStep }) {
                 <input value={v.privacyMsg2} onChange={upd("privacyMsg2")} className={inputCls} />
               </Field>
             </div>
-            <p className="mt-[12px] flex items-center gap-[6px] text-[11px] italic text-[#5B5F8C]">
-              <PiLock size={13} />
+            <p className="mt-[12px] flex items-center gap-[8px] text-[12px] font-medium text-[#001984]/60">
+              <img src={lockIcon} alt="" className="h-[13px] w-[13px] shrink-0" />
               Added notes are private prayers.
             </p>
           </Card>
 
           <Card>
-            <h3 className="text-[13px] font-bold text-[#0B1250]">Progress & Completion</h3>
+            <h3 className="text-[16px] font-semibold text-[#0B1250]">Progress & Completion</h3>
 
             <div className="mt-[14px] grid grid-cols-1 gap-[16px] sm:grid-cols-2">
               <div>
@@ -936,8 +1061,8 @@ function StepTwo({ v, upd, setStep }) {
               </Field>
             </div>
 
-            <p className="mt-[12px] flex items-center gap-[6px] text-[11px] italic text-[#5B5F8C]">
-              <PiLock size={13} />
+            <p className="mt-[12px] flex items-center gap-[8px] text-[12px] font-medium text-[#001984]/60">
+              <img src={lockIcon} alt="" className="h-[13px] w-[13px] shrink-0" />
               Added notes are private prayers.
             </p>
           </Card>
@@ -952,16 +1077,16 @@ function StepTwo({ v, upd, setStep }) {
             </h3>
 
             {/* Phone Frame */}
-            <div className="mx-auto max-w-[300px] rounded-[24px] border-[3px] border-[#D9D3F5] bg-white p-[16px]">
+            <div className="mx-auto w-full max-w-[332px] rounded-[24px] border-[3px] border-[#D9D3F5] bg-white p-[16px]">
               <div className="flex justify-center">
-                <span className="rounded-full bg-[#F1F2F8] px-[16px] py-[6px] text-[12px] font-medium text-[#0B1250]">
+                <span className="font-[Poppins] rounded-full bg-[#F1F2F8] px-[16px] py-[6px] text-[14px] font-semibold text-[#0B1250]">
                   {v.prayLabel}
                 </span>
               </div>
-              <p className="mt-[12px] text-center text-[22px] font-bold leading-tight text-[#0B1250]">
+              <p className="mt-[12px] text-center font-[Poppins] text-[22px] font-semibold leading-tight text-[#0B1250]">
                 {v.pageTitle}
               </p>
-              <p className="text-center text-[12px] text-[#5B5F8C]">{v.pageSubtitle}</p>
+              <p className="text-center font-[Poppins] text-[12px] text-[#5B5F8C]">{v.pageSubtitle}</p>
 
               <div className="mt-[12px] rounded-[8px] bg-[#E8ECFB] p-[12px]">
                 <p className="mb-[6px] text-[10px] font-bold text-[#0B1250]">
@@ -971,7 +1096,7 @@ function StepTwo({ v, upd, setStep }) {
                   line ? (
                     <p
                       key={i}
-                      className="mb-[8px] text-[12px] italic leading-snug text-[#0B1250]"
+                      className="font-[Poppins] text-[12px] font-medium italic leading-[24px] text-[#0B1250]"
                     >
                       {line}
                     </p>
@@ -984,7 +1109,7 @@ function StepTwo({ v, upd, setStep }) {
                 <button
                   type="button"
                   aria-label="Play"
-                  className="flex h-[44px] w-[44px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#0B1F7A] text-white transition hover:bg-[#0a1c68]"
+                  className="flex h-[42px] w-[42px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#0B1F7A] text-white transition hover:bg-[#0a1c68]"
                 >
                   <PiPlay size={20} weight="fill" />
                 </button>
@@ -999,12 +1124,12 @@ function StepTwo({ v, upd, setStep }) {
 
               {/* Info + Speed Pill */}
               <div className="mt-[10px] flex items-center justify-between">
-                <PiClockClockwise size={18} color="#5B5F8C" />
+                <img src={clockIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 <button
                   type="button"
-                  className="flex h-[30px] cursor-pointer items-center gap-[6px] rounded-full border border-[#E5E7EB] bg-white px-[12px] text-[11px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
+                  className="flex h-[35px] w-[95px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
-                  <PiPlayCircle size={16} color="#0B1F7A" />
+                  <img src={speedIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                   {v.playerSpeed2}
                 </button>
               </div>
@@ -1013,11 +1138,11 @@ function StepTwo({ v, upd, setStep }) {
                 type="button"
                 className="mt-[12px] flex h-[38px] w-full cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
               >
-                <PiPencilSimple size={15} />
+                <img src={pencilIcon} alt="" className="h-[15px] w-[15px] shrink-0" />
                 {v.buttonLabel}
               </button>
               <p className="mt-[6px] flex items-center justify-center gap-[4px] text-center text-[11px] text-[#5B5F8C]">
-                <PiLock size={12} />
+                <img src={lockIcon} alt="" className="h-[12px] w-[12px] shrink-0" />
                 Only you can see your prayer.
               </p>
             </div>
@@ -1033,22 +1158,24 @@ function StepTwo({ v, upd, setStep }) {
                 type="button"
                 className="mt-[10px] flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[13px] font-semibold text-white transition hover:bg-[#0a1c68]"
               >
-                <PiHeart size={18} weight="fill" />
+                <img src={heartIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 {v.countdownAfter}
               </button>
               <div className="mt-[10px] rounded-[8px] border border-[#A7E3BE] bg-[#ECFDF3] p-[12px]">
-                <div className="mx-auto flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[#22C55E] text-white">
-                  <PiCheck size={20} strokeWidth={3} />
+                <div className="flex items-center gap-[12px]">
+                  <img src={checkIcon} alt="" className="h-[36px] w-[36px] shrink-0" />
+                  <div>
+                    <p className="text-[12px] font-semibold leading-snug text-[#48B02C]">
+                      {v.completionMsg}
+                    </p>
+                    <p className="text-[12px] font-semibold text-[#48B02C]">
+                      +1 Treasure • 1 Day Streak Updated
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-[8px] text-center text-[11px] font-semibold leading-snug text-[#16A34A]">
-                  {v.completionMsg}
-                </p>
-                <p className="mt-[2px] text-center text-[11px] font-semibold text-[#16A34A]">
-                  +1 Treasure • 1 Day Streak Updated
-                </p>
                 <button
                   type="button"
-                  className="mt-[10px] flex h-[34px] w-full cursor-pointer items-center justify-center rounded-[6px] border border-[#22C55E] bg-white text-[12px] font-medium text-[#16A34A] transition hover:bg-[#ECFDF3]"
+                  className="mt-[12px] flex h-[38px] w-full cursor-pointer items-center justify-center rounded-[8px] border border-[#48B02C] bg-white text-[13px] font-medium text-[#48B02C] transition hover:bg-[#ECFDF3]"
                 >
                   Return Home
                 </button>
@@ -1058,7 +1185,7 @@ function StepTwo({ v, upd, setStep }) {
 
           {/* Publishing */}
           <div className="flex flex-1 flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-[22px]">
-            <h3 className="text-[14px] font-bold text-[#0B1250]">Publishing</h3>
+            <h3 className="text-[16px] font-semibold text-[#0B1250]">Publishing</h3>
 
             <div className="mt-[16px]">
               <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">Status:</p>
@@ -1129,7 +1256,7 @@ function StepTwo({ v, upd, setStep }) {
                     key={item}
                     className="flex items-center gap-[8px] text-[12px] text-[#0B1250]"
                   >
-                    <PiCheckCircle size={16} weight="fill" color="#22C55E" />
+                    <img src={checkIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                     {item}
                   </li>
                 ))}
@@ -1143,14 +1270,21 @@ function StepTwo({ v, upd, setStep }) {
       <div className="flex flex-wrap items-center justify-between gap-[16px]">
         <button
           onClick={() => setStep(1)}
-          className="flex h-[44px] w-[130px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
+          className="flex h-[43px] w-[197px] cursor-pointer items-center justify-center gap-[6px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
         >
           Back
         </button>
         <div className="flex flex-wrap items-center gap-[12px]">
-          <button className="flex h-[44px] cursor-pointer items-center gap-[8px] rounded-[6px] border border-[#E5E7EB] bg-white px-[18px] text-[12px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]">
-            <PiEye size={15} />
+          <button className="flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]">
+            <img src={eyeIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
             Preview
+          </button>
+          <button
+            type="button"
+            className="flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
+          >
+            <img src={floppyIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
+            Save draft
           </button>
           <button className="flex h-[46px] w-[260px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68]">
             <PiCalendarBlank size={16} />

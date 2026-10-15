@@ -1,12 +1,9 @@
 import { useState } from "react";
-import {
-  LuBookOpen,
-  LuChevronDown,
-  LuChevronRight,
-  LuCircleX,
-  LuDownload,
-  LuPlus,
-} from "react-icons/lu";
+import selectorBookIcon from "../../../assets/activities/selector_book.png";
+import chevronIcon from "../../../assets/activities/sel_chevron.png";
+import chipXIcon from "../../../assets/activities/ws_chip_x.png";
+import plusIcon from "../../../assets/activities/ws_plus.png";
+import downloadIcon from "../../../assets/activities/ws_download.png";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -108,14 +105,12 @@ const stepButton =
 function Breadcrumb({ items }) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+      <ol className="flex flex-wrap items-center gap-[6px] text-[16px] font-medium text-[#0A0847]/60">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item} className="flex items-center gap-1.5">
-              {index > 0 && (
-                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
-              )}
+            <li key={item} className="flex items-center gap-[6px]">
+              {index > 0 && <span aria-hidden>&gt;</span>}
               <span aria-current={isLast ? "page" : undefined}>{item}</span>
             </li>
           );
@@ -127,13 +122,13 @@ function Breadcrumb({ items }) {
 
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
-    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
-      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
-      <p className="text-[13px] leading-[22px]">
+    <div className="inline-flex h-[49px] w-[396px] max-w-full items-center gap-[12px] self-start rounded-[8px] border border-[#E2DFFC] bg-[#F7F7F9] pl-[15px] pr-[12px]">
+      <img src={selectorBookIcon} alt="" className="h-[19px] w-[24px] shrink-0" />
+      <p className="text-[14px] font-semibold text-[#0A0847]">
         {parts.map((part, index) => (
           <span key={part}>
-            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
-            <span className="font-bold text-[#0A0847]">{part}</span>
+            {index > 0 && <span className="px-[8px] font-medium text-[#0A0847]/60">&gt;</span>}
+            <span>{part}</span>
           </span>
         ))}
       </p>
@@ -188,10 +183,10 @@ function Select({ id, value, options, onChange }) {
           </option>
         ))}
       </select>
-      <LuChevronDown
-        size={16}
-        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
-        aria-hidden
+      <img
+        src={chevronIcon}
+        alt=""
+        className="pointer-events-none absolute top-1/2 right-4 w-[10px] -translate-y-1/2"
       />
     </div>
   );
@@ -227,7 +222,7 @@ function PuzzleGrid() {
                     className="absolute left-0 top-1/2 z-0 h-9 -translate-y-1/2 rounded-lg border"
                   />
                 )}
-                <span className="relative z-[1] text-[14px] font-medium text-[#0A0847]">
+                <span className="relative z-[1] text-[16px] font-medium text-[#0A0847]">
                   {letter}
                 </span>
               </div>
@@ -302,7 +297,7 @@ export default function AddWordSearch() {
         <h1 className="mt-5 text-[22px] font-semibold text-[#0A0847]">
           Add Word Search
         </h1>
-        <p className="mt-2 text-[14px] font-medium text-[#0A0847]/60">
+        <p className="mt-2 text-[16px] font-medium text-[#0A0847]/60">
           Engage and track activities for each chapter.
         </p>
 
@@ -398,7 +393,7 @@ export default function AddWordSearch() {
                       onClick={() => removeWord(word)}
                       className="flex cursor-pointer items-center"
                     >
-                      <LuCircleX size={14} className="text-[#001984]" aria-hidden />
+                      <img src={chipXIcon} alt="" className="h-[14px] w-[14px]" />
                     </button>
                   </span>
                 ))}
@@ -406,13 +401,13 @@ export default function AddWordSearch() {
             </div>
 
             <div className="flex flex-wrap gap-2.5">
-              <button type="button" className={`${stepButton} w-[164px]`}>
-                <LuPlus size={16} className="shrink-0" aria-hidden />
+              <button type="button" className={`${stepButton} w-[164px] font-semibold`}>
+                <img src={plusIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                 Add New Book
               </button>
 
-              <button type="button" className={`${stepButton} w-fit`}>
-                <LuDownload size={16} className="shrink-0" aria-hidden />
+              <button type="button" className={`${stepButton} w-[244px] font-semibold`}>
+                <img src={downloadIcon} alt="" className="h-[13px] w-[12px] shrink-0" />
                 Import Words from Chapter
               </button>
             </div>
@@ -468,7 +463,7 @@ export default function AddWordSearch() {
                 <h2 className="text-[22px] font-semibold text-[#0A0847]">
                   Live Puzzle Preview
                 </h2>
-                <p className="mt-1 max-w-[330px] text-[14px] leading-[1.4] font-medium text-[#0A0847]/60">
+                <p className="mt-1 max-w-[330px] text-[16px] leading-[1.4] font-medium text-[#0A0847]/60">
                   This is how your word search puzzle will appear to users.
                 </p>
               </div>

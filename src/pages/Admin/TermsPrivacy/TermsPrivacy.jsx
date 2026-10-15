@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
+// Adjust these paths to where assets/terms/*.png live in your project.
+import checkIconSrc from "../../../assets/terms/check.png";
+import warningIconSrc from "../../../assets/terms/warning.png";
+import docIconSrc from "../../../assets/terms/doc.png";
 import {
-  LuCircleCheck,
-  LuTriangleAlert,
-  LuFileText,
   LuPlus,
   LuSearch,
   LuChevronDown,
@@ -14,7 +15,21 @@ import {
   LuCopy,
   LuArchive,
   LuTrash2,
+  LuHistory,
 } from "react-icons/lu";
+
+/* ==========================================================================
+   STAT ICONS
+   ========================================================================== */
+function StatIcon({ src, size }) {
+  return (
+    <img
+      src={src}
+      alt=""
+      style={{ height: size, width: "auto" }}
+    />
+  );
+}
 
 /* ==========================================================================
    MOCK DATA
@@ -58,21 +73,24 @@ const STATS = [
   {
     label: "Published",
     value: 2,
-    icon: LuCircleCheck,
+    iconSrc: checkIconSrc,
+    iconSize: 32,
     badge: "bg-green-bg text-green-icon",
     valueClass: "text-heading",
   },
   {
     label: "Needs Review",
     value: 1,
-    icon: LuTriangleAlert,
+    iconSrc: warningIconSrc,
+    iconSize: 28,
     badge: "bg-red-bg text-red",
     valueClass: "text-indigo",
   },
   {
     label: "Draft",
     value: 1,
-    icon: LuFileText,
+    iconSrc: docIconSrc,
+    iconSize: 25,
     badge: "bg-orange-bg text-orange",
     valueClass: "text-orange-num",
   },
@@ -100,8 +118,8 @@ const MENU_ITEMS = [
 function StatusPill({ status }) {
   return (
     <span
-      className={`inline-block whitespace-nowrap rounded-lg border px-3 py-1 text-xs font-medium ${
-        STATUS_PILL[status] || "border-transparent bg-gray-100 text-gray-700"
+      className={`inline-flex h-[25px] items-center whitespace-nowrap rounded-[8px] border border-transparent px-3 text-[12px] font-medium leading-none ${
+        STATUS_PILL[status] || "bg-gray-100 text-gray-700"
       }`}
     >
       {status}
@@ -134,7 +152,7 @@ export default function TermsPrivacy() {
   const openMenu = (e, id) => {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
-    const width = 130;
+    const width = 104;
     const x = Math.max(
       8,
       Math.min(rect.right - width, window.innerWidth - width - 8),
@@ -160,8 +178,10 @@ export default function TermsPrivacy() {
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">Terms &amp; Privacy</h1>
-          <p className="mt-2 text-sm font-medium text-[#0A084799]">
+          <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
+            Terms &amp; Privacy
+          </h1>
+          <p className="mt-2 text-[16px] font-medium text-[#0A084799]">
             Manage legal documents shown to users.
           </p>
         </div>
@@ -169,34 +189,33 @@ export default function TermsPrivacy() {
         {/* Add Document: onClick removed, so it does not open any page for now.
             To enable create mode later, add:
             onClick={() => navigate("/admin/terms-privacy/edit?mode=create")} */}
-        <button
-          className="flex cursor-pointer items-center gap-2 self-start rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#001266] sm:self-auto"
-        >
+        <button className="flex cursor-pointer items-center gap-2 self-start rounded-[8px] bg-[#001984] px-6 py-3 text-[14px] font-semibold leading-none text-white shadow-sm transition-colors hover:bg-[#001266] sm:self-auto">
           <LuPlus size={16} />
           Add Document
         </button>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
         {STATS.map((stat) => {
-          const Icon = stat.icon;
           return (
             <div
               key={stat.label}
-              className="flex items-center gap-4 rounded-lg border border-[#E2DFFC] bg-white px-4 py-8"
+              className="flex h-[123px] items-center gap-4 rounded-[8px] border border-[#E2DFFC] bg-white pl-4 pr-6"
             >
               <div
-                className={`flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl ${stat.badge}`}
+                className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[16px] ${stat.badge}`}
               >
-                <Icon size={28} />
+                <StatIcon src={stat.iconSrc} size={stat.iconSize} />
               </div>
-              <div className="min-w-0">
-                <p className="text-xl font-semibold text-[#0A0847] mt-0.5">
-                  {stat.value}
-                </p>
-                <p className="text-xs font-semibold text-[#001984]">
+              <div className="flex min-w-0 flex-col gap-2.5">
+                <p className="text-[14px] font-semibold leading-[17px] text-[#001984]">
                   {stat.label}
+                </p>
+                <p
+                  className={`text-[24px] font-semibold leading-[25px] ${stat.valueClass}`}
+                >
+                  {stat.value}
                 </p>
               </div>
             </div>
@@ -206,25 +225,25 @@ export default function TermsPrivacy() {
 
       {/* Filter row */}
       <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-        <div className="relative w-full sm:w-[370px]">
+        <div className="relative w-full sm:w-[406px]">
           <LuSearch
-            size={18}
-            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            size={16}
+            className="pointer-events-none absolute left-[13px] top-1/2 -translate-y-1/2 text-[#0A084799]"
           />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search documents"
-            className="w-full rounded-md border border-[#E2DFFC] bg-white py-3 pl-9 pr-3 text-xs text-[#0A084799] outline-none transition-colors placeholder:text-gray-400 focus:border-[#001984]"
+            className="h-[42px] w-full rounded-[8px] border border-[#E2DFFC] bg-white pl-[38px] pr-3 text-[14px] text-[#0A084799] outline-none transition-colors placeholder:text-[#0A084799] focus:border-[#001984]"
           />
         </div>
 
-        <div className="relative w-full sm:w-[150px]">
+        <div className="relative w-full sm:w-[127px]">
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="w-full cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white py-2 pl-3.5 pr-8 text-xs font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
+            className="h-[42px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-3.5 pr-8 text-[14px] font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
           >
             {STATUS_OPTIONS.map((option) => (
               <option key={option} value={option}>
@@ -234,33 +253,33 @@ export default function TermsPrivacy() {
           </select>
           <LuChevronDown
             size={16}
-            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#0A0847CC]"
           />
         </div>
       </div>
 
       {/* Table card */}
-      <div className="overflow-hidden rounded-lg border border-[#E2DFFC] bg-white p-[14px]">
+      <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-[14px]">
         <div className="overflow-x-auto" onScroll={() => setMenu(null)}>
-          <table className="w-full min-w-[820px] border-collapse text-xs">
+          <table className="w-full min-w-[820px] border-collapse">
             <thead>
-              <tr className="border-b border-[#E2DFFC] bg-[#F3F7FD]">
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+              <tr className="bg-[#F3F7FD]">
+                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
                   Document
                 </th>
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
                   Version
                 </th>
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
                   Effective Date
                 </th>
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
                   Status
                 </th>
-                <th className="p-4 text-left text-sm font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
                   User Acceptance
                 </th>
-                <th className="p-4 text-center text-sm font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-5 text-center text-[14px] font-medium text-[#0A0847CC]">
                   Actions
                 </th>
               </tr>
@@ -269,21 +288,25 @@ export default function TermsPrivacy() {
               {visible.map((doc) => (
                 <tr
                   key={doc.id}
-                  className="border-b border-[#E2DFFC] text-xs text-[#0A0847] transition-colors last:border-b-0 hover:bg-gray-50/50"
+                  className="border-b-[0.75px] border-[#E2DFFC] text-[12px] font-medium text-[#0A0847] transition-colors last:border-b-0 hover:bg-gray-50/50"
                 >
-                  <td className="p-4 font-medium">{doc.name}</td>
-                  <td className="p-4">{doc.version}</td>
-                  <td className="whitespace-nowrap p-4">{doc.effective}</td>
-                  <td className="p-4">
+                  <td className="h-[82px] px-5 align-middle">{doc.name}</td>
+                  <td className="h-[82px] px-5 align-middle">{doc.version}</td>
+                  <td className="h-[82px] whitespace-nowrap px-5 align-middle">
+                    {doc.effective}
+                  </td>
+                  <td className="h-[82px] px-5 align-middle">
                     <StatusPill status={doc.status} />
                   </td>
-                  <td className="whitespace-nowrap p-4">{doc.acceptance}</td>
-                  <td className="p-4 text-center">
+                  <td className="h-[82px] whitespace-nowrap px-5 align-middle">
+                    {doc.acceptance}
+                  </td>
+                  <td className="h-[82px] px-5 text-center align-middle">
                     <button
                       onClick={(e) => openMenu(e, doc.id)}
                       data-action-menu
                       aria-label={`Actions for ${doc.name}`}
-                      className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md bg-[#E9E9E9] text-gray-500 transition-colors hover:bg-gray-50"
+                      className="inline-flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[6px] bg-[#0A08471A] text-[#0A0847CC] transition-colors hover:bg-[#0A084733]"
                     >
                       <LuEllipsis size={18} />
                     </button>
@@ -295,7 +318,7 @@ export default function TermsPrivacy() {
                 <tr>
                   <td
                     colSpan={6}
-                    className="p-4 py-10 text-center text-xs text-[#0A084799]"
+                    className="px-5 py-10 text-center text-[12px] font-medium text-[#0A084799]"
                   >
                     No documents found.
                   </td>
@@ -306,12 +329,18 @@ export default function TermsPrivacy() {
         </div>
       </div>
 
-      {/* Row actions menu (portalled so table overflow does not clip it) */}
+      {/* Footer note */}
+      <div className="-mt-2 flex items-center gap-2 text-[12px] font-medium text-[#0A084799]">
+        <LuHistory size={18} className="shrink-0 text-[#001984]" />
+        All published changes are saved to version history.
+      </div>
+
+      {/* Row actions menu  */}
       {menu &&
         createPortal(
           <div
             data-menu
-            className="fixed z-[60] w-[130px] rounded-lg border border-[#E2DFFC] bg-white py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+            className="fixed z-[60] w-[104px] rounded-[8px] border border-[#E2DFFC] bg-white py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
             style={{ left: menu.x, top: menu.y }}
           >
             {MENU_ITEMS.map((item) => {
@@ -320,13 +349,16 @@ export default function TermsPrivacy() {
                 <button
                   key={item.key}
                   onClick={() => handleMenuAction(item.key)}
-                  className={`flex h-10 w-full cursor-pointer items-center gap-2.5 px-3.5 text-left text-sm transition-colors ${
+                  className={`flex h-9 w-full cursor-pointer items-center gap-2 px-3 text-left text-[10.5px] font-medium transition-colors ${
                     item.danger
                       ? "text-[#C0264A] hover:bg-[#F8EAEC]"
                       : "text-[#0A0847CC] hover:bg-gray-50"
                   }`}
                 >
-                  <ItemIcon size={16} className="shrink-0 text-gray-500" />
+                  <ItemIcon
+                    size={16}
+                    className={`shrink-0 ${item.danger ? "text-[#C0264A]" : "text-[#0A0847CC]"}`}
+                  />
                   {item.label}
                 </button>
               );

@@ -86,18 +86,18 @@ function SelectField({ id, value, onChange, options, placeholder }) {
    ========================================================================== */
 function Toolbar() {
   const base =
-    "flex h-7 items-center justify-center gap-0.5 bg-toolbar px-1.5 text-toolbar-icon transition-colors hover:bg-toolbar-hover";
+    "flex h-[23px] items-center justify-center gap-0.5 bg-toolbar px-1.5 text-toolbar-icon transition-colors hover:bg-toolbar-hover";
 
   return (
     <div className="border-b border-edge px-3 py-2.5">
       <div className="inline-flex overflow-hidden rounded border border-toolbar-edge">
-        <button type="button" title="Bold" className={`${base} w-7`}>
+        <button type="button" title="Bold" className={`${base} w-8`}>
           <LuBold size={14} />
         </button>
         <button
           type="button"
           title="Italic"
-          className={`${base} w-7 border-l border-toolbar-edge`}
+          className={`${base} w-8 border-l border-toolbar-edge`}
         >
           <LuItalic size={14} />
         </button>
@@ -112,14 +112,14 @@ function Toolbar() {
         <button
           type="button"
           title="Insert link"
-          className={`${base} w-7 border-l border-toolbar-edge`}
+          className={`${base} w-8 border-l border-toolbar-edge`}
         >
           <LuLink size={14} />
         </button>
         <button
           type="button"
           title="Align"
-          className={`${base} w-7 border-l border-toolbar-edge`}
+          className={`${base} w-8 border-l border-toolbar-edge`}
         >
           <LuAlignLeft size={14} />
         </button>
@@ -221,7 +221,7 @@ export default function ArticleModal({ mode, article, onClose }) {
     <div className="am-theme fixed inset-0 z-[70] flex items-center justify-center">
       {/* overlay */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 backdrop-blur-sm"
         style={{ background: "var(--overlay)" }}
         onClick={onClose}
         aria-hidden
@@ -233,7 +233,7 @@ export default function ArticleModal({ mode, article, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label={isCreate ? "Create Article" : "Edit Article"}
-        className="relative flex max-h-[92vh] w-[600px] max-w-[calc(100vw-32px)] flex-col gap-[14px] overflow-x-hidden overflow-y-auto rounded-[12px] bg-card p-4 font-[Inter]"
+        className="relative flex max-h-[92vh] w-[316px] max-w-[calc(100vw-32px)] flex-col gap-[14px] overflow-x-hidden overflow-y-auto rounded-[12px] bg-card p-4 font-[Inter]"
         style={{ boxShadow: "var(--modal-shadow)" }}
       >
         {/* header */}
@@ -283,7 +283,7 @@ export default function ArticleModal({ mode, article, onClose }) {
               maxLength={MAX_SUMMARY}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="Add a short description"
-              className="h-[75px] w-full resize-none rounded-lg border border-[#E2DFFC] bg-card py-3 pl-3 pr-3 text-[13px] text-body outline-none transition-colors placeholder:text-placeholder-ink focus:border-primary focus:ring-2 focus:ring-edge"
+              className="h-[75px] w-full resize-none rounded-lg border border-[#E2DFFC] bg-card py-3 pl-3 pr-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition-colors placeholder:text-placeholder-ink focus:border-primary focus:ring-2 focus:ring-edge"
             />
             <span className="pointer-events-none absolute bottom-2 right-3 text-xs text-counter">
               {summary.length}/{MAX_SUMMARY}

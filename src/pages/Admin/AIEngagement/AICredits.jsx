@@ -2,17 +2,9 @@ import { useState } from "react";
 import biblicalHistoryImage from "../../../assets/Biblical History.png";
 import IconBadge from "../../../components/shared/IconBadge";
 import {
-  PiBookOpenTextFill,
-  PiCalendarBlankFill,
   PiCaretRight,
-  PiLeafFill,
-  PiLockFill,
-  PiMagnifyingGlassFill,
-  PiMedalFill,
   PiPlus,
-  PiQuestionFill,
   PiStar,
-  PiUserFill,
   PiX,
 } from "react-icons/pi";
 
@@ -20,8 +12,8 @@ const inputCls =
   "h-[40px] w-full rounded-[8px] border border-edge-input bg-white px-[14px] text-[13px] font-semibold text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
 const taCls =
   "w-full resize-none rounded-[8px] border border-edge-input bg-white px-[14px] py-[12px] text-[13px] font-medium leading-[1.5] text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
-const labelCls = "mb-[6px] block text-[13px] font-semibold text-ink-body";
-const headingCls = "block text-[18px] font-bold leading-[1.3] text-ink";
+const labelCls = "mb-[6px] block text-[12px] font-semibold text-ink-body";
+const headingCls = "block text-[16px] font-bold leading-[1.25] text-ink";
 const groupHeadingCls = "mb-[10px] block text-[16px] font-bold leading-[1.25] text-ink";
 const formCardCls =
   "flex h-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-[16px] shadow-[0_1px_3px_rgba(15,23,42,0.04)]";
@@ -74,17 +66,17 @@ function DraggableList({
 
   return (
     <div className="mt-[14px]">
-      <div className="space-y-[17px]">
+      <div className="space-y-[16px]">
         {items.map((item, index) => (
           <div key={index} className="flex items-center gap-[10px]">
             <DragHandle />
-            <div className="flex h-[42px] min-w-0 flex-1 items-center rounded-[8px] border border-edge-row bg-white px-[14px]">
+            <div className="flex h-[43px] min-w-0 flex-1 items-center rounded-[5px] border border-edge-row bg-white px-[14px]">
               <input
                 id={`${inputIdPrefix}-${index}`}
                 value={item}
                 onChange={(event) => update(index, event.target.value)}
                 placeholder={placeholder}
-                className="min-w-0 flex-1 bg-transparent text-[13px] font-medium text-ink-body outline-none placeholder:text-ink-muted focus:ring-0"
+                className="min-w-0 flex-1 bg-transparent text-[13px] font-semibold text-ink-body outline-none placeholder:text-ink-muted focus:ring-0"
               />
               <button
                 type="button"
@@ -92,7 +84,7 @@ function DraggableList({
                 onClick={() => remove(index)}
                 className="shrink-0 cursor-pointer text-remove transition hover:text-[#EF4444]"
               >
-                <PiX size={14} weight="regular" />
+                <PiX size={16} weight="bold" />
               </button>
             </div>
           </div>
@@ -125,49 +117,105 @@ function ConversionRow({ prefix, numberValue, inputId, unit }) {
         defaultValue={numberValue}
         className="h-[33px] w-[97px] rounded-[8px] border border-edge-input bg-white px-[12px] text-[14px] font-semibold text-ink-body outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
       />
-      <span className="text-left text-[13px] font-medium text-ink-muted">
+      <span className="text-left text-[12px] font-medium text-ink-muted">
         {unit}
       </span>
     </div>
   );
 }
 
+/* Earn-list icons: closer approximations of the Figma illustrations (colours and shapes taken from the screenshots) */
+const BookCrossIcon = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <rect x="4.5" y="2.5" width="14" height="19" rx="2" fill="#8E4116" />
+    <rect x="6.5" y="2.5" width="12" height="18" rx="1.5" fill="#A0521E" />
+    <rect x="4.5" y="19" width="15" height="2.5" rx="1" fill="#F3E3C3" />
+    <rect x="11" y="6" width="2.2" height="7" rx="0.6" fill="#FFC94D" />
+    <rect x="8.9" y="8.4" width="6.4" height="2.2" rx="0.6" fill="#FFC94D" />
+  </svg>
+);
+
+const MagnifierIcon = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <circle cx="10" cy="10" r="7" fill="#33475B" />
+    <circle cx="10" cy="10" r="5.3" fill="#CFE3F3" />
+    <path d="M6.6 8.2a3.6 3.6 0 0 1 2-2.3" stroke="#FFFFFF" strokeWidth="1.3" strokeLinecap="round" />
+    <path d="M14.2 14.2L18.6 18.6" stroke="#33475B" strokeWidth="3.2" strokeLinecap="round" />
+    <path d="M16.6 16.6L20.6 20.6" stroke="#FF9F1C" strokeWidth="2.6" strokeLinecap="round" />
+    <path d="M18.4 18.8L19.6 20" stroke="#FFD27A" strokeWidth="0.8" strokeLinecap="round" />
+  </svg>
+);
+
+const GroupPersonIcon = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <circle cx="9" cy="7.8" r="4" fill="#3B82F6" />
+    <path d="M1.6 21a7.4 6.6 0 0 1 14.8 0z" fill="#3B82F6" />
+    <circle cx="17" cy="8.4" r="3.4" fill="#B6CBF8" />
+    <path d="M15.4 13.6a5.8 5.2 0 0 1 7.4 4.6v2.8h-5.2z" fill="#B6CBF8" />
+  </svg>
+);
+
+const CalendarGridIcon = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <rect x="2.6" y="5" width="18.8" height="16.4" rx="2.6" fill="#FFFFFF" />
+    <path d="M2.6 7.6a2.6 2.6 0 0 1 2.6-2.6h13.6a2.6 2.6 0 0 1 2.6 2.6V9H2.6z" fill="#2196F3" />
+    <rect x="6.4" y="2" width="2.2" height="5" rx="1.1" fill="#1976D2" />
+    <rect x="15.4" y="2" width="2.2" height="5" rx="1.1" fill="#1976D2" />
+    <g fill="#2196F3">
+      <rect x="5.6" y="11.2" width="3" height="2.4" rx="0.5" />
+      <rect x="10.5" y="11.2" width="3" height="2.4" rx="0.5" />
+      <rect x="15.4" y="11.2" width="3" height="2.4" rx="0.5" />
+    </g>
+    <g fill="#90CAF9">
+      <rect x="5.6" y="15.6" width="3" height="2.4" rx="0.5" />
+      <rect x="10.5" y="15.6" width="3" height="2.4" rx="0.5" />
+    </g>
+  </svg>
+);
+
+const JourneyLeafIcon = ({ size = 24 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <path d="M12 2.6l2.2 3.3 3.4-1.1-.9 3.4 3.1 1.6-2.7 2.2 1.4 3.2-3.5-.4L14.3 17l-2.3-2.4-2.3 2.4-.8-3.9-3.5.4 1.4-3.2-2.7-2.2 3.1-1.6-.9-3.4 3.4 1.1z" fill="#EA6A22" />
+    <path d="M12 6.4V19.2" stroke="#8C3A10" strokeWidth="0.9" strokeLinecap="round" />
+  </svg>
+);
+
 const EARN_BADGE_BACKGROUND = "#EEF0FF";
 
 const EARN_LIST = [
   {
     label: "Complete Bible Quizzes",
-    Icon: PiBookOpenTextFill,
+    Icon: BookCrossIcon,
     color: "#F59E0B",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
   {
     label: "Study Memory Verse",
-    Icon: PiMedalFill,
+    Icon: BookCrossIcon,
     color: "#7C3AED",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
   {
     label: "Play Word Search",
-    Icon: PiMagnifyingGlassFill,
+    Icon: MagnifierIcon,
     color: "#4F46E5",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
   {
     label: "Join Group Play",
-    Icon: PiUserFill,
+    Icon: GroupPersonIcon,
     color: "#EC4899",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
   {
     label: "Finish Daily Activities",
-    Icon: PiCalendarBlankFill,
+    Icon: CalendarGridIcon,
     color: "#F97316",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
   {
     label: "Go on Seasonal Journey",
-    Icon: PiLeafFill,
+    Icon: JourneyLeafIcon,
     color: "#22C55E",
     backgroundColor: EARN_BADGE_BACKGROUND,
   },
@@ -186,10 +234,26 @@ const INFO_DESCRIPTIONS = [
   "Your conversations are private and protected.",
 ];
 
+/* Figma-matched info icons: plain "?" glyph and padlock with keyhole */
+const QuestionIcon = ({ size = 24, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9.2 9.2a2.8 2.8 0 1 1 3.9 2.6c-.7.3-1.1.9-1.1 1.7v.5" />
+    <circle cx="12" cy="17.6" r="0.6" fill={color} />
+  </svg>
+);
+
+const LockIcon = ({ size = 24, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke={color} strokeWidth="2.2" />
+    <rect x="5" y="11" width="14" height="10" rx="2" fill={color} />
+    <path d="M12 14.5v2.5" stroke="#FFFFFF" strokeWidth="1.8" />
+  </svg>
+);
+
 const INFO_ICONS = [
   { Icon: PiStar, backgroundColor: "#FDF6E3", color: "#F5C518" },
-  { Icon: PiQuestionFill, backgroundColor: "#EEF0FF", color: "#4F46E5" },
-  { Icon: PiLockFill, backgroundColor: "#EEF0FF", color: "#4F46E5" },
+  { Icon: QuestionIcon, backgroundColor: "#EEF0FF", color: "#4F46E5" },
+  { Icon: LockIcon, backgroundColor: "#EEF0FF", color: "#4F46E5" },
 ];
 
 function LivePreview({ intro, items }) {
@@ -283,18 +347,15 @@ function CreditPacksPreview({ onManage }) {
       <div className="flex flex-wrap items-center justify-between gap-[16px]">
         <div>
           <h2 className="text-[16px] font-bold text-[#1A1B4B]">
-            AI Credit Packs &amp; Bonuses
+            AI Credit Packs &amp; Bonuses (Admin View)
           </h2>
-          <p className="mt-[4px] text-[13px] text-[#6B7280]">
-            Configure bonus credit packs and pricing.
-          </p>
         </div>
         <button
           type="button"
           onClick={onManage}
           className="cursor-pointer rounded-[8px] border border-[#E5E7EB] bg-white px-[16px] py-[8px] text-[13px] font-semibold text-[#1E1B4B] transition hover:bg-[#1E1B4B]/5"
         >
-          Manage Packs
+          Manage
         </button>
       </div>
 
@@ -315,13 +376,13 @@ function CreditPacksPreview({ onManage }) {
             )}
             <p className="text-[12px] font-medium text-[#6B7280]">{pack.name}</p>
             <p
-              className={`mt-[8px] text-[22px] font-bold ${
+              className={`mt-[8px] text-[16px] font-bold ${
                 pack.popular ? "text-[#F5C518]" : "text-[#1A1B4B]"
               }`}
             >
               {pack.credits}
             </p>
-            <p className="mt-[6px] text-[13px] font-semibold text-[#6B7280]">
+            <p className="mt-[6px] text-[12px] font-semibold text-[#6B7280]">
               {pack.price}
             </p>
           </div>
@@ -360,10 +421,10 @@ export default function AICredits() {
   return (
     <div className="min-h-screen space-y-[16px] bg-[#F7F8FC] p-4 font-[Inter] text-[#1A1B4B] sm:p-6">
       <div>
-        <h1 className="text-[24px] font-bold text-[#1A1B4B]">
+        <h1 className="text-[22px] font-bold text-[#1A1B4B]">
           AI Credits &amp; Info Page Manager
         </h1>
-        <p className="mt-[4px] text-[14px] text-[#6B7280]">
+        <p className="mt-[4px] text-[16px] text-[#6B7280]">
           Configure the user-facing AI credit education and rewards.
         </p>
       </div>
@@ -374,9 +435,9 @@ export default function AICredits() {
             key={tabName}
             type="button"
             onClick={() => setTab(tabName)}
-            className={`-mb-px cursor-pointer whitespace-nowrap border-b-2 px-[10px] pb-[10px] pt-[4px] text-[13px] transition ${
+            className={`-mb-px flex h-[41px] w-[196px] cursor-pointer items-center justify-center whitespace-nowrap border-b-2 text-[13px] transition ${
               tab === tabName
-                ? "rounded-t-[7px] border-[#1E1B4B] bg-[#F3F0FF] font-semibold text-[#1E1B4B]"
+                ? "rounded-t-[8px] border-transparent bg-[#E4E7F4] font-semibold text-[#1E1B4B]"
                 : "border-transparent font-medium text-[#6B7280] hover:text-[#1E1B4B]"
             }`}
           >
@@ -419,7 +480,7 @@ export default function AICredits() {
                   />
                 </Field>
 
-                <Field label="Info Items (Highlights)">
+                <Field label="Info Items (Highlights)" heading>
                   <DraggableList
                     items={infoItems}
                     setItems={setInfoItems}

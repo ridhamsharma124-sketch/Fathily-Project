@@ -1,12 +1,8 @@
 import { useState } from "react";
 import {
-  LuMail,
-  LuClock,
-  LuTriangleAlert,
-  LuChartBar,
+  LuPlus,
   LuSearch,
   LuFilter,
-  LuPlus,
   LuUser,
   LuChevronDown,
   LuHeadset,
@@ -15,6 +11,12 @@ import {
 } from "react-icons/lu";
 import TicketModal from "./TicketModal";
 import coverImg from "../../../assets/cover-img.png";
+// Stat icons cut from the Figma frames so the glyphs match exactly.
+// Adjust these paths to where src/assets/support/*.png live in your project.
+import mailIconSrc from "../../../assets/support/mail.png";
+import clockIconSrc from "../../../assets/support/clock.png";
+import urgentIconSrc from "../../../assets/support/urgent.png";
+import barsIconSrc from "../../../assets/support/bars.png";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified
@@ -22,32 +24,32 @@ import coverImg from "../../../assets/cover-img.png";
 const STATS = [
   {
     tileClass: "bg-[rgba(98,8,253,0.1)]",
-    icon: LuMail,
-    iconClass: "text-[#6208FD]",
+    iconSrc: mailIconSrc,
+    iconStyle: { width: 36, height: "auto" },
     value: "24",
     valueClass: "text-[#6208FD]",
     label: "Total articles",
   },
   {
     tileClass: "bg-[rgba(198,84,6,0.1)]",
-    icon: LuClock,
-    iconClass: "text-[#C65406]",
+    iconSrc: clockIconSrc,
+    iconStyle: { height: 36, width: "auto" },
     value: "7",
     valueClass: "text-[#C65406]",
     label: "Waiting",
   },
   {
     tileClass: "bg-[rgba(210,48,51,0.1)]",
-    icon: LuTriangleAlert,
-    iconClass: "text-[#D23033]",
+    iconSrc: urgentIconSrc,
+    iconStyle: { height: 30, width: "auto" },
     value: "3",
     valueClass: "text-[#D23033]",
     label: "Urgent",
   },
   {
     tileClass: "bg-[rgba(24,23,227,0.1)]",
-    icon: LuChartBar,
-    iconClass: "text-[#1817E3]",
+    iconSrc: barsIconSrc,
+    iconStyle: { height: 30, width: "auto" },
     value: null,
     valueClass: "",
     label: "Avg. Response",
@@ -291,6 +293,12 @@ function FieldLabel({ htmlFor, children }) {
   );
 }
 
+const settingsInput =
+  "h-[44px] w-full min-w-0 rounded-[8px] border border-[#E2DFFC] bg-white px-3 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
+
+const settingsSelect =
+  "h-[44px] w-full min-w-0 cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-3 pr-10 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
+
 const inputClass =
   "h-[46px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-[50px] text-[14px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
 
@@ -393,7 +401,7 @@ export default function SupportInbox() {
           </div>
           <button
             type="button"
-            className="flex h-[42px] shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-lg bg-[#001984] px-4 py-2.5 text-[14px] font-medium text-white transition-colors hover:bg-[#001266]"
+            className="flex h-[42px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#001266]"
           >
             <LuPlus size={16} />
             New Article
@@ -401,37 +409,38 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= STAT CARDS ================= */}
-        <div className="grid grid-cols-[repeat(4,minmax(0,1fr))] gap-4">
-          {STATS.map((stat) => {
-            const Icon = stat.icon;
-            return (
+        <div className="grid grid-cols-[repeat(4,minmax(0,1fr))] gap-5">
+          {STATS.map((stat) => (
+            <div
+              key={stat.label}
+              className="flex h-[153px] items-center gap-4 rounded-[12px] border border-[#E2DFFC] bg-[#FEFFFF] pl-4 pr-4"
+            >
               <div
-                key={stat.label}
-                className="flex h-[105px] items-center justify-start gap-2.5 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[44px] pr-[29px] pb-[44px] pl-4"
+                className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] ${stat.tileClass}`}
               >
-                <div
-                  className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] p-[7px] ${stat.tileClass}`}
-                >
-                  <Icon size={28} className={stat.iconClass} />
-                </div>
-                <div className="flex min-w-0 flex-col gap-1.5">
-                  {stat.value ? (
-                    <p className={`text-[22px] font-semibold ${stat.valueClass}`}>
-                      {stat.value}
-                    </p>
-                  ) : null}
-                  <p className="text-[14px] font-semibold text-[#001984]">
-                    {stat.label}
-                  </p>
-                </div>
+                <img
+                  src={stat.iconSrc}
+                  alt=""
+                  style={stat.iconStyle}
+                />
               </div>
-            );
-          })}
+              <div className="flex min-w-0 flex-col gap-2">
+                {stat.value ? (
+                  <p className={`text-[22px] font-semibold leading-none ${stat.valueClass}`}>
+                    {stat.value}
+                  </p>
+                ) : null}
+                <p className="text-[14px] font-semibold text-[#001984]">
+                  {stat.label}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* ================= SEARCH + FILTER ================= */}
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-[370px]">
+          <div className="relative w-[408px]">
             <LuSearch
               size={17}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -460,7 +469,7 @@ export default function SupportInbox() {
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`flex h-[36px] w-[130px] cursor-pointer items-center justify-center rounded-[7.47px] text-[12px] font-medium transition-colors ${
+              className={`flex h-[34px] w-[130px] cursor-pointer items-center justify-center rounded-[7.47px] text-[12px] font-medium transition-colors ${
                 activeTab === tab
                   ? "border border-[#001984] bg-[#001984] text-white"
                   : "border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:bg-gray-50"
@@ -590,15 +599,21 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= SETTINGS ================= */}
-        <div className="w-full">
-          {/* tab bar — full-width bottom border */}
-          <div className="flex w-full gap-7 border-b border-[#E8E8E8]">
+        <div className="w-full rounded-[8px] border border-[#E2DFFC] bg-white px-5 pb-6 pt-0">
+          {/* tab bar — 4 equal columns, full-width divider, underline per tab */}
+          <div className="grid w-full grid-cols-[repeat(4,minmax(0,1fr))] border-b-[2px] border-[#E8E8E8]">
             {SETTINGS_TABS.map((tab) => (
               <button
                 key={tab}
                 type="button"
-                onClick={() => setSettingsTab(tab)}
-                className={`cursor-pointer border-b-2 pb-2.5 text-[14px] font-medium transition-colors ${
+                onClick={() => {
+                  setSettingsTab(tab);
+                  document
+                    .getElementById(`settings-${tab.toLowerCase().replace(/\s+/g, "-")}`)
+                    ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                }}
+                aria-pressed={settingsTab === tab}
+                className={`-mb-[2px] cursor-pointer border-b-[3px] py-5 text-center text-[16px] font-medium leading-none transition-colors ${
                   settingsTab === tab
                     ? "border-[#001984] text-[#001984]"
                     : "border-transparent text-[#0A0847]/60 hover:text-[#0A0847]"
@@ -609,32 +624,33 @@ export default function SupportInbox() {
             ))}
           </div>
 
-          {/* container */}
-          <div className="mt-4 w-full rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-5">
-            <div className="grid grid-cols-[repeat(4,minmax(0,1fr))] gap-4">
-              {/* ---- COLUMN 1: General (Help Center Enabled — navy border) ---- */}
-              <div className="flex min-h-[470px] flex-col gap-2.5 rounded-[7.5px] border border-[#001984] bg-[#FEFFFF] p-4 pb-[22px]">
-                <ToggleRow
-                  label="Help Center Enabled"
+          {/* settings columns — each one is a bordered card */}
+          <div className="mt-6 grid grid-cols-[repeat(4,minmax(0,1fr))] gap-6 2xl:gap-10">
+            {/* ---- COLUMN 1: General (Help Center Enabled — navy border) ---- */}
+            <div id="settings-general" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "General" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
+              <div className="flex items-center justify-between gap-3 border-b border-[#E2DFFC] pb-3">
+                <span className="text-[14px] font-semibold text-[#0A0847]">Help Center Enabled</span>
+                <Switch
                   checked={toggles.helpCenter}
                   onChange={() => toggleRow("helpCenter")}
+                  label="Help Center Enabled"
                 />
+              </div>
 
+              <div className="mt-4 flex flex-col gap-4">
                 <div>
                   <FieldLabel htmlFor="support-hours">Support Hours</FieldLabel>
                   <input
                     id="support-hours"
                     type="text"
                     defaultValue="Mon–Fri, 8:00 AM–6:00 PM (PST)"
-                    className={inputClass}
+                    className={settingsInput}
                   />
                 </div>
 
                 <div>
-                  <FieldLabel htmlFor="response-promise">
-                    Response Promise
-                  </FieldLabel>
-                  <Select id="response-promise">
+                  <FieldLabel htmlFor="response-promise">Response Promise</FieldLabel>
+                  <Select id="response-promise" selectClass={settingsSelect}>
                     <option>Within 24 hours</option>
                     <option>Within 12 hours</option>
                     <option>Within 48 hours</option>
@@ -647,76 +663,78 @@ export default function SupportInbox() {
                     id="support-email"
                     type="text"
                     defaultValue="support@faithlyplus.com"
-                    className={inputClass}
+                    className={settingsInput}
                   />
                 </div>
               </div>
+            </div>
 
-              {/* ---- COLUMN 2: Contact Form ---- */}
-              <div className="flex min-h-[470px] flex-col gap-2.5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FEFFFF] p-4 pb-[22px]">
-                <h3 className="text-[14px] font-semibold text-[#0A0847]">
-                  Contact Form
-                </h3>
+            {/* ---- COLUMN 2: Contact Form ---- */}
+            <div id="settings-contact-form" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Contact Form" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+                Contact Form
+              </h3>
 
+              <div className="mt-4 flex flex-col gap-4">
                 <div>
-                  <FieldLabel htmlFor="contact-subjects">
-                    Manage contact subjects
-                  </FieldLabel>
+                  <FieldLabel htmlFor="contact-subjects">Manage contact subjects</FieldLabel>
                   <input
                     id="contact-subjects"
                     type="text"
                     defaultValue="Mon–Fri, 8:00 AM–6:00 PM (PST)"
-                    className={inputClass}
+                    className={settingsInput}
                   />
                 </div>
 
-                <ul className="space-y-2">
+                <ul className="space-y-[10px]">
                   {CONTACT_SUBJECTS.map((subject) => (
-                    <li
-                      key={subject}
-                      className="flex h-[43px] w-[169px] cursor-grab items-center gap-2.5 rounded-[5px] border border-[#ECECEC] bg-white px-2.5 text-[12px] text-[#0A0847]"
-                    >
-                      <LuGripVertical
-                        size={14}
-                        className="shrink-0 text-[#001984]"
-                      />
-                      {subject}
+                    <li key={subject} className="flex items-center gap-3">
+                      <LuGripVertical size={16} className="shrink-0 text-[#001984]" />
+                      <span className="flex h-[43px] min-w-0 flex-1 cursor-grab items-center rounded-[5px] border border-[#ECECEC] bg-white px-4 text-[12px] font-medium text-[#0A0847]">
+                        {subject}
+                      </span>
                     </li>
                   ))}
                 </ul>
 
-                <ToggleRow
-                  label="Allow Attachments"
-                  checked={toggles.attachments}
-                  onChange={() => toggleRow("attachments")}
-                />
-                <ToggleRow
-                  label="Send Confirmation Email"
-                  checked={toggles.confirmation}
-                  onChange={() => toggleRow("confirmation")}
-                />
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[12px] font-semibold text-[#0A0847]">Allow Attachments</span>
+                  <Switch
+                    checked={toggles.attachments}
+                    onChange={() => toggleRow("attachments")}
+                    label="Allow Attachments"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[12px] font-semibold text-[#0A0847]">Send Confirmation Email</span>
+                  <Switch
+                    checked={toggles.confirmation}
+                    onChange={() => toggleRow("confirmation")}
+                    label="Send Confirmation Email"
+                  />
+                </div>
 
                 <div>
                   <FieldLabel htmlFor="max-file-size">Max File Size</FieldLabel>
-                  <Select id="max-file-size">
+                  <Select id="max-file-size" selectClass={settingsSelect}>
                     <option>5 MB</option>
                     <option>10 MB</option>
                     <option>25 MB</option>
                   </Select>
                 </div>
               </div>
+            </div>
 
-              {/* ---- COLUMN 3: Automation ---- */}
-              <div className="flex min-h-[470px] flex-col gap-2.5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FEFFFF] p-4 pb-[22px]">
-                <h3 className="text-[14px] font-semibold text-[#0A0847]">
-                  Automation
-                </h3>
+            {/* ---- COLUMN 3: Automation ---- */}
+            <div id="settings-automation" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Automation" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+                Automation
+              </h3>
 
+              <div className="mt-4 flex flex-col gap-4">
                 <div>
-                  <FieldLabel htmlFor="auto-assign">
-                    Auto-assign new requests
-                  </FieldLabel>
-                  <Select id="auto-assign">
+                  <FieldLabel htmlFor="auto-assign">Auto-assign new requests</FieldLabel>
+                  <Select id="auto-assign" selectClass={settingsSelect}>
                     <option>Round Robin</option>
                     <option>Load Based</option>
                     <option>Manual</option>
@@ -724,57 +742,59 @@ export default function SupportInbox() {
                 </div>
 
                 <div>
-                  <FieldLabel htmlFor="urgent-rules">
-                    Urgent keyword rules
-                  </FieldLabel>
+                  <FieldLabel htmlFor="urgent-rules">Urgent keyword rules</FieldLabel>
                   <button
                     id="urgent-rules"
                     type="button"
-                    className={`${inputClass} flex cursor-pointer items-center text-left`}
+                    className={`${settingsInput} flex cursor-pointer items-center text-left`}
                   >
                     Manage Rules
                   </button>
                 </div>
 
                 <div>
-                  <FieldLabel htmlFor="auto-close">
-                    Auto-close resolved requests after
-                  </FieldLabel>
-                  <Select id="auto-close">
+                  <FieldLabel htmlFor="auto-close">Auto-close resolved requests after</FieldLabel>
+                  <Select id="auto-close" selectClass={settingsSelect}>
                     <option>7 days</option>
                     <option>14 days</option>
                     <option>30 days</option>
                   </Select>
                 </div>
 
-                <ToggleRow
-                  label="Email notifications"
-                  checked={toggles.emailNotifications}
-                  onChange={() => toggleRow("emailNotifications")}
-                />
-                <ToggleRow
-                  label="In-app notifications"
-                  checked={toggles.inAppNotifications}
-                  onChange={() => toggleRow("inAppNotifications")}
-                />
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[12px] font-semibold text-[#0A0847]">Email notifications</span>
+                  <Switch
+                    checked={toggles.emailNotifications}
+                    onChange={() => toggleRow("emailNotifications")}
+                    label="Email notifications"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-[12px] font-semibold text-[#0A0847]">In-app notifications</span>
+                  <Switch
+                    checked={toggles.inAppNotifications}
+                    onChange={() => toggleRow("inAppNotifications")}
+                    label="In-app notifications"
+                  />
+                </div>
               </div>
+            </div>
 
-              {/* ---- COLUMN 4: Appearance ---- */}
-              <div className="flex min-h-[470px] flex-col gap-2.5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FEFFFF] p-4 pb-[22px]">
-                <h3 className="text-[14px] font-semibold text-[#0A0847]">
-                  Appearance
-                </h3>
+            {/* ---- COLUMN 4: Appearance ---- */}
+            <div id="settings-appearance" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Appearance" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+                Appearance
+              </h3>
 
+              <div className="mt-4 flex flex-col gap-4">
                 <div>
-                  <FieldLabel htmlFor="short-description">
-                    Short Description
-                  </FieldLabel>
-                  <div className="relative w-full max-w-[206px]">
+                  <FieldLabel htmlFor="short-description">Short Description</FieldLabel>
+                  <div className="relative w-full">
                     <textarea
                       id="short-description"
                       defaultValue="Manage your subscription, payments, and billing information."
                       rows={3}
-                      className="w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-2 pr-12 text-[12px] text-[#0A0847] outline-none transition focus:border-[#001984]"
+                      className="w-full resize-none rounded-[8px] border border-[#E2DFFC] bg-white px-[10px] py-2 pr-12 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]"
                     />
                     <span className="absolute bottom-2 right-2.5 text-[10px] text-[#0A0847]/60">
                       63/160

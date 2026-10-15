@@ -5,7 +5,6 @@ import {
   LuSettings,
   LuBookOpen,
   LuFileText,
-  LuInfo,
   LuCircleHelp,
   LuHeadphones,
   LuBookmark,
@@ -23,27 +22,55 @@ import {
   LuLightbulb,
 } from "react-icons/lu";
 import { WordSearchGlyph, MemoryVerseGlyph } from "./activityGlyphs";
+// Figma tile icons (src/assets/activities/)
+import quizIcon from "../../../assets/activities/quiz.png";
+import wordSearchIcon from "../../../assets/activities/wordsearch.png";
+// Figma icons cut from the Activities frames (src/assets/activities/)
+import audioTileIcon from "../../../assets/activities/tile_audio.png";
+import memoryTileIcon from "../../../assets/activities/tile_memory_card.png";
+import memoryTableIcon from "../../../assets/activities/tile_memory_table.png";
+import statHeadphones from "../../../assets/activities/stat_headphones.png";
+import statClock from "../../../assets/activities/stat_clock.png";
+import statBookmark from "../../../assets/activities/stat_bookmark.png";
+import statCheck from "../../../assets/activities/stat_check.png";
+import btnEye from "../../../assets/activities/btn_eye.png";
+import btnExternal from "../../../assets/activities/btn_external.png";
+import btnGear from "../../../assets/activities/btn_gear.png";
+import tipBulb from "../../../assets/activities/tip_bulb.png";
+import audioHeadphones from "../../../assets/activities/audio_headphones.png";
+import selectorBook from "../../../assets/activities/selector_book.png";
+import infoIcon from "../../../assets/activities/info_icon.png";
+import statQuizActive from "../../../assets/activities/stat_quiz_active.png";
+import statQuizQuestions from "../../../assets/activities/stat_quiz_questions.png";
+import statWsActive from "../../../assets/activities/stat_ws_active.png";
+import statWsWords from "../../../assets/activities/stat_ws_words.png";
+
+/* Figma button icon by label: View = eye, Preview = external, Manage = gear */
+const btnImage = (label) =>
+  label.startsWith("View") ? btnEye : label.startsWith("Preview") ? btnExternal : label.startsWith("Manage") ? btnGear : null;
+
 
 /* ==========================================================================
    MOCK DATA — text kept exactly as before
    ========================================================================== */
 const SELECTORS = [
-  { label: "Testament", value: "New Testament", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen },
-  { label: "Book", value: "John", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen },
+  { label: "Testament", value: "New Testament", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen, icon: selectorBook },
+  { label: "Book", value: "John", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen, icon: selectorBook },
   { label: "Book", value: "John", tint: "bg-[#F97316]/10", iconColor: "#F97316", Glyph: LuFileText },
 ];
 
 const ACTIVITY_CARDS = [
   {
     id: "quiz",
+    icon: quizIcon,
     title: "Quiz",
     description: "Test knowledge with multiple question types.",
     tint: "bg-[#001984]/10",
     iconColor: "#001984",
     Glyph: LuCircleHelp,
     stats: [
-      { label: "Active", value: "12", Glyph: LuLayers },
-      { label: "Questions", value: "12", Glyph: LuCircleHelp },
+      { label: "Active", value: "12", Glyph: LuLayers, img: statQuizActive },
+      { label: "Questions", value: "12", Glyph: LuCircleHelp, img: statQuizQuestions },
     ],
     buttons: [
       { label: "View Quiz", Glyph: LuEye },
@@ -52,14 +79,15 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "word-search",
+    icon: wordSearchIcon,
     title: "Word Search",
     description: "Test knowledge with multiple question types.",
     tint: "bg-[#21AC1C]/10",
     iconColor: "#21AC1C",
     Glyph: WordSearchGlyph,
     stats: [
-      { label: "Active", value: "8", Glyph: LuUsers },
-      { label: "Words", value: "96", Glyph: LuPuzzle },
+      { label: "Active", value: "8", Glyph: LuUsers, img: statWsActive, tileBg: "#E8F3EA" },
+      { label: "Words", value: "96", Glyph: LuPuzzle, img: statWsWords, tileBg: "#E8F3EA" },
     ],
     buttons: [
       { label: "View Word Search", Glyph: LuEye },
@@ -68,14 +96,16 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "audio-stream",
+    icon: audioHeadphones,
+    tileBg: "#E5E8F3",
     title: "Chapter Audio Stream",
     description: "Listen to engaging audio content.",
     tint: "bg-[#001984]/10",
     iconColor: "#001984",
     Glyph: LuHeadphones,
     stats: [
-      { label: "Sessions", value: "5", Glyph: LuHeadphones },
-      { label: "Duration", value: "25m", Glyph: LuClock },
+      { label: "Sessions", value: "5", Glyph: LuHeadphones, img: statHeadphones },
+      { label: "Duration", value: "25m", Glyph: LuClock, img: statClock },
     ],
     buttons: [
       { label: "View Audio Stream", Glyph: LuEye },
@@ -84,14 +114,15 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "memory-verse",
+    icon: memoryTileIcon,
     title: "Memory Verse",
     description: "Learn and memorize key Bible verses.",
     tint: "bg-[#F97316]/10",
     iconColor: "#F97316",
     Glyph: MemoryVerseGlyph,
     stats: [
-      { label: "Verses", value: "6", Glyph: LuBookmark },
-      { label: "Practiced", value: "24", Glyph: LuCircleCheck },
+      { label: "Verses", value: "6", Glyph: LuBookmark, img: statBookmark },
+      { label: "Practiced", value: "24", Glyph: LuCircleCheck, img: statCheck },
     ],
     buttons: [
       { label: "Manage Memory Verse", Glyph: LuSettings },
@@ -103,6 +134,7 @@ const ACTIVITY_CARDS = [
 const TABLE_ROWS = [
   {
     id: "1",
+    icon: quizIcon,
     name: "Quiz",
     description: "Knowledge quiz with multiple question types",
     status: "Enabled",
@@ -114,6 +146,7 @@ const TABLE_ROWS = [
   },
   {
     id: "2",
+    icon: wordSearchIcon,
     name: "Word Search",
     description: "Word search puzzle game",
     status: "Enabled",
@@ -125,6 +158,8 @@ const TABLE_ROWS = [
   },
   {
     id: "3",
+    icon: audioHeadphones,
+    tileBg: "#E5E8F3",
     name: "Chapter Audio Stream",
     description: "Audio narration of the chapter",
     status: "Enabled",
@@ -136,6 +171,7 @@ const TABLE_ROWS = [
   },
   {
     id: "4",
+    icon: memoryTableIcon,
     name: "Memory Verse",
     description: "Key verses for memorization and practice",
     status: "Enabled",
@@ -189,17 +225,23 @@ function CheckBox({ label }) {
 }
 
 function SelectorCard({ selector }) {
-  const { label, value, tint, iconColor, Glyph } = selector;
+  const { label, value, tint, iconColor, Glyph, icon } = selector;
   return (
     <button
       type="button"
       className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-[18px] py-[22px] text-left transition-colors hover:border-[#001984]/40"
     >
-      <span
-        className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
-      >
-        <Glyph size={24} style={{ color: iconColor }} />
-      </span>
+      {icon ? (
+        <span className="flex h-[66px] w-[66px] shrink-0 items-center justify-center rounded-[16px] bg-[#EEE6FF]">
+          <img src={icon} alt="" className="h-[36px] w-[36px]" />
+        </span>
+      ) : (
+        <span
+          className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
+        >
+          <Glyph size={24} style={{ color: iconColor }} />
+        </span>
+      )}
       <span className="min-w-0 flex-1">
         <span className="block text-[12px] leading-none text-[#0A0847]/60">{label}</span>
         <span className="mt-2 block truncate text-[18px] leading-none font-semibold text-[#0A0847]">
@@ -212,16 +254,27 @@ function SelectorCard({ selector }) {
 }
 
 function ActivityCard({ card, enabled, onToggle }) {
-  const { title, description, tint, iconColor, Glyph, stats, buttons } = card;
+  const { title, description, tint, iconColor, Glyph, icon, tileBg, stats, buttons } = card;
   return (
     <article className="flex h-[268px] min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[22px] pr-[18px] pb-[26px] pl-[17px]">
       <div className="flex items-start justify-between">
         <div className="flex min-w-0 items-start gap-3">
-          <span
-            className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
-          >
-            <Glyph size={24} style={{ color: iconColor }} />
-          </span>
+          {tileBg ? (
+            <span
+              className="flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px]"
+              style={{ backgroundColor: tileBg }}
+            >
+              <img src={icon} alt="" className="h-[36px] w-[36px]" />
+            </span>
+          ) : icon ? (
+            <img src={icon} alt="" className="h-[53px] w-[53px] shrink-0" />
+          ) : (
+            <span
+              className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
+            >
+              <Glyph size={24} style={{ color: iconColor }} />
+            </span>
+          )}
           <div className="min-w-0">
             <h3 className="text-[16px] leading-none font-semibold text-[#0A0847]">{title}</h3>
             <p className="mt-2 text-[12px] leading-[16px] font-medium text-[#0A0847]/60">
@@ -243,9 +296,14 @@ function ActivityCard({ card, enabled, onToggle }) {
             className="flex h-[77px] min-w-0 items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FAF9FE] p-[12px]"
           >
             <span
-              className={`flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-lg ${tint}`}
+              className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-lg"
+              style={{ backgroundColor: stat.tileBg || "#E5E8F3" }}
             >
-              <stat.Glyph size={18} style={{ color: iconColor }} aria-hidden />
+              {stat.img ? (
+                <img src={stat.img} alt="" className="h-[28px] w-[28px]" />
+              ) : (
+                <stat.Glyph size={22} style={{ color: iconColor }} aria-hidden />
+              )}
             </span>
             <div className="min-w-0">
               <p className="text-[12px] leading-none text-[#0A0847]/60">{stat.label}</p>
@@ -264,7 +322,11 @@ function ActivityCard({ card, enabled, onToggle }) {
             type="button"
             className="flex h-[43px] min-w-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-2 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#001984]/5"
           >
-            <btn.Glyph size={16} className="shrink-0" />
+            {btnImage(btn.label) ? (
+              <img src={btnImage(btn.label)} alt="" className="h-[18px] w-[18px] shrink-0" />
+            ) : (
+              <btn.Glyph size={18} className="shrink-0" />
+            )}
             <span className="truncate">{btn.label}</span>
           </button>
         ))}
@@ -349,15 +411,13 @@ export default function Activities() {
         </section>
 
         {/* INFO BANNER — height 38px (hug) */}
-        <section className="flex w-full min-w-0 items-center gap-3 rounded-lg bg-[#001984]/[0.06] px-4 py-[4px]">
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#0A0847]/10">
-            <LuInfo size={13} className="text-[#0A0847]" aria-hidden />
-          </span>
+        <section className="flex w-full min-w-0 items-center gap-[10px] rounded-[8px] border border-[#E5E2FC] bg-[#F4F4FE] px-[13px] py-[14px]">
+          <img src={infoIcon} alt="" className="h-[24px] w-[24px] shrink-0" />
           <div className="min-w-0">
-            <p className="text-[12px] leading-[15px] font-semibold text-[#0A0847]">
+            <p className="text-[12px] leading-[15px] font-medium text-[#686690]">
               Choose which activities are available for this chapter.
             </p>
-            <p className="text-[12px] leading-[15px] text-[#0A0847]/60">
+            <p className="text-[12px] leading-[15px] text-[#686690]">
               You can enable or disable activities anytime. Controls will be visible to manage
               them easily.
             </p>
@@ -429,11 +489,22 @@ export default function Activities() {
                       </td>
                       <td className="px-5 py-[10px]">
                         <div className="flex items-center gap-2.5">
-                          <span
-                            className={`flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[10px] ${row.tint}`}
-                          >
-                            <Glyph size={18} style={{ color: row.iconColor }} aria-hidden />
-                          </span>
+                          {row.tileBg ? (
+                            <span
+                              className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[8px]"
+                              style={{ backgroundColor: row.tileBg }}
+                            >
+                              <img src={row.icon} alt="" className="h-[24px] w-[24px]" />
+                            </span>
+                          ) : row.icon ? (
+                            <img src={row.icon} alt="" className={`${row.id === "4" ? "h-[47px] w-[47px]" : "h-[36px] w-[36px]"} shrink-0`} />
+                          ) : (
+                            <span
+                              className={`flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[10px] ${row.tint}`}
+                            >
+                              <Glyph size={18} style={{ color: row.iconColor }} aria-hidden />
+                            </span>
+                          )}
                           <span className="text-[12px] font-medium text-[#0A0847]">
                             {row.name}
                           </span>
@@ -489,7 +560,7 @@ export default function Activities() {
         {/* TIP BANNER */}
         <section className="flex h-[75px] w-full min-w-0 items-center justify-between gap-[10px] rounded-lg bg-[#FE9809]/10 pt-4 pr-[31px] pb-[15px] pl-[18px]">
           <p className="flex min-w-0 items-start gap-[10px] text-[12px] font-medium text-[#FE9809]">
-            <LuLightbulb size={17} className="mt-[1px] shrink-0" aria-hidden />
+            <img src={tipBulb} alt="" className="mt-[1px] h-[27px] w-[27px] shrink-0" />
             <span>
               Tip: You can reorder and hide an Activity Settings by using the order flow against
               the icon.

@@ -1,12 +1,7 @@
 import { Fragment, useRef, useState } from "react";
-import {
-  LuBookOpen,
-  LuChevronDown,
-  LuCircleCheck,
-  LuCircleX,
-  LuMusic,
-  LuPlay,
-} from "react-icons/lu";
+import { LuChevronDown, LuCircleCheck, LuCircleX, LuPlay } from "react-icons/lu";
+import selectorBook from "../../../assets/activities/selector_book.png";
+import audioFileIcon from "../../../assets/activities/audio_file_icon.png";
 
 /* ==========================================================================
    PRIMITIVES USED ONLY BY THE NEW ACTIVITY PAGES
@@ -15,19 +10,21 @@ import {
 
 export const labelClass = "mb-[6px] block text-[12px] font-semibold text-[#0A0847]";
 
+/* Figma input: h40, radius 7.47, border 1px #E2DFFC, padding 10/12, Inter 500 12px @80% */
 export const inputClass =
-  "h-10 w-full rounded-lg border border-[#E2DFFC] bg-white px-4 text-[12px] text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]";
+  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]";
 
-/* width is added per-button: w-[152px] / w-[188px] / w-full */
+/* width is added per-button: w-[152px] / w-[188px] / w-full
+   Figma button text: Inter 600 14px @80% */
 export const outlineButton =
-  "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 py-3 text-[16px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 py-3 text-[14px] font-semibold text-[#0A0847]/80 transition-colors hover:bg-[#F1F1F9]";
 
 export const purpleButton =
-  "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4C1DD6] px-6 text-[16px] font-semibold text-white transition-colors hover:bg-[#4318B8]";
+  "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4C1DD6] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#4318B8]";
 
-/* left (form) card — inner padding 18px, vertical gap 10px */
+/* left (form) card — Figma padding: top 19 / right 22 / bottom 35 / left 16, gap 10 */
 export const formCardClass =
-  "flex min-w-0 w-full flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] p-[18px]";
+  "flex min-w-0 w-full flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] pt-[19px] pr-[22px] pb-[35px] pl-4";
 
 export const pageShellClass = "min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]";
 
@@ -70,23 +67,30 @@ export function Breadcrumb({ items = [] }) {
 }
 
 /* -------------------------------------------------------------------------
-   LOCATION BAR — h48, light grey bg, 1px light border, purple book icon,
-   16px semibold text, ">" separators
+   LOCATION BAR — h48, light grey bg, 1px light border,
+   24x24 selector_book icon, 10px icon gap, 12px gap between text / ">" / text
    ---------------------------------------------------------------------- */
 export function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
     <div className="inline-flex h-12 items-center gap-2.5 rounded-lg border border-[#E2DFFC] bg-[#F3F3F7] px-4">
-      <LuBookOpen size={16} className="shrink-0 text-[#5B0FEE]" aria-hidden />
-      {parts.map((part, index) => (
-        <Fragment key={`${part}-${index}`}>
-          {index > 0 && (
-            <span aria-hidden className="px-1.5 text-[16px] font-medium text-[#0A0847]/60">
-              &gt;
-            </span>
-          )}
-          <span className="text-[16px] font-semibold text-[#0A0847]">{part}</span>
-        </Fragment>
-      ))}
+      <img
+        src={selectorBook}
+        alt=""
+        aria-hidden
+        className="h-6 w-6 shrink-0 object-contain"
+      />
+      <div className="flex items-center gap-3">
+        {parts.map((part, index) => (
+          <Fragment key={`${part}-${index}`}>
+            {index > 0 && (
+              <span aria-hidden className="text-[16px] font-medium text-[#0A0847]/60">
+                &gt;
+              </span>
+            )}
+            <span className="text-[16px] font-semibold text-[#0A0847]">{part}</span>
+          </Fragment>
+        ))}
+      </div>
     </div>
   );
 }
@@ -182,7 +186,8 @@ export function Select({ id, value, options, onChange, className = "" }) {
   );
 }
 
-/* textarea with the character counter sitting INSIDE, bottom-right */
+/* textarea with the character counter sitting INSIDE, bottom-right
+   Figma: radius 7.47, text Inter 600 12px @60%, left padding ~15px */
 export function TextArea({
   id,
   value,
@@ -199,7 +204,7 @@ export function TextArea({
         value={value}
         maxLength={max}
         onChange={onChange}
-        className={`w-full resize-none rounded-lg border border-[#E2DFFC] bg-white px-4 pt-3 pb-7 text-[12px] leading-relaxed text-[#0A0847]/60 outline-none transition placeholder:text-[#0A084799] focus:border-[#041581] ${className}`}
+        className={`w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-[15px] pt-3 pb-7 text-[12px] font-semibold leading-[15px] text-[#0A0847]/60 outline-none transition placeholder:text-[#0A084799] focus:border-[#041581] ${className}`}
       />
       <span className="absolute right-4 bottom-2.5 text-[11px] italic text-[#0A084799]">
         {value.length} / {max}
@@ -234,6 +239,7 @@ export function Toggle({ checked, onChange, label }) {
 
 /* -------------------------------------------------------------------------
    IMAGE UPLOAD BOX — click to browse, drag & drop, removable
+   Figma: 535 x 193, radius 8, caption Inter 500 12px, letter-spacing 2%
    ---------------------------------------------------------------------- */
 export function ImageUploadBox({
   image,
@@ -276,7 +282,7 @@ export function ImageUploadBox({
           setDragActive(false);
           take(e.dataTransfer.files);
         }}
-        className={`relative h-[194px] w-full ${width} cursor-pointer overflow-hidden rounded-[7.5px] border bg-white transition-colors ${
+        className={`relative h-[193px] w-full ${width} cursor-pointer overflow-hidden rounded-lg border bg-white transition-colors ${
           image
             ? "border-solid border-[#E2DFFC]"
             : dragActive
@@ -308,7 +314,7 @@ export function ImageUploadBox({
         )}
       </div>
 
-      <p className="mt-2 text-center text-[11px] text-[#0A084799]">
+      <p className="mt-2 text-center text-[12px] font-medium leading-[18px] tracking-[0.02em] text-[#0A084799]">
         {caption[0]}
         <br />
         {caption[1]}
@@ -327,6 +333,8 @@ export function ImageUploadBox({
 
 /* -------------------------------------------------------------------------
    AUDIO FILE CARD — header row (icon / name / meta / check) + body slot
+   Figma: icon 42x42, name Inter 600 14px, meta Inter 500 12px,
+   check 29x29 / 2.5px stroke / #259147
    ---------------------------------------------------------------------- */
 export const AUDIO_FILE_NAME = "john_3_bulkquiz_2026.csv";
 export const AUDIO_FILE_META = "12.4 KB • 25 rows";
@@ -335,18 +343,28 @@ export function AudioFileCard({ children }) {
   return (
     <div className="w-full overflow-hidden rounded-lg border border-[#E2DFFC] bg-[#FBFBFF]">
       <div className="flex h-[72px] items-center gap-3 px-4">
-        <span className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[#4E93F7] to-[#1B64DA]">
-          <LuMusic size={20} className="text-white" aria-hidden />
-        </span>
+        <img
+          src={audioFileIcon}
+          alt=""
+          aria-hidden
+          className="h-[42px] w-[42px] shrink-0 object-contain"
+        />
 
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[16px] font-semibold text-[#0A0847]">
+          <p className="truncate text-[14px] font-semibold text-[#0A0847]">
             {AUDIO_FILE_NAME}
           </p>
-          <p className="text-[13px] text-[#0A0847]/60">{AUDIO_FILE_META}</p>
+          <p className="text-[12px] font-medium text-[#0A0847]/60">
+            {AUDIO_FILE_META}
+          </p>
         </div>
 
-        <LuCircleCheck size={30} className="shrink-0 text-[#16A34A]" aria-hidden />
+        <LuCircleCheck
+          size={29}
+          strokeWidth={2.5}
+          className="shrink-0 text-[#259147]"
+          aria-hidden
+        />
       </div>
 
       {children && <div className="border-t border-[#E2DFFC]">{children}</div>}
@@ -378,18 +396,38 @@ export function Waveform() {
 }
 
 /* -------------------------------------------------------------------------
-   AUDIO PLAYER BAR — h-11, navy play button (28px), waveform, time right
+   AUDIO PLAYER BAR
+   Figma (form):    535 x 51,  padding 12 / 16, gap 10, play circle ~21px
+   Figma (preview): 402 x 62,  padding 16 / 29 / 12 / 16, gap 10, play circle 28px
+   Play circle #001984, time text Inter 500 12px @80%, bg #FEFEFF, radius 8
+   Use variant="preview" for the Story Entry Preview card.
    ---------------------------------------------------------------------- */
-export function AudioPlayer({ time }) {
+export function AudioPlayer({ time, variant = "form" }) {
+  const isPreview = variant === "preview";
+
   return (
-    <div className="flex h-11 w-full items-center gap-3 rounded-lg border border-[#E2DFFC] bg-white px-3">
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0A0847]">
-        <LuPlay size={12} className="ml-[1px] text-white" aria-hidden />
+    <div
+      className={`flex w-full items-center gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] ${
+        isPreview ? "h-[62px] pt-4 pr-[29px] pb-3 pl-4" : "h-[51px] px-4 py-3"
+      }`}
+    >
+      <span
+        className={`flex shrink-0 items-center justify-center rounded-full bg-[#001984] ${
+          isPreview ? "h-7 w-7" : "h-[21px] w-[21px]"
+        }`}
+      >
+        <LuPlay
+          size={isPreview ? 12 : 9}
+          className="ml-[1px] text-white"
+          aria-hidden
+        />
       </span>
 
       <Waveform />
 
-      <span className="shrink-0 text-[11px] text-[#0A0847]/60">{time}</span>
+      <span className="shrink-0 text-[12px] font-medium text-[#0A0847]/80">
+        {time}
+      </span>
     </div>
   );
 }

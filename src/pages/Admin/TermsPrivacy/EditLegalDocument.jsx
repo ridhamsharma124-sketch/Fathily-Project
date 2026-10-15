@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
-  LuSave,
   LuEye,
   LuPlus,
   LuCalendar,
-  LuChevronDown,
   LuChevronRight,
   LuCheck,
-  LuClock,
+  LuHistory,
   LuBold,
   LuItalic,
   LuUnderline,
@@ -20,9 +18,12 @@ import {
   LuIndentIncrease,
   LuTable,
   LuLink,
+  LuUnlink,
   LuCode,
   LuEraser,
+  LuImage,
   LuMaximize2,
+  LuPaintBucket,
 } from "react-icons/lu";
 
 /* ==========================================================================
@@ -64,15 +65,56 @@ const DOC_DEFAULTS = {
 const FONT_FAMILIES = ["Inter", "Poppins", "Georgia", "Arial"];
 const FONT_SIZES = ["14", "16", "18", "20", "24", "32"];
 
-/*
-  Figma values used below (derived from Figma panel + screenshots):
-  - text:            #0A0847 (80% / 70% / 60% opacity variants)
-  - primary:         #001984
-  - card border:     #E2DFFC
-  - toolbar border:  #CCCCCC
-  - toggle ON:       #0B5ED7  (Figma blue - confirm exact hex in Figma if needed)
-  - field group gap: 20px, label -> field gap: 10px
-*/
+
+/* ==========================================================================
+   ICONS 
+   ========================================================================== */
+function SaveIcon({ size = 16 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 3h11l4 4v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+      <path d="M7 3v4.5h8V3" />
+      <rect x="6.5" y="13" width="11" height="8" fill="currentColor" />
+    </svg>
+  );
+}
+
+function InfoDot() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#001984"
+      strokeLinecap="round"
+      className="shrink-0 cursor-help"
+      aria-label="More info"
+    >
+      <title>More info</title>
+      <circle cx="12" cy="12" r="10.2" strokeWidth="1.6" />
+      <path d="M12 6.8V13" strokeWidth="2.2" />
+      <circle cx="12" cy="16.8" r="1.2" fill="#001984" stroke="none" />
+    </svg>
+  );
+}
+
+function Caret() {
+  return (
+    <svg width="7" height="5" viewBox="0 0 7 5" className="shrink-0" aria-hidden>
+      <path d="M0 0h7L3.5 5z" fill="#646464" />
+    </svg>
+  );
+}
 
 /* ==========================================================================
    FORM PRIMITIVES
@@ -81,34 +123,29 @@ function FieldLabel({ children, htmlFor }) {
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-[10px] block text-[12px] font-semibold leading-[15px] text-[#0A0847]"
+      className="mb-[10px] block text-[12px] font-semibold leading-[15px] text-[#0A0847]/80"
     >
       {children}
     </label>
   );
 }
 
+const inputBase =
+  "h-[45px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]";
+
 function TextInput({ className = "", ...props }) {
-  return (
-    <input
-      className={`h-[46px] w-full rounded-[7.47px] border border-soft bg-card px-[12px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-primary focus:ring-2 focus:ring-edge ${className}`}
-      {...props}
-    />
-  );
+  return <input className={`${inputBase} px-[12px] ${className}`} {...props} />;
 }
 
 function IconInput({ icon: Icon, ...props }) {
   return (
     <div className="relative">
       <Icon
-        size={22}
+        size={24}
         strokeWidth={1.5}
-        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#0A0847]"
+        className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A0847]/70"
       />
-      <input
-        className="h-[46px] w-full rounded-[7.47px] border border-soft bg-card pl-[46px] pr-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-primary focus:ring-2 focus:ring-edge"
-        {...props}
-      />
+      <input className={`${inputBase} pl-[46px] pr-[12px]`} {...props} />
     </div>
   );
 }
@@ -119,7 +156,7 @@ function SelectField({ value, onChange, options }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-[46px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-soft bg-card py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-edge"
+        className={`${inputBase} cursor-pointer appearance-none py-[10px] pl-[12px] pr-[50px]`}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -129,7 +166,8 @@ function SelectField({ value, onChange, options }) {
       </select>
       <LuChevronRight
         size={14}
-        className="pointer-events-none absolute right-[17px] top-1/2 -translate-y-1/2 text-[#0A0847]"
+        strokeWidth={3}
+        className="pointer-events-none absolute right-[17px] top-1/2 -translate-y-1/2 text-[#0A0847]/70"
       />
     </div>
   );
@@ -143,45 +181,30 @@ function Toggle({ checked, onChange, label }) {
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative h-[17px] w-[30px] shrink-0 cursor-pointer rounded-full transition-colors ${
-        checked ? "bg-[#0B5ED7]" : "bg-toggle-off"
+      className={`relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors ${
+        checked ? "bg-[#0B5ED7]" : "bg-[#D1D5DB]"
       }`}
     >
       <span
-        className={`absolute top-[2px] h-[13px] w-[13px] rounded-full bg-white transition-all ${
-          checked ? "left-[15px]" : "left-[2px]"
+        className={`absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white transition-all ${
+          checked ? "left-[13px]" : "left-[2px]"
         }`}
       />
     </button>
   );
 }
 
-function InfoDot() {
-  return (
-    <span
-      title="More info"
-      className="inline-flex h-[22px] w-[22px] shrink-0 cursor-help select-none items-center justify-center rounded-full border-[1.5px] border-[#0A0847] text-[13px] font-bold leading-none text-[#0A0847]"
-    >
-      !
-    </span>
-  );
-}
-
 function SegmentedControl({ options, value, onChange }) {
   return (
-    <div className="flex h-[46px] w-full overflow-hidden rounded-[7.47px] border border-soft bg-card">
+    <div className="flex h-[44px] w-full overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white">
       {options.map((option, index) => (
         <button
           key={option}
           type="button"
           onClick={() => onChange(option)}
-          className={`flex-1 cursor-pointer text-[12px] font-medium transition-colors ${
-            index > 0 ? "border-l border-edge" : ""
-          } ${
-            value === option
-              ? "bg-seg text-[#0A0847]"
-              : "bg-card text-[#0A0847]/80 hover:text-[#0A0847]"
-          }`}
+          className={`flex-1 cursor-pointer text-[12px] font-medium leading-none text-[#0A0847]/80 transition-colors ${
+            index > 0 ? "border-l border-[#E2DFFC]" : ""
+          } ${value === option ? "bg-[#E8E7F6]" : "bg-white hover:bg-[#F3F4FB]"}`}
         >
           {option}
         </button>
@@ -192,17 +215,17 @@ function SegmentedControl({ options, value, onChange }) {
 
 function Checkbox({ checked, onChange, label }) {
   return (
-    <label className="inline-flex w-fit cursor-pointer items-center gap-2">
+    <label className="inline-flex w-fit cursor-pointer items-center gap-[8px]">
       <span className="relative inline-flex h-[16px] w-[16px]">
         <input
           type="checkbox"
           checked={checked}
           onChange={(e) => onChange(e.target.checked)}
-          className="peer h-[16px] w-[16px] cursor-pointer appearance-none rounded-[3px] border border-edge bg-card transition-colors checked:border-primary checked:bg-primary"
+          className="peer h-[16px] w-[16px] cursor-pointer appearance-none rounded-[3px] border border-[#001984] bg-white transition-colors checked:bg-[#001984]"
         />
         <LuCheck
           size={11}
-          strokeWidth={3}
+          strokeWidth={3.5}
           className="pointer-events-none absolute left-[2.5px] top-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100"
         />
       </span>
@@ -214,19 +237,15 @@ function Checkbox({ checked, onChange, label }) {
 }
 
 /* ==========================================================================
-   RICH TEXT TOOLBAR  (2 rows, fixed-width groups like Figma)
+   RICH TEXT TOOLBAR 
    ========================================================================== */
-function Caret() {
-  return <LuChevronDown size={10} className="shrink-0" />;
-}
-
 function ToolSelect({ value, onChange, options, className = "" }) {
   return (
     <div className={`relative shrink-0 ${className}`}>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-[27px] w-full cursor-pointer appearance-none rounded-[3.25px] border-[1.63px] border-[#CCCCCC] bg-white pl-2 pr-6 text-[12px] font-medium text-[#0A0847] outline-none transition-colors hover:bg-[#F3F3FB]"
+        className="h-[27px] w-full cursor-pointer appearance-none rounded-[3.25px] border-[1.63px] border-[#CCCCCC] bg-white pl-[8px] pr-[26px] text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors hover:bg-[#F7F7FB]"
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -234,18 +253,21 @@ function ToolSelect({ value, onChange, options, className = "" }) {
           </option>
         ))}
       </select>
-      <LuChevronDown
-        size={12}
-        className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[#0A0847]"
-      />
+      {/* divider + caret, like the Figma select */}
+      <span className="pointer-events-none absolute bottom-[2px] right-[22px] top-[2px] w-px bg-[#CCCCCC]" />
+      <span className="pointer-events-none absolute right-[8px] top-1/2 -translate-y-1/2">
+        <Caret />
+      </span>
     </div>
   );
 }
 
-/* A joined group of buttons: 88 x 27, 1px #CCC border, radius 3.25 */
-function ToolGroup({ children }) {
+/* A joined group of buttons: 27px high, 1px #CCC border, radius 3.25, grey bg */
+function ToolGroup({ children, width = "w-[88px]" }) {
   return (
-    <div className="inline-flex h-[27px] w-[88px] shrink-0 items-stretch divide-x divide-[#CCCCCC] overflow-hidden rounded-[3.25px] border border-[#CCCCCC] bg-white">
+    <div
+      className={`inline-flex h-[27px] shrink-0 items-stretch divide-x divide-[#CCCCCC] overflow-hidden rounded-[3.25px] border border-[#CCCCCC] bg-[#EFEFEF] ${width}`}
+    >
       {children}
     </div>
   );
@@ -256,7 +278,7 @@ function ToolBtn({ title, children }) {
     <button
       type="button"
       title={title}
-      className="flex flex-1 cursor-pointer items-center justify-center gap-[2px] text-[#0A0847] transition-colors hover:bg-[#F3F3FB]"
+      className="flex flex-1 cursor-pointer items-center justify-center gap-[3px] text-[#444444] transition-colors hover:bg-[#E3E3EA]"
     >
       {children}
     </button>
@@ -293,13 +315,16 @@ function Toolbar() {
         </ToolGroup>
         <ToolGroup>
           <ToolBtn title="Text highlight">
-            <span className="h-[13px] w-[13px] rounded-[2px] bg-highlight" />
+            <span className="flex flex-col items-center leading-none">
+              <LuPaintBucket size={13} />
+              <span className="mt-[1px] h-[3px] w-[13px] bg-[#FFEB00]" />
+            </span>
             <Caret />
           </ToolBtn>
           <ToolBtn title="Text color">
             <span className="flex flex-col items-center leading-none">
-              <span className="text-[13px] font-bold text-color-icon">A</span>
-              <span className="mt-[1px] h-[2px] w-[11px] bg-red-600" />
+              <span className="text-[13px] font-bold text-[#333333]">A</span>
+              <span className="mt-[1px] h-[3px] w-[12px] bg-[#E00000]" />
             </span>
             <Caret />
           </ToolBtn>
@@ -315,7 +340,7 @@ function Toolbar() {
             <LuAlignRight size={12} />
           </ToolBtn>
           <ToolBtn title="Indent">
-            <LuIndentIncrease size={12} />
+            <LuIndentIncrease size={12} className="text-[#1D6FD6]" />
           </ToolBtn>
         </ToolGroup>
       </div>
@@ -324,7 +349,7 @@ function Toolbar() {
       <div className="flex items-center gap-[13px] pl-[201px]">
         <ToolGroup>
           <ToolBtn title="Bold">
-            <LuBold size={13} />
+            <LuBold size={13} strokeWidth={3} />
           </ToolBtn>
           <ToolBtn title="Italic">
             <LuItalic size={13} />
@@ -334,21 +359,29 @@ function Toolbar() {
             <Caret />
           </ToolBtn>
         </ToolGroup>
-        <ToolGroup>
+        <ToolGroup width="w-[88px]">
           <ToolBtn title="Insert table">
             <LuTable size={14} />
             <Caret />
           </ToolBtn>
         </ToolGroup>
-        <ToolGroup>
+        <ToolGroup width="w-[64px]">
           <ToolBtn title="Insert link">
             <LuLink size={12} />
+          </ToolBtn>
+          <ToolBtn title="Remove link">
+            <LuUnlink size={12} />
           </ToolBtn>
           <ToolBtn title="Code">
             <LuCode size={12} />
           </ToolBtn>
           <ToolBtn title="Clear formatting">
             <LuEraser size={12} />
+          </ToolBtn>
+        </ToolGroup>
+        <ToolGroup width="w-[40px]">
+          <ToolBtn title="Insert image">
+            <LuImage size={12} />
           </ToolBtn>
           <ToolBtn title="Fullscreen">
             <LuMaximize2 size={12} />
@@ -381,39 +414,38 @@ export default function EditLegalDocument() {
 
   const goBack = () => navigate("/admin/terms-privacy");
 
+  const headerBtn =
+    "flex h-[42px] cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[13px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB]";
+
   return (
-    <div className="ld-theme min-h-screen bg-page p-6 font-[Inter] leading-[100%]">
+    <div className="min-h-screen bg-[#F8FAFC] p-6 font-[Inter] leading-[100%]">
       {/* ------------------------------ Header ------------------------------ */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex flex-wrap items-center gap-5">
-          <h1 className="text-[22px] font-semibold leading-[27px] text-heading">
+          <h1 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
             Edit Legal Document
           </h1>
-          <span className="rounded-[4px] bg-badge-gray px-2 py-[5px] text-[12px] font-medium leading-[15px] text-sub">
+          <span className="rounded-[4px] bg-[#EEEEF3] px-[8px] py-[5px] text-[12px] font-medium leading-[15px] text-[#0A0847]/60">
             {status}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            className="flex h-[42px] cursor-pointer items-center gap-[10px] rounded-lg border border-edge bg-card px-4 text-[14px] font-medium text-[#0A0847] transition-colors hover:bg-soft"
-          >
-            <LuSave size={18} />
+        <div className="flex flex-wrap items-center gap-[12px]">
+          <button type="button" className={headerBtn}>
+            <span className="text-[#001984]">
+              <SaveIcon size={16} />
+            </span>
             Save draft
           </button>
-          <button
-            type="button"
-            className="flex h-[42px] cursor-pointer items-center gap-[10px] rounded-lg border border-edge bg-card px-4 text-[14px] font-medium text-[#0A0847] transition-colors hover:bg-soft"
-          >
-            <LuEye size={18} />
+          <button type="button" className={headerBtn}>
+            <LuEye size={18} className="text-[#001984]" />
             Preview
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-[178px] cursor-pointer items-center justify-center gap-[10px] rounded-lg bg-primary px-4 text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover"
+            className="flex h-[42px] w-[178px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266]"
           >
-            <LuPlus size={18} />
+            <LuPlus size={20} strokeWidth={1.8} />
             Publish Update
           </button>
         </div>
@@ -422,7 +454,7 @@ export default function EditLegalDocument() {
       {/* ------------------------- Two column layout ------------------------ */}
       <div className="mt-6 grid grid-cols-1 items-stretch gap-[29px] lg:grid-cols-[663fr_379fr]">
         {/* ---------- LEFT CARD ---------- */}
-        <div className="flex min-h-[671px] flex-col gap-5 rounded-[7.5px] border-[0.75px] border-soft bg-card p-[23px]">
+        <div className="flex min-h-[671px] flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[20px] py-[23px]">
           <div>
             <FieldLabel htmlFor="doc-type">Document type</FieldLabel>
             <div id="doc-type">
@@ -446,8 +478,7 @@ export default function EditLegalDocument() {
 
           <div>
             <FieldLabel>Document content</FieldLabel>
-            {/* Editor box: 622 x 397 total (toolbar is INSIDE the box) */}
-            <div className="flex h-[397px] flex-col gap-4 overflow-hidden rounded-[7.47px] border border-soft bg-card px-3 py-[10px]">
+            <div className="flex h-[397px] flex-col gap-4 overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px]">
               <Toolbar />
               <div className="min-h-0 flex-1 overflow-auto pr-[38px]">
                 <div className="flex flex-col gap-3">
@@ -468,8 +499,9 @@ export default function EditLegalDocument() {
         </div>
 
         {/* ---------- RIGHT CARD ---------- */}
-        <div className="flex flex-col gap-5 rounded-[7.5px] border-[0.75px] border-soft bg-card px-4 pb-[22px] pt-[23px]">
-          <div>
+        
+        <div className="flex flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[12px] pb-[22px] pt-[23px]">
+          <div className="pr-[10px]">
             <FieldLabel htmlFor="doc-version">Version</FieldLabel>
             <TextInput
               id="doc-version"
@@ -479,7 +511,7 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div>
+          <div className="pr-[10px]">
             <FieldLabel htmlFor="doc-date">Effective date</FieldLabel>
             <IconInput
               id="doc-date"
@@ -490,7 +522,7 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div>
+          <div className="pr-[10px]">
             <FieldLabel>Status</FieldLabel>
             <SegmentedControl
               options={["Draft", "Published"]}
@@ -499,8 +531,8 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div className="flex h-[24px] items-center justify-between gap-3">
-            <span className="flex items-center gap-2 text-[13px] font-semibold leading-[16px] text-[#0A0847]/80">
+          <div className="flex h-[24px] items-center justify-between gap-3 pr-[10px]">
+            <span className="flex items-center gap-[10px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80">
               Require user acceptance again
               <InfoDot />
             </span>
@@ -511,8 +543,8 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div className="flex h-[24px] items-center justify-between gap-3">
-            <span className="flex items-center gap-2 text-[13px] font-semibold leading-[16px] text-[#0A0847]/80">
+          <div className="flex h-[24px] items-center justify-between gap-3 pr-[10px]">
+            <span className="flex items-center gap-[10px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80">
               Show update notice
               <InfoDot />
             </span>
@@ -523,7 +555,6 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          {/* Applies to: checkboxes are STACKED vertically in Figma */}
           <div>
             <p className="text-[14px] font-semibold leading-[17px] text-[#0A0847]">
               Applies to
@@ -542,7 +573,6 @@ export default function EditLegalDocument() {
             </div>
           </div>
 
-          {/* extra 20px space before Summary (Figma has a larger gap here) */}
           <div className="mt-5">
             <FieldLabel htmlFor="doc-summary">Summary of changes</FieldLabel>
             <textarea
@@ -550,27 +580,26 @@ export default function EditLegalDocument() {
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="Describe what changed in this version"
-              className="h-[75px] w-full resize-none rounded-[7.47px] border border-soft bg-card px-3 py-[10px] text-[12px] font-medium leading-[15px] text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-primary focus:ring-2 focus:ring-edge"
+              className="h-[79px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium leading-[15px] text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]"
             />
           </div>
 
           <button
             type="button"
-            className="inline-flex w-fit cursor-pointer items-center gap-[8px] text-[13px] font-medium leading-[16px] text-[#0A0847]/60 transition-colors hover:text-primary"
+            className="inline-flex w-fit cursor-pointer items-center gap-[8px] text-[12px] font-medium leading-[15px] text-[#0A0847]/60 transition-colors hover:text-[#001984]"
           >
-            <LuClock size={18} />
+            <LuHistory size={20} className="text-[#001984]" />
             Revision history
           </button>
         </div>
       </div>
 
       {/* ------------------------------ Footer ------------------------------ */}
-      {/* Figma: Back 197 | gap 298 | Save draft 212 | gap 32 | Publish 317 */}
       <div className="mt-8 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:px-3">
         <button
           type="button"
           onClick={goBack}
-          className="h-[42px] w-full cursor-pointer rounded-lg border border-soft bg-card px-4 text-[14px] font-semibold text-[#0A0847] transition-colors hover:bg-soft sm:w-[197px]"
+          className="h-[42px] w-full cursor-pointer rounded-[8px] border border-[#E2DFFC] bg-white px-4 text-[14px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB] sm:w-[197px]"
         >
           Back
         </button>
@@ -578,14 +607,14 @@ export default function EditLegalDocument() {
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-8">
           <button
             type="button"
-            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-lg border border-primary bg-white px-4 text-[14px] font-semibold text-primary transition-colors hover:bg-soft sm:w-[212px]"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#001984] bg-white px-4 text-[14px] font-semibold leading-none text-[#001984] transition-colors hover:bg-[#F3F4FB] sm:w-[212px]"
           >
-            <LuSave size={16} />
+            <SaveIcon size={16} />
             Save draft
           </button>
           <button
             type="button"
-            className="h-[42px] w-full cursor-pointer rounded-lg bg-primary px-4 text-[14px] font-semibold text-white transition-colors hover:bg-primary-hover sm:w-[317px]"
+            className="h-[42px] w-full cursor-pointer rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[317px]"
           >
             Publish Updates
           </button>
