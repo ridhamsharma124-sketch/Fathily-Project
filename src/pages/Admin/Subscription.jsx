@@ -14,6 +14,31 @@ import { BiSolidEditAlt, BiDollar } from "react-icons/bi";
 import { TbFileOff } from "react-icons/tb";
 import { FaCalendarDays, FaPlay } from "react-icons/fa6";
 import { PiToggleRightFill, PiEyeFill } from "react-icons/pi";
+import WhiteCalendar from "../../assets/SubscriptionSvgs/WhiteCalendar.svg"
+import GrayCalendar from "../../assets/SubscriptionSvgs/GrayCalendar.svg"
+import BlueGift from "../../assets/SubscriptionSvgs/BlueGift.svg";
+import GreenToggle from "../../assets/SubscriptionSvgs/GreenToggle.svg";
+import TimeBox from "../../assets/SubscriptionSvgs/TimeBox.svg";
+import GreenCredit from "../../assets/SubscriptionSvgs/GreenCredit.svg";
+import GreenPlay from "../../assets/SubscriptionSvgs/GreenPlay.svg";
+import InfoIcon from "../../assets/SubscriptionSvgs/InfoIcon.svg";
+import PurpleEye from "../../assets/SubscriptionSvgs/PurpleEye.svg";
+import FileIcon from "../../assets/SubscriptionSvgs/FileIcon.svg";
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+const WhiteCalendarSvg = (p) => <SvgIcon src={WhiteCalendar} {...p} />;
+const GrayCalendarSvg = (p) => <SvgIcon src={GrayCalendar} {...p} />;
+const BlueGiftSvg = (p) => <SvgIcon src={BlueGift} {...p} />;
+const GreenToggleSvg = (p) => <SvgIcon src={GreenToggle} {...p} />;
+const TimeBoxSvg = (p) => <SvgIcon src={TimeBox} {...p} />;
+const GreenCreditSvg = (p) => <SvgIcon src={GreenCredit} {...p} />;
+const GreenPlaySvg = (p) => <SvgIcon src={GreenPlay} {...p} />;
+const InfoIconSvg = (p) => <SvgIcon src={InfoIcon} {...p} />;
+const PurpleEyeSvg = (p) => <SvgIcon src={PurpleEye} {...p} />;
+const FileIconSvg = (p) => <SvgIcon src={FileIcon} {...p} />;
 
 /* ==========================================================================
    MOCK API FETCH (Returns full page payload)
@@ -496,7 +521,7 @@ export default function Subscription() {
               : "border-transparent text-gray-500 hover:text-gray-800 cursor-pointer"
           }`}
         >
-          <FiCalendar size={20} />
+          <GrayCalendarSvg size={20} />
           Cancellation & Free Trial
         </button>
       </div>
@@ -521,7 +546,7 @@ export default function Subscription() {
                     <div
                       className={`w-9 h-9 rounded-xl ${plan.iconColor} text-white flex items-center justify-center`}
                     >
-                      <FaCalendarDays size={18} />
+                      <WhiteCalendarSvg size={20} />
                     </div>
                     <h3 className="font-semibold text-sm text-[#0A0847]">
                       {plan.title}
@@ -678,7 +703,7 @@ export default function Subscription() {
           {/* Cancellation Reasons */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
             <h3 className="font-bold text-sm text-[#0A0847] flex items-center gap-2">
-              <TbFileOff size={22} className="text-[#001984]" />
+              <FileIconSvg size={22} className="text-[#001984]" />
               Cancellation Reasons
             </h3>
 
@@ -723,7 +748,7 @@ export default function Subscription() {
           {/* Free Trial Settings */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
             <h3 className="font-semibold text-base text-[#0A0847] flex items-center gap-3">
-              <GiftIcon size={32} />
+              <BlueGiftSvg size={32} />  
               <span>
                 Free Trial Settings{" "}
                 <span className="text-xs font-normal text-[#0A0847]">
@@ -736,8 +761,8 @@ export default function Subscription() {
               {/* Row 1: Enable Free Trial */}
               <div className="py-5 flex items-center justify-between border-t border-[#0019841A]">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
-                    <PiToggleRightFill size={20} />
+                  <span className="flex shrink-0 items-center justify-center rounded-full">
+                    <GreenToggleSvg size={32} /> 
                   </span>
                   Enable Free Trial
                 </div>
@@ -752,8 +777,8 @@ export default function Subscription() {
               {/* Row 2: Trial Duration */}
               <div className="py-5 flex items-center justify-between">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
-                  <span className="cancel-grad-clock flex h-[22.5px] w-[22.5px] shrink-0 items-center justify-center rounded-full text-white">
-                    <FiClock size={16} />
+                  <span className="flex shrink-0 items-center justify-center rounded-full text-white">
+                    <TimeBoxSvg size={32} />  
                   </span>
                   Trial Duration
                 </div>
@@ -778,8 +803,8 @@ export default function Subscription() {
               {/* Row 3: Require Payment Method */}
               <div className="py-5 flex items-center justify-between">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
-                  <span className="cancel-grad-card flex h-[21px] w-[18.7px] shrink-0 items-center justify-center rounded-[3px] text-white">
-                    <FiCreditCard size={15} />
+                  <span className="flex shrink-0 items-center justify-center rounded-[3px] text-white">
+                    <GreenCreditSvg size={32} /> 
                   </span>
                   Require Payment Method
                 </div>
@@ -794,8 +819,8 @@ export default function Subscription() {
               {/* Row 4: Auto-start paid plan */}
               <div className="py-5 flex items-center justify-between">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
-                    <FaPlay size={11} />
+                  <span className="flex shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
+                    <GreenPlaySvg size={32} />  
                   </span>
                   Auto-start paid plan after trial
                 </div>
@@ -810,10 +835,7 @@ export default function Subscription() {
 
             {/* Info Callout */}
             <div className="bg-[#F3F7FD99] rounded-lg px-4 py-3 flex items-center gap-3 text-[13px] leading-none tracking-[0.005em] text-[var(--cancel-navy)] font-medium border border-[var(--cancel-border)]">
-              <BsFillInfoCircleFill
-                size={24}
-                className="shrink-0 text-[var(--cancel-navy)]"
-              />
+              <InfoIconSvg size={24} />  
               <span className="italic">
                 Users will be notified before the trial ends and before
                 conversion to a paid plan.
@@ -822,14 +844,12 @@ export default function Subscription() {
 
             {/* Trial Preview Banner */}
             <div className="bg-[#F3F7FD] rounded-lg px-4 py-2 flex items-center gap-3 border border-[var(--cancel-border)]">
-              <div className="cancel-grad-eye ring-4 ring-[var(--cancel-eye-ring)] flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-full text-white">
-                <PiEyeFill size={24} />
-              </div>
+              <PurpleEyeSvg size={42} /> 
               <div>
-                <p className="text-base leading-none font-semibold tracking-[0.005em] text-[var(--cancel-navy)]">
+                <p className="text-base leading-none font-semibold tracking-[0.005em] text-[#001984]">
                   Trial Preview
                 </p>
-                <p className="text-[13px] leading-[23px] font-medium text-[var(--cancel-navy)] mt-[7px]">
+                <p className="text-[13px] leading-[23px] font-medium text-[#001984] mt-[7px]">
                   {trialSettings.trialDays} days free → Paid plan starts
                   automatically
                 </p>
@@ -841,7 +861,7 @@ export default function Subscription() {
 
       {/* Save Button Bar */}
       <div className="pt-2">
-        <button className="flex h-12 w-full items-center justify-center gap-[10px] rounded-lg bg-[var(--cancel-navy)] px-[15px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-[var(--cancel-navy-hover)] cursor-pointer">
+        <button className="flex h-12 w-full items-center justify-center gap-[10px] rounded-lg bg-[#001984] px-[15px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-[var(--cancel-navy-hover)] cursor-pointer">
           <SaveIcon size={16} />
           Save Plan Changes
         </button>

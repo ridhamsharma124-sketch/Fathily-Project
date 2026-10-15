@@ -29,6 +29,30 @@ import { AiOutlineUserSwitch } from "react-icons/ai";
 import { TbSettingsCog } from "react-icons/tb";
 import { GiThreeLeaves } from "react-icons/gi";
 import adminDashboardImage from "../../assets/AdminDBImage.png"; // Ensure this path is correct
+import UsersIcon from "../../assets/Dashboard/UserSIcon.svg";
+import UsersIcon2 from "../../assets/Dashboard/UsersIcon2.svg";
+import DailyVerseStat from "../../assets/Dashboard/DailyVerseStat.svg";
+import ReflectionStat from "../../assets/Dashboard/ReflectionStat.svg";
+import PrayerLogged from "../../assets/Dashboard/PrayerLogged.svg";
+import HeadPhones from "../../assets/Dashboard/HeadPhones.svg";
+import OrangeFile from "../../assets/Dashboard/OrangeFile.svg";
+import StarIcon from "../../assets/Dashboard/StarIcon.svg";
+import AiIcon from "../../assets/Dashboard/AiIcon.svg";
+import AiStars from "../../assets/Dashboard/AiStars.svg";
+import GreanLeafs from "../../assets/Dashboard/GreanLeafs.svg";
+import UserIconFilled from "../../assets/Dashboard/UserIconFilled.svg";
+import BlueBook from "../../assets/Dashboard/BlueBook.svg";
+
+const SvgIcon = ({ src, size = 16, className = "" }) => (
+  <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
+);
+
+const AiIconSvg = (p) => <SvgIcon src={AiIcon} {...p} />;
+const AiStarsSvg = (p) => <SvgIcon src={AiStars} {...p} />;
+const GreanLeafsSvg = (p) => <SvgIcon src={GreanLeafs} {...p} />;
+const UserIconFilledSvg = (p) => <SvgIcon src={UserIconFilled} {...p} />;
+const BlueBookSvg = (p) => <SvgIcon src={BlueBook} {...p} />;
+const PrayerLoggedSvg = (p) => <SvgIcon src={PrayerLogged} {...p} />;
 
 // Mock API fetch
 const fetchDashboardData = () =>
@@ -82,7 +106,7 @@ const fetchDashboardData = () =>
             label: "Active Users",
             value: 890,
             change: 9.3,
-            icon: "users",
+            icon: "users2",
             color: "blue",
           },
           {
@@ -152,13 +176,14 @@ const fetchDashboardData = () =>
   );
 
 const iconMap = {
-  users: FiUsers,
-  verse: HiOutlineBookOpen,
-  book: FiBookOpen,
-  heart: FiHeart,
-  headphones: FiHeadphones,
-  file: FiFileText,
-  star: FiStar,
+  users: UsersIcon,
+  users2: UsersIcon2,
+  verse: DailyVerseStat,
+  book: ReflectionStat,
+  heart: PrayerLogged,
+  headphones: HeadPhones,
+  file: OrangeFile,
+  star: StarIcon,
 };
 
 const colorMap = {
@@ -169,10 +194,10 @@ const colorMap = {
 };
 
 const activityIconMap = {
-  user: FiUsers,
-  verse: GiThreeLeaves,
-  reflection: FiHeart,
-  prayer: AiOutlineUserSwitch,
+  user: UserIconFilledSvg,
+  verse: GreanLeafsSvg,
+  reflection: PrayerLoggedSvg,
+  prayer: BlueBookSvg,
 };
 
 const activityBgMap = {
@@ -235,7 +260,7 @@ export default function Dashboard() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {data.overview.map((item) => {
-            const Icon = iconMap[item.icon];
+            const icon = iconMap[item.icon];
             return (
               <div
                 key={item.key}
@@ -244,7 +269,7 @@ export default function Dashboard() {
                 <div
                   className={`h-[60px] w-[60px] shrink-0 rounded-[18px] flex items-center justify-center ${colorMap[item.color]}`}
                 >
-                  <Icon size={28} />
+                  <img src={icon} alt="" className="h-[50px] w-[50px] shrink-0" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-[Inter] font-semibold text-[#001984]">
@@ -454,7 +479,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 {/* Sparkles Icon */}
                 <div className="w-11 h-11 text-[#EAB308] flex items-center justify-center shrink-0">
-                  <PiSparkleBold size={32} />
+                  <AiStarsSvg size={32} />
                 </div>
                 <span className="font-medium text-[#0A0847] text-sm">
                   AI Comprehension
@@ -470,7 +495,7 @@ export default function Dashboard() {
               <div className="flex items-center gap-3">
                 {/* AI Badge Icon */}
                 <div className="w-11 h-11 text-[#6D37FD] flex items-center justify-center shrink-0 font-extrabold text-xs">
-                  <TbSettingsCog size={32} />
+                  <AiIconSvg size={32} />
                 </div>
                 <span className="font-medium text-[#0A0847] text-sm">
                   AI Personalization
@@ -507,9 +532,9 @@ export default function Dashboard() {
                   <div className="flex items-center gap-4">
                     {/* Distinct colored icon container */}
                     <div
-                      className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${activityBgMap[a.icon] || "bg-gray-100 text-gray-600"}`}
+                      className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${activityBgMap[a.icon] || "bg-gray-100 text-gray-600"}`}
                     >
-                      <Icon size={18} />
+                      <Icon size={32} />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-[#0A0847]">
