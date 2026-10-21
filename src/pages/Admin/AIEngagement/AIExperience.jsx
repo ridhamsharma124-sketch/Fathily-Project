@@ -148,7 +148,6 @@ const MODERATION = [
   },
 ];
 
-/* Save icon traced to match the Figma floppy (rounded body, top shutter, bottom label) */
 const SaveIcon = ({ size = 16 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M5 3h11l5 5v10a3 3 0 0 1-3 3H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />

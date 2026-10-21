@@ -10,8 +10,7 @@ import {
   LuGripVertical,
 } from "react-icons/lu";
 import TicketModal from "./TicketModal";
-import coverImg from "../../../assets/cover-img.png";
-// Stat icons cut from the Figma frames so the glyphs match exactly.
+import coverImg from "../../../assets/cover-img.webp";
 // Adjust these paths to where src/assets/support/*.png live in your project.
 import mailIconSrc from "../../../assets/support/mail.png";
 import clockIconSrc from "../../../assets/support/clock.png";

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import giftIcon from "../../../assets/activities/mv_gift.png";
 import shuffleIcon from "../../../assets/activities/mv_shuffle.png";
-import bookIcon from "../../../assets/activities/mv_book.png";
-import memoryVerseBg from "../../../assets/memory-verse-bg.png";
-import liveQuestionImage from "../../../assets/live question img.png";
+import bookIcon from "../../../assets/activities/icon-book-purple.svg";
+import memoryVerseBg from "../../../assets/activities/memory-verse-bg.webp";
+import liveQuestionImage from "../../../assets/activities/live question img.webp";
 import {
   ActivityPageHeader,
   AudioFileCard,

@@ -440,7 +440,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Right: Legend — Figma: 167px wide, names col 70px, 64px gap, 38px row gap */}
             <div className="grid grid-cols-[70px_auto] gap-x-16 gap-y-[38px] items-center">
               {data.devices.map((d) => (
                 <Fragment key={d.name}>

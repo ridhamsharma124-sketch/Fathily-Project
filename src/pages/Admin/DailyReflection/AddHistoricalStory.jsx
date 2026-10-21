@@ -1,8 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import harpImage from "../../../assets/harp.png";
-import ruinsImage from "../../../assets/ruins.png";
-// Icons cut from the Figma frame (transparent PNG)
+import harpImage from "../../../assets/harp.webp";
+import ruinsImage from "../../../assets/ruins.webp";
 import floppyIcon from "../../../assets/addhistory/floppy.png";
 import eyeIcon from "../../../assets/addhistory/eye.png";
 import {
@@ -34,7 +33,6 @@ import {
   PiUploadSimple,
   PiX,
 } from "react-icons/pi";
-// Icons cut from the Figma frames (src/assets/addhistory/)
 import replaceIcon from "../../../assets/addhistory/replace.png";
 import trashIcon from "../../../assets/addhistory/trash.png";
 import lockIcon from "../../../assets/addhistory/lock.png";
@@ -51,7 +49,6 @@ import clockIcon from "../../../assets/addhistory/clock.png";
 const inputCls =
   "h-[40px] w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]";
 
-// Step 1 (Figma-matched)
 const s1InputBase =
   "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
 const s1Input = `h-[46px] ${s1InputBase}`;
@@ -117,7 +114,6 @@ function Toggle({ checked, onChange, label = "" }) {
   );
 }
 
-/** Step 1 toggle (Figma colors) */
 function S1Toggle({ checked, onChange, label = "" }) {
   return (
     <button
@@ -174,7 +170,6 @@ function SelectBox({
   );
 }
 
-/** Step 1 select (Figma: 46px high, or 52px for the schedule row) */
 function S1Select({
   value,
   onChange,
@@ -196,7 +191,6 @@ function S1Select({
           </option>
         ))}
       </select>
-      {/* Figma "ic_down arrow": 7.5 x 4.84, #0A0847 @ 60% */}
       <span
         className={`pointer-events-none absolute ${arrowRight} top-1/2 flex h-[18px] w-[18px] -translate-y-1/2 items-center justify-center`}
       >
@@ -231,7 +225,6 @@ function Checkbox({ checked, onChange, label, labelClass = "" }) {
   );
 }
 
-/** Step 1 checkbox (Figma: 20x20) */
 function S1Checkbox({ checked, onChange, label, labelClass = "" }) {
   return (
     <label className="flex cursor-pointer items-center gap-[10px]">
@@ -282,7 +275,6 @@ function RichTextBox({ value, onChange, rows = 5 }) {
   );
 }
 
-/** Step 1 rich text box (Figma: joined grey toolbar group, 20px text padding) */
 function S1RichTextBox({ value, onChange }) {
   const seg =
     "flex cursor-pointer items-center justify-center text-[#333333] transition hover:bg-[#E4E4E4]";

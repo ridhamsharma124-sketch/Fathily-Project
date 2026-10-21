@@ -7,8 +7,7 @@ import {
   LuChevronLeft,
   LuChevronRight,
 } from "react-icons/lu";
-// Tier icons cut from the Figma frame (colour circle + illustration).
-// Path assumes src/pages/Admin/Badges/ -> src/assets/tiers/
+
 import seedIcon from "../../../assets/tiers/tier-seed.png";
 import sproutIcon from "../../../assets/tiers/tier-sprout.png";
 import treeIcon from "../../../assets/tiers/tier-tree.png";
@@ -21,9 +20,7 @@ const TIER_ICONS = {
   faithful: faithfulIcon,
 };
 
-/* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
-   ========================================================================== */
+
 const TIERS = [
   {
     id: "seed",
@@ -91,10 +88,7 @@ const TIERS = [
 const PAGES = [1, 2, 3, 4, 5];
 const PAGE_SIZES = [10, 20, 50];
 
-/* ==========================================================================
-   SMALL PRIMITIVES
-   ========================================================================== */
-/* Figma toggle: 26 x 15 track */
+
 function Toggle({ checked, onChange, label }) {
   return (
     <button
@@ -116,12 +110,9 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* Figma: header 14px / 500, body 12px / 500 */
 const TH_CLASS = "px-5 py-0 text-[14px] font-medium leading-none text-[#0A0847]/80";
 
-/* ==========================================================================
-   PAGE — TIERS MANAGEMENT
-   ========================================================================== */
+
 export default function TiersManagement() {
   const [activeStates, setActiveStates] = useState(() =>
     TIERS.reduce((acc, tier) => ({ ...acc, [tier.id]: true }), {}),
@@ -135,20 +126,16 @@ export default function TiersManagement() {
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="mx-auto max-w-[1072px] space-y-6 px-5 py-6">
-        {/* header row */}
         <div className="flex items-start justify-between gap-6">
           <div>
-            {/* Figma: Inter 600, 22px */}
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
               Tiers Management
             </h1>
-            {/* Figma: Inter 500, 16px, #0A0847 60% */}
             <p className="mt-[18px] text-[16px] font-medium leading-none text-[#0A0847]/60">
               Create, edit and manage faith journey tiers.
             </p>
           </div>
 
-          {/* Figma: 14px / 600, 8px radius */}
           <button
             type="button"
             className="flex h-[42px] w-[163px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition-colors hover:bg-[#001266]"
@@ -158,12 +145,10 @@ export default function TiersManagement() {
           </button>
         </div>
 
-        {/* table card — Figma: radius 7.5px, border 0.75px #E2DFFC */}
         <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1000px] border-collapse text-left">
               <thead>
-                {/* Figma header: 50px tall, #F3F3FD fill, 20px side padding */}
                 <tr className="h-[50px] bg-[#F3F3FD]">
                   <th scope="col" className={`${TH_CLASS} w-[15.3%] text-left`}>
                     Tier
@@ -193,11 +178,9 @@ export default function TiersManagement() {
                       key={tier.id}
                       className="border-b-[0.75px] border-[#E9E9E9] align-middle transition-colors last:border-b-0 hover:bg-[#FBFBFF]"
                     >
-                      {/* Tier */}
                       <td className="px-5 py-5">
                         <div className="flex flex-col items-start">
                           <img src={TIER_ICONS[tier.id]} alt="" className="h-[35px] w-[35px] shrink-0" />
-                          {/* Figma: name 12px / 500, subtitle 10px / 500 at 60% */}
                           <p className="mt-[6px] text-[12px] font-medium leading-none text-[#0A0847]/80">
                             {tier.name}
                           </p>
@@ -207,17 +190,14 @@ export default function TiersManagement() {
                         </div>
                       </td>
 
-                      {/* Points Range */}
                       <td className="whitespace-nowrap px-5 py-5 text-[12px] font-medium leading-none text-[#0A0847]/80">
                         {tier.points}
                       </td>
 
-                      {/* Description */}
                       <td className="px-5 py-5 text-[12px] font-medium leading-[15px] text-[#0A0847]/80">
                         {tier.description}
                       </td>
 
-                      {/* Benefits Unlocked — Figma: 12px / 500, 21px line pitch */}
                       <td className="px-5 py-5">
                         <ul className="list-inside list-disc pl-0 text-[12px] font-medium leading-[21px] text-[#0A0847]/80 marker:text-[#0A0847]/80">
                           {tier.benefits.map((benefit) => (
@@ -226,7 +206,6 @@ export default function TiersManagement() {
                         </ul>
                       </td>
 
-                      {/* Status */}
                       <td className="px-5 py-5">
                         <div className="flex items-center gap-2">
                           <span className="whitespace-nowrap text-[12px] font-medium leading-none text-[#0A0847]/80">
@@ -240,7 +219,6 @@ export default function TiersManagement() {
                         </div>
                       </td>
 
-                      {/* Actions — Figma: 32 x 32 icon buttons */}
                       <td className="px-5 py-5">
                         <div className="flex items-center gap-2">
                           <button
@@ -266,7 +244,6 @@ export default function TiersManagement() {
             </table>
           </div>
 
-          {/* footer */}
           <div className="flex flex-wrap items-center justify-between gap-4 border-t-[0.75px] border-[#E2DFFC] px-4 py-3">
             <div className="flex items-center gap-2 text-[13px] font-medium text-[#0A0847]">
               Display
@@ -288,11 +265,9 @@ export default function TiersManagement() {
                   aria-hidden
                 />
               </div>
-              {/* Figma: 12px / 400, 60% */}
               <span className="text-[12px] font-normal text-[#0A0847]/60">Badges</span>
             </div>
 
-            {/* Figma pagination: 24 x 24, radius 3px, 0.75px #001984 borders */}
             <div className="flex items-center gap-1.5">
               <button
                 type="button"

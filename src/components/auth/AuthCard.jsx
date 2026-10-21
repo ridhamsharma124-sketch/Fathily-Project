@@ -9,7 +9,6 @@ export default function AuthCard({
 }) {
   return (
     <div className={`relative w-full lg:shrink-0 ${className}`}>
-      {/* back card (Figma: offset layer behind the main card) */}
       <div
         className="absolute inset-0 -z-10 translate-x-3 translate-y-2 scale-y-[0.97] rounded-[20px] bg-white/40"
         aria-hidden

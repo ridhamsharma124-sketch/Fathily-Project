@@ -1,41 +1,50 @@
 import { Fragment, useState } from "react";
-import { LuArrowRight, LuCheck, LuChevronDown } from "react-icons/lu";
+import { LuArrowRight } from "react-icons/lu";
 
-/* ==========================================================================
-   ICON — CSV FILE (navy outlined document with small "CSV" label, 30px)
-   ========================================================================== */
+
+const HEADING = "#0A0847";
+const NAVY = "#001984";
+const LABEL = "rgba(10, 8, 71, 0.8)";
+const MUTED = "rgba(10, 8, 71, 0.6)";
+const BORDER = "#E2DFFC";
+const ROW_BORDER = "#E9E9E9";
+const HEADER_BG = "#F3F3FD";
+const PAGE_BG = "#F8F8FC";
+const GREEN = "#22C55E";
+const GREEN_TEXT = "#16A34A";
+const TICK_GREEN = "#21AC1C";
+const RED_TEXT = "#D80027";
+
+
 function CsvFileIcon() {
   return (
     <svg width="27" height="30" viewBox="0 0 27 30" fill="none" aria-hidden>
-      <path
-        d="M5 1.5h10.5l8 8v19H5v-27Z"
-        stroke="#0A0847"
-        strokeWidth="1.3"
-        strokeLinejoin="round"
-      />
-      <path d="M15.5 1.5v8h8" stroke="#0A0847" strokeWidth="1.3" strokeLinejoin="round" />
-      <text
-        x="14"
-        y="24.4"
-        textAnchor="middle"
-        fontSize="7.4"
-        fontWeight="700"
-        fontFamily="Inter, sans-serif"
-        fill="#0A0847"
-      >
+      <path d="M5 1.5h10.5l8 8v19H5v-27Z" stroke={NAVY} strokeWidth="1.3" strokeLinejoin="round" />
+      <path d="M15.5 1.5v8h8" stroke={NAVY} strokeWidth="1.3" strokeLinejoin="round" />
+      <text x="13.5" y="24.4" textAnchor="middle" fontSize="7.4" fontWeight="700" fontFamily="Inter, sans-serif" fill={NAVY}>
         CSV
       </text>
     </svg>
   );
 }
 
-/* ==========================================================================
-   SHARED
-   ========================================================================== */
+function TickIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M7.4 11.6 10.9 15.1 16.2 8.9" stroke="#FFFFFF" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
-/* Single consistent select used by every "Maps To (App Field)" dropdown.
-   112 x 36, radius 7.47, 50px right padding leaves the chevron its slot and
-   truncates long labels to an ellipsis instead of stretching the column. */
+function ChevronSvg() {
+  return (
+    <svg width="7.5" height="4.84" viewBox="0 0 8 5" fill="none" aria-hidden>
+      <path d="M0.75 0.75 4 4 7.25 0.75" stroke={MUTED} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+
 function FieldSelect({ value, options, onChange, ariaLabel }) {
   return (
     <div className="relative w-[112px]">
@@ -44,7 +53,8 @@ function FieldSelect({ value, options, onChange, ariaLabel }) {
         title={value}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
-        className="h-[36px] w-[112px] cursor-pointer appearance-none truncate rounded-[7.47px] border border-[#E2DFFC] bg-white pr-[50px] pl-3 text-[12px] text-[#374151] outline-none focus:border-[#001984]/40"
+        className="h-[36px] w-[112px] cursor-pointer appearance-none truncate rounded-[7.47px] border bg-white pr-[32px] pl-[12px] text-[11px] font-medium outline-none focus:border-[#001984]/40"
+        style={{ color: LABEL, borderColor: BORDER }}
       >
         {options.map((o) => (
           <option key={o} value={o}>
@@ -53,44 +63,44 @@ function FieldSelect({ value, options, onChange, ariaLabel }) {
         ))}
       </select>
 
-      <LuChevronDown
-        size={12}
-        strokeWidth={1.8}
-        className="pointer-events-none absolute top-1/2 right-[16px] -translate-y-1/2 text-[#374151]/70"
-        aria-hidden
-      />
+      <span className="pointer-events-none absolute top-1/2 right-[12px] flex -translate-y-1/2 items-center">
+        <ChevronSvg />
+      </span>
     </div>
   );
 }
 
-/* Green check + light-green "Validated" badge — identical size on every row. */
+
 function ValidatedCell() {
   return (
-    <div className="flex items-center gap-2">
-      <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-[#22C55E]">
-        <LuCheck size={13} strokeWidth={2.5} className="text-white" aria-hidden />
+    <div className="flex items-center gap-[8px]">
+      <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: TICK_GREEN }}>
+        <TickIcon />
       </span>
-      <span className="flex h-[28px] w-[76px] shrink-0 items-center justify-center rounded-[8px] bg-[#E8FBEF] text-[12px] font-semibold text-[#16A34A]">
+      <span
+        className="flex h-[28px] w-[80px] shrink-0 items-center justify-center rounded-[8px] text-[12px] font-medium whitespace-nowrap"
+        style={{ color: GREEN_TEXT, backgroundColor: "rgba(33, 172, 28, 0.1)" }}
+      >
         Validated
       </span>
     </div>
   );
 }
 
+
 function FixRowButton() {
   return (
     <button
       type="button"
-      className="flex h-[32px] w-[79px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border border-[#001984] bg-white text-[12px] font-semibold text-[#001984] transition-colors hover:bg-[#F3F5FC]"
+      className="flex h-[32px] w-[79px] shrink-0 cursor-pointer items-center justify-center rounded-[8px] border bg-white text-[12px] font-medium transition-colors hover:bg-[#F3F5FC]"
+      style={{ borderColor: NAVY, color: NAVY }}
     >
       Fix Row
     </button>
   );
 }
 
-/* ==========================================================================
-   DATA
-   ========================================================================== */
+
 const MAPPING_ROWS = [
   {
     column: "clue",
@@ -124,12 +134,7 @@ const REVIEW_ROWS = [
   { row: "15", issue: "Invalid reward points", data: "abc" },
 ];
 
-const GUIDE_HEADERS = [
-  "Hidden Restoration",
-  "Verse Restoration",
-  "Audio Revelation",
-  "Mystery Scripture",
-];
+const GUIDE_HEADERS = ["Hidden Restoration", "Verse Restoration", "Audio Revelation", "Mystery Scripture"];
 
 const GUIDE_ROWS = [
   ["clue", "verse_reference", "audio_file", "scripture_reference"],
@@ -139,15 +144,12 @@ const GUIDE_ROWS = [
   ["reward_points", "difficulty", "difficulty", "difficulty"],
 ];
 
-/* Figma wraps `reward_points` one character later than the underscore
-   (reward_poi / nts) and every other value at the underscore. */
 function GuideCell({ value }) {
-  const className =
-    "px-5 text-[11px] leading-[1.4] font-medium break-words text-[#374151]";
+  const className = "px-[20px] text-[11px] leading-[16px] font-medium break-words";
 
   if (value === "reward_points") {
     return (
-      <span className={className}>
+      <span className={className} style={{ color: LABEL }}>
         reward_poi
         <wbr />
         nts
@@ -158,7 +160,7 @@ function GuideCell({ value }) {
   const parts = value.split("_");
 
   return (
-    <span className={className}>
+    <span className={className} style={{ color: LABEL }}>
       {parts.map((part, i) => (
         <Fragment key={i}>
           {part}
@@ -170,9 +172,7 @@ function GuideCell({ value }) {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function CSVUploadValidateMap() {
   const [mapping, setMapping] = useState(() => ({
     clue: "Clue",
@@ -183,106 +183,117 @@ export default function CSVUploadValidateMap() {
   }));
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#F8F8FC] font-inter text-[#0A0847]">
-      <div className="mx-auto w-full max-w-[1108px] px-6 py-6">
-        {/* ---------------- header ---------------- */}
-        <p className="text-[14px] font-normal text-[#6B6A80]">
+    <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
+      <div className="mx-auto w-full max-w-[1110px] px-6 py-6">
+        <p className="text-[16px] leading-none font-medium" style={{ color: MUTED }}>
           Add / Edit Word Search - CSV Upload
         </p>
 
-        <h1 className="mt-1.5 text-[22px] leading-[1.2] font-semibold text-[#0A0847]">
-          1. CSV Upload - Validate &amp; Map
+        <h1 className="mt-[12px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+          1. CSV Upload — Validate &amp; Map
         </h1>
 
-        <p className="mt-1.5 text-[14px] font-normal text-[#0A0847]/60">
+        <p className="mt-[12px] text-[14px] leading-none font-medium" style={{ color: MUTED }}>
           We&apos;ve validated your file and mapped the columns to the correct fields.
         </p>
 
-        {/* ---------------- top row ---------------- */}
-        <div className="mt-6 flex gap-6">
-          {/* uploaded file */}
-          <section className="flex w-[339px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-5">
-            <h2 className="text-[14px] leading-[1.2] font-semibold text-[#0A0847]">
+        <div className="mt-[24px] flex items-start gap-[24px]">
+          <section
+            className="flex h-[149px] w-[340px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px]"
+            style={{ borderColor: BORDER }}
+          >
+            <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               Uploaded File
             </h2>
 
-            <div className="flex items-center gap-[10px]">
+            <div className="flex items-center gap-[12px]">
               <CsvFileIcon />
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[12px] font-semibold text-[#0A0847]">
+                <p className="truncate text-[13px] leading-none font-semibold" style={{ color: HEADING }}>
                   genesis_word_search.csv
                 </p>
-                <p className="mt-1 text-[10px] text-[#0A0847]/60">12.4 KB • 24 rows</p>
+                <p className="mt-[6px] text-[10px] leading-[20px] font-medium" style={{ color: MUTED }}>
+                  12.4 KB • 24 rows
+                </p>
               </div>
 
-              <span className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full bg-[#22C55E]">
-                <LuCheck size={16} strokeWidth={2.5} className="text-white" aria-hidden />
+              <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full" style={{ backgroundColor: TICK_GREEN }}>
+                <TickIcon />
               </span>
             </div>
           </section>
 
-          {/* validation summary */}
-          <section className="flex flex-1 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-5">
-            <h2 className="text-[14px] leading-[1.2] font-semibold text-[#0A0847]">
+          <section
+            className="flex h-[149px] flex-1 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px]"
+            style={{ borderColor: BORDER }}
+          >
+            <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               Validation Summary
             </h2>
 
-            <div className="flex gap-[10px]">
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-1 rounded-[8px] border border-[#22C55E] bg-[#F0FAF0]">
-                <p className="text-[22px] leading-none font-semibold text-[#15803D]">22</p>
-                <p className="text-[12px] font-semibold text-[#15803D]">Valid Rows</p>
+            <div className="flex items-center justify-between">
+              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#F0FAF0]" style={{ borderColor: GREEN }}>
+                <p className="text-[22px] leading-none font-semibold" style={{ color: "#15803D" }}>22</p>
+                <p className="text-[12px] leading-none font-semibold" style={{ color: "#15803D" }}>Valid Rows</p>
               </div>
 
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-1 rounded-[8px] border border-[#F97316] bg-[#FFF6EE]">
-                <p className="text-[22px] leading-none font-semibold text-[#EA580C]">2</p>
-                <p className="text-[12px] font-semibold text-[#EA580C]">Need Review</p>
+              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#FFF6EE]" style={{ borderColor: "#F97316" }}>
+                <p className="text-[22px] leading-none font-semibold" style={{ color: "#EA580C" }}>2</p>
+                <p className="text-[12px] leading-none font-semibold" style={{ color: "#EA580C" }}>Need Review</p>
               </div>
 
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-1 rounded-[8px] border border-[#001984] bg-white">
-                <p className="text-[22px] leading-none font-semibold text-[#0A0847]">0</p>
-                <p className="text-[12px] font-semibold text-[#0A0847]">Duplicates</p>
+              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-white" style={{ borderColor:"#E2DFFC" }}>
+                <p className="text-[22px] leading-none font-semibold" style={{ color: HEADING }}>0</p>
+                <p className="text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Duplicates</p>
               </div>
             </div>
           </section>
         </div>
 
-        {/* ---------------- two-column grid ---------------- */}
-        <div className="mt-6 grid grid-cols-[517px_517px] gap-6">
-          {/* 1. column mapping */}
-          <section className="flex min-h-[742px] w-[517px] flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[21px] pr-[10px] pb-[32px] pl-[16px]">
-            <h2 className="text-[14px] leading-[1.2] font-semibold text-[#0A0847]">
+        <div className="mt-[24px] grid grid-cols-[517px_517px] gap-[24px]">
+          <section
+            className="flex min-h-[742px] w-[517px] flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[21px] pr-[10px] pb-[32px] pl-[16px]"
+            style={{ borderColor: BORDER }}
+          >
+            <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               1. Column Mapping
             </h2>
 
-            <div className="w-full">
-              {/* header */}
-              <div className="grid h-[50px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px] border-[#E9E9E9] bg-[#F3F3FD]">
-                <span className="px-2 text-[12px] leading-[1.25] font-semibold text-[#0A0847]">
+            <div className="mt-[6px] w-full">
+              <div
+                className="grid h-[50px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px]"
+                style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
+              >
+                <span className="px-[8px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
                   CSV Column
                 </span>
-                <span className="px-2 text-[12px] font-semibold text-[#0A0847]">Sample Data</span>
-                <span className="px-2 text-[12px] leading-[1.25] font-semibold text-[#0A0847]">
+                <span className="px-[8px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
+                  Sample Data
+                </span>
+                <span className="px-[8px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
                   Maps To (App Field)
                 </span>
-                <span className="px-2 text-[12px] font-semibold text-[#0A0847]">Status</span>
+                <span className="px-[8px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
+                  Status
+                </span>
               </div>
 
-              {/* rows */}
               {MAPPING_ROWS.map(({ column, sample, options }) => (
                 <div
                   key={column}
-                  className="grid h-[62px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px] border-[#E9E9E9] py-2"
+                  className="grid h-[62px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px]"
+                  style={{ borderColor: ROW_BORDER }}
                 >
-                  <span className="px-2 text-[12px] leading-[1.25] font-medium break-words text-[#374151]">
+                  <span className="px-[8px] text-[12px] leading-[15px] font-medium break-words" style={{ color: LABEL }}>
                     {column}
                   </span>
 
-                  <span className="px-2 text-[12px] leading-[1.35] font-medium text-[#374151]">
+                  <span className="px-[8px] text-[11px] leading-[16px] font-medium" style={{ color: LABEL }}>
                     {sample}
                   </span>
 
-                  <div className="px-2">
+                  <div className="px-[8px]">
                     <FieldSelect
                       ariaLabel={`Maps ${column} to app field`}
                       value={mapping[column]}
@@ -291,7 +302,7 @@ export default function CSVUploadValidateMap() {
                     />
                   </div>
 
-                  <div className="px-2">
+                  <div className="px-[8px]">
                     <ValidatedCell />
                   </div>
                 </div>
@@ -299,38 +310,41 @@ export default function CSVUploadValidateMap() {
             </div>
           </section>
 
-          {/* right column */}
-          <div className="flex w-[517px] flex-col gap-6">
-            {/* 2. rows needing review */}
-            <section className="flex w-[517px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-4">
-              <h2 className="text-[14px] leading-[1.2] font-semibold text-[#0A0847]">
+          <div className="flex w-[517px] flex-col gap-[24px]">
+            <section
+              className="flex w-[517px] shrink-0 flex-col gap-[24px] rounded-[7.5px] border-[0.75px] bg-white px-[23px] py-[20px]"
+              style={{ borderColor: BORDER }}
+            >
+              <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
                 2. Rows Needing Review (2)
               </h2>
 
-              <div className="w-[481px]">
-                {/* header */}
-                <div className="grid h-[50px] w-full grid-cols-[50px_140px_83px_168px] items-center border-b-[0.75px] border-[#E9E9E9] bg-[#F3F3FD] px-5">
-                  <span className="text-[12px] font-semibold text-[#0A0847]">Row #</span>
-                  <span className="text-[12px] font-semibold text-[#0A0847]">Issue</span>
-                  <span className="text-[12px] font-semibold text-[#0A0847]">Data</span>
-                  <span className="text-center text-[12px] font-semibold text-[#0A0847]">
+              <div className="w-full">
+                <div
+                  className="grid h-[50px] w-full grid-cols-[68px_117px_80px_1fr] items-center border-b-[0.75px]"
+                  style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
+                >
+                  <span className="px-[20px] text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Row #</span>
+                  <span className="px-[20px] text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Issue</span>
+                  <span className="px-[20px] text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Data</span>
+                  <span className="text-center text-[12px] leading-none font-semibold" style={{ color: HEADING }}>
                     Actions
                   </span>
                 </div>
 
-                {/* contiguous rows — no gap, no rounding */}
                 {REVIEW_ROWS.map(({ row, issue, data }) => (
                   <div
                     key={row}
-                    className="grid h-[62px] w-full grid-cols-[50px_140px_83px_168px] items-center border-b-[0.75px] border-[#DDAEAE] bg-[#FEF5F5] px-5 py-2"
+                    className="grid h-[62px] w-full grid-cols-[68px_117px_80px_1fr] items-center border-b-[0.75px]"
+                    style={{ borderColor: "#DDAEAE", backgroundColor: "#FEF5F5" }}
                   >
-                    <span className="text-[12px] font-semibold text-[#A0003C]">{row}</span>
+                    <span className="px-[20px] text-[11px] leading-none font-medium" style={{ color: RED_TEXT }}>{row}</span>
 
-                    <span className="text-[12px] font-semibold text-[#A0003C]">{issue}</span>
+                    <span className="px-[20px] text-[11px] leading-[16px] font-medium" style={{ color: RED_TEXT }}>{issue}</span>
 
-                    <span className="text-[12px] font-semibold text-[#A0003C]">{data}</span>
+                    <span className="px-[20px] text-[11px] leading-none font-medium" style={{ color: RED_TEXT }}>{data}</span>
 
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-[8px]">
                       <FixRowButton />
                       <FixRowButton />
                     </div>
@@ -339,30 +353,31 @@ export default function CSVUploadValidateMap() {
               </div>
             </section>
 
-            {/* 3. column guide by type */}
-            <section className="flex w-[517px] flex-1 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-4">
-              <h2 className="text-[14px] leading-[1.2] font-semibold text-[#0A0847]">
+            <section
+              className="flex w-[517px] flex-1 flex-col gap-[20px] rounded-[7.5px] border-[0.75px] bg-white px-[17px] py-[20px]"
+              style={{ borderColor: BORDER }}
+            >
+              <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
                 3. Column Guide by Type
               </h2>
 
-              <div className="w-[428px]">
-                {/* header */}
-                <div className="grid h-[50px] w-[428px] grid-cols-4 items-center border-b-[0.75px] border-[#E9E9E9] bg-[#F3F3FD]">
+              <div className="w-[483px]">
+                <div
+                  className="grid h-[50px] w-[483px] grid-cols-[107px_124px_117px_1fr] items-center border-b-[0.75px]"
+                  style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
+                >
                   {GUIDE_HEADERS.map((h) => (
-                    <span
-                      key={h}
-                      className="px-5 text-[11px] leading-[1.25] font-semibold text-[#0A0847]"
-                    >
+                    <span key={h} className="px-[20px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
                       {h}
                     </span>
                   ))}
                 </div>
 
-                {/* rows */}
                 {GUIDE_ROWS.map((row) => (
                   <div
                     key={row.join("-")}
-                    className="grid h-[62px] w-[428px] grid-cols-4 items-center border-b-[0.75px] border-[#E9E9E9] py-2"
+                    className="grid h-[62px] w-[483px] grid-cols-[107px_124px_117px_1fr] items-center border-b-[0.75px]"
+                    style={{ borderColor: ROW_BORDER }}
                   >
                     {row.map((cell, i) => (
                       <GuideCell key={i} value={cell} />
@@ -374,18 +389,19 @@ export default function CSVUploadValidateMap() {
           </div>
         </div>
 
-        {/* ---------------- footer ---------------- */}
-        <div className="mt-6 flex h-[43px] w-full items-center justify-between">
+        <div className="mt-[24px] flex h-[43px] w-full items-center justify-between">
           <button
             type="button"
-            className="flex h-[43px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#001984] transition-colors hover:bg-[#F5F8FD]"
+            className="flex h-[43px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+            style={{ borderColor: BORDER, color: NAVY }}
           >
             Back
           </button>
 
           <button
             type="button"
-            className="flex h-[43px] w-[200px] cursor-pointer items-center justify-center gap-2 rounded-[6px] bg-[#001984] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+            className="flex h-[43px] w-[200px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+            style={{ backgroundColor: NAVY }}
           >
             <LuArrowRight size={16} strokeWidth={2} aria-hidden />
             Continue

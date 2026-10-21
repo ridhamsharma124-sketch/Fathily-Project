@@ -281,9 +281,6 @@ const ToggleSwitch = ({ enabled, onChange }) => (
   </button>
 );
 
-/** 3b. Drag Handle — 6 solid dots filling the Figma 9.2 x 15.2 vector box.
- *  (react-icons' MdOutlineDragIndicator has padding inside its 24x24 viewBox,
- *  so forcing it to 9.2px made the dots tiny. This SVG fills the whole box.) */
 const DragHandle = ({ className = "" }) => (
   <svg
     width="9.2"
@@ -302,8 +299,6 @@ const DragHandle = ({ className = "" }) => (
   </svg>
 );
 
-/** 3c. Bar-chart icon from Figma (41.9 x 37.3): 3 rising bars + up-arrow.
- *  Replaces FiBarChart2, which only draws 3 thin lines. */
 const BarTrendIcon = ({ width = 42, height = 38, className = "" }) => (
   <svg
     width={width}
@@ -326,8 +321,6 @@ const BarTrendIcon = ({ width = 42, height = 38, className = "" }) => (
   </svg>
 );
 
-/** 3d. Two-tone gift icon from Figma (32 x 32).
- *  Ribbon gradient: #BBDEFB -> #64B5F6 (6px wide). Box body: solid blue. */
 const GiftIcon = ({ size = 32, className = "" }) => (
   <svg
     width={size}
@@ -361,9 +354,6 @@ const GiftIcon = ({ size = 32, className = "" }) => (
   </svg>
 );
 
-/** 3e. Save (floppy) icon from Figma (16 x 16): thick outline with clipped
- *  top-right corner, L-shaped shutter line top-left, solid label block bottom.
- *  Replaces FiSave, which is thinner and has a different shape. */
 const SaveIcon = ({ size = 16, className = "" }) => (
   <svg
     width={size}
@@ -710,7 +700,6 @@ export default function Subscription() {
             <div className="space-y-[10px]">
               {reasons.map((reason, index) => (
                 <div key={index} className="flex w-full items-center gap-3">
-                  {/* Drag Indicator 9.2 x 15.2 (Figma frame 9.2 x 20.4) */}
                   <div className="flex h-[20.4px] w-[9.2px] shrink-0 items-center justify-center">
                     <DragHandle className="text-[#001984] cursor-grab" />
                   </div>

@@ -12,8 +12,6 @@ import {
 const ASSIGNEES = ["Maya", "Unassigned", "Peter", "Alex"];
 const STATUSES = ["Open", "Waiting", "Resolved"];
 
-/* Avatar: photo when ticket.avatar is set, otherwise initials / user icon.
-   Figma uses a 38px rounded-square avatar for both customer and agent. */
 function Avatar({ ticket, size = 38 }) {
   if (ticket.avatar) {
     return (
@@ -35,9 +33,6 @@ function Avatar({ ticket, size = 38 }) {
   );
 }
 
-/* ==========================================================================
-   TICKET DETAIL — centered modal dialog, 316px wide (Figma frame)
-   ========================================================================== */
 export default function TicketModal({ ticket, onClose }) {
   const dialogRef = useRef(null);
 

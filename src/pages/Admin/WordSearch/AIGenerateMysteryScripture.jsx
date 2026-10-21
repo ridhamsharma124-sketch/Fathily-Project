@@ -1,44 +1,52 @@
 import { useState } from "react";
 import {
-  LuChevronDown,
-  LuChevronUp,
-  LuCircleCheck,
   LuImage,
   LuImagePlus,
   LuPencil,
   LuRotateCw,
   LuArrowRight,
-  LuSave,
   LuX,
 } from "react-icons/lu";
-import Clues1Img from "../../../assets/word search/Clues1.png";
-import Clues2Img from "../../../assets/word search/Clues2.png";
+import Clues1Img from "../../../assets/word search/Clues1.webp";
+import Clues2Img from "../../../assets/word search/Clues2.webp";
+import floppyIcon from "../../../assets/word search/dr_save_floppy.svg";
+import checkFilledWhiteIcon from "../../../assets/word search/CheckFilledWhiteIcon.svg";
 
-/* ==========================================================================
-   TOKENS
-   ========================================================================== */
+
 const HEADING = "#0A0847";
 const PRIMARY = "#001984";
 const MUTED = "rgba(10, 8, 71, 0.6)";
 const LABEL_COLOR = "rgba(10, 8, 71, 0.8)";
 const DIVIDER_COLOR = "rgba(10, 8, 71, 0.1)";
+const BORDER = "#E2DFFC";
 const GREEN = "#22C55E";
 const GREEN_TEXT = "#16A34A";
 
 const CONTROL_CLS =
-  "h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] outline-none focus:border-[#001984]/40";
+  "h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] font-medium outline-none focus:border-[#001984]/40";
 
-/* ==========================================================================
-   PRIMITIVES
-   ========================================================================== */
+
+
+function ChevronSvg({ up = false }) {
+  return (
+    <svg
+      width="7.5"
+      height="4.84"
+      viewBox="0 0 8 5"
+      fill="none"
+      aria-hidden
+      style={{ transform: up ? "rotate(180deg)" : undefined }}
+    >
+      <path d="M0.75 0.75 4 4 7.25 0.75" stroke={MUTED} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function Chevron() {
   return (
-    <LuChevronDown
-      size={14}
-      className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2"
-      style={{ color: MUTED }}
-      aria-hidden
-    />
+    <span className="pointer-events-none absolute top-1/2 right-[12px] flex h-[18px] w-[18px] -translate-y-1/2 items-center justify-center">
+      <ChevronSvg />
+    </span>
   );
 }
 
@@ -87,56 +95,29 @@ function NumberStepper({ value, defaultValue, onChange, label }) {
           : { defaultValue })}
         min="0"
         aria-label={label}
-        className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-[30px] pl-3 text-[12px] outline-none focus:border-[#001984]/40"
+        className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-[30px] pl-3 text-[12px] font-medium outline-none focus:border-[#001984]/40"
         style={{ color: MUTED }}
       />
-      {interactive ? (
-        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-label={`Increase ${label}`}
-            onClick={() => onChange((value ?? 0) + 1)}
-            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
-            style={{ color: MUTED }}
-          >
-            <LuChevronUp size={11} />
-          </button>
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-label={`Decrease ${label}`}
-            onClick={() => onChange(Math.max(0, (value ?? 0) - 1))}
-            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
-            style={{ color: MUTED }}
-          >
-            <LuChevronDown size={11} />
-          </button>
-        </span>
-      ) : (
-        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
-          <svg width="10" height="6" viewBox="0 0 10 6">
-            <path
-              d="M1 4L5 1L9 4"
-              stroke={MUTED}
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
-          <svg width="10" height="6" viewBox="0 0 10 6" className="mt-[1px]">
-            <path
-              d="M1 1L5 4L9 1"
-              stroke={MUTED}
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
-        </span>
-      )}
+      <span className="absolute top-1/2 right-[12px] flex -translate-y-1/2 flex-col items-center">
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-label={`Increase ${label}`}
+          onClick={interactive ? () => onChange((value ?? 0) + 1) : undefined}
+          className="flex h-[8px] w-[10px] cursor-pointer items-center justify-center"
+        >
+          <ChevronSvg up />
+        </button>
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-label={`Decrease ${label}`}
+          onClick={interactive ? () => onChange(Math.max(0, (value ?? 0) - 1)) : undefined}
+          className="mt-[3px] flex h-[8px] w-[10px] cursor-pointer items-center justify-center"
+        >
+          <ChevronSvg />
+        </button>
+      </span>
     </div>
   );
 }
@@ -160,11 +141,11 @@ function Toggle({ on, onChange, label }) {
   );
 }
 
-/* label on the left, toggle on the right — label 12/600, gap ~14 */
+
 function ToggleRight({ label, on, onChange, className = "" }) {
   return (
     <div className={`flex items-center gap-[14px] ${className}`}>
-      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: HEADING }}>
+      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
         {label}
       </span>
       <Toggle on={on} onChange={onChange} label={label} />
@@ -172,19 +153,19 @@ function ToggleRight({ label, on, onChange, className = "" }) {
   );
 }
 
-/* toggle on the left, label on the right — label 13/500 */
+
 function ToggleLeft({ label, on, onChange, className = "" }) {
   return (
-    <div className={`flex items-center gap-[10px] ${className}`}>
+    <div className={`flex items-center gap-[12px] ${className}`}>
       <Toggle on={on} onChange={onChange} label={label} />
-      <span className="text-[13px] font-medium whitespace-nowrap" style={{ color: HEADING }}>
+      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
         {label}
       </span>
     </div>
   );
 }
 
-/* label + control wrapper (label single line, 8px above the control) */
+
 function Field({ label, htmlFor, width = "flex-1", children }) {
   return (
     <div className={`${width} min-w-0 shrink-0`}>
@@ -194,9 +175,7 @@ function Field({ label, htmlFor, width = "flex-1", children }) {
   );
 }
 
-/* ==========================================================================
-   PAGE HEADER + TOP DROPDOWN ROW + TABS
-   ========================================================================== */
+
 const HEADER_WIDTHS = ["w-[222px]", "w-[222px]", "w-[160px]", "w-[171px]"];
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
@@ -211,7 +190,7 @@ function Tabs({ activeTab = "AI Generate", onTabChange }) {
               key={t}
               type="button"
               onClick={onTabChange ? () => onTabChange(t) : undefined}
-              className={`relative py-[10px] text-[12px] ${active ? "font-semibold" : "font-medium"}`}
+              className={`relative py-[12px] text-[14px] leading-[17px] ${active ? "font-semibold" : "font-medium"}`}
               style={{ color: active ? HEADING : MUTED }}
             >
               {t}
@@ -255,13 +234,11 @@ function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
   );
 }
 
-/* ==========================================================================
-   SECTION TITLE + FORM CARD
-   ========================================================================== */
+
 function SectionHeading({ title, subtitle }) {
   return (
     <>
-      <h2 className="mt-[24px] text-[20px] leading-none font-semibold" style={{ color: HEADING }}>
+      <h2 className="mt-[24px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
         {title}
       </h2>
       <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
@@ -273,7 +250,7 @@ function SectionHeading({ title, subtitle }) {
 
 function FormCard({ children }) {
   return (
-    <div className="mt-[16px] flex min-h-[311px] w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
+    <div className="mt-[16px] flex min-h-[311px] w-full flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
       {children}
     </div>
   );
@@ -287,7 +264,7 @@ function Divider() {
   return <div className="my-[20px] h-px w-full" style={{ backgroundColor: DIVIDER_COLOR }} />;
 }
 
-/* New Levels multi-select — h40, chips 75x26 r8 */
+
 function LevelsSelect({ levels, onRemove }) {
   return (
     <div className="flex h-[40px] w-full items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px]">
@@ -304,12 +281,12 @@ function LevelsSelect({ levels, onRemove }) {
               aria-label={`Remove ${lv}`}
               onClick={() => onRemove(lv)}
               className="cursor-pointer"
-              style={{ color: PRIMARY }}
+              style={{ color: "#0926FD" }}
             >
               <LuX size={12} />
             </button>
           ) : (
-            <LuX size={12} aria-hidden />
+            <LuX size={12} aria-hidden style={{ color: "#0926FD" }} />
           )}
         </span>
       ))}
@@ -317,22 +294,20 @@ function LevelsSelect({ levels, onRemove }) {
   );
 }
 
-/* Puzzles per Level — read-only, placeholder-style muted text */
+
 function PuzzlesPerLevel({ text }) {
   return (
     <input
       readOnly
       value={text}
       aria-label="Puzzles per Level"
-      className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] outline-none"
+      className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium outline-none"
       style={{ color: MUTED }}
     />
   );
 }
 
-/* ==========================================================================
-   GENERATED PUZZLES PREVIEW
-   ========================================================================== */
+
 function PreviewHeading() {
   return (
     <h3 className="mt-[24px] text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
@@ -349,11 +324,11 @@ function PuzzleCard({ title, children, actions }) {
   return (
     <div className="flex h-[413px] w-[519px] flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[19px] pb-[26px] pl-[22px]">
       <div className="flex items-center justify-between">
-        <p className="text-[12px] font-medium" style={{ color: MUTED }}>
+        <p className="text-[12px] font-medium" style={{ color: LABEL_COLOR }}>
           {title}
         </p>
         <span
-          className="flex h-[20px] items-center rounded-[4px] px-[8px] text-[10px] font-semibold"
+          className="flex h-[20px] items-center rounded-[4px] px-[8px] text-[12px] font-medium"
           style={{ backgroundColor: "#E8FBEF", color: GREEN_TEXT }}
         >
           AI IMAGE
@@ -382,12 +357,13 @@ function PreviewImage({ src, alt }) {
   );
 }
 
+
 function OutlineAction({ icon: Icon, className = "", children }) {
   return (
     <button
       type="button"
-      className={`flex h-[31px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E2DFFC] bg-white text-[11px] font-medium whitespace-nowrap transition-colors hover:bg-[#F7F8FE] ${className}`}
-      style={{ color: HEADING }}
+      className={`flex h-[32px] cursor-pointer items-center justify-center gap-[4px] rounded-[8px] border border-[#E2DFFC] bg-white px-[12px] text-[10px] leading-none font-semibold whitespace-nowrap transition-colors hover:bg-[#F7F8FE] ${className}`}
+      style={{ color: LABEL_COLOR }}
     >
       <Icon size={12} />
       {children}
@@ -406,15 +382,15 @@ function CardActions() {
         <OutlineAction icon={LuImagePlus}>Replace Image</OutlineAction>
       </div>
       <div className="flex gap-[8px]">
-        <OutlineAction icon={LuPencil} className="w-[74px]">
+        <OutlineAction icon={LuPencil} className="w-[75px]">
           Edit
         </OutlineAction>
         <button
           type="button"
-          className="flex h-[31px] w-[120px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] text-[11px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          className="flex h-[32px] w-[121px] cursor-pointer items-center justify-center gap-[4px] rounded-[8px] text-[10px] leading-none font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: PRIMARY }}
         >
-          <LuCircleCheck size={12} />
+          <img src={checkFilledWhiteIcon} alt="" aria-hidden width={12} height={12} className="block shrink-0" />
           Publish Approved
         </button>
       </div>
@@ -422,9 +398,7 @@ function CardActions() {
   );
 }
 
-/* ==========================================================================
-   PAGE FOOTER
-   ========================================================================== */
+
 function PageFooter() {
   return (
     <div className="mt-[24px] flex items-center justify-between">
@@ -442,7 +416,7 @@ function PageFooter() {
           className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
           style={{ color: HEADING }}
         >
-          <LuSave size={16} style={{ color: PRIMARY }} />
+          <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
           Save draft
         </button>
         <button
@@ -458,9 +432,7 @@ function PageFooter() {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 const CLUES_1 = [
   "The waters covered the earth.",
   "Noah built one of these.",
@@ -486,7 +458,7 @@ const CLUES_2 = [
 function CluesColumn({ clues }) {
   return (
     <div className="min-w-0 flex-1">
-      <p className="text-[11px] leading-none font-semibold" style={{ color: HEADING }}>
+      <p className="text-[12px] leading-none font-bold" style={{ color: LABEL_COLOR }}>
         Clues
       </p>
       <ol
@@ -541,12 +513,11 @@ export default function AIGenerateMysteryScripture() {
         />
 
         <SectionHeading
-          title="AI Generate - Mystery Scripture"
+          title="AI Generate — Mystery Scripture"
           subtitle="Generate puzzles with Scripture clues to discover the hidden passage."
         />
 
         <FormCard>
-          {/* ROW 1 */}
           <FormRow>
             <Field label="Scripture Range" htmlFor="scriptureRange" width="w-[188px]">
               <SelectControl
@@ -575,7 +546,6 @@ export default function AIGenerateMysteryScripture() {
 
           <Divider />
 
-          {/* ROW 2 */}
           <FormRow>
             <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[168px]">
               <SelectControl id="numPuzzles" defaultValue="2" options={["2"]} />
@@ -593,7 +563,6 @@ export default function AIGenerateMysteryScripture() {
 
           <Divider />
 
-          {/* ROW 3 */}
           <FormRow>
             <ToggleLeft
               label="Generate a unique AI image for every puzzle"
@@ -625,11 +594,11 @@ export default function AIGenerateMysteryScripture() {
 
         <PreviewHeading />
         <PreviewGrid>
-          <PuzzleCard title="Level 1 - Puzzle 1" actions={<CardActions />}>
+          <PuzzleCard title="Level 1 • Puzzle 1" actions={<CardActions />}>
             <PreviewImage src={Clues1Img} alt="Clues 1" />
             <CluesColumn clues={CLUES_1} />
           </PuzzleCard>
-          <PuzzleCard title="Level 2 - Puzzle 1" actions={<CardActions />}>
+          <PuzzleCard title="Level 2 • Puzzle 1" actions={<CardActions />}>
             <PreviewImage src={Clues2Img} alt="Clues 2" />
             <CluesColumn clues={CLUES_2} />
           </PuzzleCard>

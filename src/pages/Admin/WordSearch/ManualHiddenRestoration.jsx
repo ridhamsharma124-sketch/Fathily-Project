@@ -1,26 +1,25 @@
 import { useState } from "react";
-import {
-  LuChevronDown,
-  LuChevronUp,
-  LuRefreshCw,
-  LuRotateCcw,
-  LuSparkles,
-  LuSave,
-  LuEye,
-  LuArrowRight,
-  LuPlus,
-  LuArrowUpDown,
-  LuTrash2,
-} from "react-icons/lu";
-import puzzleImg from "../../../assets/word search/Puzzle img.png";
+import { LuChevronDown, LuChevronUp } from "react-icons/lu";
+import puzzleImg from "../../../assets/word search/Puzzle img.webp";
+import replaceIcon from "../../../assets/word search/mh_replace.svg";
+import resetIcon from "../../../assets/word search/mh_reset.svg";
+import aiImageIcon from "../../../assets/word search/pu_ai_image.svg";
+import chevronIcon from "../../../assets/word search/mh_chevron.svg";
+import floppyIcon from "../../../assets/word search/dr_save_floppy.svg";
+import eyeIcon from "../../../assets/word search/mh_eye.svg";
+import arrowRightIcon from "../../../assets/word search/mh_arrow_right.svg";
+import plusIcon from "../../../assets/word search/mh_plus.svg";
+import sortIcon from "../../../assets/word search/mh_sort.svg";
+import trashIcon from "../../../assets/word search/mh_trash.svg";
 
-/* ==========================================================================
-   TOKENS
-   ========================================================================== */
-const BODY = "#3D3561";
+
+const HEADING = "#0A0847";
+const MUTED = "rgba(10, 8, 71, 0.6)";
 const NAVY = "#001984";
 const GREEN = "#2EB84B";
 const PAGE_BG = "#F8F9FE";
+const BORDER = "#E4E5F0";
+const CARD_BORDER = "#EFECFB";
 
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
@@ -39,28 +38,16 @@ const HIDDEN_WORDS = [
   { n: 1, word: "CREATION", clue: "The act of bringing something into existence" },
   { n: 2, word: "HEAVENS", clue: "The sky and space above the earth" },
   { n: 3, word: "EARTH", clue: "The world God made" },
-  { n: 4, word: "LIGHT", clue: "God said, \u201CLet there be light\u201D" },
+  { n: 4, word: "LIGHT", clue: "God said, “Let there be light”" },
   { n: 5, word: "WATERS", clue: "The waters above and below" },
   { n: 6, word: "PLANTS", clue: "Vegetation God caused to grow" },
 ];
 
-const cardCls = `rounded-[8px] border border-[#EFECFB] bg-white`;
+const cardCls = "rounded-[8px] border bg-white";
 const field =
-  "h-[38px] w-full rounded-[8px] border border-[#E4E5F0] bg-white px-3 text-[13px] font-normal text-[#6B668F] outline-none focus:border-[#001984]";
-const lbl = "mb-[6px] block text-[14px] font-semibold text-[#3D3561]";
+  "h-[38px] w-full rounded-[8px] border bg-white px-[12px] text-[14px] font-medium outline-none focus:border-[#001984]";
+const lbl = "mb-[8px] block text-[14px] font-semibold";
 
-/* ==========================================================================
-   SHARED PRIMITIVES
-   ========================================================================== */
-function Chevron({ className = "top-1/2 right-2.5 -translate-y-1/2", size = 14 }) {
-  return (
-    <LuChevronDown
-      size={size}
-      className={`pointer-events-none absolute ${className} text-[#9B96B8]`}
-      aria-hidden
-    />
-  );
-}
 
 function Select({ value, onChange, options, className = "" }) {
   return (
@@ -68,7 +55,8 @@ function Select({ value, onChange, options, className = "" }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`${field} cursor-pointer appearance-none pr-8`}
+        className={`${field} cursor-pointer appearance-none pr-[30px]`}
+        style={{ color: HEADING, borderColor: BORDER }}
       >
         {options.map((o) => (
           <option key={o} value={o}>
@@ -76,7 +64,12 @@ function Select({ value, onChange, options, className = "" }) {
           </option>
         ))}
       </select>
-      <Chevron />
+      <img
+        src={chevronIcon}
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute top-1/2 right-[12px] h-auto w-[10px] -translate-y-1/2"
+      />
     </div>
   );
 }
@@ -102,16 +95,24 @@ function Toggle({ on, onChange, label, color = "#0552AA" }) {
 
 function ToggleRow({ label, on, onChange }) {
   return (
-    <div className="flex h-10 items-center justify-between gap-3">
-      <span className="text-[14px] font-medium text-[#3D3561]">{label}</span>
+    <div className="flex h-[40px] items-center justify-between gap-3">
+      <span className="text-[14px] font-medium" style={{ color: HEADING }}>
+        {label}
+      </span>
       <Toggle on={on} onChange={onChange} label={label} />
     </div>
   );
 }
 
-/* ==========================================================================
-   SHARED PAGE SECTIONS
-   ========================================================================== */
+
+function Breadcrumb() {
+  return (
+    <nav className="text-[16px] font-medium" style={{ color: MUTED }}>
+      Word Search <span className="mx-[6px]">&gt;</span> Add <span className="mx-[6px]">&gt;</span> Manual
+    </nav>
+  );
+}
+
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -119,13 +120,10 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="flex items-start gap-[24px]">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
         <div key={id} className={w}>
-          <label
-            htmlFor={id}
-            className="mb-2 block text-[14px] font-medium text-[#0A0240]"
-          >
+          <label htmlFor={id} className="mb-[8px] block text-[14px] font-medium" style={{ color: HEADING }}>
             {label}
           </label>
           <Select
@@ -138,7 +136,7 @@ function FilterFields() {
       ))}
 
       <div className="w-[130px] shrink-0">
-        <label htmlFor="reward" className="mb-2 block text-[14px] font-medium text-[#0A0240]">
+        <label htmlFor="reward" className="mb-[8px] block text-[14px] font-medium" style={{ color: HEADING }}>
           Reward Points
         </label>
         <div className="relative">
@@ -148,15 +146,17 @@ function FilterFields() {
             min="0"
             value={reward}
             onChange={(e) => setReward(Number(e.target.value))}
-            className={`${field} pr-6`}
+            className={`${field} pr-[24px]`}
+            style={{ color: HEADING, borderColor: BORDER }}
           />
-          <span className="pointer-events-none absolute top-1/2 right-1.5 flex -translate-y-1/2 flex-col">
+          <span className="absolute top-1/2 right-[6px] flex -translate-y-1/2 flex-col">
             <button
               type="button"
               tabIndex={-1}
               aria-label="Increase reward points"
               onClick={() => setReward((n) => n + 1)}
-              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center text-[#9B96B8]"
+              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center"
+              style={{ color: "#9B96B8" }}
             >
               <LuChevronUp size={11} />
             </button>
@@ -165,7 +165,8 @@ function FilterFields() {
               tabIndex={-1}
               aria-label="Decrease reward points"
               onClick={() => setReward((n) => Math.max(0, n - 1))}
-              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center text-[#9B96B8]"
+              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center"
+              style={{ color: "#9B96B8" }}
             >
               <LuChevronDown size={11} />
             </button>
@@ -178,18 +179,17 @@ function FilterFields() {
 
 function TabsRow() {
   return (
-    <div className="mt-[30px] flex items-stretch border-b border-[#E4E5F0]">
+    <div className="mt-[30px] flex items-stretch border-b" style={{ borderColor: BORDER }}>
       {TABS.map((t) => {
         const active = t === "Manual Entry";
         return (
           <button
             key={t}
             type="button"
-            className={`h-[50px] px-6 text-[15px] ${
-              active
-                ? "-mb-px border-b-2 border-[#001984] font-semibold text-[#001984]"
-                : "font-normal text-[#6B668F]"
+            className={`h-[50px] px-[24px] text-[14px] ${
+              active ? "-mb-px border-b-2 font-semibold" : "font-medium"
             }`}
+            style={active ? { borderColor: NAVY, color: NAVY } : { color: MUTED }}
           >
             {t}
           </button>
@@ -202,39 +202,43 @@ function TabsRow() {
 function BottomBar() {
   const [published, setPublished] = useState(true);
   return (
-    <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
-      <div className="flex items-center gap-3">
-        <span className="text-[15px] font-semibold text-[#6B668F]">Status</span>
+    <div className="mt-[48px] flex flex-wrap items-center justify-between gap-[16px]">
+      <div className="flex items-center gap-[12px]">
+        <span className="text-[14px] font-semibold" style={{ color: MUTED }}>
+          Status
+        </span>
         <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
         <span
-          className="rounded-[6px] px-2.5 py-1 text-[13px] font-medium"
+          className="rounded-[6px] px-[10px] py-[2px] text-[14px] font-medium"
           style={{ backgroundColor: "#E3F7E6", color: GREEN }}
         >
           Published
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-[12px]">
         <button
           type="button"
-          className="flex h-[46px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-5 text-[14px] font-semibold text-[#3D3561] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          style={{ borderColor: BORDER, color: NAVY }}
         >
-          <LuSave size={16} style={{ color: NAVY }} />
+          <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
           Save draft
         </button>
         <button
           type="button"
-          className="flex h-[46px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-5 text-[14px] font-semibold text-[#3D3561] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-[158px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          style={{ borderColor: BORDER, color: NAVY }}
         >
-          <LuEye size={16} style={{ color: NAVY }} />
+          <img src={eyeIcon} alt="" aria-hidden className="h-[12px] w-[16px] shrink-0" />
           Preview
         </button>
         <button
           type="button"
-          className="flex h-[46px] w-[190px] cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90"
+          className="flex h-[42px] w-[196px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: NAVY }}
         >
-          <LuArrowRight size={16} />
+          <img src={arrowRightIcon} alt="" aria-hidden className="h-[12px] w-[12px]" />
           Add Puzzle
         </button>
       </div>
@@ -244,68 +248,71 @@ function BottomBar() {
 
 function PuzzleImageCard() {
   return (
-    <div className={`${cardCls} flex w-[298px] shrink-0 flex-col p-4`}>
-      <h2 className="text-[15px] font-bold text-[#3D3561]">Puzzle Image</h2>
+    <div className={`${cardCls} flex w-[305px] shrink-0 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+      <h2 className="text-[14px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
+        Puzzle Image
+      </h2>
 
       <img
         src={puzzleImg}
         alt="Genesis garden and lake"
-        className="mt-6 h-[167px] w-[264px] rounded-[8px] border border-[#AEB7D0] object-cover"
+        className="mt-[16px] h-[152px] w-[264px] rounded-[8px] object-cover"
       />
 
-      <div className="mt-6 flex items-start justify-between gap-2">
-        <p className="text-[12px] leading-[1.4] text-[#6B668F]">
+      <div className="mt-[16px] flex items-center justify-between gap-[8px]">
+        <p className="text-[14px] leading-[16px] font-medium" style={{ color: MUTED }}>
           Chapter default image
           <br />
           applied automatically
         </p>
         <span
-          className="flex h-[29px] w-[79px] shrink-0 items-center justify-center rounded-[4px] text-[12px] font-bold text-[#001984]"
-          style={{ backgroundColor: "#E3E4F6" }}
+          className="flex h-[30px] w-[79px] shrink-0 items-center justify-center rounded-[4px] text-[12px] font-semibold"
+          style={{ backgroundColor: "#E3E4F6", color: NAVY }}
         >
           DEFAULT
         </span>
       </div>
 
-      <div className="mt-6 flex h-[32px] items-center gap-2.5">
+      <div className="mt-[16px] flex h-[32px] items-center gap-[10px]">
         <button
           type="button"
-          className="flex h-[32px] w-[122px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] bg-[#FEFEFE] px-3 text-[12px] font-medium whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
-          style={{ border: "1px solid #E2DFFC" }}
+          className="flex h-[32px] w-[123px] shrink-0 cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          style={{ border: "1px solid #E2DFFC", color: HEADING }}
         >
-          <LuRefreshCw size={14} />
+          <img src={replaceIcon} alt="" aria-hidden className="h-[13px] w-[13px]" />
           Replace Default
         </button>
-        <button
-          type="button"
-          className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-3 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: NAVY }}
-        >
-          <LuSparkles size={14} />
-          Generate AI Image
-        </button>
+          <button
+                  type="button"
+                  className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: NAVY }}
+                >
+                            <img src={aiImageIcon} alt="" aria-hidden className="h-[15px] w-[15px] shrink-0" />
+
+                  Generate AI Image
+                </button>
       </div>
 
       <button
         type="button"
-        className="mt-6 flex h-[32px] w-full cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-white px-3 text-[12px] font-medium whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
-        style={{ border: "1px solid #E2DFFC" }}
+        className="mt-[16px] flex h-[32px] w-full cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+        style={{ border: "1px solid #E2DFFC", color: HEADING }}
       >
-        <LuRotateCcw size={14} />
+        <img src={resetIcon} alt="" aria-hidden className="h-[16px] w-[14px] shrink-0" />
         Reset to Chapter Default
       </button>
     </div>
   );
 }
 
-/* ==========================================================================
-   HIDDEN RESTORATION
-   ========================================================================== */
+
 function WordListTable({ rows }) {
   return (
     <>
-      <p className={lbl}>Word List</p>
-      <div className="mt-4 w-full">
+      <p className={lbl} style={{ color: HEADING }}>
+        Word List
+      </p>
+      <div className="mt-[16px] w-full">
         <table className="w-full table-fixed border-collapse text-left">
           <colgroup>
             <col style={{ width: "9.5%" }} />
@@ -314,13 +321,16 @@ function WordListTable({ rows }) {
             <col style={{ width: "28.5%" }} />
           </colgroup>
           <thead>
-            <tr style={{ backgroundColor: "#F1F2FA" }} className="h-[49px]">
+            <tr style={{ backgroundColor: "#F1F2FA" }} className="h-[46px]">
               {["#", "Word", "Clue", "Actions"].map((h) => (
                 <th
                   key={h}
                   scope="col"
-                  className="px-2 text-[13px] font-semibold text-[#3D3561]"
-                  style={h === "#" || h === "Actions" ? { textAlign: "center" } : undefined}
+                  className="px-[8px] text-[14px] font-medium"
+                  style={{
+                    color: HEADING,
+                    textAlign: h === "#" || h === "Actions" ? "center" : "left",
+                  }}
                 >
                   {h}
                 </th>
@@ -329,33 +339,33 @@ function WordListTable({ rows }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.n} className="h-[51px] border-b border-[#EEEEF3]">
-                <td className="px-2 py-2 text-center align-middle text-[13px] font-normal text-[#3D3561]">
+              <tr key={row.n} className="h-[51px] border-b" style={{ borderColor: "#EEEEF3" }}>
+                <td className="px-[8px] py-[8px] text-center align-middle text-[14px] font-medium" style={{ color: HEADING }}>
                   {row.n}
                 </td>
-                <td className="px-2 py-2 align-middle text-[13px] font-normal text-[#3D3561]">
+                <td className="px-[8px] py-[8px] align-middle text-[12px] font-medium" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
                   {row.word}
                 </td>
-                <td className="px-2 py-2 align-middle text-[13px] leading-[1.45] font-normal text-[#3D3561]">
+                <td className="px-[8px] py-[8px] align-middle text-[12px] leading-[15px] font-medium" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
                   {row.clue}
                 </td>
-                <td className="px-2 py-2 align-middle">
-                  <div className="flex items-center justify-center gap-2">
+                <td className="px-[8px] py-[8px] align-middle">
+                  <div className="flex items-center justify-center gap-[8px]">
                     <button
                       type="button"
                       aria-label={`Reorder ${row.word}`}
-                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] border border-[#E6E7F0] bg-white transition-colors hover:bg-[#F7F8FE]"
-                      style={{ color: "#03137F" }}
+                      className="flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-[6px] border bg-white transition-colors hover:bg-[#F7F8FE]"
+                      style={{ borderColor: BORDER }}
                     >
-                      <LuArrowUpDown size={16} strokeWidth={2.5} />
+                      <img src={sortIcon} alt="" aria-hidden className="h-[18px] w-[18px]" />
                     </button>
                     <button
                       type="button"
                       aria-label={`Delete ${row.word}`}
-                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-[6px] border border-[#E6E7F0] bg-white transition-colors hover:bg-[#FEF2F4]"
-                      style={{ color: "#C8102E" }}
+                      className="flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-[6px] border bg-white transition-colors hover:bg-[#FEF2F4]"
+                      style={{ borderColor: BORDER }}
                     >
-                      <LuTrash2 size={16} />
+                      <img src={trashIcon} alt="" aria-hidden className="h-[18px] w-[18px]" />
                     </button>
                   </div>
                 </td>
@@ -366,9 +376,10 @@ function WordListTable({ rows }) {
       </div>
       <button
         type="button"
-        className="mt-6 flex h-10 w-[100px] cursor-pointer items-center justify-center gap-1.5 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-medium text-[#6B668F] transition-colors hover:bg-[#F7F8FE]"
+        className="mt-[24px] flex h-[40px] w-[128px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-medium transition-colors hover:bg-[#F7F8FE]"
+        style={{ borderColor: BORDER, color: "#3D3561" }}
       >
-        <LuPlus size={16} />
+        <img src={plusIcon} alt="" aria-hidden className="h-[14px] w-[14px]" />
         Add Word
       </button>
     </>
@@ -381,30 +392,37 @@ function HiddenMiddle() {
   const [scripture, setScripture] = useState("Genesis 1 – The Creation");
 
   return (
-    <div className={`${cardCls} flex min-w-0 flex-1 flex-col p-4`}>
-      <div className="flex items-start gap-4">
+    <div className={`${cardCls} flex min-w-0 flex-1 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+      <div className="flex items-start gap-[16px]">
         <div className="w-[231px] shrink-0">
-          <label className={lbl}>Puzzle Title</label>
-          <input value={title} onChange={(e) => setTitle(e.target.value)} className={field} />
+          <label className={lbl} style={{ color: HEADING }}>Puzzle Title</label>
+          <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={field}
+            style={{ color: HEADING, borderColor: BORDER }}
+          />
         </div>
         <div className="min-w-0 flex-1">
-          <label className={lbl}>Instructions</label>
+          <label className={lbl} style={{ color: HEADING }}>Instructions</label>
           <input
             value={instructions}
             onChange={(e) => setInstructions(e.target.value)}
             className={field}
+            style={{ color: HEADING, borderColor: BORDER }}
           />
         </div>
       </div>
-      <div className="mt-[17px]">
-        <label className={lbl}>Scripture / Topic</label>
+      <div className="mt-[16px]">
+        <label className={lbl} style={{ color: HEADING }}>Scripture / Topic</label>
         <input
           value={scripture}
           onChange={(e) => setScripture(e.target.value)}
           className={field}
+          style={{ color: HEADING, borderColor: BORDER }}
         />
       </div>
-      <div className="mt-4 border-b border-[#E4E5F0] pb-4" />
+      <div className="mt-[16px] border-b pb-[16px]" style={{ borderColor: BORDER }} />
       <WordListTable rows={HIDDEN_WORDS} />
     </div>
   );
@@ -416,8 +434,8 @@ function HiddenRight() {
   const [b, setB] = useState(true);
   const [c, setC] = useState(true);
   return (
-    <div className={`${cardCls} h-full w-full p-4`}>
-      <label className={lbl}>Grid Size</label>
+    <div className={`${cardCls} h-full w-full p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+      <label className={lbl} style={{ color: HEADING }}>Grid Size</label>
       <Select value={size} onChange={setSize} options={GRID_OPTIONS} className="w-full" />
       <div className="mt-[30px]">
         <ToggleRow label="Allow Diagonal" on={a} onChange={setA} />
@@ -428,42 +446,38 @@ function HiddenRight() {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function ManualHiddenRestoration() {
   return (
     <div
       className="min-h-[calc(100vh-72px)]"
       style={{
         backgroundColor: PAGE_BG,
-        color: BODY,
+        color: HEADING,
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1118px] px-7 py-6">
-        <nav className="text-[16px] font-normal text-[#6B668F]">
-          Word Search <span className="mx-1">&gt;</span> Add <span className="mx-1">&gt;</span> Manual
-        </nav>
+      <div className="mx-auto max-w-[1118px] px-[28px] py-[24px]">
+        <Breadcrumb />
 
-        <h1 className="mt-[13px] text-[24px] leading-[1.2] font-bold text-[#0A0240]">
+        <h1 className="mt-[13px] text-[22px] leading-[22px] font-semibold" style={{ color: HEADING }}>
           Add Word Search — Manual Entry
         </h1>
 
-        <p className="mt-[13px] text-[15px] font-semibold text-[#6B668F]">
+        <p className="mt-[13px] text-[14px] leading-[14px] font-semibold" style={{ color: MUTED }}>
           Manual — Hidden Restoration
         </p>
 
-        <div className="mt-[23px]">
+        <div className="mt-[20px]">
           <FilterFields />
         </div>
 
         <TabsRow />
 
-        <div className="mt-8">
-          <div className="flex items-stretch gap-5">
+        <div className="mt-[30px]">
+          <div className="flex items-stretch gap-[20px]">
             <PuzzleImageCard />
-            <div className="flex min-w-0 flex-1 items-stretch gap-5">
+            <div className="flex min-w-0 flex-1 items-stretch gap-[20px]">
               <HiddenMiddle />
               <div className="flex w-[200px] shrink-0 flex-col">
                 <HiddenRight />

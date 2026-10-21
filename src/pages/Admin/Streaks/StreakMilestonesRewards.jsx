@@ -32,7 +32,6 @@ const SvgIcon = ({ src, size = 16, className = "" }) => (
     const InfoIconSvg = (p) => <SvgIcon src={InfoIcon} {...p} />;
     const ViewIconSvg = (p) => <SvgIcon src={ViewIcon} {...p} />;
 
-/* Figma tokens for this page */
 const TEXT = "#0A0847";
 const PAGE_BG = "#F9FAFE";
 

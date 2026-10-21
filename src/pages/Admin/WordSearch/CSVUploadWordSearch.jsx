@@ -1,29 +1,27 @@
 import { useRef, useState } from "react";
-import {
-  LuAudioWaveform,
-  LuBookOpen,
-  LuCheck,
-  LuChevronDown,
-  LuCloudUpload,
-  LuDownload,
-  LuGrid3X3,
-  LuSettings,
-} from "react-icons/lu";
-import chapterDefaultImage from "../../../assets/word search/Chapter Default Image.png";
+import { LuCheck, LuDownload } from "react-icons/lu";
+import chapterDefaultImage from "../../../assets/word search/Chapter Default Image.webp";
+import typeGrid from "../../../assets/word search/ws_type_grid.svg";
+import typeGears from "../../../assets/word search/ws_type_gears.svg";
+import typeAudio from "../../../assets/word search/ws_type_audio.svg";
+import typeMystery from "../../../assets/word search/ws_type_mystery.svg";
+import cloudUploadIcon from "../../../assets/word search/CloudUploadIcon.svg";
 
-/* ==========================================================================
-   DATA
-   ========================================================================== */
+
+const HEADING = "#0A0847";
+const NAVY = "#001984";
+const LABEL = "rgba(10, 8, 71, 0.8)";
+const MUTED = "rgba(10, 8, 71, 0.6)";
+const BORDER = "#E2DFFC";
+const PAGE_BG = "#F9FAFE";
+
+
+
 const FILTERS = [
-  {
-    id: "testament",
-    label: "Testament",
-    value: "Old Testament",
-    options: ["Old Testament", "New Testament"],
-  },
-  { id: "book", label: "Book", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "chapter", label: "Chapter", value: "1", options: ["1", "2", "3"] },
-  { id: "level", label: "Level", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
+  { id: "testament", label: "Testament", w: 222, value: "Old Testament", options: ["Old Testament", "New Testament"] },
+  { id: "book", label: "Book", w: 162, value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "chapter", label: "Chapter", w: 130, value: "1", options: ["1", "2", "3"] },
+  { id: "level", label: "Level", w: 139, value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
 ];
 
 const WORD_SEARCH_TYPES = [
@@ -31,7 +29,7 @@ const WORD_SEARCH_TYPES = [
     id: "hidden",
     title: "Hidden Restoration",
     description: "Find hidden Bible words from clues.",
-    Glyph: LuGrid3X3,
+    icon: typeGrid,
     columns: [
       { name: "clue", type: "Text", description: "Puzzle clue" },
       { name: "answer", type: "Text", description: "Hidden word answer" },
@@ -44,7 +42,7 @@ const WORD_SEARCH_TYPES = [
     id: "verse",
     title: "Verse Restoration",
     description: "Restore missing words in a verse.",
-    Glyph: LuSettings,
+    icon: typeGears,
     columns: [
       { name: "verse", type: "Text", description: "Full verse text" },
       { name: "missing_word", type: "Text", description: "Blanked out word" },
@@ -57,7 +55,7 @@ const WORD_SEARCH_TYPES = [
     id: "audio",
     title: "Audio Revelation",
     description: "Listen and identify the correct answer.",
-    Glyph: LuAudioWaveform,
+    icon: typeAudio,
     columns: [
       { name: "audio_url", type: "Text", description: "Audio file URL" },
       { name: "clue", type: "Text", description: "Puzzle clue" },
@@ -70,7 +68,7 @@ const WORD_SEARCH_TYPES = [
     id: "mystery",
     title: "Mystery Scripture",
     description: "Reveal the hidden Scripture.",
-    Glyph: LuBookOpen,
+    icon: typeMystery,
     columns: [
       { name: "scripture", type: "Text", description: "Hidden Scripture text" },
       { name: "clue", type: "Text", description: "Puzzle clue" },
@@ -81,16 +79,21 @@ const WORD_SEARCH_TYPES = [
   },
 ];
 
-/* ==========================================================================
-   FILTER SELECT
-   ========================================================================== */
-function FilterSelect({ id, label, value, options, onChange }) {
+
+
+function ChevronSvg() {
   return (
-    <div className="w-[229px] shrink-0">
-      <label
-        htmlFor={id}
-        className="mb-2 block text-[12px] leading-[15px] font-semibold text-[#0A0847]"
-      >
+    <svg width="7.5" height="4.84" viewBox="0 0 8 5" fill="none" aria-hidden>
+      <path d="M0.75 0.75 4 4 7.25 0.75" stroke={MUTED} strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+
+function FilterSelect({ id, label, width, value, options, onChange }) {
+  return (
+    <div className="shrink-0" style={{ width }}>
+      <label htmlFor={id} className="mb-[8px] block text-[12px] leading-none font-semibold" style={{ color: LABEL }}>
         {label}
       </label>
 
@@ -99,7 +102,8 @@ function FilterSelect({ id, label, value, options, onChange }) {
           id={id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-[40px] w-[229px] cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pr-8 pl-3 text-[12px] text-[#0A0847]/60 outline-none focus:border-[#0A0847]/40"
+          className="h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border bg-white pr-[32px] pl-[12px] text-[12px] font-medium outline-none focus:border-[#001984]"
+          style={{ color: MUTED, borderColor: BORDER }}
         >
           {options.map((o) => (
             <option key={o} value={o}>
@@ -108,42 +112,42 @@ function FilterSelect({ id, label, value, options, onChange }) {
           ))}
         </select>
 
-        <LuChevronDown
-          size={12}
-          strokeWidth={1.8}
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-[#0A0847]/60"
-          aria-hidden
-        />
+        <span className="pointer-events-none absolute top-1/2 right-[12px] flex -translate-y-1/2 items-center">
+          <ChevronSvg />
+        </span>
       </div>
     </div>
   );
 }
 
-/* ==========================================================================
-   WORD SEARCH TYPE CARD
-   ========================================================================== */
-function TypeCard({ id, title, description, Glyph, selected, onSelect }) {
+
+function TypeCard({ id, title, description, icon, selected, onSelect }) {
   return (
     <button
       type="button"
       aria-pressed={selected}
       onClick={() => onSelect(id)}
-      className={`relative flex h-[156px] flex-1 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[7.5px] border-[0.75px] px-6 py-[14px] text-center transition-colors ${
-        selected
-          ? "border-[#001984] bg-[#F1F0FB]"
-          : "border-[#E2DFFC] bg-white hover:bg-[#EDEFF8]"
-      }`}
+      className="relative flex h-[156px] w-[254px] shrink-0 cursor-pointer flex-col items-center rounded-[8px] border px-[24px] pt-[14px] pr-[25px] pb-[14px] text-center transition-colors hover:bg-[#EDEFF8]"
+      style={{
+        borderColor: selected ? NAVY : BORDER,
+        backgroundColor: selected ? "#F1F0FB" : "#FFFFFF",
+      }}
     >
-      <Glyph size={46} strokeWidth={1.2} className="shrink-0 text-[#0A0847]" aria-hidden />
+      <img src={icon} alt="" aria-hidden className="h-[48px] w-[48px] shrink-0 object-contain" />
 
-      <span className="text-[13px] font-semibold text-[#0A0847]">{title}</span>
+      <span className="mt-[10px] text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
+        {title}
+      </span>
 
-      <span className="max-w-[150px] min-h-[26px] text-[11px] leading-[1.3] text-[#0A0847]/60">
+      <span className="mt-[10px] max-w-[157px] text-[12px] leading-[20px] font-medium" style={{ color: MUTED }}>
         {description}
       </span>
 
       {selected && (
-        <span className="absolute -top-2.5 -right-2.5 flex h-[20px] w-[20px] items-center justify-center rounded-full bg-[#001984]">
+        <span
+          className="absolute top-[-10px] right-[-10px] flex h-[24px] w-[24px] items-center justify-center rounded-full"
+          style={{ backgroundColor: NAVY }}
+        >
           <LuCheck size={12} strokeWidth={2.5} className="text-white" aria-hidden />
         </span>
       )}
@@ -151,9 +155,7 @@ function TypeCard({ id, title, description, Glyph, selected, onSelect }) {
   );
 }
 
-/* ==========================================================================
-   UPLOAD DROP ZONE
-   ========================================================================== */
+
 function UploadBox() {
   const inputRef = useRef(null);
   const [dragging, setDragging] = useState(false);
@@ -184,28 +186,35 @@ function UploadBox() {
       }}
       onDrop={onDrop}
       onClick={() => inputRef.current?.click()}
-      className={`csv-dash mt-2.5 flex h-[195px] w-full cursor-pointer flex-col items-center justify-center gap-1 rounded-[7.5px] px-6 py-5 transition-colors ${
-        dragging ? "border-[#0A0847]/60 bg-[#E4E7F4]" : "border-[#0A0847]/40 bg-[#EDEFF8]"
-      }`}
+      className="mt-[10px] flex h-[195px] w-[650px] max-w-full cursor-pointer flex-col items-center justify-center gap-[4px] rounded-[8px] px-[24px] py-[20px] transition-colors"
+      style={{
+        border: `1px dashed ${dragging ? NAVY : "rgba(10, 8, 71, 0.4)"}`,
+        backgroundColor: dragging ? "#E4E7F4" : "#EDEFF8",
+      }}
     >
-      <LuCloudUpload size={36} strokeWidth={1.2} className="shrink-0 text-[#0A0847]" aria-hidden />
+      <img src={cloudUploadIcon} alt="" aria-hidden width={36} height={28} className="block shrink-0" />
 
-      <p className="text-[11px] text-[#0A0847]/60">Drag and drop your CSV file here</p>
+      <p className="text-[10px] leading-[12px] font-medium" style={{ color: MUTED }}>
+        Drag and drop your CSV file here
+      </p>
 
-      <p className="text-[11px] text-[#0A0847]/60">or</p>
+      <p className="text-[10px] leading-[12px] font-medium" style={{ color: MUTED }}>
+        or
+      </p>
 
       <button
         type="button"
-        className="mt-0.5 flex h-[30px] w-[100px] cursor-pointer items-center justify-center rounded-[6px] bg-[#001984] text-[11px] font-semibold text-white transition-opacity hover:opacity-90"
+        className="mt-[2px] flex h-[30px] w-[100px] cursor-pointer items-center justify-center rounded-[6px] text-[10px] font-semibold text-white transition-opacity hover:opacity-90"
+        style={{ backgroundColor: NAVY }}
       >
         Browse File
       </button>
 
-      <div className="flex items-center gap-3 text-[10px] text-[#0A0847]/60">
+      <div className="mt-[4px] flex items-center gap-[8px] text-[10px] leading-[12px] font-medium" style={{ color: MUTED }}>
         <span>Accepted format: .csv only</span>
-        <span className="h-[3px] w-[3px] shrink-0 rounded-full bg-[#0A0847]/60" />
+        <span>•</span>
         <span>Max file size: 10MB</span>
-        <span className="h-[3px] w-[3px] shrink-0 rounded-full bg-[#0A0847]/60" />
+        <span>•</span>
         <span>Max 1,000 rows</span>
       </div>
 
@@ -214,36 +223,32 @@ function UploadBox() {
   );
 }
 
-/* ==========================================================================
-   REQUIRED COLUMNS PREVIEW
-   ========================================================================== */
-function ColumnsPreview({ typeTitle, columns }) {
-  /* Figma breaks the 5 chips after the 4th one (2nd row holds reward_points). */
-  const chipRows = [columns.slice(0, 4), columns.slice(4)];
 
+function ColumnsPreview({ typeTitle, columns }) {
   return (
-    <div className="mt-6 w-full rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#EDEFF8] p-4">
-      <p className="text-[11px] font-semibold text-[#0A0847]">
+    <div className="mt-[24px] w-[650px] max-w-full rounded-[7.5px] border-[0.75px] p-[16px]" style={{ borderColor: BORDER }}>
+      <p className="text-[12px] leading-none font-semibold" style={{ color: LABEL }}>
         Required Columns Preview ({typeTitle})
       </p>
 
-      <div className="mt-3 flex flex-col gap-[10px]">
-        {chipRows.map((row, ri) => (
-          <div key={ri} className="flex flex-wrap gap-[10px]">
-            {row.map(({ name, type, description }) => (
-              <div
-                key={name}
-                className="flex h-[54px] shrink-0 flex-col justify-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-3 py-[10px]"
-              >
-                <p className="text-[11px] leading-none whitespace-nowrap">
-                  <span className="font-semibold text-[#0A0847]">{name}</span>{" "}
-                  <span className="font-normal text-[#0A0847]/60">({type})</span>
-                </p>
-                <p className="text-[9px] leading-none whitespace-nowrap text-[#0A0847]/60">
-                  {description}
-                </p>
-              </div>
-            ))}
+      <div className="mt-[16px] flex flex-wrap gap-[16px]">
+        {columns.map(({ name, type, description }) => (
+          <div
+            key={name}
+            className="flex h-[54px] shrink-0 flex-col justify-center gap-[4px] rounded-[8px] border-[0.75px] bg-white px-[12px]"
+            style={{ borderColor: BORDER }}
+          >
+            <p className="text-[12px] leading-none whitespace-nowrap">
+              <span className="font-semibold" style={{ color: LABEL }}>
+                {name}
+              </span>{" "}
+              <span className="font-medium" style={{ color: MUTED }}>
+                ({type})
+              </span>
+            </p>
+            <p className="text-[10px] leading-[18px] font-medium whitespace-nowrap" style={{ color: MUTED }}>
+              {description}
+            </p>
           </div>
         ))}
       </div>
@@ -251,9 +256,7 @@ function ColumnsPreview({ typeTitle, columns }) {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function CSVUploadWordSearch() {
   const [typeId, setTypeId] = useState("hidden");
   const [filterValues, setFilterValues] = useState(() =>
@@ -263,28 +266,27 @@ export default function CSVUploadWordSearch() {
   const activeType = WORD_SEARCH_TYPES.find((t) => t.id === typeId);
 
   return (
-    <div className="min-h-[calc(100vh-72px)] bg-[#F9FAFE] font-inter text-[#0A0847]">
+    <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
       <div className="mx-auto w-full max-w-[1110px] px-6 pt-10 pb-6">
-        {/* ---------------- header ---------------- */}
-        <p className="text-[14px] font-normal text-[#6B6A80]">
+        <p className="text-[16px] leading-none font-medium" style={{ color: MUTED }}>
           Add / Edit Word Search - CSV Upload
         </p>
 
-        <h1 className="mt-1.5 text-[22px] leading-none font-semibold text-[#0A0847]">
-          1. CSV Upload - Choose Type &amp; File
+        <h1 className="mt-[12px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+          1. CSV Upload — Choose Type &amp; File
         </h1>
 
-        <p className="mt-1.5 text-[14px] font-normal text-[#0A0847]/60">
+        <p className="mt-[12px] text-[14px] leading-none font-medium" style={{ color: MUTED }}>
           Choose the word search type, select your Bible content, and upload your CSV file.
         </p>
 
-        {/* ---------------- filter row ---------------- */}
-        <div className="mt-4 flex w-full gap-6">
-          {FILTERS.map(({ id, label, options }) => (
+        <div className="mt-[20px] flex w-full gap-[24px]">
+          {FILTERS.map(({ id, label, w, options }) => (
             <FilterSelect
               key={id}
               id={id}
               label={label}
+              width={w}
               value={filterValues[id]}
               options={options}
               onChange={(v) => setFilterValues((prev) => ({ ...prev, [id]: v }))}
@@ -292,59 +294,62 @@ export default function CSVUploadWordSearch() {
           ))}
         </div>
 
-        {/* ---------------- 1. word search type ---------------- */}
-        <h2 className="mt-5 text-[14px] font-semibold text-[#0A0847]">1. Choose Word Search Type</h2>
+        <h2 className="mt-[24px] text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
+          1. Choose Word Search Type
+        </h2>
 
-        <div className="mt-2 flex w-full gap-4">
-          {WORD_SEARCH_TYPES.map(({ id, title, description, Glyph }) => (
+        <div className="mt-[16px] flex w-full gap-[24px]">
+          {WORD_SEARCH_TYPES.map(({ id, title, description, icon }) => (
             <TypeCard
               key={id}
               id={id}
               title={title}
               description={description}
-              Glyph={Glyph}
+              icon={icon}
               selected={typeId === id}
               onSelect={setTypeId}
             />
           ))}
         </div>
 
-        {/* ---------------- two column area ---------------- */}
-        <div className="mt-5 flex gap-6">
-          {/* left */}
-          <div className="flex w-[657px] flex-col">
-            {/* 2. download csv template */}
+        <div className="mt-[24px] flex items-start gap-[31px]">
+          <div className="flex w-[650px] shrink-0 flex-col">
             <div>
-              <h3 className="text-[14px] leading-[17px]">
-                <span className="font-semibold text-[#0A0847]">2. Download CSV Template</span>{" "}
-                <span className="font-normal text-[#0A0847]/60">({activeType.title})</span>
+              <h3 className="text-[14px] leading-none">
+                <span className="font-semibold" style={{ color: HEADING }}>
+                  2. Download CSV Template
+                </span>{" "}
+                <span className="font-medium" style={{ color: MUTED }}>
+                  ({activeType.title})
+                </span>
               </h3>
 
               <button
                 type="button"
-                className="mt-2.5 flex h-[38px] w-[220px] cursor-pointer items-center justify-center gap-2 rounded-[7.5px] border border-[#E2DFFC] bg-white text-[12px] font-medium text-[#0A0847] transition-colors hover:bg-[#EDEFF8]"
+                className="mt-[12px] flex h-[38px] w-[220px] cursor-pointer items-center justify-center gap-[8px] rounded-[7.5px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#EDEFF8]"
+                style={{ borderColor: BORDER, color: HEADING }}
               >
                 Download CSV Template
                 <LuDownload size={12} strokeWidth={1.8} aria-hidden />
               </button>
             </div>
 
-            {/* 2. upload csv file */}
-            <div className="mt-8">
-              <h3 className="text-[14px] leading-[17px] font-semibold text-[#0A0847]">
+            <div className="mt-[28px]">
+              <h3 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
                 2. Upload CSV File
               </h3>
 
               <UploadBox />
             </div>
 
-            {/* required columns preview — same left edge + width as the dropzone */}
             <ColumnsPreview typeTitle={activeType.title} columns={activeType.columns} />
           </div>
 
-          {/* right */}
-          <aside className="flex h-[353px] w-[381px] shrink-0 flex-col items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white py-[18px] pr-[24px] pl-[23px]">
-            <p className="text-center text-[14px] font-semibold text-[#0A0847]">
+          <aside
+            className="flex h-[353px] w-[381px] shrink-0 flex-col items-center gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[18px] pr-[24px] pb-[18px] pl-[23px]"
+            style={{ borderColor: BORDER }}
+          >
+            <p className="text-center text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               Chapter Default Image
             </p>
 
@@ -354,7 +359,7 @@ export default function CSVUploadWordSearch() {
               className="min-h-0 w-full flex-1 rounded-[8px] object-cover"
             />
 
-            <p className="w-[150px] text-center text-[11px] leading-[1.4] text-[#0A0847]/60">
+            <p className="w-[178px] text-center text-[12px] leading-none font-semibold" style={{ color: MUTED }}>
               Applied automatically to imported puzzles.
             </p>
           </aside>

@@ -24,7 +24,7 @@ import {
   FiHeadphones,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import chapterStoryBg from "../../../assets/ChapterStoryBg.png";
+import chapterStoryBg from "../../../assets/ChapterStoryBg.webp";
 import AddWhiteIcon from "../../../assets/ChapterStories/WhiteAddIcon.svg"
 import CheckMarkIcon from "../../../assets/ChapterStories/CheckMarkIcon.svg";
 import Headphone from "../../../assets/ChapterStories/Headphone.svg";

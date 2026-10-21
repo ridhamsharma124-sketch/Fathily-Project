@@ -253,7 +253,6 @@ function ToolSelect({ value, onChange, options, className = "" }) {
           </option>
         ))}
       </select>
-      {/* divider + caret, like the Figma select */}
       <span className="pointer-events-none absolute bottom-[2px] right-[22px] top-[2px] w-px bg-[#CCCCCC]" />
       <span className="pointer-events-none absolute right-[8px] top-1/2 -translate-y-1/2">
         <Caret />

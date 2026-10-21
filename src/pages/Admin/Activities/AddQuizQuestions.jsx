@@ -12,12 +12,8 @@ import { RiListUnordered } from "react-icons/ri";
 import { IoImage } from "react-icons/io5";
 import { BsBarChart } from "react-icons/bs";
 
-/* Figma icon: src/assets/activities/selector_book.png */
-import selectorBookIcon from "../../../assets/activities/selector_book.png";
+import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
-/* ==========================================================================
-   CUSTOM ICONS (Figma jaisa look)
-   ========================================================================== */
 
 // 4-point concave star ka path
 function starPath(cx, cy, r) {

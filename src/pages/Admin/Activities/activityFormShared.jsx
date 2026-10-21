@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { LuChevronDown, LuCircleCheck, LuCircleX, LuPlay } from "react-icons/lu";
-import selectorBook from "../../../assets/activities/selector_book.png";
-import audioFileIcon from "../../../assets/activities/audio_file_icon.png";
+import selectorBook from "../../../assets/activities/icon-book-purple.svg";
+import audioFileIcon from "../../../assets/activities/icon-music-app.svg";
 
 /* ==========================================================================
    PRIMITIVES USED ONLY BY THE NEW ACTIVITY PAGES
@@ -10,19 +10,15 @@ import audioFileIcon from "../../../assets/activities/audio_file_icon.png";
 
 export const labelClass = "mb-[6px] block text-[12px] font-semibold text-[#0A0847]";
 
-/* Figma input: h40, radius 7.47, border 1px #E2DFFC, padding 10/12, Inter 500 12px @80% */
 export const inputClass =
   "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A084799] focus:border-[#041581]";
 
-/* width is added per-button: w-[152px] / w-[188px] / w-full
-   Figma button text: Inter 600 14px @80% */
 export const outlineButton =
   "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 py-3 text-[14px] font-semibold text-[#0A0847]/80 transition-colors hover:bg-[#F1F1F9]";
 
 export const purpleButton =
   "flex h-12 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4C1DD6] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#4318B8]";
 
-/* left (form) card — Figma padding: top 19 / right 22 / bottom 35 / left 16, gap 10 */
 export const formCardClass =
   "flex min-w-0 w-full flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFEFF] pt-[19px] pr-[22px] pb-[35px] pl-4";
 
@@ -186,8 +182,6 @@ export function Select({ id, value, options, onChange, className = "" }) {
   );
 }
 
-/* textarea with the character counter sitting INSIDE, bottom-right
-   Figma: radius 7.47, text Inter 600 12px @60%, left padding ~15px */
 export function TextArea({
   id,
   value,
@@ -237,10 +231,6 @@ export function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* -------------------------------------------------------------------------
-   IMAGE UPLOAD BOX — click to browse, drag & drop, removable
-   Figma: 535 x 193, radius 8, caption Inter 500 12px, letter-spacing 2%
-   ---------------------------------------------------------------------- */
 export function ImageUploadBox({
   image,
   onSelect,
@@ -331,11 +321,6 @@ export function ImageUploadBox({
   );
 }
 
-/* -------------------------------------------------------------------------
-   AUDIO FILE CARD — header row (icon / name / meta / check) + body slot
-   Figma: icon 42x42, name Inter 600 14px, meta Inter 500 12px,
-   check 29x29 / 2.5px stroke / #259147
-   ---------------------------------------------------------------------- */
 export const AUDIO_FILE_NAME = "john_3_bulkquiz_2026.csv";
 export const AUDIO_FILE_META = "12.4 KB • 25 rows";
 
@@ -395,13 +380,6 @@ export function Waveform() {
   );
 }
 
-/* -------------------------------------------------------------------------
-   AUDIO PLAYER BAR
-   Figma (form):    535 x 51,  padding 12 / 16, gap 10, play circle ~21px
-   Figma (preview): 402 x 62,  padding 16 / 29 / 12 / 16, gap 10, play circle 28px
-   Play circle #001984, time text Inter 500 12px @80%, bg #FEFEFF, radius 8
-   Use variant="preview" for the Story Entry Preview card.
-   ---------------------------------------------------------------------- */
 export function AudioPlayer({ time, variant = "form" }) {
   const isPreview = variant === "preview";
 

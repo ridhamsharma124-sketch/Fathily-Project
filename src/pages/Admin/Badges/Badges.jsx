@@ -9,18 +9,15 @@ import {
   LuPencil,
   LuTrash2,
 } from "react-icons/lu";
-// Badge illustrations cut from the Figma frame (transparent circular PNGs)
-import firstStepsIcon from "../../../assets/badges/first-steps.png";
-import dailyDevotionIcon from "../../../assets/badges/daily-devotion.png";
-import prayerWarriorIcon from "../../../assets/badges/prayer-warrior.png";
-import verseMasterIcon from "../../../assets/badges/verse-master.png";
-import faithfulFriendIcon from "../../../assets/badges/faithful-friend.png";
-import bibleScholarIcon from "../../../assets/badges/bible-scholar.png";
-import communityLeaderIcon from "../../../assets/badges/community-leader.png";
+import firstStepsIcon from "../../../assets/badges/first-steps.webp";
+import dailyDevotionIcon from "../../../assets/badges/daily-devotion.webp";
+import prayerWarriorIcon from "../../../assets/badges/prayer-warrior.webp";
+import verseMasterIcon from "../../../assets/badges/verse-master.webp";
+import faithfulFriendIcon from "../../../assets/badges/faithful-friend.webp";
+import bibleScholarIcon from "../../../assets/badges/bible-scholar.webp";
+import communityLeaderIcon from "../../../assets/badges/community-leader.webp";
 
-/* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
-   ========================================================================== */
+
 const TIER_CLASS = {
   Seed: "border-[#3A9A45] bg-[#E9FAE7] text-[#3A9A45]",
   Sprout: "border-[#B9A4E8] bg-[#F3EEFF] text-[#5B2FA8]",
@@ -93,9 +90,7 @@ const BADGES = [
   },
 ];
 
-/* ==========================================================================
-   SMALL PRIMITIVES
-   ========================================================================== */
+
 function Toggle({ checked, onChange, label }) {
   return (
     <button
@@ -117,15 +112,12 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* Figma: table header 14px / 500, body 12px / 500, line-height 100%, vertical middle */
 const TH_CLASS =
   "px-4 text-[14px] font-medium leading-none text-[#0A0847]/80";
 const TD_CLASS =
   "px-4 text-[12px] font-medium leading-none text-[#0A0847]/80 align-middle";
 
-/* ==========================================================================
-   PAGE 1 — BADGES MANAGEMENT
-   ========================================================================== */
+
 export default function Badges() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -145,10 +137,8 @@ export default function Badges() {
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="w-full px-7 py-6">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
-          {/* header row */}
           <div className="flex items-start justify-between gap-6">
             <div>
-              {/* Figma: Inter 600, 22px, line-height 100% */}
               <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
                 Badges Management
               </h1>
@@ -166,7 +156,6 @@ export default function Badges() {
             </button>
           </div>
 
-          {/* filter row */}
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="relative w-[407px]">
               <LuSearch
@@ -216,7 +205,6 @@ export default function Badges() {
             </div>
           </div>
 
-          {/* table card — Figma: radius 7.5px, border 0.75px #E2DFFC */}
           <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
             <div className="px-[13px] pt-[13px]">
               <table className="w-full min-w-[880px] border-collapse">
@@ -323,9 +311,7 @@ export default function Badges() {
               </table>
             </div>
 
-            {/* footer */}
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#EFEDF8] px-[13px] py-3">
-              {/* Figma: Inter 400, 12px, #0A0847 60% */}
               <div className="flex items-center gap-2 text-[12px] font-normal leading-none text-[#0A0847]/60">
                 Display
                 <div className="relative">
@@ -342,7 +328,6 @@ export default function Badges() {
                 Badges
               </div>
 
-              {/* Figma: pagination squares 24px, radius 3px, active #001984 */}
               <div className="flex items-center gap-1.5">
                 <button
                   type="button"

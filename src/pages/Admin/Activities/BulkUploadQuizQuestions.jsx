@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import selectorBookIcon from "../../../assets/activities/selector_book.png";
-import uploadCloudIcon from "../../../assets/activities/upload_cloud.png";
+import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
+import uploadCloudIcon from "../../../assets/activities/upload_cloud.svg";
 import {
   LuDownload,
   LuSearch,
@@ -324,7 +324,6 @@ export default function BulkUploadQuizQuestions() {
               }`}
             >
               <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3">
-                {/* Figma cloud-upload icon (cut from Figma frame) */}
                 <img
                   src={uploadCloudIcon}
                   alt=""

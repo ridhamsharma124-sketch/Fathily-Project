@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import Logo from "../components/shared/Logo";
 import AuthFooter from "../components/auth/AuthFooter";
-import bgImage from "../assets/bgimg.png";
+import bgImage from "../assets/bgimg.webp";
 
 
 const FRAME_W = 1440;

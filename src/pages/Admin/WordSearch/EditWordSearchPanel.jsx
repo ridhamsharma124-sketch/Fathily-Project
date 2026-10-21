@@ -1,31 +1,111 @@
 import { useEffect, useState } from "react";
-import { LuX, LuImage, LuSparkles } from "react-icons/lu";
 
-/* ==========================================================================
-   DESIGN TOKENS
-   ========================================================================== */
-const NAVY = "#001984";
-const HEADING = "#1B1F4B";
-const GRAY = "#6B7194";
-const BORDER = "#E4E7F5";
-const GREEN = "#2EB84B";
+
+const INK = "#0A0847"; 
+const NAVY = "#001984"; 
+const CLOSE_BLUE = "#0926FD"; 
+const GREEN = "#21AC1C"; 
+const BUTTON_BORDER = "#E2DFFC"; 
+const IMAGE_BORDER = "#EEEEF0"; 
 
 const DETAIL_ROWS = [
-  ["Type", "Hidden Restoration"],
-  ["Bible Location", "Genesis 1"],
-  ["Level", "Level 1"],
-  ["Words / Items", "12 words"],
-  ["Image Source", "Chapter Default"],
-  ["Created By", "Admin User"],
-  ["Created", "May 20, 2025 12:30 AM"],
-  ["Updated", "May 20, 2025 12:32 AM"],
+  ["Type:", "Hidden Restoration"],
+  ["Bible Location:", "Genesis 1"],
+  ["Level:", "Level 1"],
+  ["Words / Items:", "12 words"],
+  ["Image Source:", "Chapter Default"],
+  ["Created By:", "Admin User"],
+  ["Created:", "May 20, 2025 12:30 AM"],
+  ["Updated:", "May 20, 2025 13:32 AM"],
 ];
 
 const TABS = ["Details", "Activity", "History"];
 
-/* ==========================================================================
-   EDIT WORD SEARCH — centered modal
-   ========================================================================== */
+
+
+
+function CloseCircleIcon({ className = "" }) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9.6" />
+      <path d="M8.4 8.4 15.6 15.6M15.6 8.4 8.4 15.6" />
+    </svg>
+  );
+}
+
+
+function ImageFrameIcon({ className = "" }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect x="1" y="1" width="16" height="16" rx="3.4" />
+      <circle cx="11.6" cy="5.8" r="1.5" />
+      <path d="M1.8 14 6.4 9.2 10 12.6 12.9 10 16.3 13.8" />
+    </svg>
+  );
+}
+
+
+function ImageSparkleIcon({ className = "" }) {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 18 18"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <g stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9.4 3.3H5.3A2.8 2.8 0 0 0 2.5 6.1v7.1A2.8 2.8 0 0 0 5.3 16h7.3a2.8 2.8 0 0 0 2.8-2.8V9" />
+        <circle cx="10.6" cy="7.6" r="1.25" />
+        <path d="M2.7 12.9c2-1.9 5-2.2 7.2-.5 1 .8 1.9.9 2.9.3" />
+        <path d="M10.6 14.6 12 13.1l3.3 2.4" />
+      </g>
+      <path
+        d="M14.7 .8c.2 1.7 1.2 2.7 2.9 2.9-1.7.2-2.7 1.2-2.9 2.9-.2-1.7-1.2-2.7-2.9-2.9 1.7-.2 2.7-1.2 2.9-2.9Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+
+function StatusPill({ children, published = true }) {
+  return (
+    <span
+      className={`inline-flex h-[25px] min-w-[71px] shrink-0 items-center justify-center rounded-[8px] border px-[9px] text-[12px] leading-[normal] font-medium ${
+        published
+          ? "border-[#DAF3C8] bg-[#21AC1C]/10 text-[#21AC1C]"
+          : "border-[#0A0847]/10 bg-[#0A0847]/5 text-[#0A0847]/60"
+      }`}
+    >
+      {children}
+    </span>
+  );
+}
+
+
 export default function EditWordSearchPanel({ row, onClose }) {
   const [tab, setTab] = useState("Details");
   const [open, setOpen] = useState(false);
@@ -51,168 +131,166 @@ export default function EditWordSearchPanel({ row, onClose }) {
         aria-hidden
       />
 
-      <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-4">
+      <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Edit Word Search"
-          className={`pointer-events-auto my-auto flex max-h-[92vh] w-[760px] max-w-full flex-col overflow-hidden rounded-[8px] border bg-white shadow-[0_24px_48px_rgba(0,0,0,0.25)] transition-all duration-200 ${
+          className={`pointer-events-auto flex max-h-[94vh] w-[308px] max-w-full flex-col overflow-hidden rounded-[8px] border bg-white pt-[16px] pl-[13px] font-inter shadow-[0_24px_48px_rgba(0,0,0,0.25)] transition-all duration-200 ${
             open ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
-          style={{ borderColor: BORDER }}
+          style={{ borderColor: BUTTON_BORDER }}
         >
-          {/* header */}
-          <div className="flex items-start justify-between gap-3 border-b px-6 py-5" style={{ borderColor: BORDER }}>
-            <h2 className="text-[20px] font-bold" style={{ color: HEADING }}>
-              Edit Word Search
-            </h2>
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Close"
-              className="flex h-[26px] w-[26px] shrink-0 cursor-pointer items-center justify-center rounded-full border transition-colors hover:bg-[#F0F2FB]"
-              style={{ borderColor: NAVY, color: NAVY }}
-            >
-              <LuX size={13} />
-            </button>
-          </div>
-
-          {/* identity */}
-          <div className="flex items-center gap-4 px-6 pt-5">
-            <img
-              src={row.image}
-              alt=""
-              className="h-[112px] w-[112px] shrink-0 rounded-[8px] border object-cover object-top"
-              style={{ borderColor: BORDER }}
-            />
-            <div className="min-w-0">
-              <p className="text-[24px] leading-tight font-bold" style={{ color: HEADING }}>
-                {row.topic}
-              </p>
-              <p className="mt-1.5 text-[13px]" style={{ color: GRAY }}>
-                {row.location} &bull; {row.level}
-              </p>
-              <span
-                className="mt-2.5 inline-block rounded-full px-[10px] py-[3px] text-[11px] font-semibold"
-                style={{ backgroundColor: "#E3F7E6", color: GREEN }}
+          <div className="w-[269px] max-w-full shrink-0">
+            <div className="flex h-[24px] items-start justify-between">
+              <h2 className="text-[14px] leading-[15px] font-semibold" style={{ color: INK }}>
+                Edit Word Search
+              </h2>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="-mt-[2px] flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center transition-opacity hover:opacity-70"
+                style={{ color: CLOSE_BLUE }}
               >
-                {row.status}
-              </span>
+                <CloseCircleIcon />
+              </button>
+            </div>
+
+            <div className="mt-[28px] flex items-start gap-[12px]">
+              <img
+                src={row.image}
+                alt=""
+                className="h-[79px] w-[80px] shrink-0 rounded-[6px] object-cover object-top"
+              />
+              <div className="min-w-0">
+                <p className="text-[16px] leading-[20px] font-semibold text-[#0A0847]/80">
+                  {row.topic}
+                </p>
+                <p className="mt-[8px] text-[12px] leading-[15px] font-semibold text-[#0A0847]/60">
+                  {row.location} &bull; {row.level}
+                </p>
+                <div className="mt-[10px]">
+                  <StatusPill>{row.status}</StatusPill>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative mt-[24px] flex h-[31px] items-start justify-between border-b border-[#0A0847]/10">
+              {TABS.map((t, i) => {
+                const active = tab === t;
+                return (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTab(t)}
+                    className={`relative flex h-full cursor-pointer items-start justify-center pt-[6px] text-center text-[12px] leading-[normal] font-semibold ${
+                      i === 0 ? "px-[23px]" : i === TABS.length - 1 ? "mr-[6px]" : ""
+                    } ${active ? "" : "text-[#0A0847]/60"}`}
+                    style={active ? { color: NAVY } : undefined}
+                  >
+                    {t}
+                    {active && (
+                      <span
+                        className="absolute -bottom-px left-0 h-[2px] w-full"
+                        style={{ backgroundColor: NAVY }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          {/* tabs */}
-          <div className="mt-5 flex items-center gap-6 px-6">
-            {TABS.map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTab(t)}
-                className={`-mb-px cursor-pointer text-[13px] ${tab === t ? "font-bold" : ""}`}
-                style={{ color: tab === t ? HEADING : GRAY }}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-          <div className="mx-6 h-px w-[calc(100%-48px)]" style={{ backgroundColor: BORDER }} />
           {tab === "Details" ? (
-            <div className="-mt-px mx-6 mb-0 h-[3px] w-[68px] shrink-0" style={{ backgroundColor: NAVY }} />
-          ) : (
-            <p className="px-6 py-10 text-center text-[13px]" style={{ color: GRAY }}>
-              No {tab.toLowerCase()} to show.
-            </p>
-          )}
-
-          {/* body */}
-          {tab === "Details" && (
-            <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">
-              <div className="flex items-start gap-6">
-                {/* puzzle image */}
-                <div className="w-[300px] shrink-0">
-                  <h3 className="text-[14px] font-bold" style={{ color: HEADING }}>
+            <div className="min-h-0 flex-1 overflow-y-auto pt-[16px] pr-[2px]">
+              <div className="w-[269px] max-w-full">
+                <div className="flex flex-col gap-[8px]">
+                  <h3 className="text-[14px] leading-[normal] font-semibold text-[#0A0847]/80">
                     Puzzle Image
                   </h3>
                   <img
                     src={row.image}
                     alt={`${row.topic} puzzle image`}
-                    className="mt-3 h-[260px] w-[300px] rounded-[8px] border object-cover object-top"
-                    style={{ borderColor: BORDER }}
+                    className="h-[135px] w-[269px] max-w-full rounded-[8px] border object-cover object-top"
+                    style={{ borderColor: IMAGE_BORDER }}
                   />
+                </div>
+
+                <div className="mt-[24px] flex flex-col gap-[12px]">
                   <button
                     type="button"
-                    className="mt-3 flex h-[42px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border bg-white text-[13px] font-semibold transition-colors hover:bg-[#F0F2FB]"
-                    style={{ borderColor: NAVY, color: NAVY }}
+                    className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-[#FDFCFF] text-[14px] leading-[normal] font-semibold text-[#0A0847]/80 transition-colors hover:bg-[#F3F2FD]"
+                    style={{ borderColor: BUTTON_BORDER }}
                   >
-                    <LuImage size={16} />
+                    <ImageFrameIcon className="text-[#0A0847]" />
                     Replace Image
                   </button>
                   <button
                     type="button"
-                    className="mt-2.5 flex h-[42px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
-                    style={{ backgroundColor: NAVY }}
+                    className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border text-[14px] leading-[normal] font-semibold text-white transition-opacity hover:opacity-90"
+                    style={{ backgroundColor: NAVY, borderColor: BUTTON_BORDER }}
                   >
-                    <LuSparkles size={16} />
+                    <ImageSparkleIcon />
                     Generate AI Image
                   </button>
                 </div>
 
-                {/* details */}
-                <div className="min-w-0 flex-1">
-                  <dl className="flex flex-col gap-4">
-                    {DETAIL_ROWS.map(([label, value]) => (
-                      <div key={label} className="flex items-start justify-between gap-4">
-                        <dt className="text-[13px] font-bold" style={{ color: GRAY }}>
-                          {label}
-                        </dt>
-                        <dd className="text-right text-[13px]" style={{ color: GRAY }}>
-                          {value}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
+                <div className="mt-[24px] h-px w-full bg-[#0A0847]/10" />
 
-                  <div className="my-6 h-px w-full" style={{ backgroundColor: BORDER }} />
-
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-[13px] font-bold" style={{ color: GRAY }}>
-                      Status
-                    </span>
-                    <div className="flex items-center gap-2.5">
-                      <button
-                        type="button"
-                        role="switch"
-                        aria-checked={isPublished}
-                        aria-label="Toggle status"
-                        onClick={() => setIsPublished(!isPublished)}
-                        className="relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full transition-colors"
-                        style={{ backgroundColor: isPublished ? GREEN : "#D9DCEA" }}
-                      >
-                        <span
-                          className="absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white shadow-sm transition-all"
-                          style={{ left: isPublished ? 16 : 2 }}
-                        />
-                      </button>
-                      <span
-                        className="text-[13px] font-semibold"
-                        style={{ color: isPublished ? GREEN : GRAY }}
-                      >
-                        {isPublished ? "Published" : "Unpublished"}
-                      </span>
+                <dl className="mt-[8px] flex flex-col">
+                  {DETAIL_ROWS.map(([label, value]) => (
+                    <div key={label} className="grid h-[30px] grid-cols-[109px_1fr] items-center">
+                      <dt className="text-[12px] leading-[normal] font-semibold text-[#0A0847]/80">
+                        {label}
+                      </dt>
+                      <dd className="text-[12px] leading-[normal] font-medium text-[#0A0847]/60">
+                        {value}
+                      </dd>
                     </div>
+                  ))}
+                </dl>
+
+                <div className="mt-[16px] h-px w-full bg-[#0A0847]/10" />
+
+                <div className="mt-[16px] flex items-center justify-between gap-4">
+                  <span className="text-[14px] leading-[normal] font-semibold text-[#0A0847]/60">
+                    Status
+                  </span>
+                  <div className="flex items-center gap-[2px]">
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={isPublished}
+                      aria-label="Toggle status"
+                      onClick={() => setIsPublished(!isPublished)}
+                      className="relative h-[13px] w-[22px] shrink-0 cursor-pointer rounded-full transition-colors"
+                      style={{ backgroundColor: isPublished ? GREEN : "#D9DCEA" }}
+                    >
+                      <span
+                        className="absolute top-[1px] h-[11px] w-[11px] rounded-full bg-white transition-all"
+                        style={{ left: isPublished ? 10.5 : 0.5 }}
+                      />
+                    </button>
+                    <StatusPill published={isPublished}>
+                      {isPublished ? "Published" : "Unpublished"}
+                    </StatusPill>
                   </div>
                 </div>
               </div>
             </div>
+          ) : (
+            <p className="w-[269px] max-w-full py-10 text-center text-[12px] font-medium text-[#0A0847]/60">
+              No {tab.toLowerCase()} to show.
+            </p>
           )}
 
-          {/* footer */}
-          <div className="border-t p-6" style={{ borderColor: BORDER }}>
+          <div className="w-[269px] max-w-full shrink-0 pt-[16px] pb-[24px]">
             <button
               type="button"
               onClick={onClose}
-              className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[8px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: NAVY }}
+              className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border text-[14px] leading-[normal] font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: NAVY, borderColor: BUTTON_BORDER }}
             >
               Save Changes
             </button>
@@ -221,4 +299,4 @@ export default function EditWordSearchPanel({ row, onClose }) {
       </div>
     </>
   );
-}
+} 

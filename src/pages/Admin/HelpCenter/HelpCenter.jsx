@@ -24,19 +24,7 @@ import {
 } from "react-icons/lu";
 import ArticleModal from "./ArticleModal";
 
-/* ==========================================================================
-   DESIGN TOKENS (from the Figma inspect panel)
-   Text colour is #0A0847 everywhere:
-     100% -> headings / values, 80% -> table + filters, 60% -> muted
-   Primary navy #001984 · border #E2DFFC · table header bg #F4F7FC
-   All colours are explicit hex so nothing depends on custom Tailwind tokens.
-   ========================================================================== */
 
-/* ==========================================================================
-   STAT CARD ICONS — hand-drawn SVGs matching the Figma icons
-   (Lucide icons look different: Figma uses outlined bars, a ring with a thick
-   check, a document with a dash and a two-tone thumbs-up)
-   ========================================================================== */
 const svgBase = (size) => ({
   width: size,
   height: size,
@@ -196,7 +184,6 @@ const MENU_ITEMS = [
   { key: "delete", label: "Delete", icon: LuTrash2, danger: true },
 ];
 
-/* Table column widths (taken from Figma: Title 154 + 20px cell padding, etc.) */
 const COLUMNS = [
   { label: "Title", w: "18.6%", align: "text-left" },
   { label: "Category", w: "20.7%", align: "text-left" },
@@ -250,7 +237,7 @@ function FilterSelect({ value, onChange, options }) {
 export default function HelpCenter() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All Statuses");
-  const [visibility, setVisibility] = useState("All Statuses"); // 2nd dropdown in Figma
+  const [visibility, setVisibility] = useState("All Statuses");
   const [author, setAuthor] = useState("All Authors");
   const [menu, setMenu] = useState(null);
   const [modal, setModal] = useState(null);
@@ -331,7 +318,6 @@ export default function HelpCenter() {
         </button>
       </div>
 
-      {/* Stat cards — Figma: ~255x154, border 1px #E2DFFC, icon box 60, gap 16 */}
       <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
         {STATS.map((stat) => {
           const Icon = stat.icon;

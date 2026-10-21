@@ -1,15 +1,10 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LuChevronDown, LuCheck } from "react-icons/lu";
-// Upload cloud cut from the Figma frame (transparent PNG).
-// Path assumes src/pages/Admin/Badges/ -> src/assets/badges/
-import uploadCloudIcon from "../../../assets/badges/upload-cloud.png";
-// Save floppy cut from the Figma frame (white, transparent).
-import saveIcon from "../../../assets/badges/save-icon.png";
 
-/* ==========================================================================
-   PRIMITIVES — Figma: labels 12px / 600, inputs 12px / 500, 7.5px radius
-   ========================================================================== */
+import uploadCloudIcon from "../../../assets/badges/upload-cloud.svg";
+import saveIcon from "../../../assets/badges/save-icon.svg";
+
 const labelClass = "mb-[6px] block text-[12px] font-semibold text-[#0A0847]";
 
 const inputClass =
@@ -18,7 +13,6 @@ const inputClass =
 const selectClass =
   "h-[46px] w-full cursor-pointer appearance-none rounded-[7.5px] border border-[#E2DFFC] bg-white pl-3 pr-10 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#041581]";
 
-/* Figma: helper text 10px / 500 */
 const helperClass = "mt-[6px] text-[10px] font-medium leading-none text-[#0A0847]/80";
 
 function FieldSelect({ id, options }) {
@@ -54,7 +48,6 @@ function CounterField({ id, placeholder }) {
   );
 }
 
-/* Figma toggle: 26 x 15 track */
 function Toggle({ checked, onChange, label }) {
   return (
     <button
@@ -76,7 +69,6 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* Figma card: radius 7.5px, 0.75px #E2DFFC border, padding 27 / 28 / 32 / 24 */
 function Card({ title, children, divider = true }) {
   return (
     <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pb-8 pl-6 pr-7 pt-[27px]">
@@ -88,9 +80,6 @@ function Card({ title, children, divider = true }) {
   );
 }
 
-/* ==========================================================================
-   MEDAL PREVIEW — red rosette, gold scalloped edge, gold star (Figma 46 x 44)
-   ========================================================================== */
 function Medal() {
   return (
     <svg viewBox="0 0 60 60" className="h-[44px] w-[46px] shrink-0" role="img" aria-label="Badge preview">
@@ -108,7 +97,6 @@ function Medal() {
   );
 }
 
-/* Figma swatches: 48 x 48, first (selected) is #101D8A */
 const SWATCHES = [
   { hex: "#101D8A" },
   { hex: "#46B863" },
@@ -119,10 +107,6 @@ const SWATCHES = [
   { hex: "#9AA0B4" },
 ];
 
-/* ==========================================================================
-   PAGE — ADD NEW BADGE
-   Figma: left column 528px, right column 476px, page width 1072px
-   ========================================================================== */
 export default function AddBadge() {
   const navigate = useNavigate();
   const [active, setActive] = useState(true);
@@ -144,7 +128,6 @@ export default function AddBadge() {
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="w-full px-7 py-6">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
-          {/* header */}
           <div>
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
               Add New Badge
@@ -154,9 +137,7 @@ export default function AddBadge() {
             </p>
           </div>
 
-          {/* two columns */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[528px_476px] lg:justify-between">
-            {/* LEFT COLUMN */}
             <div className="flex flex-col gap-[19px]">
               <Card title="Badge Information">
                 <div>
@@ -249,7 +230,6 @@ export default function AddBadge() {
               </Card>
             </div>
 
-            {/* RIGHT COLUMN */}
             <div className="flex flex-col gap-4">
               <Card title="Requirements">
                 <div>
@@ -348,7 +328,6 @@ export default function AddBadge() {
             </div>
           </div>
 
-          {/* bottom action row — Figma buttons 211 x 41, radius 8px */}
           <div className="flex justify-end gap-4">
             <button
               type="button"

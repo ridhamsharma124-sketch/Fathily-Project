@@ -19,7 +19,6 @@ import {
   PiTrash,
 } from "react-icons/pi";
 
-/* Figma-matched icons (24 grid, stroke = colour) */
 const LiveIcon = ({ size = 32, color = "currentColor" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="1.8" fill={color} />
@@ -75,7 +74,6 @@ const MENU_ITEMS = [
   { key: "delete", label: "Delete", icon: PiTrash, danger: true },
 ];
 
-/* Figma text colour: #0A0847 @ 80% */
 const TXT = "text-[#0A0847CC]";
 const TH =
   "h-[48px] bg-[#F1F3FB] px-[12px] text-left text-[14px] font-medium leading-none whitespace-nowrap " +
@@ -140,7 +138,7 @@ export default function DailyReflectionList() {
   const openMenu = (e, id) => {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
-    const width = 105; // Figma: 105 x 162
+    const width = 105;
     const x = Math.max(
       8,
       Math.min(rect.right - width, window.innerWidth - width - 8),
@@ -177,7 +175,6 @@ export default function DailyReflectionList() {
         </button>
       </div>
 
-      {/* Stats — Figma card 255 x 145, radius 8, border 1, padding-left 16, gap 10 */}
       <div className="grid grid-cols-1 gap-[16px] min-[560px]:grid-cols-2 lg:grid-cols-4">
         {STATS.map((stat) => {
           const Icon = stat.icon;
@@ -245,7 +242,6 @@ export default function DailyReflectionList() {
         </div>
       </div>
 
-      {/* Table Card — Figma border 0.75px #E2DFFC, radius 7.5 */}
       <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-[14px]">
         <div
           className="overflow-x-auto"
@@ -305,7 +301,6 @@ export default function DailyReflectionList() {
                     <StatusBadge status={story.status} />
                   </td>
 
-                  {/* Figma audio icon: filled speaker, 24px, #1617E3 */}
                   <td className="min-w-[70px] px-[12px] py-[10px] align-middle">
                     <AudioIcon size={24} color="#1617E3" />
                   </td>
@@ -342,7 +337,6 @@ export default function DailyReflectionList() {
           </table>
         </div>
 
-        {/* Table Footer — Figma: 12px text, 24 x 24 page buttons, 0.75px #001984 border */}
         <div className="mt-[14px] flex flex-col gap-3 px-[6px] text-[12px] text-[#0A0847CC] sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 font-normal">
             Display
@@ -390,7 +384,6 @@ export default function DailyReflectionList() {
         </div>
       </div>
 
-      {/* Actions Dropdown — Figma 105 x 162, radius 4, padding 12 / 20 / 12, row gap 12, item gap 8, text 10.5px */}
       {menu &&
         createPortal(
           <div

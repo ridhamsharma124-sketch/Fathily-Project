@@ -2,60 +2,72 @@ import { useState } from "react";
 import {
   LuChevronDown,
   LuChevronUp,
-  LuCircleCheck,
-  LuImage,
-  LuImagePlus,
   LuPencil,
   LuRotateCw,
   LuArrowRight,
-  LuSave,
   LuX,
-  LuPlay,
+  LuImage,
 } from "react-icons/lu";
-import sunImg from "../../../assets/word search/sun.png";
-import seaWaterImg from "../../../assets/word search/sea water.png";
+import sunImg from "../../../assets/word search/sun.webp";
+import floppyIcon from "../../../assets/word search/dr_save_floppy.svg";
+import seaWaterImg from "../../../assets/word search/sea water.webp";
 
-/* ==========================================================================
-   TOKENS
-   ========================================================================== */
 const HEADING = "#0A0847";
 const PRIMARY = "#001984";
-const MUTED = "rgba(10, 8, 71, 0.6)";
-const LABEL_COLOR = "rgba(10, 8, 71, 0.8)";
+const LABEL_COLOR = "rgba(10, 8, 71, 0.8)";   
+const MUTED = "rgba(10, 8, 71, 0.6)";          
 const DIVIDER_COLOR = "rgba(10, 8, 71, 0.1)";
-const GREEN = "#22C55E";
-const GREEN_TEXT = "#16A34A";
-
+const BORDER = "#E2DFFC";
+const TOGGLE_ON = "#55BD7A";
+const GREEN_TEXT = "#2BA452";                  
+const BADGE_BG = "#E8F9EA";
+const LH = "leading-[1.21]";
 const CONTROL_CLS =
-  "h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] outline-none focus:border-[#001984]/40";
+  "h-[40px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-3 pr-9 text-[12px] font-medium outline-none focus:border-[#001984]/40";
 
-/* ==========================================================================
-   PRIMITIVES
-   ========================================================================== */
+function ImageSparkleIcon({ size = 10.5 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7" />
+      <circle cx="9" cy="9" r="1.8" />
+      <path d="m21 16-3.1-3.1a2 2 0 0 0-2.8 0L6 21" />
+      <path d="M19 2.2l.9 2.1 2.1.9-2.1.9L19 8.2l-.9-2.1-2.1-.9 2.1-.9z" />
+    </svg>
+  );
+}
+function CircleCheckFilled({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden>
+      <circle cx="12" cy="12" r="11.5" fill="#fff" />
+      <path d="M7 12.4l3.3 3.3L17 9" fill="none" stroke={PRIMARY} strokeWidth="2.8"
+        strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function Chevron() {
   return (
     <LuChevronDown
-      size={14}
-      className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2"
-      style={{ color: MUTED }}
+      size={18}
+      className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2"
+      style={{ color: HEADING }}
       aria-hidden
     />
   );
 }
-
 function FieldLabel({ htmlFor, children }) {
   return (
     <label
       htmlFor={htmlFor}
-      className="block text-[12px] leading-none font-semibold whitespace-nowrap"
+      className={`block text-[12px] ${LH} font-semibold whitespace-nowrap`}
       style={{ color: LABEL_COLOR }}
     >
       {children}
     </label>
   );
 }
-
-function SelectControl({ id, value, defaultValue, onChange, options, disabled = false, className = "" }) {
+function SelectControl({ id, value, defaultValue, onChange, options, disabled = false }) {
   return (
     <div className="relative">
       <select
@@ -64,80 +76,41 @@ function SelectControl({ id, value, defaultValue, onChange, options, disabled = 
         defaultValue={defaultValue}
         onChange={onChange}
         disabled={disabled}
-        className={`${CONTROL_CLS} ${disabled ? "cursor-not-allowed" : ""} ${className}`}
+        className={`${CONTROL_CLS} ${disabled ? "cursor-not-allowed" : ""}`}
         style={{ color: MUTED }}
       >
         {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
+          <option key={o} value={o}>{o}</option>
         ))}
       </select>
       <Chevron />
     </div>
   );
 }
-
-function NumberStepper({ value, defaultValue, onChange, label }) {
-  const interactive = typeof onChange === "function";
+function NumberStepper({ value, onChange, label }) {
   return (
     <div className="relative">
       <input
-        {...(interactive
-          ? { type: "number", value, onChange: (e) => onChange(Number(e.target.value)) }
-          : { defaultValue })}
+        type="number"
         min="0"
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
         aria-label={label}
-        className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-[30px] pl-3 text-[12px] outline-none focus:border-[#001984]/40"
+        className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pr-[30px] pl-3 text-[12px] font-medium outline-none focus:border-[#001984]/40"
         style={{ color: MUTED }}
       />
-      {interactive ? (
-        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-label={`Increase ${label}`}
-            onClick={() => onChange((value ?? 0) + 1)}
-            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
-            style={{ color: MUTED }}
-          >
-            <LuChevronUp size={11} />
-          </button>
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-label={`Decrease ${label}`}
-            onClick={() => onChange(Math.max(0, (value ?? 0) - 1))}
-            className="pointer-events-auto flex h-[10px] w-[16px] cursor-pointer items-center justify-center"
-            style={{ color: MUTED }}
-          >
-            <LuChevronDown size={11} />
-          </button>
-        </span>
-      ) : (
-        <span className="pointer-events-none absolute top-1/2 right-2 flex -translate-y-1/2 flex-col">
-          <svg width="10" height="6" viewBox="0 0 10 6">
-            <path
-              d="M1 4L5 1L9 4"
-              stroke={MUTED}
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
-          <svg width="10" height="6" viewBox="0 0 10 6" className="mt-[1px]">
-            <path
-              d="M1 1L5 4L9 1"
-              stroke={MUTED}
-              strokeWidth="1.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-            />
-          </svg>
-        </span>
-      )}
+      <span className="absolute top-1/2 right-3 flex -translate-y-1/2 flex-col">
+        <button type="button" tabIndex={-1} aria-label={`Increase ${label}`}
+          onClick={() => onChange((value ?? 0) + 1)}
+          className="flex h-[10px] w-[14px] cursor-pointer items-center justify-center" style={{ color: HEADING }}>
+          <LuChevronUp size={11} />
+        </button>
+        <button type="button" tabIndex={-1} aria-label={`Decrease ${label}`}
+          onClick={() => onChange(Math.max(0, (value ?? 0) - 1))}
+          className="flex h-[10px] w-[14px] cursor-pointer items-center justify-center" style={{ color: HEADING }}>
+          <LuChevronDown size={11} />
+        </button>
+      </span>
     </div>
   );
 }
@@ -150,22 +123,21 @@ function Toggle({ on, onChange, label }) {
       aria-checked={on}
       aria-label={label}
       onClick={() => onChange(!on)}
-      className="relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full transition-colors"
-      style={{ backgroundColor: on ? GREEN : "#D6D6DE" }}
+      className="relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors"
+      style={{ backgroundColor: on ? TOGGLE_ON : "#D6D6DE" }}
     >
       <span
-        className="absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white transition-all"
-        style={{ left: on ? 16 : 2 }}
+        className="absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white shadow-sm transition-all"
+        style={{ left: on ? 13 : 2 }}
       />
     </button>
   );
 }
 
-/* label on the left, toggle on the right — label 12/600, gap ~14 */
 function ToggleRight({ label, on, onChange, className = "" }) {
   return (
-    <div className={`flex items-center gap-[14px] ${className}`}>
-      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: HEADING }}>
+    <div className={`flex items-center gap-[24px] ${className}`}>
+      <span className={`text-[12px] ${LH} font-semibold whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
         {label}
       </span>
       <Toggle on={on} onChange={onChange} label={label} />
@@ -173,19 +145,17 @@ function ToggleRight({ label, on, onChange, className = "" }) {
   );
 }
 
-/* toggle on the left, label on the right — label 13/500 */
 function ToggleLeft({ label, on, onChange, className = "" }) {
   return (
-    <div className={`flex items-center gap-[10px] ${className}`}>
+    <div className={`flex items-center gap-[14px] ${className}`}>
       <Toggle on={on} onChange={onChange} label={label} />
-      <span className="text-[13px] font-medium whitespace-nowrap" style={{ color: HEADING }}>
+      <span className={`text-[12px] ${LH} font-semibold whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
         {label}
       </span>
     </div>
   );
 }
 
-/* label + control wrapper (label single line, 8px above the control) */
 function Field({ label, htmlFor, width = "flex-1", children }) {
   return (
     <div className={`${width} min-w-0 shrink-0`}>
@@ -195,183 +165,157 @@ function Field({ label, htmlFor, width = "flex-1", children }) {
   );
 }
 
-/* ==========================================================================
-   PAGE HEADER + TOP DROPDOWN ROW + TABS
-   ========================================================================== */
-const HEADER_WIDTHS = ["w-[222px]", "w-[222px]", "w-[160px]", "w-[171px]"];
+
+const HEADER_WIDTHS = ["w-[222px]", "w-[188px]", "w-[160px]", "w-[198px]"];
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 function Tabs({ activeTab = "AI Generate", onTabChange }) {
   return (
-    <div className="mt-[24px] w-full border-b border-[#E2DFFC]">
-      <div className="flex gap-[32px]">
-        {TABS.map((t) => {
-          const active = t === activeTab;
-          return (
-            <button
-              key={t}
-              type="button"
-              onClick={onTabChange ? () => onTabChange(t) : undefined}
-              className={`relative py-[10px] text-[12px] ${active ? "font-semibold" : "font-medium"}`}
-              style={{ color: active ? HEADING : MUTED }}
-            >
-              {t}
-              {active && (
-                <span
-                  className="absolute -bottom-px left-0 h-[2px] w-full"
-                  style={{ backgroundColor: HEADING }}
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
+    <div className="mt-[24px] flex w-full border-b border-[#E2DFFC]">
+      {TABS.map((t) => {
+        const active = t === activeTab;
+        return (
+          <button
+            key={t}
+            type="button"
+            onClick={onTabChange ? () => onTabChange(t) : undefined}
+            className={`-mb-px px-8 pb-[18px] text-[14px] ${LH} ${
+              active ? "border-b-2 font-semibold" : "font-medium"
+            }`}
+            style={{
+              color: active ? PRIMARY : MUTED,
+              borderColor: active ? PRIMARY : "transparent",
+            }}
+          >
+            {t}
+          </button>
+        );
+      })}
     </div>
   );
 }
-
 function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
   return (
     <>
-      <h1 className="text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+      <h1 className={`text-[22px] ${LH} font-semibold`} style={{ color: HEADING }}>
         Add / Edit Word Search
       </h1>
-      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+      <p className={`mt-[14px] text-[16px] ${LH} font-medium`} style={{ color: MUTED }}>
         Choose the activity type and how you want to create it.
       </p>
-
-      <div className="mt-[16px] flex gap-[24px]">
+      <div className="mt-[24px] flex gap-[24px]">
         {headerFields.map((f, i) => (
           <Field key={f.label} label={f.label} htmlFor={f.htmlFor} width={HEADER_WIDTHS[i]}>
             {f.control}
           </Field>
         ))}
-        <Field label="Points per Puzzle" width="flex-1">
+        <Field label="Points per Puzzle" htmlFor="points" width="w-[195px]">
           {pointsControl}
         </Field>
       </div>
-
       <Tabs activeTab={activeTab} onTabChange={onTabChange} />
     </>
   );
 }
 
-/* ==========================================================================
-   SECTION TITLE + FORM CARD
-   ========================================================================== */
 function SectionHeading({ title, subtitle }) {
   return (
     <>
-      <h2 className="mt-[24px] text-[20px] leading-none font-semibold" style={{ color: HEADING }}>
+      <h2 className={`mt-[24px] text-[22px] ${LH} font-semibold`} style={{ color: HEADING }}>
         {title}
       </h2>
-      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+      <p className={`mt-[14px] text-[16px] ${LH} font-medium`} style={{ color: MUTED }}>
         {subtitle}
       </p>
     </>
   );
 }
-
 function FormCard({ children }) {
   return (
-    <div className="mt-[16px] flex min-h-[311px] w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
+    <div className="mt-[24px] flex min-h-[311px] w-full max-w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
       {children}
     </div>
   );
 }
 
-function FormRow({ children, gap = "gap-[24px]", className = "" }) {
-  return <div className={`flex h-[63px] items-center ${gap} ${className}`}>{children}</div>;
+function FormRow({ children, className = "" }) {
+  return <div className={`flex min-h-[63px] items-start gap-[24px] ${className}`}>{children}</div>;
 }
-
 function Divider() {
   return <div className="my-[20px] h-px w-full" style={{ backgroundColor: DIVIDER_COLOR }} />;
 }
 
-/* New Levels multi-select — h40, chips 75x26 r8 */
 function LevelsSelect({ levels, onRemove }) {
   return (
     <div className="flex h-[40px] w-full items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px]">
       {levels.map((lv) => (
         <span
           key={lv}
-          className="flex h-[26px] min-w-[75px] shrink-0 items-center justify-center gap-[8px] rounded-[8px] border border-[#CFD6EF] bg-[#F5F4FE] px-[12px] text-[11px] font-medium whitespace-nowrap"
-          style={{ color: PRIMARY }}
+          className="flex h-[25px] shrink-0 items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#F4F3FD] px-[12px] text-[10px] font-semibold whitespace-nowrap"
+          style={{ color: LABEL_COLOR }}
         >
           {lv}
-          {onRemove ? (
-            <button
-              type="button"
-              aria-label={`Remove ${lv}`}
-              onClick={() => onRemove(lv)}
-              className="cursor-pointer"
-              style={{ color: PRIMARY }}
-            >
-              <LuX size={12} />
-            </button>
-          ) : (
-            <LuX size={12} aria-hidden />
-          )}
+          <button
+            type="button"
+            aria-label={`Remove ${lv}`}
+            onClick={() => onRemove(lv)}
+            className="cursor-pointer"
+            style={{ color: "#0926FD" }}
+          >
+            <LuX size={12} strokeWidth={2.5} />
+          </button>
         </span>
       ))}
     </div>
   );
 }
-
-/* Puzzles per Level — read-only, placeholder-style muted text */
-function PuzzlesPerLevel({ text }) {
+function PuzzlesPerLevel({ levels }) {
   return (
-    <input
-      readOnly
-      value={text}
-      aria-label="Puzzles per Level"
-      className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] outline-none"
+    <div
+      className="flex h-[40px] w-full items-center gap-[20px] rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium"
       style={{ color: MUTED }}
-    />
-  );
-}
-
-/* ==========================================================================
-   GENERATED PUZZLES PREVIEW
-   ========================================================================== */
-function PreviewHeading() {
-  return (
-    <h3 className="mt-[24px] text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
-      Generated Puzzles Preview
-    </h3>
-  );
-}
-
-function PreviewGrid({ children }) {
-  return <div className="mt-[16px] flex gap-[24px]">{children}</div>;
-}
-
-function PuzzleCard({ title, children, actions }) {
-  return (
-    <div className="flex h-[413px] w-[519px] flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[19px] pb-[26px] pl-[22px]">
-      <div className="flex items-center justify-between">
-        <p className="text-[12px] font-medium" style={{ color: MUTED }}>
-          {title}
-        </p>
-        <span
-          className="flex h-[20px] items-center rounded-[4px] px-[8px] text-[10px] font-semibold"
-          style={{ backgroundColor: "#E8FBEF", color: GREEN_TEXT }}
-        >
-          AI IMAGE
-        </span>
-      </div>
-
-      <div className="flex h-[223px] w-full gap-[21px]">{children}</div>
-
-      <div className="flex flex-col gap-[8px]">{actions}</div>
+    >
+      {levels.map((lv) => (
+        <span key={lv} className="whitespace-nowrap">{lv}: 1</span>
+      ))}
     </div>
   );
 }
 
+function PreviewHeading() {
+  return (
+    <h3 className={`mt-[34px] text-[14px] ${LH} font-semibold`} style={{ color: LABEL_COLOR }}>
+      Generated Puzzles Preview
+    </h3>
+  );
+}
+function PreviewGrid({ children }) {
+  return <div className="mt-[16px] flex gap-[21px]">{children}</div>;
+}
+
+function PuzzleCard({ title, children, actions }) {
+  return (
+    <div className="flex h-[413px] w-[519px] shrink-0 flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[21px] pb-[28px] pl-[22px]">
+      <div className="flex items-center justify-between">
+        <p className={`text-[11px] ${LH} font-medium`} style={{ color: LABEL_COLOR }}>
+          {title}
+        </p>
+        <span
+          className="flex h-[24px] items-center rounded-[8px] px-[10px] text-[10px] font-semibold"
+          style={{ backgroundColor: BADGE_BG, color: GREEN_TEXT }}
+        >
+          AI IMAGE
+        </span>
+      </div>
+      <div className="flex h-[224px] w-full gap-[13px]">{children}</div>
+      <div className="flex flex-col gap-[16px]">{actions}</div>
+    </div>
+  );
+}
 function PreviewImage({ src, alt }) {
   return (
     <div
-      className="flex h-[223px] w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
+      className="flex h-[224px] w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
       style={{ backgroundColor: "#F3F4F6" }}
     >
       {src ? (
@@ -383,92 +327,69 @@ function PreviewImage({ src, alt }) {
   );
 }
 
-function OutlineAction({ icon: Icon, className = "", children }) {
+function OutlineAction({ icon: Icon, iconSize = 10.5, width, children }) {
   return (
     <button
       type="button"
-      className={`flex h-[31px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E2DFFC] bg-white text-[11px] font-medium whitespace-nowrap transition-colors hover:bg-[#F7F8FE] ${className}`}
-      style={{ color: HEADING }}
+      className="flex h-[32px] cursor-pointer items-center justify-center gap-[6px] rounded-[8px] border border-[#E2DFFC] bg-white text-[10px] font-semibold whitespace-nowrap transition-colors hover:bg-[#F7F8FE]"
+      style={{ color: LABEL_COLOR, width }}
     >
-      <Icon size={12} />
+      <span className="flex items-center" style={{ color: PRIMARY }}>
+        <Icon size={iconSize} />
+      </span>
       {children}
     </button>
   );
 }
-
 function CardActions() {
   return (
     <>
-      <div className="flex gap-[8px]">
-        <OutlineAction icon={LuRotateCw} className="w-[130px]">
-          Regenerate Puzzle
-        </OutlineAction>
-        <OutlineAction icon={LuImage}>Regenerate Image</OutlineAction>
-        <OutlineAction icon={LuImagePlus}>Replace Image</OutlineAction>
+      <div className="flex gap-[12px]">
+        <OutlineAction icon={LuRotateCw} width={127}>Regenerate Puzzle</OutlineAction>
+        <OutlineAction icon={ImageSparkleIcon} width={122}>Regenerate Image</OutlineAction>
+        <OutlineAction icon={ImageSparkleIcon} width={109}>Replace Image</OutlineAction>
       </div>
-      <div className="flex gap-[8px]">
-        <OutlineAction icon={LuPencil} className="w-[74px]">
-          Edit
-        </OutlineAction>
+      <div className="flex gap-[12px]">
+        <OutlineAction icon={LuPencil} iconSize={12} width={75}>Edit</OutlineAction>
         <button
           type="button"
-          className="flex h-[31px] w-[120px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] text-[11px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          className="flex h-[32px] w-[121px] cursor-pointer items-center justify-center gap-[5px] rounded-[8px] text-[10px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: PRIMARY }}
         >
-          <LuCircleCheck size={12} />
-          Publish Approved
+          <CircleCheckFilled size={14} />
+           Approved
         </button>
       </div>
     </>
   );
 }
 
-/* ==========================================================================
-   PAGE FOOTER
-   ========================================================================== */
 function PageFooter() {
+  const base =
+    "flex h-[42px] cursor-pointer items-center justify-center rounded-[8px] text-[14px] font-semibold transition-colors";
   return (
-    <div className="mt-[24px] flex items-center justify-between">
-      <button
-        type="button"
-        className="flex h-[42px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
-        style={{ color: HEADING }}
-      >
+    <div className="mt-[42px] flex items-center justify-end gap-[12px]">
+      <button type="button" className={`${base} w-[97px] border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD]`} style={{ color: LABEL_COLOR }}>
         Cancel
       </button>
-
-      <div className="flex gap-[12px]">
-        <button
-          type="button"
-          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
-          style={{ color: HEADING }}
-        >
-          <LuSave size={16} style={{ color: PRIMARY }} />
-          Save draft
-        </button>
-        <button
-          type="button"
-          className="flex h-[42px] w-[180px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: PRIMARY }}
-        >
-          Publish Approved
-          <LuArrowRight size={16} />
-        </button>
-      </div>
+      <button type="button" className={`${base} w-[119px] gap-[8px] border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD]`} style={{ color: LABEL_COLOR }}>
+        <img src={floppyIcon} alt="" aria-hidden className="h-[18px] w-[18px] shrink-0" />
+        Save draft
+      </button>
+      <button type="button" className={`${base} w-[190px] gap-[6px] text-white hover:opacity-90`} style={{ backgroundColor: PRIMARY }}>
+        <LuArrowRight size={16} />
+        Publish Approved
+      </button>
     </div>
   );
 }
 
-/* ==========================================================================
-   AUDIO PAGE PARTS
-   ========================================================================== */
 const HEADER_FIELDS = [
   { id: "testament", label: "Testament", value: "Old Testament", options: ["Old Testament", "New Testament"] },
   { id: "book", label: "Book", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
   { id: "chapter", label: "Chapter", value: "1", options: ["1", "2", "3"] },
   { id: "difficulty", label: "Difficulty", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
-
 const PASSAGE_OPTIONS = [
   "Creation (Genesis 1)",
   "Noah's Ark (Genesis 6)",
@@ -481,17 +402,16 @@ const WORD_BANK_OPTIONS = ["Show", "Hide"];
 const PUZZLE_COUNT_OPTIONS = ["1", "2", "3", "4", "5"];
 const IMAGE_STYLE_OPTIONS = ["Biblical Illustration", "Watercolour", "Modern Art", "Line Art"];
 const SAFETY_OPTIONS = ["Family Safe", "Family Safe (Strict)", "Unfiltered"];
-
 const WAVEFORM = [
-  6, 12, 18, 9, 15, 20, 8, 14, 7, 17, 11, 19, 6, 13, 9, 16, 7, 20, 10, 14, 8, 18, 12, 6, 15, 9,
-  17, 11, 7, 19, 13, 8, 16, 10, 6, 14, 18, 9, 12, 20, 7, 15, 11, 8,
+  3, 6, 10, 5, 8, 12, 4, 9, 5, 11, 7, 12, 4, 8, 6, 10, 5, 12, 7, 9, 5, 11, 8, 4, 10, 6,
+  11, 7, 5, 12, 8, 5, 10, 6, 4, 9, 11, 6, 8, 12, 5, 10, 7, 5, 9, 4, 8, 11, 6, 10,
 ];
 
 function AudioPlayer() {
   return (
     <div
-      className="mt-[12px] flex h-[34px] w-full items-center gap-[8px] rounded-[8px] px-[8px]"
-      style={{ backgroundColor: "#EFEDFB" }}
+      className="mt-[12px] flex h-[36px] w-full items-center gap-[10px] rounded-[40px] px-[10px] py-[5px]"
+      style={{ backgroundColor: "#F3F4F5" }}
     >
       <button
         type="button"
@@ -499,20 +419,20 @@ function AudioPlayer() {
         className="flex h-[18px] w-[18px] shrink-0 cursor-pointer items-center justify-center rounded-full transition-opacity hover:opacity-90"
         style={{ backgroundColor: PRIMARY }}
       >
-        <LuPlay size={8} className="text-white" fill="white" aria-hidden />
+        <svg width="7" height="8" viewBox="0 0 7 8" aria-hidden>
+          <path d="M1 .6v6.8L6.5 4z" fill="#fff" />
+        </svg>
       </button>
-
-      <div className="flex h-full min-w-0 flex-1 items-center gap-[1px] overflow-hidden">
+      <div className="flex h-full min-w-0 flex-1 items-center justify-between overflow-hidden">
         {WAVEFORM.map((h, i) => (
           <span
             key={i}
-            className="flex-1 rounded-full"
-            style={{ height: h, backgroundColor: PRIMARY, minWidth: "1px" }}
+            className="w-[1.5px] shrink-0 rounded-full"
+            style={{ height: h * 1.5, backgroundColor: "#2E3FA8" }}
           />
         ))}
       </div>
-
-      <span className="shrink-0 text-[10px] whitespace-nowrap" style={{ color: MUTED }}>
+      <span className="shrink-0 text-[10px] font-medium whitespace-nowrap" style={{ color: LABEL_COLOR }}>
         0:00 / 0:30
       </span>
     </div>
@@ -521,38 +441,38 @@ function AudioPlayer() {
 
 function AudioOption({ option, index, correct }) {
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className="flex items-center gap-[10px]">
       <span
         className="flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-full"
-        style={{ border: correct ? `1.5px solid ${GREEN}` : "1.5px solid #C3C4D4" }}
+        style={{ border: `1.5px solid ${correct ? GREEN_TEXT : MUTED}` }}
       >
-        {correct && (
-          <span className="h-[6px] w-[6px] rounded-full" style={{ backgroundColor: GREEN }} />
-        )}
+        {correct && <span className="h-[8px] w-[8px] rounded-full" style={{ backgroundColor: GREEN_TEXT }} />}
       </span>
-      <span className="text-[11px] font-medium" style={{ color: correct ? GREEN_TEXT : HEADING }}>
-        {`${String.fromCharCode(65 + index)}. ${option}`}
+      <span className="text-[10px] leading-[9px] whitespace-nowrap" style={{ color: HEADING }}>
+        <span className="font-semibold">{String.fromCharCode(65 + index)}.</span>{" "}
+        <span
+          className={correct ? "font-semibold" : "font-medium"}
+          style={{ color: correct ? GREEN_TEXT : HEADING }}
+        >
+          {option}
+        </span>
       </span>
     </div>
   );
 }
-
 function AudioBody({ src, alt, question, options, correctIndex }) {
   return (
     <>
       <PreviewImage src={src} alt={alt} />
-      <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-medium whitespace-nowrap" style={{ color: HEADING }}>
+      <div className="min-w-0 flex-1 pt-[6px]">
+        <p className="text-[10px] leading-[9px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
           Listen to the audio. Then answer the question.
         </p>
-
         <AudioPlayer />
-
-        <p className="mt-[12px] text-[12px] font-semibold" style={{ color: HEADING }}>
+        <p className={`mt-[12px] text-[12px] ${LH} font-semibold`} style={{ color: LABEL_COLOR }}>
           {question}
         </p>
-
-        <div className="mt-[12px] flex flex-col gap-[8px]">
+        <div className="mt-[12px] flex flex-col gap-[9px]">
           {options.map((opt, i) => (
             <AudioOption key={`${opt}-${i}`} option={opt} index={i} correct={i === correctIndex} />
           ))}
@@ -562,15 +482,11 @@ function AudioBody({ src, alt, question, options, correctIndex }) {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
 export default function AIGenerateAudioRevelation() {
   const [points, setPoints] = useState(10);
   const [values, setValues] = useState(() =>
     HEADER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
   );
-
   const [passage, setPassage] = useState(PASSAGE_OPTIONS[0]);
   const [voice, setVoice] = useState(VOICE_OPTIONS[0]);
   const [audioLength, setAudioLength] = useState(AUDIO_LENGTH_OPTIONS[3]);
@@ -583,9 +499,7 @@ export default function AIGenerateAudioRevelation() {
   const [safety, setSafety] = useState(SAFETY_OPTIONS[0]);
   const [noText, setNoText] = useState(true);
   const [transcript, setTranscript] = useState(true);
-
   const removeLevel = (lv) => setLevels((p) => p.filter((x) => x !== lv));
-
   const headerFields = HEADER_FIELDS.map((f) => ({
     label: f.label,
     htmlFor: f.id,
@@ -598,129 +512,71 @@ export default function AIGenerateAudioRevelation() {
       />
     ),
   }));
-
-  const puzzlesPerLevel = levels.map((lv) => `${lv}: 1`).join("    ");
-
   return (
-    <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: "#F9FAFE" }}>
+    <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: "#F9FAFE", color: HEADING }}>
       <div className="mx-auto w-full max-w-[1114px] px-6 pt-6 pb-[48px]">
         <PageHeader
           headerFields={headerFields}
-          pointsControl={
-            <NumberStepper value={points} onChange={setPoints} label="Points per Puzzle" />
-          }
+          pointsControl={<NumberStepper value={points} onChange={setPoints} label="Points per Puzzle" />}
           activeTab="AI Generate"
         />
-
         <SectionHeading
-          title="AI Generate - Audio Revelation"
+          title="AI Generate — Audio Revelation"
           subtitle="Generate puzzles with audio clues for listening and answering."
         />
-
         <FormCard>
-          {/* ROW 1 */}
           <FormRow>
-            <Field label="Passage / Topic" htmlFor="passage" width="w-[190px]">
-              <SelectControl
-                id="passage"
-                value={passage}
-                onChange={(e) => setPassage(e.target.value)}
-                options={PASSAGE_OPTIONS}
-              />
+            <Field label="Passage / Topic" htmlFor="passage" width="w-[191px]">
+              <SelectControl id="passage" value={passage} onChange={(e) => setPassage(e.target.value)} options={PASSAGE_OPTIONS} />
             </Field>
-            <Field label="AI Narration Voice" htmlFor="voice" width="w-[180px]">
-              <SelectControl
-                id="voice"
-                value={voice}
-                onChange={(e) => setVoice(e.target.value)}
-                options={VOICE_OPTIONS}
-              />
+            <Field label="AI Narration Voice" htmlFor="voice" width="w-[133px]">
+              <SelectControl id="voice" value={voice} onChange={(e) => setVoice(e.target.value)} options={VOICE_OPTIONS} />
             </Field>
-            <Field label="Audio Length" htmlFor="audioLength" width="w-[130px]">
-              <SelectControl
-                id="audioLength"
-                value={audioLength}
-                onChange={(e) => setAudioLength(e.target.value)}
-                options={AUDIO_LENGTH_OPTIONS}
-              />
+            <Field label="Audio Length" htmlFor="audioLength" width="w-[162px]">
+              <SelectControl id="audioLength" value={audioLength} onChange={(e) => setAudioLength(e.target.value)} options={AUDIO_LENGTH_OPTIONS} />
             </Field>
-            <Field label="Word Bank" htmlFor="wordBank" width="w-[162px]">
-              <SelectControl
-                id="wordBank"
-                value={wordBank}
-                onChange={(e) => setWordBank(e.target.value)}
-                options={WORD_BANK_OPTIONS}
-              />
+            <Field label="Word Bank" htmlFor="wordBank" width="w-[131px]">
+              <SelectControl id="wordBank" value={wordBank} onChange={(e) => setWordBank(e.target.value)} options={WORD_BANK_OPTIONS} />
             </Field>
-            <ToggleRight
-              label="Preserve Verse Wording"
-              on={preserve}
-              onChange={setPreserve}
-              className="ml-auto"
-            />
+            <ToggleRight label="Preserve Verse Wording" on={preserve} onChange={setPreserve} className="pt-[24px]" />
           </FormRow>
-
           <Divider />
 
-          {/* ROW 2 */}
           <FormRow>
-            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[168px]">
-              <SelectControl
-                id="numPuzzles"
-                value={count}
-                onChange={(e) => setCount(e.target.value)}
-                options={PUZZLE_COUNT_OPTIONS}
-              />
+            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[169px]">
+              <SelectControl id="numPuzzles" value={count} onChange={(e) => setCount(e.target.value)} options={PUZZLE_COUNT_OPTIONS} />
             </Field>
             <Field label="Grid Size" htmlFor="gridSize" width="w-[134px]">
-              <SelectControl id="gridSize" disabled defaultValue="-" options={["-"]} />
+              <SelectControl id="gridSize" disabled defaultValue="—" options={["—"]} />
             </Field>
             <Field label="New Levels" width="flex-1">
               <LevelsSelect levels={levels} onRemove={removeLevel} />
             </Field>
-            <Field label="Puzzles per Level" width="w-[274px]">
-              <PuzzlesPerLevel text={puzzlesPerLevel} />
+            <Field label="Puzzles per Level" width="w-[295px]">
+              <PuzzlesPerLevel levels={levels} />
             </Field>
           </FormRow>
-
           <Divider />
-
-          {/* ROW 3 — one horizontal line */}
-          <FormRow gap="gap-[16px]">
+          <FormRow>
             <ToggleLeft
               label="Generate a unique AI image for every puzzle"
               on={aiImage}
               onChange={setAiImage}
+              className="w-[306px] shrink-0 pt-[6px]"
             />
-            <Field label="AI Image Style" htmlFor="imageStyle" width="w-[155px]">
-              <SelectControl
-                id="imageStyle"
-                value={imageStyle}
-                onChange={(e) => setImageStyle(e.target.value)}
-                options={IMAGE_STYLE_OPTIONS}
-              />
+            <Field label="AI Image Style" htmlFor="imageStyle" width="w-[160px]">
+              <SelectControl id="imageStyle" value={imageStyle} onChange={(e) => setImageStyle(e.target.value)} options={IMAGE_STYLE_OPTIONS} />
             </Field>
-            <Field label="Image Safety" htmlFor="imageSafety" width="w-[140px]">
-              <SelectControl
-                id="imageSafety"
-                value={safety}
-                onChange={(e) => setSafety(e.target.value)}
-                options={SAFETY_OPTIONS}
-              />
+            <Field label="Image Safety" htmlFor="imageSafety" width="w-[152px]">
+              <SelectControl id="imageSafety" value={safety} onChange={(e) => setSafety(e.target.value)} options={SAFETY_OPTIONS} />
             </Field>
-            <ToggleRight label="No text in image" on={noText} onChange={setNoText} />
-            <ToggleRight
-              label="Generate Transcript"
-              on={transcript}
-              onChange={setTranscript}
-              className="ml-auto"
-            />
+            <ToggleRight label="No text in image" on={noText} onChange={setNoText} className="pt-[6px]" />
+            <ToggleRight label="Generate Transcript" on={transcript} onChange={setTranscript} className="ml-auto pt-[6px]" />
           </FormRow>
         </FormCard>
-
         <PreviewHeading />
         <PreviewGrid>
-          <PuzzleCard title="Level 1 - Puzzle 1" actions={<CardActions />}>
+          <PuzzleCard title="Level 1 • Puzzle 1" actions={<CardActions />}>
             <AudioBody
               src={sunImg}
               alt="Level 1 image"
@@ -729,17 +585,16 @@ export default function AIGenerateAudioRevelation() {
               correctIndex={2}
             />
           </PuzzleCard>
-          <PuzzleCard title="Level 2 - Puzzle 1" actions={<CardActions />}>
+          <PuzzleCard title="Level 2 • Puzzle 1" actions={<CardActions />}>
             <AudioBody
               src={seaWaterImg}
               alt="Level 2 image"
-              question="2. What did God call the light?"
+              question="1. What did God create in the beginning?"
               options={["Day", "Day", "Night", "Evening"]}
               correctIndex={0}
             />
           </PuzzleCard>
         </PreviewGrid>
-
         <PageFooter />
       </div>
     </div>

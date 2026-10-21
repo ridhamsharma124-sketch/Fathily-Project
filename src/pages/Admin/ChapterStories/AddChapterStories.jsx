@@ -15,7 +15,7 @@ import {
   FiImage,
 } from "react-icons/fi";
 import UploadIcon from "../../../assets/ChapterStories/UploadIcon.svg";
-import Upload2Icon from "../../../assets/ChapterStories/UploadIcon2.svg";
+import Upload2Icon from "../../../assets/ChapterStories/Uploadicon2.svg";
 import TrashRedIcon from "../../../assets/ChapterStories/TrashRedIcon.svg";
 
 /* ==========================================================================

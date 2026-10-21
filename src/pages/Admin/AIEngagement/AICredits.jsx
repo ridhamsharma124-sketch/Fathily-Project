@@ -1,5 +1,5 @@
 import { useState } from "react";
-import biblicalHistoryImage from "../../../assets/Biblical History.png";
+import biblicalHistoryImage from "../../../assets/Biblical History.webp";
 import IconBadge from "../../../components/shared/IconBadge";
 import {
   PiCaretRight,
@@ -124,7 +124,6 @@ function ConversionRow({ prefix, numberValue, inputId, unit }) {
   );
 }
 
-/* Earn-list icons: closer approximations of the Figma illustrations (colours and shapes taken from the screenshots) */
 const BookCrossIcon = ({ size = 24 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <rect x="4.5" y="2.5" width="14" height="19" rx="2" fill="#8E4116" />
@@ -234,7 +233,6 @@ const INFO_DESCRIPTIONS = [
   "Your conversations are private and protected.",
 ];
 
-/* Figma-matched info icons: plain "?" glyph and padlock with keyhole */
 const QuestionIcon = ({ size = 24, color = "currentColor" }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9.2 9.2a2.8 2.8 0 1 1 3.9 2.6c-.7.3-1.1.9-1.1 1.7v.5" />

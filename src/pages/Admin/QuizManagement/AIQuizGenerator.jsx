@@ -1,42 +1,35 @@
 import { Fragment, useState } from "react";
 import {
   LuBookOpen,
-  LuBot,
   LuCheck,
   LuChevronDown,
   LuCircleHelp,
   LuClock,
   LuEye,
   LuHistory,
-  LuList,
-  LuListChecks,
   LuMinus,
   LuPlus,
   LuRefreshCw,
-  LuSparkles,
   LuTrash2,
 } from "react-icons/lu";
-import realistic1 from "../../../assets/Realistic1.png";
-import realistic2 from "../../../assets/Realistic2.png";
-import realistic3 from "../../../assets/Realistic3.png";
-import realistic4 from "../../../assets/Realistic4.png";
-import aiGenImg1 from "../../../assets/AI Generator img1.png";
-import aiGenImg2 from "../../../assets/AI Generator img2.png";
-import aiGenImg3 from "../../../assets/AI Generator img3.png";
-import aiGenImg4 from "../../../assets/AI Generator img4.png";
-import aiGenImg5 from "../../../assets/AI Generator img5.png";
+import realistic1 from "../../../assets/quiz-management/Realistic1.webp";
+import realistic2 from "../../../assets/quiz-management/Realistic2.webp";
+import realistic3 from "../../../assets/quiz-management/Realistic3.webp";
+import realistic4 from "../../../assets/quiz-management/Realistic4.webp";
+import aiGenImg1 from "../../../assets/quiz-management/AI Generator img1.webp";
+import aiGenImg2 from "../../../assets/quiz-management/AI Generator img2.webp";
+import aiGenImg3 from "../../../assets/quiz-management/AI Generator img3.webp";
+import aiGenImg4 from "../../../assets/quiz-management/AI Generator img4.webp";
+import aiGenImg5 from "../../../assets/quiz-management/AI Generator img5.webp";
 
-/* ==========================================================================
-   STYLE TOKENS
-   ========================================================================== */
-const CARD = "rounded-[8px] border border-[#E2DFFC] bg-white";
+
+const CARD = "rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF]";
 const SELECT_FIELD =
-  "h-full w-full cursor-pointer appearance-none rounded-[6px] border border-[#F2F2F2] bg-white pl-[12px] pr-[50px] text-[14px] text-[#0A0847] outline-none";
-const LABEL = "text-[14px] font-semibold text-[#0A0847]";
+  "h-full w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] pl-[12px] pr-[50px] text-[14px] text-[#0A0847]/80 outline-none";
+const LABEL = "text-[14px] leading-none font-semibold text-[#0A0847]";
+const HELPER = "text-[12px] leading-none font-medium text-[#0A0847]/60";
 
-/* ==========================================================================
-   MOCK DATA
-   ========================================================================== */
+
 const LOCATION_SELECTORS = [
   { label: "Testament", value: "Old Testament" },
   { label: "Book", value: "Genesis" },
@@ -46,15 +39,15 @@ const LOCATION_SELECTORS = [
 
 const QUESTION_TYPES = [
   { id: "mc", label: "Multiple Choice", kind: "list" },
-  { id: "fitb", label: "Fill in the Blank", kind: "check" },
-  { id: "tf", label: "True / False", kind: "check" },
+  { id: "fitb", label: "Fill in the Blank", kind: "fitb" },
+  { id: "tf", label: "True / False", kind: "tf" },
   { id: "order", label: "Tag an Order", kind: "order" },
 ];
 
 const DIFFICULTY_MIX = [
-  { label: "Easy", value: 40, bg: "#E6F6EA", fg: "#2E9E3E" },
-  { label: "Medium", value: 40, bg: "#FBE9DC", fg: "#D9722B" },
-  { label: "Hard", value: 20, bg: "#FBE3E8", fg: "#D1264A" },
+  { label: "Easy", value: 40 },
+  { label: "Medium", value: 40 },
+  { label: "Hard", value: 20 },
 ];
 
 const IMAGE_STYLES = [
@@ -65,17 +58,17 @@ const IMAGE_STYLES = [
 ];
 
 const TYPE_BADGE = {
-  "Multiple Choice": { bg: "#EDE6F9", fg: "#6B2FB3" },
-  "Fill in the Blank": { bg: "#E6F6EA", fg: "#2E9E3E" },
+  "Multiple Choice": { bg: "rgba(93,28,172,0.1)", fg: "#5D1CAC" },
+  "Fill in the Blank": { bg: "rgba(43,164,82,0.1)", fg: "#2BA452" },
   "True / False": { bg: "#E3F2FB", fg: "#1E88C7" },
-  "Tag an Order": { bg: "#FBEBDD", fg: "#D9722B" },
+  "Tag an Order": { bg: "rgba(239,100,31,0.1)", fg: "#EF641F" },
   "Who Am I": { bg: "#FBE3E8", fg: "#6B2FB3" },
 };
 
 const DIFF_BADGE = {
-  Easy: { bg: "#E6F6EA", fg: "#2E9E3E" },
-  Medium: { bg: "#FBE9DC", fg: "#D9722B" },
-  Hard: { bg: "#FBE3E8", fg: "#D1264A" },
+  Easy: { bg: "rgba(43,164,82,0.1)", fg: "rgba(10,8,71,0.8)" },
+  Medium: { bg: "rgba(239,100,31,0.1)", fg: "#EF641F" },
+  Hard: { bg: "rgba(216,0,39,0.1)", fg: "#D80027" },
 };
 
 const QUESTIONS = [
@@ -142,21 +135,29 @@ const QUESTIONS = [
   },
 ];
 
-/* ==========================================================================
-   SMALL BUILDING BLOCKS
-   ========================================================================== */
+
+function StepDot({ children }) {
+  return (
+    <span className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] leading-none font-semibold text-white">
+      {children}
+    </span>
+  );
+}
+
 function SectionTitle({ step, title }) {
   return (
-    <div className="flex items-center gap-[10px]">
-      <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#00007A] text-[11px] leading-none font-semibold text-white">
-        {step}
-      </span>
-      <h3 className="text-[16px] font-semibold text-[#0A0847]">{title}</h3>
+    <div className="flex items-center gap-[12px]">
+      <StepDot>{step}</StepDot>
+      <h3 className="text-[14px] leading-none font-semibold text-[#0A0847]">{title}</h3>
     </div>
   );
 }
 
-function FieldSelect({ value, options, className = "" }) {
+function Chevron({ className = "" }) {
+  return <LuChevronDown size={18} className={`text-[#0A0847]/60 ${className}`} />;
+}
+
+function FieldSelect({ value, options, className = "", chevronClass = "right-[16px]" }) {
   return (
     <div className={`relative ${className}`}>
       <select aria-label={value} defaultValue={value} className={SELECT_FIELD}>
@@ -166,18 +167,15 @@ function FieldSelect({ value, options, className = "" }) {
           </option>
         ))}
       </select>
-      <LuChevronDown
-        size={16}
-        className="pointer-events-none absolute top-1/2 right-[16px] -translate-y-1/2 text-[#0A0847]"
-      />
+      <Chevron className={`pointer-events-none absolute top-1/2 -translate-y-1/2 ${chevronClass}`} />
     </div>
   );
 }
 
-function Badge({ children, bg, fg }) {
+function Badge({ children, bg, fg, className = "" }) {
   return (
     <span
-      className="inline-flex items-center rounded-[4px] p-[8px] text-[12px] leading-none font-medium whitespace-nowrap"
+      className={`inline-flex items-center rounded-[4px] p-[8px] text-[12px] leading-none font-semibold whitespace-nowrap ${className}`}
       style={{ background: bg, color: fg }}
     >
       {children}
@@ -185,14 +183,78 @@ function Badge({ children, bg, fg }) {
   );
 }
 
+function GlyphIcon({ kind }) {
+  const common = {
+    width: 18,
+    height: 18,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2.2,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+  };
+
+  if (kind === "list") {
+    return (
+      <svg {...common}>
+        <rect x="2.5" y="4.5" width="3.5" height="3.5" rx="1" fill="currentColor" stroke="none" />
+        <rect x="2.5" y="10.25" width="3.5" height="3.5" rx="1" fill="currentColor" stroke="none" />
+        <rect x="2.5" y="16" width="3.5" height="3.5" rx="1" fill="currentColor" stroke="none" />
+        <path d="M10 6.25h11M10 12h11M10 17.75h11" />
+      </svg>
+    );
+  }
+
+  if (kind === "fitb") {
+    return (
+      <svg {...common} strokeWidth="2">
+        <rect x="2.5" y="3" width="7" height="7" rx="1.5" />
+        <path d="m4.4 6.6 1.3 1.3 2-2.4" strokeWidth="1.6" />
+        <rect x="2.5" y="14" width="7" height="7" rx="1.5" />
+        <path d="M13 5h8M13 8.5h5M13 16h8M13 19.5h5" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg {...common} strokeWidth="2">
+      <circle cx="6" cy="6.5" r="3.8" />
+      <path d="m4.3 6.6 1.3 1.3 2-2.4" strokeWidth="1.6" />
+      <circle cx="6" cy="17.5" r="3.8" />
+      <path d="m4.4 15.9 3.2 3.2M7.6 15.9l-3.2 3.2" strokeWidth="1.6" />
+      <path d="M13 5h8M13 8.5h5M13 16h8M13 19.5h5" />
+    </svg>
+  );
+}
+
+function AiGlyph() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="shrink-0 text-[#1A56C4]">
+      <rect x="2.5" y="2.5" width="15" height="15" rx="3.5" stroke="currentColor" strokeWidth="1.8" />
+      <text x="10" y="13.6" textAnchor="middle" fontSize="8.5" fontWeight="700" fill="currentColor" fontFamily="Inter, sans-serif">AI</text>
+      <path d="M19 14.5l1.1 3.4 3.4 1.1-3.4 1.1L19 23.5l-1.1-3.4-3.4-1.1 3.4-1.1z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function SparkleGlyph() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M10 5l2.2 6.8L19 14l-6.8 2.2L10 23l-2.2-6.8L1 14l6.8-2.2z" />
+      <path d="M19 1l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" />
+    </svg>
+  );
+}
+
 function TypeGlyph({ kind }) {
   if (kind === "order") {
     return (
-      <span className="flex items-center gap-[3px]">
+      <span className="flex h-[32px] items-center gap-[2px]">
         {[1, 2, 3].map((n, index) => (
           <Fragment key={n}>
-            {index > 0 && <span className="h-px w-[6px] bg-[#00007A]" />}
-            <span className="flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#00007A] text-[8px] font-bold text-white">
+            {index > 0 && <span className="h-px w-[4px] bg-[#001984]" />}
+            <span className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#001984] text-[11px] leading-none font-bold text-white">
               {n}
             </span>
           </Fragment>
@@ -202,20 +264,18 @@ function TypeGlyph({ kind }) {
   }
 
   return (
-    <span className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full bg-[#00007A] text-white">
-      {kind === "list" ? <LuList size={15} /> : <LuListChecks size={15} />}
+    <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-[#001984] text-white">
+      <GlyphIcon kind={kind} />
     </span>
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function AIQuizGenerator() {
   const [count, setCount] = useState(15);
   const [activeTypes, setActiveTypes] = useState(QUESTION_TYPES.map((type) => type.id));
   const [styleId, setStyleId] = useState("s1");
-  const [selectAll, setSelectAll] = useState(true);
+  const [selectAll, setSelectAll] = useState(false);
   const [note, setNote] = useState("");
 
   const toggleType = (id) =>
@@ -225,61 +285,64 @@ export default function AIQuizGenerator() {
 
   return (
     <div className="min-h-screen w-full bg-[#F8F8FF] p-6 font-inter">
-      {/* ================= PAGE HEADER ================= */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-[24px] font-bold text-[#0A0847]">AI Question Generator</h1>
-          <p className="mt-[8px] text-[15px] text-[#0A0847]/70">
-            Generate questions and images for any level in one go.
+          <h1 className="text-[22px] leading-none font-semibold text-[#0A0847]">
+            AI Question Generator
+          </h1>
+          <p className="mt-[12px] text-[15px] leading-none text-[#0A0847]/60">
+            Generate high-quality Bible quiz questions with images using AI.
           </p>
         </div>
 
         <div className="flex items-center gap-[14px]">
           <button
             type="button"
-            className="flex h-[44px] w-[164px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#1E1B4B] bg-white text-[15px] font-semibold text-[#0A0847]"
+            className="flex h-[44px] w-[163px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold text-[#001984]"
           >
-            <LuCircleHelp size={17} strokeWidth={1.8} />
+            <LuCircleHelp size={18} strokeWidth={1.8} />
             How it works
           </button>
           <button
             type="button"
-            className="flex h-[44px] w-[156px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#1E1B4B] bg-white text-[15px] font-semibold text-[#0A0847]"
+            className="flex h-[44px] w-[156px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold text-[#001984]"
           >
-            <LuHistory size={17} strokeWidth={1.8} />
+            <LuHistory size={18} strokeWidth={1.8} />
             History
           </button>
         </div>
       </div>
 
-      {/* ================= LOCATION CARD ================= */}
       <div className={`mt-[40px] flex h-[92px] items-center px-[24px] ${CARD}`}>
         <div className="flex flex-1 items-center">
           {LOCATION_SELECTORS.map((selector, index) => (
             <Fragment key={selector.label}>
               {index > 0 && <span className="h-[48px] w-px bg-[#E2DFFC]" />}
               <div className="flex flex-1 items-center gap-[10px] px-[16px]">
-                <span className="flex min-w-0 flex-col">
-                  <span className="text-[12px] text-[#0A0847]/70">{selector.label}</span>
-                  <span className="text-[16px] font-bold text-[#0A0847]">{selector.value}</span>
+                <span className="flex min-w-0 flex-col gap-[4px]">
+                  <span className="text-[12px] leading-none font-medium text-[#0A0847]/60">
+                    {selector.label}
+                  </span>
+                  <span className="text-[16px] leading-none font-semibold text-[#0A0847]">
+                    {selector.value}
+                  </span>
                 </span>
-                <LuChevronDown size={16} className="ml-auto shrink-0 text-[#0A0847]" />
+                <Chevron className="ml-auto shrink-0" />
               </div>
             </Fragment>
           ))}
         </div>
 
-        <div className="ml-[16px] flex w-[226px] shrink-0 flex-col justify-center gap-[4px] rounded-[8px] bg-[#EEEAFB] p-[12px]">
-          <span className="text-[14px] font-semibold text-[#0A0847]">Select Location</span>
-          <span className="text-[13px] text-[#0A0847]/70">Genesis › Chapter 3 › Level 1</span>
+        <div className="ml-[16px] flex w-[226px] shrink-0 flex-col justify-center gap-[10px] rounded-[6px] bg-[#F1EFFD] p-[12px]">
+          <span className="text-[14px] leading-none font-semibold text-[#0A0847]">
+            Select Location
+          </span>
+          <span className={HELPER}>Genesis › Chapter 3 › Level 1</span>
         </div>
       </div>
 
-      {/* ================= TWO COLUMNS ================= */}
       <div className="mt-[28px] grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-stretch gap-[24px]">
-        {/* ============ LEFT : CONFIGURATION ============ */}
         <div className={`flex min-w-0 flex-col px-[20px] pt-[20px] pb-[24px] ${CARD}`}>
-          {/* tabs */}
           <div>
             <div className="flex h-[48px] items-start gap-[32px]">
               <button
@@ -287,54 +350,50 @@ export default function AIQuizGenerator() {
                 className="relative flex h-[48px] cursor-pointer items-center text-[15px] font-medium text-[#0A0847]"
               >
                 Generate Questions
-                <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#00007A]" />
+                <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#001984]" />
               </button>
               <button
                 type="button"
-                className="flex h-[48px] cursor-pointer items-center text-[15px] font-medium text-[#0A0847]/70"
+                className="flex h-[48px] cursor-pointer items-center text-[15px] font-medium text-[#0A0847]/60"
               >
                 Generation History
               </button>
             </div>
-            <div className="h-px w-full bg-[#E2DFFC]" />
+            <div className="h-px w-full bg-[#0A0847]/10" />
           </div>
 
           <div className="mt-[24px]">
             <SectionTitle step="1" title="Question Settings" />
           </div>
 
-          {/* number of questions */}
           <div className="mt-[20px]">
             <p className={LABEL}>
-              Number of Questions to Generate <span className="text-[#D1264A]">*</span>
+              Number of Questions to Generate <span className="text-[#D80027]">*</span>
             </p>
             <div className="mt-[8px] flex h-[47px] w-[337px] max-w-full items-stretch overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
               <button
                 type="button"
                 aria-label="Decrease"
                 onClick={() => setCount((current) => Math.max(1, current - 1))}
-                className="flex w-[40px] shrink-0 cursor-pointer items-center justify-center border-r border-[#E2DFFC] text-[#0A0847]"
+                className="flex w-[40px] shrink-0 cursor-pointer items-center justify-center border-r border-[#E2DFFC] text-[#001984]"
               >
                 <LuMinus size={16} />
               </button>
-              <span className="flex flex-1 items-center justify-center text-[15px] font-semibold text-[#0A0847]">
+              <span className="flex flex-1 items-center justify-center text-[14px] font-medium text-[#001984]">
                 {count}
               </span>
               <button
                 type="button"
                 aria-label="Increase"
                 onClick={() => setCount((current) => current + 1)}
-                className="flex w-[45px] shrink-0 cursor-pointer items-center justify-center border-l border-[#E2DFFC] text-[#0A0847]"
+                className="flex w-[45px] shrink-0 cursor-pointer items-center justify-center border-l border-[#E2DFFC] text-[#001984]"
               >
                 <LuPlus size={16} />
               </button>
             </div>
-            <p className="mt-[8px] text-[13px] text-[#0A0847]/70">
-              Recommended: 5–30 at a time for best results.
-            </p>
+            <p className={`mt-[8px] ${HELPER}`}>Recommended: 5–30 at a time for best results.</p>
           </div>
 
-          {/* question types */}
           <div className="mt-[24px]">
             <p className={LABEL}>Question Types</p>
             <div className="mt-[8px] grid grid-cols-4 gap-[8px]">
@@ -345,12 +404,12 @@ export default function AIQuizGenerator() {
                     key={type.id}
                     type="button"
                     onClick={() => toggleType(type.id)}
-                    className={`relative flex h-[84px] min-w-0 cursor-pointer flex-col items-center justify-center gap-[8px] rounded-[8px] border px-[1px] text-center ${
-                      active ? "border-[#00007A] bg-[#F4F1FE]" : "border-[#E2DFFC] bg-[#F9F9FF]"
+                    className={`relative flex h-[84px] min-w-0 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[8px] border px-[1px] text-center ${
+                      active ? "border-[#001984] bg-[#F4F1FE]" : "border-[#E2DFFC] bg-[#F9F8FF]"
                     }`}
                   >
                     <TypeGlyph kind={type.kind} />
-                    <span className="text-[14px] leading-[1.2] font-medium whitespace-nowrap text-[#0A0847]">
+                    <span className="text-[12px] leading-none font-semibold whitespace-nowrap text-[#0A0847]/80">
                       {type.label}
                     </span>
                     {active && (
@@ -365,41 +424,43 @@ export default function AIQuizGenerator() {
 
             <button
               type="button"
-              className="mt-[12px] flex h-[39px] w-full cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[16px] py-[7px] text-[14px] font-medium text-[#0A0847]"
+              className="mt-[12px] flex h-[39px] w-full cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[16px] py-[7px] text-[14px] font-medium text-[#0A0847]/80"
             >
               + 6 more
-              <LuChevronDown size={15} />
+              <Chevron />
             </button>
           </div>
 
-          {/* difficulty mix */}
           <div className="mt-[24px]">
             <div className="flex items-center gap-[8px]">
-              <p className="text-[16px] font-semibold text-[#0A0847]">Difficulty Mix</p>
-              <LuCircleHelp size={16} className="text-[#0A0847]/70" />
+              <p className="text-[14px] leading-none font-semibold text-[#0A0847]">Difficulty Mix</p>
+              <LuCircleHelp size={16} className="text-[#0A0847]/60" />
             </div>
             <div className="mt-[8px] flex gap-[12px]">
               {DIFFICULTY_MIX.map((entry) => (
                 <div
                   key={entry.label}
-                  className="flex h-[47px] w-[118px] shrink-0 flex-col justify-center gap-[2px] rounded-[6px] border border-[#E2DFFC] bg-white px-[10px]"
+                  className="flex h-[71px] w-[120px] shrink-0 flex-col justify-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[12px]"
                 >
-                  <span className="flex items-center justify-between text-[14px] font-medium text-[#0A0847]">
+                  <span className="flex items-center justify-between text-[14px] leading-none font-medium text-[#0A0847]/80">
                     {entry.label}
-                    <LuChevronDown size={14} />
+                    <Chevron />
                   </span>
-                  <span className="text-[14px] font-medium text-[#0A0847]">{entry.value} %</span>
+                  <span className="text-[14px] leading-none font-medium text-[#0A0847]/80">
+                    {entry.value} %
+                  </span>
                 </div>
               ))}
             </div>
-            <p className="mt-[8px] text-[13px] text-[#0A0847]/70">
+            <p className={`mt-[8px] ${HELPER}`}>
               AI will split approximately balanced difficulty questions.
             </p>
           </div>
 
-          {/* additional instructions */}
           <div className="mt-[16px]">
-            <p className={LABEL}>Additional Instructions (Optional)</p>
+            <p className="text-[12px] leading-none font-semibold text-[#0A0847]">
+              Additional Instructions <span className="font-medium">(Optional)</span>
+            </p>
             <div className="relative mt-[6px]">
               <textarea
                 rows={2}
@@ -409,15 +470,14 @@ export default function AIQuizGenerator() {
                 placeholder="Add any special instructions for the AI..."
                 className="h-[56px] w-full resize-none rounded-[8px] border border-[#E2DFFC] bg-white p-[12px] text-[14px] text-[#0A0847] outline-none placeholder:text-[#0A0847]/60"
               />
-              <span className="absolute right-[10px] bottom-[6px] text-[12px] italic text-[#0A0847]/70">
+              <span className="absolute right-[10px] bottom-[6px] text-[12px] italic text-[#0A0847]/60">
                 {note.length} / 500
               </span>
             </div>
           </div>
 
-          <div className="mt-[16px] h-px w-full bg-[#E2DFFC]" />
+          <div className="mt-[16px] h-px w-full bg-[#0A0847]/10" />
 
-          {/* ================= SECTION 2 : IMAGE SETTINGS ================= */}
           <div className="mt-[24px]">
             <SectionTitle step="2" title="Image Settings" />
           </div>
@@ -431,11 +491,11 @@ export default function AIQuizGenerator() {
                   key={style.id}
                   type="button"
                   onClick={() => setStyleId(style.id)}
-                  className={`relative flex h-[147px] max-w-[140px] min-w-0 flex-1 cursor-pointer flex-col gap-[6px] rounded-[8px] border p-[8px] ${
-                    active ? "border-[#00007A] bg-[#F4F1FE]" : "border-[#E2DFFC] bg-[#FEFFFF]"
+                  className={`relative flex max-w-[140px] min-w-0 flex-1 cursor-pointer flex-col items-stretch rounded-[8px] border px-[13px] pt-[11px] pb-[15px] ${
+                    active ? "border-[#001984] bg-[#FEFFFF]" : "border-[#E2DFFC] bg-[#FEFFFF]"
                   }`}
                 >
-                  <span className="min-h-0 w-full flex-1 overflow-hidden rounded-[6px] bg-[#EEEAFB]">
+                  <span className="block aspect-[113/95] w-full shrink-0 overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-[#EEEAFB]">
                     <img
                       src={style.src}
                       alt={style.caption}
@@ -445,95 +505,101 @@ export default function AIQuizGenerator() {
                       }}
                     />
                   </span>
-                  <span className="text-center text-[14px] font-medium text-[#0A0847]">
+                  <span className="mt-[10px] text-center text-[14px] leading-none font-medium text-[#0A0847]/80">
                     {style.caption}
                   </span>
-                  {active && (
-                    <span className="absolute top-[6px] right-[6px] z-10 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-[#2E9E3E] text-white">
-                      <LuCheck size={12} strokeWidth={3} />
+                  <span className="absolute top-[10px] right-[12px] z-10 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#2E9E3E] text-white">
+                      <LuCheck size={10} strokeWidth={3} />
                     </span>
-                  )}
                 </button>
               );
             })}
           </div>
 
-          {/* quality + format */}
           <div className="mt-[20px] flex gap-[8px]">
             <div className="w-[272px] shrink-0">
               <p className={LABEL}>Image Quality</p>
-              <div className="mt-[6px] h-[33px]">
-                <FieldSelect value="High (Recommended)" options={["High (Recommended)", "Standard"]} />
+              <div className="mt-[6px] h-[44px]">
+                <FieldSelect value="High (Recommended)" options={["High (Recommended)", "Standard"]} chevronClass="right-[43px]" />
               </div>
             </div>
             <div className="min-w-0 flex-1">
               <p className={LABEL}>Image Format</p>
-              <div className="mt-[6px] h-[33px]">
-                <FieldSelect value="Landscape (16:9)" options={["Landscape (16:9)", "Square (1:1)"]} />
+              <div className="mt-[6px] h-[44px]">
+                <FieldSelect value="Landscape (16:9)" options={["Landscape (16:9)", "Square (1:1)"]} chevronClass="right-[6px]" />
               </div>
             </div>
           </div>
 
-          {/* info + estimated time */}
-          <div className="mt-[16px] flex flex-wrap items-end gap-[16px]">
-            <div className="w-full max-w-[272px] min-h-[153px] min-w-0 rounded-[6px] bg-[#F1EFFD] p-[12px]">
+          <div className="mt-[16px] grid grid-cols-[46%_minmax(0,1fr)] items-end gap-[12px]">
+            <div className="flex min-w-0 flex-col gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#F1EFFD] p-[12px]">
               <div className="flex items-center gap-[8px]">
-                <LuBot size={22} className="text-[#2B4FA8]" />
-                <span className="text-[15px] font-semibold text-[#2B4FA8]">AI will generate</span>
+                <AiGlyph />
+                <span className="text-[14px] leading-none font-medium text-[#0A0847]/80">
+                  AI will generate
+                </span>
               </div>
-              <ul className="mt-[8px] space-y-[4px] text-[12px] leading-[1.55] text-[#2B4FA8]">
-                <li>• Questions with answers and options</li>
-                <li>• Relevant Bible verses</li>
-                <li>• Explanations</li>
-                <li>• Hints</li>
-                <li>• High-quality images for each question</li>
+              <ul className="flex flex-col gap-[3px] pl-[4px] text-[12px] leading-[1.5] font-medium text-[#0B4DBB]">
+                {[
+                  "Questions with answers and options",
+                  "Relevant Bible verses",
+                  "Explanations",
+                  "Hints",
+                  "High-quality images for each question",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-[8px]">
+                    <span className="mt-[7px] h-[4px] w-[4px] shrink-0 rounded-full bg-[#0B4DBB]" />
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="flex items-center gap-[8px] pb-[4px] text-[13px] text-[#0A0847]/70">
-              <LuClock size={18} />
-              Estimated time: 30–60 seconds
+
+            <div className="flex min-w-0 flex-col justify-end gap-[20px] pb-[8px]">
+              <div className="flex items-center gap-[8px] text-[12px] leading-none font-medium text-[#0A0847]/60">
+                <LuClock size={20} className="text-[#1A56C4]" />
+                Estimated time: 30–60 seconds
+              </div>
+              <button
+                type="button"
+                className="flex h-[38px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#001984] bg-[#E8E8F6] text-[14px] font-semibold text-[#001984]"
+              >
+                <SparkleGlyph />
+                Generate Questions &amp; Images
+              </button>
             </div>
           </div>
-
-          <button
-            type="button"
-            className="mt-[12px] flex h-[38px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#00007A] bg-[#F1EFFD] text-[14px] font-medium text-[#00007A]"
-          >
-            <LuSparkles size={17} strokeWidth={2} />
-            Generate Questions &amp; Images
-          </button>
         </div>
 
-        {/* ============ RIGHT : PREVIEW ============ */}
         <div className={`flex min-w-0 flex-col p-[16px] ${CARD}`}>
           <div className="flex items-start justify-between gap-[10px]">
             <div className="min-w-0">
-              <div className="flex items-center gap-[10px]">
-                <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full bg-[#00007A] text-[11px] leading-none font-semibold text-white">
-                  3
-                </span>
-                <h3 className="text-[16px] font-semibold text-[#0A0847]">
+              <div className="flex items-center gap-[12px]">
+                <StepDot>3</StepDot>
+                <h3 className="text-[14px] leading-none font-semibold text-[#0A0847]">
                   Generated Questions Preview
                 </h3>
               </div>
-              <p className="mt-[6px] pl-[28px] text-[13px] text-[#0A0847]/70">
+              <p className={`mt-[10px] pl-[24px] ${HELPER}`}>
                 Review and edit before adding to Level 1.
               </p>
             </div>
-            <span className="shrink-0 rounded-[6px] bg-[#E8E8F6] px-[10px] py-[4px] text-[12px] font-medium text-[#0A0847]">
-              15 Questions Generated
-            </span>
-          </div>
 
-          <label className="mt-[8px] flex cursor-pointer items-center gap-[8px] self-start">
-            <input
-              type="checkbox"
-              checked={selectAll}
-              onChange={(event) => setSelectAll(event.target.checked)}
-              className="h-[16px] w-[16px] cursor-pointer appearance-none rounded-[3px] border-[1.5px] border-[#6B6F8D] checked:border-[#00007A] checked:bg-[#00007A]"
-            />
-            <span className="text-[13px] font-medium text-[#0A0847]">Select All</span>
-          </label>
+            <div className="flex shrink-0 flex-col items-end gap-[12px]">
+              <span className="rounded-[6px] bg-[#E8E8F6] px-[10px] py-[4px] text-[12px] font-medium text-[#0A0847]">
+                15 Questions Generated
+              </span>
+              <label className="flex cursor-pointer items-center gap-[8px]">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={(event) => setSelectAll(event.target.checked)}
+                  className="h-[16px] w-[16px] cursor-pointer appearance-none rounded-[3px] border-[1.5px] border-[#6B6F8D] bg-white checked:border-[#001984] checked:bg-[#001984]"
+                />
+                <span className="text-[12px] leading-none font-medium text-[#0A0847]/80">Select All</span>
+              </label>
+            </div>
+          </div>
 
           <div className="mt-[16px] flex w-full flex-col gap-[16px]">
             {QUESTIONS.map((q) => {
@@ -542,105 +608,109 @@ export default function AIQuizGenerator() {
               return (
                 <div
                   key={q.id}
-                  className="mx-auto w-full max-w-none rounded-[8px] border border-[#E2DFFC] bg-white p-[16px]"
+                  className="mx-auto w-full max-w-none rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[16px]"
                 >
-                    <div className="relative aspect-[401/186] w-full overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
-                      <img
-                        src={q.image}
-                        alt=""
-                        className="block h-full w-full object-cover"
-                        onError={(event) => {
-                          event.currentTarget.style.visibility = "hidden";
-                        }}
-                      />
-                    </div>
+                  <div className="relative aspect-[401/186] w-full overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
+                    <img
+                      src={q.image}
+                      alt=""
+                      className="block h-full w-full object-cover"
+                      onError={(event) => {
+                        event.currentTarget.style.visibility = "hidden";
+                      }}
+                    />
+                  </div>
 
-                    <p className="mt-[12px] text-[15px] leading-[1.35] font-semibold text-[#0A0847]">
-                      {q.question}
+                  <p className="mt-[12px] text-[14px] leading-[1.35] font-semibold text-[#0A0847]/80">
+                    {q.question}
+                  </p>
+
+                  {q.order && (
+                    <div className="mt-[8px] space-y-[4px] text-[12px] font-medium text-[#0A0847]/80">
+                      {q.order.map((step) => (
+                        <p key={step}>{step}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {q.options.length > 0 && (
+                    <div className="mt-[8px] flex flex-col gap-[6px]">
+                      {q.options.map((option, index) => {
+                        const active = q.correct === index;
+                        return (
+                          <div key={option} className="flex items-center gap-[8px]">
+                            <span
+                              className={`flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-full border-2 ${
+                                active ? "border-[#2E9E3E]" : "border-[#C9CCE0]"
+                              }`}
+                            >
+                              {active && <span className="h-[9px] w-[9px] rounded-full bg-[#2E9E3E]" />}
+                            </span>
+                            <span
+                              className={`rounded-[6px] px-[12px] py-[6px] text-[12px] font-medium ${
+                                active ? "bg-[#EAF7EC] text-[#2E9E3E]" : "text-[#0A0847]/80"
+                              }`}
+                            >
+                              {option}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {q.answer && (
+                    <p className="mt-[8px] text-[12px] font-medium text-[#0A0847]/80">
+                      Correct Answer:{" "}
+                      <span className="font-semibold text-[#2E9E3E]">{q.answer}</span>
                     </p>
+                  )}
 
-                    {q.order && (
-                      <div className="mt-[8px] space-y-[4px] text-[14px] text-[#0A0847]/70">
-                        {q.order.map((step) => (
-                          <p key={step}>{step}</p>
-                        ))}
+                  <div className="mt-[12px] h-px w-full bg-[#0A0847]/10" />
+
+                  <div className="mt-[10px] flex items-end justify-between gap-[10px]">
+                    <div className="flex flex-col gap-[16px]">
+                      <span className="flex items-center gap-[8px] text-[16px] leading-none font-semibold text-[#001984]">
+                        <LuBookOpen size={22} className="text-[#001984]" />
+                        {q.verse}
+                      </span>
+                      <div className="flex flex-col items-start gap-[8px]">
+                        <span className="text-[14px] leading-none font-semibold text-[#0A0847]/80">Difficulty</span>
+                        <Badge bg={diff.bg} fg={diff.fg} className="h-[26px] w-[79px] justify-center">
+                          {q.difficulty}
+                        </Badge>
                       </div>
-                    )}
-
-                    {q.options.length > 0 && (
-                      <div className="mt-[8px] flex flex-col gap-[6px]">
-                        {q.options.map((option, index) => {
-                          const active = q.correct === index;
-                          return (
-                            <div key={option} className="flex items-center gap-[8px]">
-                              <span
-                                className={`flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-full border-2 ${
-                                  active ? "border-[#2E9E3E]" : "border-[#C9CCE0]"
-                                }`}
-                              >
-                                {active && <span className="h-[9px] w-[9px] rounded-full bg-[#2E9E3E]" />}
-                              </span>
-                              <span
-                                className={`rounded-[6px] px-[12px] py-[6px] text-[14px] ${
-                                  active
-                                    ? "bg-[#EAF7EC] font-medium text-[#2E9E3E]"
-                                    : "text-[#0A0847]"
-                                }`}
-                              >
-                                {option}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {q.answer && (
-                      <p className="mt-[8px] text-[13px] text-[#0A0847]/70">
-                        <span className="font-medium text-[#0A0847]">Correct Answer:</span>{" "}
-                        <span className="font-bold text-[#2E9E3E]">{q.answer}</span>
-                      </p>
-                    )}
-
-                    <div className="mt-[12px] h-px w-full bg-[#E2DFFC]" />
-
-                    <div className="mt-[10px] flex items-end justify-between gap-[10px]">
-                      <div className="flex flex-col gap-[8px]">
-                        <span className="flex items-center gap-[8px] text-[16px] font-semibold text-[#0A0847]">
-                          <LuBookOpen size={22} className="text-[#00007A]" />
-                          {q.verse}
-                        </span>
-                        <span className="flex items-center gap-[8px] text-[13px] font-semibold text-[#0A0847]">
-                          Difficulty <Badge bg={diff.bg} fg={diff.fg}>{q.difficulty}</Badge>
-                        </span>
-                        <span className="flex items-center gap-[8px] text-[13px] font-semibold text-[#0A0847]">
-                          Type <Badge bg={type.bg} fg={type.fg}>{q.type}</Badge>
-                        </span>
-                      </div>
-
-                      <div className="flex flex-col gap-[10px]">
-                        <button
-                          type="button"
-                          className="flex h-[34px] w-[44px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[13px] font-medium text-[#0A0847]"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          type="button"
-                          aria-label="Preview"
-                          className="flex h-[34px] w-[44px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#00007A]"
-                        >
-                          <LuEye size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          aria-label="Delete"
-                          className="flex h-[34px] w-[44px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#D1264A]"
-                        >
-                          <LuTrash2 size={16} />
-                        </button>
+                      <div className="flex flex-col items-start gap-[8px]">
+                        <span className="text-[14px] leading-none font-semibold text-[#0A0847]/80">Type</span>
+                        <Badge bg={type.bg} fg={type.fg} className="h-[31px] min-w-[131px] justify-center">
+                          {q.type}
+                        </Badge>
                       </div>
                     </div>
+
+                    <div className="flex flex-col gap-[8px]">
+                      <button
+                        type="button"
+                        className="flex h-[32px] w-[46px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[12px] font-medium text-[#0A0847]"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Preview"
+                        className="flex h-[32px] w-[46px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#001984]"
+                      >
+                        <LuEye size={16} />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Delete"
+                        className="flex h-[32px] w-[46px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#D80027]"
+                      >
+                        <LuTrash2 size={16} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
               );
             })}
@@ -648,7 +718,6 @@ export default function AIQuizGenerator() {
         </div>
       </div>
 
-      {/* ================= BOTTOM ACTION ROW (below both cards) ================= */}
       <div className="mt-[24px] flex items-center justify-between">
         <span className="text-[14px] font-semibold text-[#0A0847]">15 questions generated</span>
         <div className="flex items-center gap-[10px]">
@@ -667,7 +736,7 @@ export default function AIQuizGenerator() {
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-[189px] cursor-pointer items-center justify-center gap-[8px] rounded-[4px] bg-[#00007A] text-[14px] font-semibold whitespace-nowrap text-white"
+            className="flex h-[42px] w-[189px] cursor-pointer items-center justify-center gap-[8px] rounded-[4px] bg-[#001984] text-[14px] font-semibold whitespace-nowrap text-white"
           >
             <LuPlus size={16} strokeWidth={2.2} />
             Add All to Level 1

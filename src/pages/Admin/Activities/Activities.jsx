@@ -1,5 +1,5 @@
 import { useState } from "react";
-import bookImage from "../../../assets/book.png";
+import bookImage from "../../../assets/activities/book.webp";
 import {
   LuEye,
   LuSettings,
@@ -22,30 +22,27 @@ import {
   LuLightbulb,
 } from "react-icons/lu";
 import { WordSearchGlyph, MemoryVerseGlyph } from "./activityGlyphs";
-// Figma tile icons (src/assets/activities/)
 import quizIcon from "../../../assets/activities/quiz.png";
-import wordSearchIcon from "../../../assets/activities/wordsearch.png";
-// Figma icons cut from the Activities frames (src/assets/activities/)
-import audioTileIcon from "../../../assets/activities/tile_audio.png";
-import memoryTileIcon from "../../../assets/activities/tile_memory_card.png";
+import wordSearchIcon from "../../../assets/activities/icon-grid-green.svg";
+import audioTileIcon from "../../../assets/activities/icon-headphones-tile.svg";
+import memoryTileIcon from "../../../assets/activities/icon-book-orange.svg";
 import memoryTableIcon from "../../../assets/activities/tile_memory_table.png";
-import statHeadphones from "../../../assets/activities/stat_headphones.png";
-import statClock from "../../../assets/activities/stat_clock.png";
-import statBookmark from "../../../assets/activities/stat_bookmark.png";
-import statCheck from "../../../assets/activities/stat_check.png";
-import btnEye from "../../../assets/activities/btn_eye.png";
-import btnExternal from "../../../assets/activities/btn_external.png";
-import btnGear from "../../../assets/activities/btn_gear.png";
-import tipBulb from "../../../assets/activities/tip_bulb.png";
-import audioHeadphones from "../../../assets/activities/audio_headphones.png";
-import selectorBook from "../../../assets/activities/selector_book.png";
-import infoIcon from "../../../assets/activities/info_icon.png";
+import statHeadphones from "../../../assets/activities/icon-headphones.svg";
+import statClock from "../../../assets/activities/icon-clock.svg";
+import statBookmark from "../../../assets/activities/icon-bookmark-orange.svg";
+import statCheck from "../../../assets/activities/icon-check-circle-orange.svg";
+import btnEye from "../../../assets/activities/icon-eye.svg";
+import btnExternal from "../../../assets/activities/btn_external.svg";
+import btnGear from "../../../assets/activities/icon-gear.svg";
+import tipBulb from "../../../assets/activities/icon-lightbulb-orange.svg";
+import audioHeadphones from "../../../assets/activities/icon-headphones-outline.svg";
+import selectorBook from "../../../assets/activities/icon-book-purple.svg";
+import infoIcon from "../../../assets/activities/icon-info.svg";
 import statQuizActive from "../../../assets/activities/stat_quiz_active.png";
 import statQuizQuestions from "../../../assets/activities/stat_quiz_questions.png";
 import statWsActive from "../../../assets/activities/stat_ws_active.png";
-import statWsWords from "../../../assets/activities/stat_ws_words.png";
+import statWsWords from "../../../assets/activities/icon-meeting-green.svg";
 
-/* Figma button icon by label: View = eye, Preview = external, Manage = gear */
 const btnImage = (label) =>
   label.startsWith("View") ? btnEye : label.startsWith("Preview") ? btnExternal : label.startsWith("Manage") ? btnGear : null;
 

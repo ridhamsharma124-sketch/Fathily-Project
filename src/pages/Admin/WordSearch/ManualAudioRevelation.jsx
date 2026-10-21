@@ -1,23 +1,17 @@
 import { useState } from "react";
-import {
-  LuChevronDown,
-  LuChevronUp,
-  LuRefreshCw,
-  LuRotateCcw,
-  LuSparkles,
-  LuX,
-  LuFileMusic,
-  LuVolume2,
-  LuSave,
-  LuEye,
-  LuArrowRight,
-} from "react-icons/lu";
-import puzzleImg from "../../../assets/word search/Puzzle img.png";
+import puzzleImg from "../../../assets/word search/Puzzle img.webp";
+import replaceIcon from "../../../assets/word search/mh_replace.svg";
+import resetIcon from "../../../assets/word search/mh_reset.svg";
+import aiImageIcon from "../../../assets/word search/pu_ai_image.svg";
+import chevronIcon from "../../../assets/word search/mh_chevron.svg";
+import floppyIcon from "../../../assets/word search/dr_save_floppy.svg";
+import eyeIcon from "../../../assets/word search/mh_eye.svg";
+import arrowRightIcon from "../../../assets/word search/mh_arrow_right.svg";
+import fileMusicIcon from "../../../assets/word search/au_file_music.svg";
+import volumeIcon from "../../../assets/word search/au_volume.svg";
 
-/* ==========================================================================
-   TOKENS
-   ========================================================================== */
-const BODY = "#3D3561";
+
+const INK = "#0A0847";
 const NAVY = "#001984";
 const GREEN = "#2EB84B";
 const PAGE_BG = "#F8F9FE";
@@ -41,29 +35,42 @@ const PROMPT = "Listen to the audio and find the hidden words.";
 const CORRECT_ANSWER = "Psalm 23 (NIV)";
 const DISTRACTORS = ["Psalm 22 (NIV)", "Psalm 34 (NIV)", "Psalm 27 (NIV)"];
 
-/* 78 deterministic, irregular waveform heights between 4px and 28px */
+
 const WAVE_BARS = Array.from({ length: 78 }, (_, i) => {
   const s = Math.sin(i * 0.7) * 0.5 + Math.sin(i * 0.31 + 1.2) * 0.5;
   return 4 + Math.round(((s + 1) / 2) * 24);
 });
 
-const cardCls = `rounded-[8px] border border-[#EFECFB] bg-white`;
+const cardCls = "rounded-[8px] border border-[#EFECFB] bg-white";
 const field =
-  "h-[38px] w-full rounded-[8px] border border-[#E4E5F0] bg-white px-3 text-[13px] font-normal text-[#6B668F] outline-none focus:border-[#001984]";
+  "h-[38px] w-full rounded-[8px] border border-[#E4E5F0] bg-white px-3 text-[12px] font-medium text-[#0A0847]/60 outline-none focus:border-[#001984]";
 const area =
-  "w-full resize-none rounded-[8px] border border-[#E4E5F0] bg-white px-3 py-2 text-[13px] font-normal leading-[1.55] text-[#6B668F] outline-none focus:border-[#001984]";
-const lbl = "mb-[6px] block text-[14px] font-semibold text-[#3D3561]";
-const title = "text-[14px] font-semibold text-[#3D3561]";
+  "w-full resize-none rounded-[8px] border border-[#E4E5F0] bg-white px-3 py-2 text-[12px] font-medium leading-[1.5] text-[#0A0847]/60 outline-none focus:border-[#001984]";
+const lbl = "mb-[6px] block text-[12px] font-semibold text-[#0A0847]/80";
+const cardTitle = "text-[12px] font-semibold text-[#0A0847]/80";
 
-/* ==========================================================================
-   SHARED PRIMITIVES
-   ========================================================================== */
+
+
+function Icon({ src, w = 16, h = w, className = "", style }) {
+  return (
+    <img
+      src={src}
+      alt=""
+      aria-hidden
+      width={w}
+      height={h}
+      className={`shrink-0 ${className}`}
+      style={style}
+    />
+  );
+}
+
 function Chevron({ className = "top-1/2 right-2.5 -translate-y-1/2", size = 14 }) {
   return (
-    <LuChevronDown
-      size={size}
-      className={`pointer-events-none absolute ${className} text-[#9B96B8]`}
-      aria-hidden
+    <Icon
+      src={chevronIcon}
+      w={size}
+      className={`pointer-events-none absolute ${className}`}
     />
   );
 }
@@ -106,7 +113,7 @@ function Toggle({ on, onChange, label, color = "#0552AA" }) {
   );
 }
 
-/* white FILLED triangle inside a navy circle */
+
 function PlayButton({ size = 28, tri = 11 }) {
   return (
     <span
@@ -153,18 +160,18 @@ function Waveform() {
 function DistractorChip({ children }) {
   return (
     <span
-      className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-[8px] border px-2.5 text-[12px] font-medium whitespace-nowrap"
-      style={{ backgroundColor: "#F4F2FC", borderColor: "#E3DFF6", color: BODY }}
+      className="inline-flex h-[24px] shrink-0 items-center gap-1.5 rounded-[8px] border px-2 text-[10px] font-semibold whitespace-nowrap text-[#0A0847]/80"
+      style={{ backgroundColor: "#F4F2FC", borderColor: "#E3DFF6" }}
     >
       {children}
-      <LuX size={12} style={{ color: "#1F2FD8" }} aria-hidden />
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden className="shrink-0">
+        <path d="M2 2 8 8M8 2 2 8" stroke="#0926FD" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
     </span>
   );
 }
 
-/* ==========================================================================
-   SHARED PAGE SECTIONS
-   ========================================================================== */
+
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -175,10 +182,7 @@ function FilterFields() {
     <div className="flex items-start gap-6">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
         <div key={id} className={w}>
-          <label
-            htmlFor={id}
-            className="mb-2 block text-[14px] font-medium text-[#0A0240]"
-          >
+          <label htmlFor={id} className="mb-2 block text-[14px] font-medium text-[#0A0240]">
             {label}
           </label>
           <Select
@@ -209,18 +213,18 @@ function FilterFields() {
               tabIndex={-1}
               aria-label="Increase reward points"
               onClick={() => setReward((n) => n + 1)}
-              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center text-[#9B96B8]"
+              className="pointer-events-auto flex h-[9px] w-[14px] cursor-pointer items-center justify-center"
             >
-              <LuChevronUp size={11} />
+              <Icon src={chevronIcon} w={9} className="rotate-180" />
             </button>
             <button
               type="button"
               tabIndex={-1}
               aria-label="Decrease reward points"
               onClick={() => setReward((n) => Math.max(0, n - 1))}
-              className="flex h-[9px] w-[14px] cursor-pointer items-center justify-center text-[#9B96B8]"
+              className="pointer-events-auto flex h-[9px] w-[14px] cursor-pointer items-center justify-center"
             >
-              <LuChevronDown size={11} />
+              <Icon src={chevronIcon} w={9} />
             </button>
           </span>
         </div>
@@ -238,10 +242,10 @@ function TabsRow() {
           <button
             key={t}
             type="button"
-            className={`h-[50px] px-6 text-[15px] ${
+            className={`h-[46px] px-6 text-[14px] ${
               active
                 ? "-mb-px border-b-2 border-[#001984] font-semibold text-[#001984]"
-                : "font-normal text-[#6B668F]"
+                : "font-medium text-[#0A0847]/60"
             }`}
           >
             {t}
@@ -257,10 +261,10 @@ function BottomBar() {
   return (
     <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-3">
-        <span className="text-[15px] font-semibold text-[#6B668F]">Status</span>
+        <span className="text-[14px] font-semibold text-[#0A0847]/60">Status</span>
         <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
         <span
-          className="rounded-[6px] px-2.5 py-1 text-[13px] font-medium"
+          className="rounded-[6px] px-2.5 py-1 text-[12px] font-medium"
           style={{ backgroundColor: "#E3F7E6", color: GREEN }}
         >
           Published
@@ -270,24 +274,24 @@ function BottomBar() {
       <div className="flex items-center gap-3">
         <button
           type="button"
-          className="flex h-[46px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-5 text-[14px] font-semibold text-[#3D3561] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[40px] w-[119px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE]"
         >
-          <LuSave size={16} style={{ color: NAVY }} />
+          <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
           Save draft
         </button>
         <button
           type="button"
-          className="flex h-[46px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-5 text-[14px] font-semibold text-[#3D3561] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[40px] w-[158px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE]"
         >
-          <LuEye size={16} style={{ color: NAVY }} />
+          <Icon src={eyeIcon} w={16} h={12} />
           Preview
         </button>
         <button
           type="button"
-          className="flex h-[46px] w-[190px] cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90"
+          className="flex h-[40px] w-[190px] cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: NAVY }}
         >
-          <LuArrowRight size={16} />
+          <Icon src={arrowRightIcon} w={16} />
           Add Puzzle
         </button>
       </div>
@@ -297,96 +301,92 @@ function BottomBar() {
 
 function PuzzleImageCard() {
   return (
-    <div className={`${cardCls} flex w-[298px] shrink-0 flex-col p-4`}>
-      <h2 className="text-[15px] font-bold text-[#3D3561]">Puzzle Image</h2>
+    <div className={`${cardCls} flex w-[298px] shrink-0 flex-col px-[17px] py-4`}>
+      <h2 className="text-[14px] font-semibold text-[#0A0847]/80">Puzzle Image</h2>
 
       <img
         src={puzzleImg}
         alt="Genesis garden and lake"
-        className="mt-6 h-[167px] w-[264px] rounded-[8px] border border-[#AEB7D0] object-cover"
+        className="mt-4 h-[152px] w-[264px] rounded-[8px] border border-[#AEB7D0] object-cover"
       />
 
-      <div className="mt-6 flex items-start justify-between gap-2">
-        <p className="text-[12px] leading-[1.4] text-[#6B668F]">
+      <div className="mt-4 flex items-start justify-between gap-2">
+        <p className="text-[14px] leading-[16px] font-medium text-[#0A0847]/60">
           Chapter default image
           <br />
           applied automatically
         </p>
         <span
-          className="flex h-[29px] w-[79px] shrink-0 items-center justify-center rounded-[4px] text-[12px] font-bold text-[#001984]"
+          className="flex h-[30px] w-[79px] shrink-0 items-center justify-center rounded-[4px] text-[12px] font-semibold text-[#001984]"
           style={{ backgroundColor: "#E3E4F6" }}
         >
           DEFAULT
         </span>
       </div>
 
-      <div className="mt-6 flex h-[32px] items-center gap-2.5">
+      <div className="mt-4 flex h-[32px] items-center gap-2">
         <button
           type="button"
-          className="flex h-[32px] w-[122px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] bg-[#FEFEFE] px-3 text-[12px] font-medium whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[32px] w-[122px] shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-[#FEFEFE] px-2 text-[12px] font-semibold whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
           style={{ border: "1px solid #E2DFFC" }}
         >
-          <LuRefreshCw size={14} />
+          <Icon src={replaceIcon} w={14} />
           Replace Default
         </button>
         <button
-          type="button"
-          className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-3 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: NAVY }}
-        >
-          <LuSparkles size={14} />
-          Generate AI Image
-        </button>
+                        type="button"
+                        className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+                        style={{ backgroundColor: NAVY }}
+                      >
+                                  <img src={aiImageIcon} alt="" aria-hidden className="h-[15px] w-[15px] shrink-0" />
+      
+                        Generate AI Image
+                      </button>
       </div>
 
       <button
         type="button"
-        className="mt-6 flex h-[32px] w-full cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-white px-3 text-[12px] font-medium whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
+        className="mt-4 flex h-[32px] w-full cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-white px-3 text-[12px] font-semibold whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
         style={{ border: "1px solid #E2DFFC" }}
       >
-        <LuRotateCcw size={14} />
+        <Icon src={resetIcon} w={14} h={16} />
         Reset to Chapter Default
       </button>
     </div>
   );
 }
 
-/* ==========================================================================
-   AUDIO REVELATION
-   ========================================================================== */
+
 function UploadAudioCard() {
   return (
-    <div className={`${cardCls} w-[403px] shrink-0 px-5 py-4`}>
-      <h2 className={title}>Upload Audio</h2>
+    <div className={`${cardCls} w-[403px] shrink-0 px-[19px] py-4`}>
+      <h2 className={cardTitle}>Upload Audio</h2>
 
-      {/* file row */}
-      <div className="mt-3 flex h-16 items-center gap-3 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
-        <LuFileMusic size={28} className="shrink-0" style={{ color: NAVY }} aria-hidden />
+      <div className="mt-3 flex h-[56px] items-center gap-3 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
+        <Icon src={fileMusicIcon} w={32} h={36} />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[14px] font-semibold text-[#3D3561]">psalm-23-niv.mp3</p>
-          <p className="mt-0.5 text-[12px] text-[#6B668F]">4.2 MB</p>
+          <p className="truncate text-[12px] font-semibold text-[#0A0847]/80">psalm-23-niv.mp3</p>
+          <p className="mt-0.5 text-[10px] font-medium text-[#0A0847]/60">4.2 MB</p>
         </div>
         <button
           type="button"
-          className="h-[34px] shrink-0 cursor-pointer rounded-[8px] bg-white px-4 text-[13px] font-semibold whitespace-nowrap text-[#001984] transition-colors hover:bg-[#F7F8FE]"
-          style={{ border: "1.5px solid #001984" }}
+          className="h-[32px] shrink-0 cursor-pointer rounded-[8px] bg-white px-4 text-[12px] font-semibold whitespace-nowrap text-[#001984] transition-colors hover:bg-[#F7F8FE]"
+          style={{ border: "1px solid #001984" }}
         >
           Change File
         </button>
       </div>
 
-      {/* player row */}
-      <div className="mt-3 flex h-16 items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
-        <PlayButton size={28} tri={11} />
+      <div className="mt-3 flex h-[48px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
+        <PlayButton size={28} tri={18} />
         <Waveform />
-        <span className="shrink-0 text-[13px] text-[#3D3561]">00:10 / 00:10</span>
+        <span className="shrink-0 text-[12px] font-medium text-[#0A0847]/80">00:10 / 00:10</span>
       </div>
 
-      {/* preview */}
-      <p className="mt-3.5 text-[14px] font-semibold text-[#3D3561]">Preview (15 seconds)</p>
+      <p className="mt-3.5 text-[12px] font-semibold text-[#0A0847]/80">Preview (15 seconds)</p>
       <div className="mt-2 flex items-center gap-2.5">
-        <PlayButton size={24} tri={9} />
-        <span className="shrink-0 text-[13px] text-[#3D3561]">00:00 / 0:15</span>
+        <PlayButton size={24} tri={15} />
+        <span className="shrink-0 text-[12px] font-medium text-[#0A0847]/80">00:00 / 0:15</span>
         <Slider fill={55} />
       </div>
     </div>
@@ -396,14 +396,16 @@ function UploadAudioCard() {
 function TranscriptCard() {
   const [transcript, setTranscript] = useState(TRANSCRIPT);
   return (
-    <div className={`${cardCls} flex w-[403px] shrink-0 flex-1 flex-col px-5 py-4`}>
+    <div className={`${cardCls} flex w-[403px] shrink-0 flex-1 flex-col px-[19px] py-4`}>
       <label className={lbl}>Transcript (optional)</label>
       <textarea
         value={transcript}
         onChange={(e) => setTranscript(e.target.value)}
-        className={`${area} h-[52px]`}
+        className={`${area} h-[53px]`}
       />
-      <p className="mt-2 text-[12px] italic text-[#3D3561]">Shown only in admin preview.</p>
+      <p className="mt-2 text-[10px] font-medium italic text-[#0A0847]/60">
+        Shown only in admin preview.
+      </p>
     </div>
   );
 }
@@ -417,7 +419,7 @@ function PromptCard() {
       <textarea
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        className={`${area} h-[62px]`}
+        className={`${area} h-[65px]`}
       />
       <label className={`${lbl} mt-3`}>Correct Answer</label>
       <input value={answer} onChange={(e) => setAnswer(e.target.value)} className={field} />
@@ -428,20 +430,18 @@ function PromptCard() {
 function DistractorCard() {
   return (
     <div className={`${cardCls} shrink-0 px-[19px] py-4`}>
-      <div className="flex flex-wrap items-baseline gap-x-2">
-        <span className="text-[13px] font-semibold text-[#3D3561]">Distractor Answers</span>
-        <span className="text-[11px] italic text-[#6B668F]">
-          (use incorrect options in word bank)
-        </span>
-      </div>
-      <div className="mt-2 flex items-stretch gap-2 rounded-[8px] border border-[#E4E5F0] bg-white p-2.5">
-        <div className="flex min-w-0 flex-1 flex-wrap items-start gap-2">
+      <span className={`block ${cardTitle}`}>Distractor Answers</span>
+      <span className="block text-[10px] font-medium italic text-[#0A0847]/60">
+        (use incorrect options in word bank)
+      </span>
+      <div className="mt-2 flex items-stretch gap-2 rounded-[8px] border border-[#E4E5F0] bg-white p-2">
+        <div className="flex min-w-0 flex-1 flex-wrap items-start gap-x-2 gap-y-2">
           {DISTRACTORS.map((d) => (
             <DistractorChip key={d}>{d}</DistractorChip>
           ))}
         </div>
-        <span className="flex w-[30px] shrink-0 items-center justify-center self-stretch rounded-[6px]">
-          <Chevron className="static translate-y-0 text-[#3D3561]" />
+        <span className="flex w-[24px] shrink-0 items-center justify-center self-stretch rounded-[6px] bg-[#F4F4FA]">
+          <Icon src={chevronIcon} w={14} />
         </span>
       </div>
     </div>
@@ -450,20 +450,18 @@ function DistractorCard() {
 
 function VolumeCard() {
   return (
-    <div className={`${cardCls} flex min-h-[97px] flex-1 flex-col px-[19px] py-4`}>
-      <h2 className={title}>Volume Preview</h2>
-      <div className="mt-3.5 flex items-center gap-2.5">
-        <LuVolume2 size={24} className="shrink-0" style={{ color: NAVY }} aria-hidden />
-        <Slider fill={80} />
-        <span className="shrink-0 text-[13px] font-medium text-[#3D3561]">70%</span>
+    <div className={`${cardCls} flex min-h-[84px] flex-1 flex-col px-[19px] py-4`}>
+      <h2 className={cardTitle}>Volume Preview</h2>
+      <div className="mt-3 flex items-center gap-2.5">
+        <Icon src={volumeIcon} w={24} h={19} />
+        <Slider fill={70} />
+        <span className="shrink-0 text-[12px] font-medium text-[#0A0847]/80">70%</span>
       </div>
     </div>
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function ManualAudioRevelation() {
   const [puzzleTitle, setPuzzleTitle] = useState("Verse Restoration – Genesis 1:1");
   const [size, setSize] = useState(GRID_VALUE);
@@ -473,20 +471,20 @@ export default function ManualAudioRevelation() {
       className="min-h-[calc(100vh-72px)]"
       style={{
         backgroundColor: PAGE_BG,
-        color: BODY,
+        color: INK,
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
       <div className="mx-auto max-w-[1118px] px-7 py-6">
-        <nav className="text-[16px] font-normal text-[#6B668F]">
+        <nav className="text-[16px] font-medium text-[#0A0847]/60">
           Word Search <span className="mx-1">&gt;</span> Add <span className="mx-1">&gt;</span> Manual
         </nav>
 
-        <h1 className="mt-[13px] text-[24px] leading-[1.2] font-bold text-[#0A0240]">
+        <h1 className="mt-[13px] text-[22px] leading-[1.2] font-semibold text-[#0A0240]">
           Add Word Search — Manual Entry
         </h1>
 
-        <p className="mt-[13px] text-[15px] font-semibold text-[#6B668F]">
+        <p className="mt-[13px] text-[14px] font-semibold text-[#0A0847]/60">
           Manual — Audio Revelation
         </p>
 
@@ -501,7 +499,6 @@ export default function ManualAudioRevelation() {
             <PuzzleImageCard />
 
             <div className="flex w-[744px] shrink-0 flex-col">
-              {/* Row 1 — 97px */}
               <div className="flex h-[97px] items-stretch gap-[18px]">
                 <div className={`${cardCls} w-[526px] shrink-0 px-[19px] py-4`}>
                   <label className={lbl}>Puzzle Title</label>
@@ -517,7 +514,6 @@ export default function ManualAudioRevelation() {
                 </div>
               </div>
 
-              {/* Row 2 — min 437px (grows with content so nothing ever overlaps) */}
               <div className="mt-[21px] flex min-h-[437px] items-stretch gap-[23px]">
                 <div className="flex w-[403px] shrink-0 flex-col gap-3">
                   <UploadAudioCard />

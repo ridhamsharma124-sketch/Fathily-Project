@@ -3,37 +3,59 @@ import { useNavigate } from "react-router-dom";
 import {
   LuArrowLeft,
   LuArrowRight,
-  LuBookOpen,
   LuCalendar,
-  LuChevronDown,
   LuCircleSlash,
   LuClock,
   LuCross,
   LuEye,
   LuGem,
   LuLock,
-  LuSave,
   LuShieldCheck,
   LuSparkles,
   LuStar,
   LuTrash2,
 } from "react-icons/lu";
-import mysteryCardPreview from "../../../assets/Mystery card preview.png";
-import cardBookImg from "../../../assets/Card book img.png";
+import mysteryCardPreview from "../../../assets/Mystery card preview.webp";
+import cardBookImg from "../../../assets/Card book img.webp";
+import liveBook from "../../../assets/mystery-card/Live Preview book.webp";
+import floppyIcon from "../../../assets/mystery-card/icon-floppy.svg";
+import bookIcon from "../../../assets/mystery-card/icon-book.svg";
 
 const FIELD =
-  "w-full rounded-[6px] border border-edge-input bg-white px-[14px] text-[14px] text-field-navy outline-none placeholder:text-faint-navy focus:border-publish-navy";
+  "w-full rounded-[7.47px] border border-edge-input bg-white px-[12px] text-[12px] font-medium text-field-navy outline-none placeholder:text-faint-navy focus:border-publish-navy";
 
 function Label({ children, optional = false, bare = false }) {
   return (
-    <span className="block text-[14px] font-semibold text-deep-navy">
+    <span className="block text-[12px] leading-[15px] font-semibold text-deep-navy">
       {children}
       {bare ? null : optional ? (
-        <span className="font-normal text-faint-navy"> (optional)</span>
+        <span className="font-semibold text-deep-navy"> (optional)</span>
       ) : (
-        <span className="text-rose-strong"> *</span>
+        <span className="text-rose-strong">*</span>
       )}
     </span>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg
+      width="8"
+      height="5"
+      viewBox="0 0 8 5"
+      fill="none"
+      aria-hidden
+      className="pointer-events-none absolute top-1/2 right-[14px] -translate-y-1/2"
+    >
+      <path
+        d="M1 1l3 3 3-3"
+        stroke="#0A0847"
+        strokeOpacity="0.6"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
@@ -43,14 +65,11 @@ function Select({ value }) {
       <select
         defaultValue={value}
         aria-label={value}
-        className={`${FIELD} h-[44px] cursor-pointer appearance-none pr-9`}
+        className={`${FIELD} h-[40px] cursor-pointer appearance-none pr-[50px]`}
       >
         <option>{value}</option>
       </select>
-      <LuChevronDown
-        size={16}
-        className="pointer-events-none absolute top-1/2 right-[14px] -translate-y-1/2 text-field-navy/60"
-      />
+      <Chevron />
     </div>
   );
 }
@@ -65,14 +84,14 @@ function Segmented({ options, value, onChange, widthClass = "w-full", emphasized
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
-            className={`flex h-[42px] flex-1 cursor-pointer items-center justify-center border text-[14px] first:rounded-l-[6px] last:rounded-r-[6px] ${
+            className={`flex h-[40px] flex-1 cursor-pointer items-center justify-center border border-edge-input text-[12px] font-medium first:rounded-l-[8px] last:rounded-r-[8px] ${
               i > 0 ? "-ml-px" : ""
             } ${
               active
-                ? "relative z-10 border-action-navy bg-action-navy/10 font-medium text-action-navy"
+                ? "relative z-10 border-action-navy bg-action-navy/10 text-action-navy"
                 : emphasized.includes(opt)
-                  ? "bg-white font-medium text-action-navy"
-                  : "bg-white font-normal text-grey-navy"
+                  ? "bg-white text-action-navy"
+                  : "bg-white text-grey-navy"
             }`}
           >
             {opt}
@@ -85,7 +104,7 @@ function Segmented({ options, value, onChange, widthClass = "w-full", emphasized
 
 function CheckOption({ label, checked, onChange }) {
   return (
-    <button type="button" onClick={onChange} className="flex cursor-pointer items-center gap-[9px]">
+    <button type="button" onClick={onChange} className="flex cursor-pointer items-center gap-[10px]">
       <span
         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-[4px] border-[1.5px] border-strong-navy ${
           checked ? "bg-strong-navy text-white" : "bg-white text-transparent"
@@ -101,14 +120,11 @@ function CheckOption({ label, checked, onChange }) {
           />
         </svg>
       </span>
-      <span className="text-[14px] font-normal text-deep-navy">{label}</span>
+      <span className="text-[12px] leading-[15px] font-semibold text-deep-navy">{label}</span>
     </button>
   );
 }
 
-/* ==========================================================================
-   GOLD ORNAMENTS
-   ========================================================================== */
 function GoldCorner({ flip }) {
   return (
     <svg
@@ -146,52 +162,14 @@ function GoldCorner({ flip }) {
 
 function GoldDivider() {
   return (
-    <div className="flex w-full items-center justify-center gap-[10px]">
-      <span className="h-px w-16 bg-ornament" />
-      <span className="h-[9px] w-[9px] rotate-45 bg-ornament" />
-      <span className="h-px w-16 bg-ornament" />
+    <div className="flex w-full items-center justify-center">
+      <span className="h-[0.8px] w-[48px] bg-ornament" />
+      <span className="h-[10px] w-[10px] rotate-45 bg-ornament" />
+      <span className="h-[0.8px] w-[48px] bg-ornament" />
     </div>
   );
 }
 
-function BookWatercolor() {
-  return (
-    <svg
-      width="320"
-      height="200"
-      viewBox="0 0 300 190"
-      fill="none"
-      aria-hidden
-      className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2"
-    >
-      <ellipse cx="66" cy="70" rx="52" ry="22" fill="#CFE0F5" opacity="0.55" />
-      <ellipse cx="238" cy="58" rx="46" ry="18" fill="#CFE0F5" opacity="0.45" />
-      <ellipse cx="150" cy="150" rx="120" ry="34" fill="#B9D3F1" opacity="0.4" />
-
-      <path
-        d="M150 74c-18-16-42-24-72-24H44v92h34c30 0 54 8 72 24 18-16 42-24 72-24h34V50h-34c-30 0-54 8-72 24z"
-        fill="#8FB8E4"
-      />
-      <path
-        d="M150 74v92c-18-16-42-24-72-24H44V50h34c30 0 54 8 72 24z"
-        fill="#B7D2F0"
-      />
-      <path
-        d="M150 74v92c18-16 42-24 72-24h34V50h-34c-30 0-54 8-72 24z"
-        fill="#9CC3EC"
-      />
-      <path d="M150 74v92" stroke="#6E9BD1" strokeWidth="2.5" strokeLinecap="round" />
-      <g stroke="#7FA8D8" strokeWidth="2" strokeLinecap="round" opacity="0.65">
-        <path d="M62 82h58M62 98h58M62 114h44" />
-        <path d="M180 82h58M180 98h58M180 114h44" />
-      </g>
-    </svg>
-  );
-}
-
-/* ==========================================================================
-   REWARD TILE
-   ========================================================================== */
 const TILE_ICON = {
   None: LuCircleSlash,
   "Faith Points": LuStar,
@@ -211,18 +189,15 @@ function RewardTile({ label, active, onClick }) {
       }`}
     >
       <Icon
-        size={28}
+        size={27}
         strokeWidth={label === "None" ? 2.5 : 1.7}
         className={filled ? "fill-star text-star" : "fill-none text-brand-navy"}
       />
-      <span className="mt-[10px] text-[15px] font-semibold text-brand-navy">{label}</span>
+      <span className="mt-[8px] text-[16px] leading-[19px] font-semibold text-brand-navy">{label}</span>
     </button>
   );
 }
 
-/* ==========================================================================
-   OVERVIEW ROWS
-   ========================================================================== */
 const OVERVIEW = [
   { Glyph: LuClock, label: "Last Updated", value: "May 12, 2025, 10:30 AM" },
   { Glyph: LuEye, label: "Times Shown", value: "1,245" },
@@ -235,29 +210,27 @@ const OVERVIEW = [
 function OverviewRow({ item }) {
   const { Glyph, label, value, badge } = item;
   return (
-    <div className="flex items-center gap-[12px]">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lavender">
-        <Glyph size={16} strokeWidth={1.7} className="text-strong-navy" />
+    <div className="flex items-center gap-[10px]">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-strong-navy/10">
+        <Glyph size={17} strokeWidth={1.7} className="text-strong-navy" />
       </span>
       <div className="min-w-0">
-        <p className="text-[14px] font-semibold text-deep-navy">{label}</p>
+        <p className="text-[14px] leading-[14px] font-semibold text-deep-navy">{label}</p>
         {badge ? (
           <span
-            className={`mt-[3px] inline-block rounded-[4px] px-[8px] py-[1px] text-[11px] font-medium ${badge.className}`}
+            className={`mt-[5px] inline-block rounded-[4px] px-[8px] py-[1px] text-[12px] leading-[16px] font-semibold ${badge.className}`}
           >
             {badge.text}
           </span>
         ) : (
-          <p className="mt-[3px] text-[12px] text-grey-navy">{value}</p>
+          <p className="mt-[5px] text-[12px] leading-[18px] font-medium text-grey-navy">{value}</p>
         )}
       </div>
     </div>
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function EditMysteryCard() {
   const navigate = useNavigate();
 
@@ -309,9 +282,7 @@ export default function EditMysteryCard() {
 
   return (
     <div className="min-h-screen w-full bg-page-canvas p-6 font-inter">
-      {/* ============ OUTER CARD ============ */}
       <div className="rounded-[8px] border border-edge-input bg-white p-6">
-        {/* ---- back ---- */}
         <button
           type="button"
           onClick={() => navigate("/admin/mystery-card")}
@@ -321,35 +292,32 @@ export default function EditMysteryCard() {
           <LuArrowLeft size={18} strokeWidth={2} />
         </button>
 
-        {/* ---- header ---- */}
         <div>
           <h1 className="text-[24px] font-bold text-deep-navy">Edit Mystery Card</h1>
-          <p className="mt-2 text-[15px] text-grey-navy">
+          <p className="mt-2 text-[16px] leading-[19px] font-medium text-grey-navy">
             Update card details and manage its visibility.
           </p>
         </div>
 
-        {/* ---- two columns ---- */}
         <div className="mt-6 flex items-start gap-[18px]">
-          {/* ===== LEFT — Card Information ===== */}
-          <div className="flex min-h-[1406px] min-w-0 flex-[627_1_0px] flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white pt-[21px] pr-5 pb-[41px] pl-5">
-            <h2 className="text-[16px] font-semibold text-deep-navy">Card Information</h2>
+          <div className="flex min-h-[1406px] min-w-0 flex-[627_1_0px] flex-col gap-[24px] rounded-[8px] border border-edge-input bg-white pt-[21px] pr-5 pb-[41px] pl-5">
+            <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Card Information</h2>
 
             <div>
               <Label>Card Title</Label>
-              <input type="text" defaultValue="Did You Know?" className={`${FIELD} mt-[6px] h-[44px]`} />
+              <input type="text" defaultValue="Did You Know?" className={`${FIELD} mt-[8px] h-[40px]`} />
             </div>
 
             <div>
               <Label>Category</Label>
-              <div className="mt-[6px]">
+              <div className="mt-[8px]">
                 <Select value="Bible Hero" />
               </div>
             </div>
 
             <div>
               <Label>Testament</Label>
-              <div className="mt-[6px]">
+              <div className="mt-[8px]">
                 <Segmented
                   options={["Old Testament", "New Testament", "General"]}
                   value={testament}
@@ -360,7 +328,7 @@ export default function EditMysteryCard() {
 
             <div>
               <Label>Eligible Activities</Label>
-              <div className="mt-[10px] flex flex-wrap gap-x-[18px] gap-y-[14px]">
+              <div className="mt-[10px] flex flex-wrap gap-x-[24px] gap-y-[14px]">
                 {Object.keys(activities).map((k) => (
                   <CheckOption
                     key={k}
@@ -372,16 +340,16 @@ export default function EditMysteryCard() {
               </div>
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-[24px]">
               <div className="flex-1">
                 <Label optional>Book</Label>
-                <div className="mt-[6px]">
+                <div className="mt-[8px]">
                   <Select value="1 Samuel" />
                 </div>
               </div>
               <div className="flex-1">
                 <Label optional>Chapter</Label>
-                <input type="text" defaultValue="17" className={`${FIELD} mt-[6px] h-[44px]`} />
+                <input type="text" defaultValue="17" className={`${FIELD} mt-[8px] h-[40px]`} />
               </div>
             </div>
 
@@ -389,14 +357,14 @@ export default function EditMysteryCard() {
               <Label>Card Content</Label>
               <textarea
                 defaultValue="David was likely a teenager when he fought Goliath."
-                className={`${FIELD} mt-[6px] h-[66px] resize-none py-[10px]`}
+                className={`${FIELD} mt-[8px] h-[63px] resize-none py-[10px]`}
               />
             </div>
 
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-[24px]">
               <div className="flex-1">
                 <Label>Bible Verse Reference</Label>
-                <div className="mt-[6px]">
+                <div className="mt-[8px]">
                   <Select value="1 Samuel 17:45" />
                 </div>
               </div>
@@ -404,7 +372,7 @@ export default function EditMysteryCard() {
                 <Label>Bible Verse Text</Label>
                 <textarea
                   defaultValue="You come to me with a sword and a spear and a javelin, but I come to you in the name of the Lord Almighty."
-                  className={`${FIELD} mt-[6px] h-[112px] resize-none py-[10px]`}
+                  className={`${FIELD} mt-[8px] h-[63px] resize-none py-[10px]`}
                 />
               </div>
             </div>
@@ -413,7 +381,7 @@ export default function EditMysteryCard() {
               <Label>Encouragement Message</Label>
               <textarea
                 defaultValue="Draw closer to God and discover the hidden treasures in His Word."
-                className={`${FIELD} mt-[6px] h-[66px] resize-none py-[10px]`}
+                className={`${FIELD} mt-[8px] h-[63px] resize-none py-[10px]`}
               />
             </div>
 
@@ -423,7 +391,7 @@ export default function EditMysteryCard() {
               <Label optional>Encouragement Message</Label>
               <textarea
                 placeholder="Write an encouraging message..."
-                className={`${FIELD} mt-[6px] h-[66px] resize-none py-[10px]`}
+                className={`${FIELD} mt-[8px] h-[63px] resize-none py-[10px]`}
               />
             </div>
 
@@ -433,14 +401,14 @@ export default function EditMysteryCard() {
               ))}
             </div>
 
-            <div className="flex items-start gap-7">
-              <div className="w-[45%]">
-                <Label bare>Reward Amount</Label>
-                <input type="text" defaultValue="100" className={`${FIELD} mt-[6px] h-[44px]`} />
-              </div>
+            <div className="flex items-start gap-[16px]">
               <div className="flex-1">
+                <Label bare>Reward Amount</Label>
+                <input type="text" defaultValue="100" className={`${FIELD} mt-[8px] h-[40px]`} />
+              </div>
+              <div className="w-[388px] shrink-0">
                 <Label bare>Rarity</Label>
-                <div className="mt-[6px]">
+                <div className="mt-[8px]">
                   <Segmented
                     options={["Common", "Uncommon", "Rare", "Legendary"]}
                     value={rarity}
@@ -453,7 +421,7 @@ export default function EditMysteryCard() {
 
             <div>
               <Label bare>Card Image</Label>
-              <div className="mt-[6px] flex h-[98px] w-full items-center rounded-[6px] border border-edge-input bg-lavender p-3">
+              <div className="mt-[8px] flex h-[98px] w-full items-center rounded-[7.47px] border border-edge-input bg-lavender p-3">
                 {cardImage ? (
                   <img
                     src={cardImage}
@@ -468,7 +436,7 @@ export default function EditMysteryCard() {
                   <button
                     type="button"
                     onClick={() => cardFileRef.current?.click()}
-                    className="flex h-[36px] w-[168px] cursor-pointer items-center justify-center rounded-[6px] border border-action-navy bg-white text-[13px] font-medium text-action-navy"
+                    className="flex h-[35px] w-[161px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-action-navy bg-[#FEFEFE] px-[12px] text-[12px] font-semibold text-action-navy"
                   >
                     Change Image
                   </button>
@@ -503,17 +471,14 @@ export default function EditMysteryCard() {
                   options={["Active", "Draft", "Unpublished"]}
                   value={status}
                   onChange={setStatus}
-                  widthClass="w-[98%]"
                 />
               </div>
             </div>
           </div>
 
-          {/* ===== RIGHT ===== */}
           <div className="flex min-w-0 flex-[348_1_0px] flex-col gap-[18px]">
-            {/* ---- Card A : Live Preview ---- */}
-            <div className="h-[858px] rounded-[8px] border border-edge-input bg-white p-[14px]">
-              <h2 className="text-[16px] font-semibold text-deep-navy">Live Preview</h2>
+            <div className="h-[856px] rounded-[8px] border border-edge-input bg-white p-[14px]">
+              <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Live Preview</h2>
 
               <div
                 className="relative mt-[12px] h-[804px] w-full overflow-hidden rounded-[12px] border border-lavender-line bg-lavender-deep bg-cover bg-center bg-no-repeat"
@@ -529,11 +494,16 @@ export default function EditMysteryCard() {
                       strokeWidth={2.4}
                       className="absolute -top-[18px] left-1/2 -translate-x-1/2 text-ornament"
                     />
-                    <LuBookOpen size={56} strokeWidth={1.5} className="text-deep-navy" />
+                    <img
+                      src={bookIcon}
+                      alt=""
+                      aria-hidden
+                      className="h-[56px] w-[60px] object-contain"
+                    />
                   </div>
 
-                  <p className="text-[20px] font-bold text-deep-navy">Did You Know?</p>
-                  <p className="mt-[10px] text-[13px] leading-[1.45] text-grey-navy">
+                  <p className="text-[22px] leading-[27px] font-semibold text-deep-navy">Did You Know?</p>
+                  <p className="mt-[10px] max-w-[189px] text-[14px] leading-[17px] font-semibold text-grey-navy">
                     David was likely a teenager when he fought Goliath.
                   </p>
 
@@ -550,15 +520,20 @@ export default function EditMysteryCard() {
                   </div>
                 </div>
 
-                <BookWatercolor />
+                <img
+                  src={liveBook}
+                  alt=""
+                  aria-hidden
+                  draggable={false}
+                  className="pointer-events-none absolute bottom-[8%] left-1/2 w-[80%] -translate-x-1/2 select-none"
+                />
               </div>
             </div>
 
-            {/* ---- Card B : Card Overview ---- */}
             <div className="flex h-[526px] flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white pt-[22px] pr-[145px] pb-[119px] pl-[19px]">
-              <h2 className="text-[16px] font-semibold text-deep-navy">Card Overview</h2>
+              <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Card Overview</h2>
 
-              <div className="mt-[6px] flex flex-col gap-[26px]">
+              <div className="mt-[6px] flex flex-col gap-[24px]">
                 {OVERVIEW.map((item) => (
                   <OverviewRow key={item.label} item={item} />
                 ))}
@@ -567,7 +542,6 @@ export default function EditMysteryCard() {
           </div>
         </div>
 
-        {/* ---- footer actions ---- */}
         <div className="mt-6 flex h-[44px] items-center justify-between">
           <button
             type="button"
@@ -581,7 +555,14 @@ export default function EditMysteryCard() {
               type="button"
               className="flex h-[44px] cursor-pointer items-center gap-[9px] rounded-[6px] border border-edge-input bg-white px-5 text-[14px] font-semibold text-strong-navy"
             >
-              <LuSave size={17} strokeWidth={1.8} /> Save Changes
+              <img
+                src={floppyIcon}
+                alt=""
+                aria-hidden
+                draggable={false}
+                className="h-[17px] w-[17px] shrink-0 object-contain"
+              />{" "}
+              Save Changes
             </button>
             <button
               type="button"

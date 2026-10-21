@@ -4,6 +4,7 @@ import {
   LuCalendar,
   LuChevronLeft,
   LuChevronRight,
+  LuCircleAlert,
   LuCircleCheck,
   LuCoins,
   LuEye,
@@ -17,31 +18,55 @@ import {
   LuUpload,
   LuVolume2,
 } from "react-icons/lu";
-import memoryVerseImg from "../../../assets/Memory Verse img.png";
+import memoryVerseImg from "../../../assets/Memory Verse img.webp";
 
-const skyImage = null;
 
-/* ==========================================================================
-   TOKENS — taken verbatim from the design spec
-   ========================================================================== */
-const PAGE_BG = "#F8F8FF";
-const GREEN_BTN = "#3DBE4A";
 
-/* every card on the page */
-const CARD = "rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white";
+const PAGE_BG = "bg-[#F8F8FF]";
+const CARD = "rounded-[8px] border-[0.75px] border-[#E2DFFC] bg-white";
+const CARD_PAD = "p-[18px] pl-[20px] pr-[21px]";
 
-/* input / select / textarea */
+
+const T_TITLE = "text-[24px] font-bold leading-[30px] text-[#1E1B4B]";
+const T_SECTION = "text-[14px] font-semibold leading-[17px] text-[#1E1B4B]";
+const T_LABEL = "text-[12px] font-semibold leading-[15px] text-[#1E1B4B]";
+const T_INPUT = "text-[13px] text-[#1E1B4B]";
+const T_HELPER = "text-[11px] italic text-[#6B7280]";
+const T_MICRO = "text-[10px] text-[#6B7280]";
+
+
 const FIELD =
   "w-full rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-3 text-[13px] text-[#1E1B4B] outline-none";
 const INPUT_H = "h-[38px]";
-const LABEL = "text-[12px] font-semibold text-[#1E1B4B]";
-const COUNTER = "text-right text-[11px] italic text-[#6B7280]";
+const BTN_HEADER =
+  "flex h-[40px] cursor-pointer items-center gap-2 rounded-[6px] px-4 text-[13px] font-semibold transition-colors";
+const BTN_OUTLINE =
+  "flex h-[34px] w-full cursor-pointer items-center justify-center gap-2 rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white text-[12px] font-semibold text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]";
+const BTN_IMG_ACTION =
+  "flex h-[32px] w-full cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-[6px] text-[11px] font-semibold whitespace-nowrap text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]";
+
+const BUILD_FIELD =
+  "w-full rounded-[7.5px] border border-[#E2DFFC] bg-white py-[10px] pr-[50px] pl-3 text-[10px] font-medium text-[#0A0847]/80 outline-none";
+const BUILD_LABEL = "text-[12px] font-semibold leading-[15px] text-[#1E1B4B]";
+
+
+const ICON = { xs: 12, sm: 14, md: 16, lg: 20 };
+const ICON_STROKE = 1.5;
+
+
+const NAVY = "#00007A";
+const NAVY_ACCENT = "#001984";
+const NAVY_DEEP = "#0B0B6B";
+const GREEN = "#3DBE4A";
+const GREEN_TEXT = "#28923A";
+const AMBER = "#F5A623";
+
 
 function Field({ label, optional, required, children, className = "" }) {
   return (
-    <div className={className}>
+    <div className={`flex flex-col ${className}`}>
       {label && (
-        <p className={`${LABEL} mb-[6px]`}>
+        <p className={`mb-[6px] ${T_LABEL}`}>
           {label}
           {required && <span className="text-[#E53935]"> *</span>}
           {optional && <span className="font-normal text-[#6B7280]"> (Optional)</span>}
@@ -52,8 +77,7 @@ function Field({ label, optional, required, children, className = "" }) {
   );
 }
 
-/* text input */
-function TextInput({ value, readOnly, className = "", ...props }) {
+function TextInput({ value, readOnly = true, className = "", ...props }) {
   return (
     <input
       type="text"
@@ -65,10 +89,12 @@ function TextInput({ value, readOnly, className = "", ...props }) {
   );
 }
 
-/* select */
 function Select({ value, options, className = "" }) {
   return (
-    <select className={`${FIELD} ${INPUT_H} cursor-pointer ${className}`} defaultValue={value}>
+    <select
+      className={`${FIELD} ${INPUT_H} cursor-pointer ${className}`}
+      defaultValue={value}
+    >
       {options.map((o) => (
         <option key={o} value={o}>
           {o}
@@ -78,8 +104,7 @@ function Select({ value, options, className = "" }) {
   );
 }
 
-/* textarea with the italic counter sitting directly beneath, right aligned */
-function TextArea({ value, max, rows = 2, small, count, className = "" }) {
+function TextArea({ value, max, rows = 2, count, small = false }) {
   const len = count ?? value.length;
   return (
     <div>
@@ -87,25 +112,20 @@ function TextArea({ value, max, rows = 2, small, count, className = "" }) {
         value={value}
         readOnly
         rows={rows}
-        className={`${FIELD} resize-none py-2 leading-[1.45] ${small ? "text-[11px]" : "text-[13px]"} ${className}`}
+        className={`${FIELD} resize-none py-2 leading-[1.45] ${small ? "text-[11px]" : "text-[13px]"}`}
       />
-      <p className={`${COUNTER} mt-1`}>
+      <p className="mt-1 text-right text-[11px] italic text-[#6B7280]">
         {len}/{max}
       </p>
     </div>
   );
 }
 
-/* single-line field with the counter inside the right edge of the field */
+
 function InlineCounterInput({ value, max, count }) {
   return (
     <div className="relative">
-      <input
-        type="text"
-        value={value}
-        readOnly
-        className={`${FIELD} ${INPUT_H} pr-[64px]`}
-      />
+      <input type="text" value={value} readOnly className={`${FIELD} ${INPUT_H} pr-[64px]`} />
       <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[11px] italic text-[#6B7280]">
         {count ?? value.length}/{max}
       </span>
@@ -113,42 +133,65 @@ function InlineCounterInput({ value, max, count }) {
   );
 }
 
-const OUTLINE_BTN =
-  "flex h-[34px] w-full cursor-pointer items-center justify-center gap-2 rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white text-[11px] font-semibold text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]";
+function BuildCounter({ count, max }) {
+  return (
+    <p className="mt-0.5 text-right text-[12px] font-semibold italic leading-[14px] text-[#0A0847]/60">
+      {count}/{max}
+    </p>
+  );
+}
 
-const IMG_ACTION_BTN =
-  "flex h-[32px] w-full cursor-pointer items-center justify-center gap-[5px] rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-[6px] text-[10px] font-semibold whitespace-nowrap text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]";
+function BuildTextArea({ value, max, count, className = "h-[45px]" }) {
+  return (
+    <div>
+      <textarea
+        value={value}
+        readOnly
+        className={`${BUILD_FIELD} block resize-none leading-[12.5px] ${className}`}
+      />
+      <BuildCounter count={count ?? value.length} max={max} />
+    </div>
+  );
+}
 
-/* ==========================================================================
-   AUDIO
-   ========================================================================== */
-function PlayButton({ size = 34 }) {
+function BuildInput({ value, max, count }) {
+  return (
+    <div>
+      <input type="text" value={value} readOnly className={`${BUILD_FIELD} block h-[30px]`} />
+      <BuildCounter count={count ?? value.length} max={max} />
+    </div>
+  );
+}
+
+
+function PlayButton({ size = 34, color = NAVY }) {
   return (
     <span
-      className="flex shrink-0 items-center justify-center rounded-full bg-[#00007A] text-white"
-      style={{ width: size, height: size }}
+      className="flex shrink-0 items-center justify-center rounded-full text-white"
+      style={{ width: size, height: size, backgroundColor: color }}
     >
-      <LuPlay size={size * 0.36} className="ml-[2px]" />
+      <LuPlay size={size * 0.4} fill="currentColor" strokeWidth={0} className="ml-[2px]" />
     </span>
   );
 }
 
-/* navy-filled progress bar with a white thumb ringed in navy */
+
 function AudioSlider({ fill = 70 }) {
   return (
-    <div className="relative h-[4px] flex-1 rounded-full bg-[#E2DFFC]">
-      <div className="h-full rounded-full bg-[#041581]" style={{ width: `${fill}%` }} />
+    <div className="relative h-[4px] flex-1 rounded-full bg-[#D3D5E8]">
+      <div
+        className="h-full rounded-full bg-[#001984]"
+        style={{ width: `${fill}%` }}
+      />
       <span
-        className="absolute top-1/2 h-[10px] w-[10px] -translate-y-1/2 rounded-full border border-[#041581] bg-white"
-        style={{ left: `calc(${fill}% - 5px)` }}
+        className="absolute top-1/2 h-[12px] w-[12px] -translate-y-1/2 rounded-full border-[1.5px] border-[#001984] bg-white"
+        style={{ left: `calc(${fill}% - 6px)` }}
       />
     </div>
   );
 }
 
-/* ==========================================================================
-   STEP 1 — ANSWER CHOICES (shared by the form and the phone preview)
-   ========================================================================== */
+
 const ANSWERS = [
   { key: "A", text: "Be strong and courageous.", correct: true },
   { key: "B", text: "Be kind and generous.", correct: false },
@@ -156,32 +199,34 @@ const ANSWERS = [
   { key: "D", text: "Be patient and gentle.", correct: false },
 ];
 
-function AnswerLetter({ letter, correct, size = 18, fontSize = 10 }) {
+function AnswerLetter({ letter, correct }) {
   return (
     <span
-      className={`flex shrink-0 items-center justify-center rounded-full font-bold ${
-        correct ? "bg-[#2E9E3E] text-white" : "border-[0.75px] border-[#041581] text-[#041581]"
+      className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${
+        correct
+          ? "bg-[#3DBE4A] text-white"
+          : "border-[1.5px] border-[#0A0847]/80 text-[#0A0847]/80"
       }`}
-      style={{ width: size, height: size, fontSize }}
     >
       {letter}
     </span>
   );
 }
 
-function ChoiceRows({ height = 34, fontSize = 11, gap = 6 }) {
+function ChoiceRows() {
   return (
-    <div className="flex flex-col" style={{ gap }}>
+    <div className="flex flex-col gap-1">
       {ANSWERS.map((a) => (
         <div
           key={a.key}
-          className={`flex items-center rounded-[6px] border-[0.75px] px-2 ${
-            a.correct ? "border-[#CDEBCD] bg-[#F0FAF0]" : "border-[#E2DFFC] bg-white"
+          className={`flex h-9 items-center gap-[10px] rounded-[6px] border px-[9px] ${
+            a.correct
+              ? "border-[#CDEBCD] bg-gradient-to-r from-[#E3F6E1] to-white"
+              : "border-[#E2DFFC] bg-white"
           }`}
-          style={{ height, gap: 8 }}
         >
-          <AnswerLetter letter={a.key} correct={a.correct} size={18} fontSize={10} />
-          <span className="truncate text-[#1E1B4B]" style={{ fontSize }}>
+          <AnswerLetter letter={a.key} correct={a.correct} />
+          <span className="truncate text-[12px] font-semibold text-[#0A0847]/80">
             {a.text}
           </span>
         </div>
@@ -190,9 +235,7 @@ function ChoiceRows({ height = 34, fontSize = 11, gap = 6 }) {
   );
 }
 
-/* ==========================================================================
-   CARD 3 — STEP LIST
-   ========================================================================== */
+
 const STEP_LIST = [
   { n: 2, name: "Fill in the Blanks" },
   { n: 3, name: "Tap in Order" },
@@ -202,40 +245,37 @@ const STEP_LIST = [
 
 function StepListCard() {
   return (
-    <div className={`${CARD} pt-[17px] pr-[18px] pb-[17px] pl-[15px]`}>
-      <div className="flex flex-col" style={{ gap: 10 }}>
+    <div className={`${CARD} px-4 py-[17px] pr-[22px]`}>
+      <div className="flex flex-col gap-[10px]">
         {STEP_LIST.map((s) => (
           <div
             key={s.n}
-            className={`flex items-center justify-between rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-[#EEF0F7] px-3`}
-            style={{ height: 42 }}
+            className="flex h-[38px] items-center rounded-[6px] border border-[#E2DFFC] bg-[#F2F5FA] px-3"
           >
-            <div className="flex min-w-0 items-center" style={{ gap: 10 }}>
-              <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[0.75px] border-[#041581] text-[11px] font-bold text-[#041581]">
+            <div className="flex w-[209px] shrink-0 items-center gap-[10px]">
+              <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#0A0847]/80 text-[12px] font-semibold text-[#0A0847]/80">
                 {s.n}
               </span>
-              <span className="truncate text-[14px] font-semibold text-[#1E1B4B]">{s.name}</span>
-            </div>
-
-            <div className="flex shrink-0 items-center" style={{ gap: 14 }}>
-              <span className="flex items-center" style={{ gap: 5 }}>
-                <LuCircleCheck size={15} className="text-[#2E9E3E]" />
-                <span className="text-[11px] font-semibold text-[#2E9E3E]">Confirmed</span>
-              </span>
-
-              <span className="flex items-center" style={{ gap: 3 }}>
-                <span className="text-[12px] font-semibold text-[#1E1B4B]">Edit</span>
-                <LuChevronRight size={12} className="text-[#1E1B4B]" />
+              <span className="truncate text-[14px] font-semibold text-[#0A0847]/80">
+                {s.name}
               </span>
             </div>
+
+            <span className="flex shrink-0 items-center gap-[5px]">
+              <LuCircleCheck size={ICON.md} strokeWidth={ICON_STROKE} className="text-[#28923A]" />
+              <span className="text-[12px] font-semibold text-[#28923A]">Confirmed</span>
+            </span>
+
+            <span className="ml-auto flex shrink-0 items-center gap-[3px]">
+              <span className="text-[14px] font-semibold text-[#0A0847]/80">Edit</span>
+              <LuChevronRight size={ICON.sm} strokeWidth={ICON_STROKE} className="text-[#0A0847]/80" />
+            </span>
           </div>
         ))}
 
-        <div className="flex items-center" style={{ gap: 8 }}>
-          <span className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-[0.75px] border-[#041581] text-[11px] font-bold text-[#041581]">
-            !
-          </span>
-          <span className="text-[14px] font-semibold text-[#6B668F]">
+        <div className="flex items-center gap-2">
+          <LuCircleAlert size={ICON.lg} strokeWidth={ICON_STROKE} className="shrink-0 text-[#001984]/80" />
+          <span className="text-[14px] font-semibold text-[#001984]/80">
             Each step can be previewed before publishing.
           </span>
         </div>
@@ -244,55 +284,46 @@ function StepListCard() {
   );
 }
 
-/* ==========================================================================
-   CARD 7 — PHONE MOCK
-   ========================================================================== */
+
 function PhonePreview() {
   return (
-    <div className={`${CARD} flex flex-col p-[14px]`} style={{ gap: 10 }}>
-      <p className="text-[16px] font-semibold text-[#2A2750]">Mobile Preview</p>
+    <div className={`${CARD} flex flex-col gap-[10px] p-[14px]`}>
+      <p className={T_SECTION}>Mobile Preview</p>
 
       <div className="relative w-full overflow-hidden rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white">
-        {/* sky hero */}
-        <div
-          className="relative h-[100px] w-full rounded-t-[6px] bg-[#CFE4F5] bg-cover bg-center bg-no-repeat"
-          style={skyImage ? { backgroundImage: `url(${skyImage})` } : undefined}
-        >
+        <div className="relative h-[100px] w-full rounded-t-[6px] bg-[#CFE4F5]">
           <div className="absolute top-[10px] left-[10px] flex h-[28px] w-[28px] items-center justify-center rounded-full bg-white">
-            <LuChevronLeft size={16} className="text-[#2A2750]" />
+            <LuChevronLeft size={ICON.sm} strokeWidth={ICON_STROKE} className="text-[#1E1B4B]" />
           </div>
-          <div className="absolute top-[13px] left-[48px] flex h-[22px] items-center rounded-full bg-white px-[14px] text-[11px] font-medium text-[#2A2750]">
-            Level 2
+          <div className="absolute top-[13px] left-[48px] flex h-[22px] items-center rounded-full bg-white px-[14px] text-[11px] font-medium text-[#1E1B4B]">
+            Level 3
           </div>
-          <div
-            className="absolute top-[13px] right-[10px] flex h-[22px] items-center rounded-full bg-white"
-            style={{ gap: 6, paddingLeft: 14, paddingRight: 12 }}
-          >
-            <LuCoins size={12} className="text-[#F5A623]" />
-            <span className="text-[11px] font-semibold text-[#2A2750]">250</span>
+          <div className="absolute top-[13px] right-[10px] flex h-[22px] items-center gap-[6px] rounded-full bg-white pr-3 pl-[14px]">
+            <LuCoins size={ICON.xs} strokeWidth={ICON_STROKE} className="text-[#F5A623]" />
+            <span className="text-[11px] font-semibold text-[#1E1B4B]">250</span>
           </div>
         </div>
 
-        {/* white sheet — overlaps bottom of sky by 10px */}
         <div className="relative -mt-[10px] rounded-t-[12px] bg-white pt-[46px]">
-          {/* 1/5 step circle — 28px over the sky image */}
           <div className="absolute top-[-18px] left-1/2 -translate-x-1/2">
-            <div className="flex h-[56px] w-[56px] flex-col items-center justify-center rounded-full border-[3px] border-[#0B0B6B] bg-white">
-              <span className="text-[15px] font-bold leading-none text-[#0B0B6B]">1/5</span>
-              <span className="mt-[3px] text-[7px] font-normal leading-none text-[#6B7280]">
-                Step
+            <div
+              className="flex h-[56px] w-[56px] flex-col items-center justify-center rounded-full border-[3px] bg-white"
+              style={{ borderColor: NAVY_DEEP }}
+            >
+              <span className="text-[15px] leading-none font-bold" style={{ color: NAVY_DEEP }}>
+                1/5
               </span>
+              <span className="mt-[3px] text-[7px] leading-none text-[#6B7280]">Step</span>
             </div>
           </div>
 
-          {/* navy card */}
           <div
-            className="mx-[8px] flex flex-col rounded-[8px] bg-[#00007A] p-3"
-            style={{ gap: 10 }}
+            className="mx-[8px] flex flex-col gap-[10px] rounded-[8px] p-3"
+            style={{ backgroundColor: NAVY }}
           >
-            <div className="flex items-center" style={{ gap: 8 }}>
+            <div className="flex items-center gap-2">
               <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full bg-white">
-                <LuMusic size={11} className="text-[#00007A]" />
+                <LuMusic size={11} strokeWidth={ICON_STROKE} style={{ color: NAVY }} />
               </span>
               <span className="text-[13px] font-semibold text-white">Listen &amp; Choose</span>
             </div>
@@ -303,35 +334,32 @@ function PhonePreview() {
 
             <div className="flex justify-center">
               <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full border-[2px] border-white">
-                <LuVolume2 size={20} strokeWidth={2} className="text-white" />
+                <LuVolume2 size={ICON.lg} strokeWidth={ICON_STROKE} className="text-white" />
               </span>
             </div>
 
-            <div className="flex items-center" style={{ gap: 8 }}>
-              <div
-                className="h-[4px] overflow-hidden rounded-[2px] bg-white/30"
-                style={{ width: "65%" }}
-              >
+            <div className="flex items-center gap-2">
+              <div className="h-[4px] w-[65%] overflow-hidden rounded-[2px] bg-white/30">
                 <div className="h-full w-[30%] rounded-[2px] bg-white" />
               </div>
               <span className="shrink-0 text-[10px] font-medium text-white">00:00 / 00:18</span>
             </div>
 
-            <div className="flex flex-col" style={{ gap: 8 }}>
+            <div className="flex flex-col gap-2">
               {ANSWERS.map((a) => (
                 <div
                   key={a.key}
-                  className={`flex items-center rounded-[6px] px-2 ${
+                  className={`flex h-8 items-center gap-2 rounded-[6px] px-2 ${
                     a.correct ? "bg-[#F0FAF0]" : "bg-white"
                   }`}
-                  style={{ height: 32, gap: 8 }}
                 >
                   <span
                     className={`flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
                       a.correct
                         ? "bg-[#2EAF4B] text-white"
-                        : "border-[1.5px] border-[#0B0B6B] bg-transparent text-[#0B0B6B]"
+                        : "border-[1.5px] bg-transparent"
                     }`}
+                    style={a.correct ? undefined : { borderColor: NAVY_DEEP, color: NAVY_DEEP }}
                   >
                     {a.key}
                   </span>
@@ -341,41 +369,37 @@ function PhonePreview() {
             </div>
           </div>
 
-          {/* next step button — in flow, no overlap */}
           <div
-            className="mx-[8px] mt-[8px] flex h-[42px] cursor-pointer items-center justify-center rounded-[6px] text-[14px] font-semibold text-white"
-            style={{ gap: 6, backgroundColor: GREEN_BTN }}
+            className="mx-[8px] mt-[8px] flex h-[42px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] text-[14px] font-semibold text-white"
+            style={{ backgroundColor: GREEN }}
           >
             Next Step
-            <LuArrowRight size={16} strokeWidth={1.5} className="text-white" />
+            <LuArrowRight size={ICON.md} strokeWidth={ICON_STROKE} />
           </div>
 
-          {/* footer row */}
-          <div className="mt-[12px] px-[8px] pb-[12px]">
+          <div className="mt-3 px-2 pb-3">
             <div className="flex items-center justify-between">
-              <span className="flex items-center text-[#1E1B4B]" style={{ gap: 4 }}>
-                <LuStar size={12} className="text-[#F5A623]" fill="#F5A623" />
+              <span className="flex items-center gap-1 text-[#1E1B4B]">
+                <LuStar size={ICON.sm - 2} strokeWidth={ICON_STROKE} style={{ color: AMBER }} fill={AMBER} />
                 <span className="text-[10px]">50 pts</span>
               </span>
               <span className="text-[10px] text-[#6B7280]">1 of 5 Steps</span>
             </div>
             <div className="mt-[6px] h-[4px] w-full overflow-hidden rounded-[2px] bg-[#E6E8F7]">
-              <div className="h-full w-[20%] rounded-[2px] bg-[#0B0B6B]" />
+              <div className="h-full w-[20%] rounded-[2px]" style={{ backgroundColor: NAVY_DEEP }} />
             </div>
           </div>
         </div>
       </div>
 
-      <p className="text-center text-[10px] leading-[1.4] italic text-[#8B8FA8]">
+      <p className="w-full px-0 text-center text-[11px] leading-[1.4] italic text-[#8B8FA8] [text-wrap:balance]">
         This is a simplified preview of Step 1: Listen / Choose
       </p>
     </div>
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 const STEP_TABS = [
   "1 Listen / Choose",
   "2 Fill in the Blanks",
@@ -384,90 +408,61 @@ const STEP_TABS = [
   "5 Tap in Order",
 ];
 
+const BREADCRUMB = ["Old Testament", "Joshua", "Chapter 1", "Level 3"];
+
 export default function AddEditMemoryVerse() {
   const [activeStep, setActiveStep] = useState(STEP_TABS[0]);
-  const [showLevelToggle, setShowLevelToggle] = useState(true);
+  const [showOnLevelMap, setShowOnLevelMap] = useState(true);
 
   return (
-    <div
-      className="min-h-screen w-full font-[Inter] text-[#1E1B4B]"
-      style={{ backgroundColor: PAGE_BG }}
-    >
-      {/* ---------------- page header ---------------- */}
-      <div className="mx-auto w-full max-w-[1090px] px-[18px] pt-[18px]">
-        {/* breadcrumb row + back button */}
-        <div className="flex items-center" style={{ gap: 10 }}>
+    <div className={`min-h-screen w-full font-[Inter] text-[#1E1B4B] ${PAGE_BG}`}>
+      <div className="mx-auto w-full max-w-[1090px] px-4 pt-[18px] pb-[18px] md:px-[18px]">
+        <div className="flex items-center gap-[10px]">
           <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full border-[0.75px] border-[#E2DFFC] bg-white">
-            <LuChevronLeft size={15} className="text-[#1E1B4B]" />
+            <LuChevronLeft size={ICON.md - 1} strokeWidth={ICON_STROKE} className="text-[#1E1B4B]" />
           </span>
-          <nav className="flex items-center text-[13px] text-[#6B668F]" style={{ gap: 6 }}>
-            {["Old Testament", "Joshua", "Chapter 1", "Level 3"].map((c, i) => (
-              <span key={c} className="flex items-center" style={{ gap: 6 }}>
+          <nav className="flex flex-wrap items-center gap-[6px] text-[13px] text-[#6B668F]">
+            {BREADCRUMB.map((c, i) => (
+              <span key={c} className="flex items-center gap-[6px]">
                 {i > 0 && <span className="text-[#6B668F66]">&gt;</span>}
-                <span className={i === 3 ? "font-semibold text-[#1E1B4B]" : undefined}>{c}</span>
+                <span className={i === BREADCRUMB.length - 1 ? "font-semibold text-[#1E1B4B]" : undefined}>
+                  {c}
+                </span>
               </span>
             ))}
           </nav>
         </div>
 
-        {/* title row */}
-        <div
-          className="mt-[14px] flex flex-wrap items-center justify-between"
-          style={{ gap: 10 }}
-        >
-          <h1 className="text-[24px] font-bold text-[#1E1B4B]">Add / Edit Memory Verse</h1>
+        <div className="mt-[14px] flex flex-wrap items-center justify-between gap-[10px]">
+          <h1 className={T_TITLE}>Add / Edit Memory Verse</h1>
 
-          <div className="flex items-center" style={{ gap: 10 }}>
-            <button
-              type="button"
-              className="flex h-[40px] cursor-pointer items-center gap-2 rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-4 text-[13px] font-semibold text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]"
-            >
-              <LuSave size={14} /> Save draft
+          <div className="flex flex-wrap items-center gap-[10px]">
+            <button type="button" className={`${BTN_HEADER} border-[0.75px] border-[#E2DFFC] bg-white text-[#1E1B4B] hover:bg-[#F7F7FC]`}>
+              <LuSave size={ICON.sm} strokeWidth={ICON_STROKE} /> Save draft
             </button>
-            <button
-              type="button"
-              className="flex h-[40px] cursor-pointer items-center gap-2 rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-4 text-[13px] font-semibold text-[#1E1B4B] transition-colors hover:bg-[#F7F7FC]"
-            >
-              <LuEye size={14} /> Preview
+            <button type="button" className={`${BTN_HEADER} border-[0.75px] border-[#E2DFFC] bg-white text-[#1E1B4B] hover:bg-[#F7F7FC]`}>
+              <LuEye size={ICON.sm} strokeWidth={ICON_STROKE} /> Preview
             </button>
-            <button
-              type="button"
-              className="flex h-[40px] cursor-pointer items-center gap-2 rounded-[6px] bg-[#00007A] px-4 text-[13px] font-semibold text-white transition-opacity hover:opacity-90"
-            >
-              <LuSend size={14} /> Publish
+            <button type="button" className={`${BTN_HEADER} bg-[#00007A] text-white transition-opacity hover:opacity-90`}>
+              <LuSend size={ICON.sm} strokeWidth={ICON_STROKE} /> Publish
             </button>
           </div>
         </div>
 
-        {/* ---------------- 3 column layout ---------------- */}
-        <div
-          className="mt-[16px] grid items-start pb-[18px]"
-          style={{
-            gridTemplateColumns: "488px 285px 249px",
-            gap: 16,
-          }}
-        >
-          {/* ============ LEFT COLUMN ============ */}
-          <div className="flex flex-col" style={{ gap: 16 }}>
-            {/* ---- Card 1 : Verse Details (height 621) ---- */}
-            <div
-              className={`${CARD} pt-[18px] pr-[21px] pb-[18px] pl-[20px]`}
-              style={{ height: 621, display: "flex", flexDirection: "column", gap: 10 }}
-            >
-              <p className="text-[14px] font-semibold text-[#1E1B4B]">Verse Details</p>
+        <div className="mt-4 grid grid-cols-1 items-start gap-4 xl:grid-cols-[488px_285px_249px]">
+          <div className="flex flex-col gap-4">
+            <div className={`${CARD} ${CARD_PAD} flex min-h-[621px] flex-col gap-[10px] pt-[18px] pb-[18px]`}>
+              <p className={T_SECTION}>Verse Details</p>
 
-              <Field label="Testament">
-                <TextInput value="Be strong and courageous" readOnly />
+              <Field label="Title">
+                <TextInput value="Be strong and courageous" />
               </Field>
 
               <Field label="Testament">
-                <Select
-                  value="Old Testament"
-                  options={["Old Testament", "New Testament"]}
-                />
+                <Select value="Old Testament" options={["Old Testament", "New Testament"]} />
               </Field>
 
-              <div className="grid grid-cols-2" style={{ gap: 16 }}>
+              <div className="grid grid-cols-2 gap-4">
                 <Field label="Book">
                   <Select value="Joshua" options={["Joshua", "Proverbs", "Psalms"]} />
                 </Field>
@@ -476,11 +471,11 @@ export default function AddEditMemoryVerse() {
                 </Field>
               </div>
 
-              <div className="grid grid-cols-2" style={{ gap: 16 }}>
+              <div className="grid grid-cols-2 gap-4">
                 <Field label="Verse Reference">
                   <Select value="Joshua 1:9" options={["Joshua 1:9", "Joshua 1:8"]} />
                 </Field>
-                <Field label="Chapter">
+                <Field label="Translation">
                   <Select value="NIV" options={["NIV", "KJV", "ESV"]} />
                 </Field>
               </div>
@@ -496,11 +491,7 @@ export default function AddEditMemoryVerse() {
               </Field>
 
               <Field label="Short Instruction">
-                <InlineCounterInput
-                  max={100}
-                  count={99}
-                  value="Listen to the verse and choose the correct one."
-                />
+                <InlineCounterInput max={100} count={99} value="Listen to the verse and choose the correct one." />
               </Field>
 
               <Field label="Activity Length">
@@ -508,87 +499,83 @@ export default function AddEditMemoryVerse() {
               </Field>
             </div>
 
-            {/* ---- Card 2 : Build the 5 Steps ---- */}
-            <div className={`${CARD} p-[18px] pl-[20px] pr-[21px]`}>
-              <p className="text-[14px] font-semibold text-[#1E1B4B]">Build the 5 Steps</p>
+            <div className={`${CARD} pt-4 pr-[25px] pb-[23px] pl-[15px]`}>
+              <p className="text-[14px] font-semibold leading-[17px] text-[#0A0847]/80">
+                Build the 5 Steps
+              </p>
 
-              {/* step pills, wrapped into 2 rows */}
-              <div className="mt-[10px] flex flex-wrap" style={{ gap: 8 }}>
+              <div className="mt-3 flex flex-wrap gap-x-[13px] gap-y-2">
                 {STEP_TABS.map((t) => {
                   const active = t === activeStep;
-                  const num = t.split(" ")[0];
-                  const rest = t.slice(num.length + 1);
-
+                  const [num, ...rest] = t.split(" ");
                   return (
                     <button
                       key={t}
                       type="button"
                       onClick={() => setActiveStep(t)}
-                      className={`flex h-[30px] cursor-pointer items-center rounded-full px-3 text-[11px] font-semibold transition-colors ${
+                      className={`flex h-10 w-[133px] cursor-pointer items-center justify-center gap-[5px] rounded-lg border px-2 text-[12px] font-semibold transition-colors ${
                         active
-                          ? "bg-[#00007A] text-white"
-                          : "border-[0.75px] border-[#E2DFFC] bg-[#EEF0FB] text-[#1E1B4B]"
+                          ? "border-[#001984] bg-[#001984] text-white"
+                          : "border-[#E2DFFC] bg-[#F2F5FA] text-[#0A0847]/80"
                       }`}
-                      style={{ gap: 6 }}
                     >
                       <span
-                        className={`flex h-[16px] w-[16px] items-center justify-center rounded-full text-[9px] font-bold ${
-                          active ? "bg-white text-[#00007A]" : "bg-white text-[#1E1B4B]"
+                        className={`flex h-[19px] w-[19px] shrink-0 items-center justify-center rounded-full text-[12px] font-semibold ${
+                          active
+                            ? "bg-white text-[#001984]"
+                            : "border-[1.5px] border-[#0A0847]/80 text-[#0A0847]/80"
                         }`}
                       >
                         {num}
                       </span>
-                      {rest}
+                      <span className="truncate">{rest.join(" ")}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* two inner columns */}
-              <div className="mt-[16px] grid grid-cols-2 items-start" style={{ gap: 16 }}>
-                {/* inner column A */}
-                <div className="flex flex-col" style={{ gap: 10 }}>
-                  <Field label="Instruction Text">
-                    <TextArea
+              <div className="mt-[10px] grid grid-cols-2 items-start gap-5">
+                <div className="flex flex-col gap-4">
+                  <Field label="Instruction Text" className="gap-1">
+                    <BuildTextArea
                       max={100}
-                      rows={3}
+                      count={52}
                       value="Well done, faithful servant! Keep God's Word in your heart."
                     />
                   </Field>
 
-                  <Field label="Audio">
-                    <div className="flex items-center rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white px-2.5 py-2">
-                      <PlayButton size={30} />
-                      <div className="ml-2 min-w-0 flex-1">
-                        <p className="truncate text-[11px] italic text-[#1E1B4B]">
+                  <Field label="Audio" className="gap-1">
+                    <div className="flex flex-col gap-[6px] rounded-[7.5px] border border-[#E2DFFC] bg-white px-[11px] py-3">
+                      <div className="flex items-center gap-[10px]">
+                        <PlayButton size={32} color={NAVY_ACCENT} />
+                        <p className="min-w-0 flex-1 truncate text-[12px] font-semibold italic text-[#0A0847]/80">
                           joshua-1-9-niv.mp3
                         </p>
+                        <span className="shrink-0 text-[12px] font-semibold italic text-[#0A0847]/60">
+                          00:18
+                        </span>
+                      </div>
+                      <div className="flex pr-[18px]">
                         <AudioSlider fill={70} />
                       </div>
-                      <span className="ml-2 shrink-0 text-[11px] italic text-[#6B7280]">00:18</span>
                     </div>
                   </Field>
 
-                  <Field label="Answer Choices">
+                  <Field label="Answer Choices" className="gap-1">
                     <ChoiceRows />
                   </Field>
                 </div>
 
-                {/* inner column B */}
-                <div className="flex flex-col" style={{ gap: 10 }}>
-                  <Field label="Instruction Text">
-                    <div className="flex flex-wrap items-center" style={{ gap: 16 }}>
+                <div className="flex flex-col gap-4">
+                  <Field label="Correct Answer" className="gap-1">
+                    <div className="flex flex-wrap items-center gap-4">
                       {["A", "B", "C", "D"].map((k, i) => (
-                        <label
-                          key={k}
-                          className="flex cursor-pointer items-center text-[12px] text-[#1E1B4B]"
-                          style={{ gap: 8 }}
-                        >
+                        <label key={k} className="flex cursor-pointer items-center gap-2 text-[14px] text-[#0A0847]">
                           <input
                             type="radio"
-                            name="instruction-radio"
+                            name="correct-answer"
                             defaultChecked={i === 0}
-                            className="h-[14px] w-[14px] accent-[#041581]"
+                            className="h-[18px] w-[18px] shrink-0 cursor-pointer appearance-none rounded-full border-2 border-[#9AA0B8] checked:border-[#001984] checked:bg-[radial-gradient(circle,#001984_38%,transparent_42%)]"
                           />
                           {k}
                         </label>
@@ -596,53 +583,47 @@ export default function AddEditMemoryVerse() {
                     </div>
                   </Field>
 
-                  <Field label="Hint Text" optional>
-                    <TextArea max={100} rows={2} value="Think about what God commands us to be" />
+                  <Field label="Hint Text" optional className="gap-1">
+                    <BuildTextArea
+                      max={100}
+                      className="h-[53px]"
+                      value="Think about what God commands us to be"
+                    />
                   </Field>
 
-                  <Field label="Success Feedback">
-                    <InlineCounterInput max={100} value="That's right! Great job!" />
+                  <Field label="Success Feedback" className="gap-1">
+                    <BuildInput max={100} value="That's right! Great job!" />
                   </Field>
 
-                  <Field label="Error Feedback">
-                    <InlineCounterInput max={100} value="Not quite. Listen again and try!" />
+                  <Field label="Error Feedback" className="gap-1">
+                    <BuildInput max={100} value="Not quite. Listen again and try!" />
                   </Field>
                 </div>
               </div>
             </div>
 
-            {/* ---- Card 3 : step list (height 249) ---- */}
             <StepListCard />
           </div>
 
-          {/* ============ MIDDLE COLUMN ============ */}
-          <div className="flex flex-col" style={{ gap: 16 }}>
-            {/* ---- Card 4 : Media ---- */}
-            <div className={`${CARD} p-[18px] pl-[20px] pr-[21px]`}>
-              <p className="text-[14px] font-semibold text-[#1E1B4B]">Media</p>
+          <div className="flex flex-col gap-4">
+            <div className={`${CARD} ${CARD_PAD}`}>
+              <p className={T_SECTION}>Media</p>
 
               <div className="mt-[10px]">
-                <p className="mb-[6px] text-[12px] text-[#6B7280]">Chapter Default Image</p>
-                <div className="flex items-start" style={{ gap: 10 }}>
-                  <div
-                    className="shrink-0 overflow-hidden rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-[#F1F2F8]"
-                    style={{ width: 115, height: 131 }}
-                  >
-                    <img
-                      src={memoryVerseImg}
-                      alt="Chapter default image"
-                      className="h-full w-full object-cover"
-                    />
+                <p className={`mb-[6px] ${T_HELPER} not-italic`}>Chapter Default Image</p>
+                <div className="flex items-start gap-[10px]">
+                  <div className="h-[131px] w-[115px] shrink-0 overflow-hidden rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-[#F1F2F8]">
+                    <img src={memoryVerseImg} alt="Chapter default image" className="h-full w-full object-cover" />
                   </div>
-                  <div className="flex min-w-0 flex-1 flex-col" style={{ gap: 8 }}>
-                    <button type="button" className={IMG_ACTION_BTN}>
-                      <LuRefreshCw size={12} /> Regenerate Puzzle
+                  <div className="flex min-w-0 flex-1 flex-col gap-2">
+                    <button type="button" className={BTN_IMG_ACTION}>
+                      <LuRefreshCw size={ICON.xs} strokeWidth={ICON_STROKE} /> Regenerate Puzzle
                     </button>
-                    <button type="button" className={IMG_ACTION_BTN}>
-                      <LuImage size={12} /> Regenerate Image
+                    <button type="button" className={BTN_IMG_ACTION}>
+                      <LuImage size={ICON.xs} strokeWidth={ICON_STROKE} /> Regenerate Image
                     </button>
-                    <button type="button" className={IMG_ACTION_BTN}>
-                      <LuUpload size={12} /> Replace Image
+                    <button type="button" className={BTN_IMG_ACTION}>
+                      <LuUpload size={ICON.xs} strokeWidth={ICON_STROKE} /> Replace Image
                     </button>
                   </div>
                 </div>
@@ -651,39 +632,34 @@ export default function AddEditMemoryVerse() {
               <div className="my-[10px] h-px w-full bg-[#E2DFFC]" />
 
               <div>
-                <p className="mb-[6px] text-[12px] text-[#6B7280]">Audio (Verse Narration)</p>
-                <div className="flex items-center rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white p-2.5">
+                <p className={`mb-[6px] ${T_HELPER} not-italic`}>Audio (Verse Narration)</p>
+                <div className="flex items-center rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-white p-[10px]">
                   <PlayButton size={30} />
                   <div className="ml-2 min-w-0">
-                    <p className="truncate text-[11px] italic text-[#1E1B4B]">
-                      joshua-1-9-niv.mp3
-                    </p>
-                    <p className="text-[11px] italic text-[#6B7280]">00:18</p>
+                    <p className="truncate text-[11px] italic text-[#1E1B4B]">joshua-1-9-niv.mp3</p>
+                    <p className={T_HELPER}>00:18</p>
                   </div>
                 </div>
 
-                <button type="button" className={`${OUTLINE_BTN} mt-[10px]`}>
-                  <LuUpload size={13} /> Replace Audio
+                <button type="button" className={`${BTN_OUTLINE} mt-[10px]`}>
+                  <LuUpload size={ICON.sm - 1} strokeWidth={ICON_STROKE} /> Replace Audio
                 </button>
-                <p className="mt-1.5 text-[10px] italic text-[#6B7280]">
-                  Recommended: MP3, max 5MB
-                </p>
+                <p className={`mt-[6px] ${T_HELPER}`}>Recommended: MP3, max 5MB</p>
               </div>
             </div>
 
-            {/* ---- Card 5 : Completion & Reward ---- */}
-            <div className={`${CARD} p-[18px] pl-[20px] pr-[21px]`}>
-              <p className="text-[14px] font-semibold text-[#1E1B4B]">Completion &amp; Reward</p>
+            <div className={`${CARD} ${CARD_PAD}`}>
+              <p className={T_SECTION}>Completion &amp; Reward</p>
 
-              <div className="mt-[10px] flex flex-col" style={{ gap: 10 }}>
+              <div className="mt-[10px] flex flex-col gap-[10px]">
                 <Field label="Reward Points" required>
-                  <TextInput value="50" readOnly />
+                  <TextInput value="50" />
                 </Field>
                 <Field label="Completion Title" required>
-                  <TextInput value="Verse Memorized!" readOnly />
+                  <TextInput value="Verse Memorized!" />
                 </Field>
                 <Field label="Completion Button Label" required>
-                  <TextInput value="I Recited It" readOnly />
+                  <TextInput value="I Recited It" />
                 </Field>
                 <Field label="Success Page" required>
                   <Select
@@ -692,38 +668,28 @@ export default function AddEditMemoryVerse() {
                   />
                 </Field>
                 <Field label="Next Action" required>
-                  <Select
-                    value="Collect Reward & Continue"
-                    options={["Collect Reward & Continue", "Return to Home"]}
-                  />
+                  <Select value="Collect Reward & Continue" options={["Collect Reward & Continue", "Return to Home"]} />
                 </Field>
-                <Field label="Amen / Encouragement Message (Optional):">
-                  <TextArea
-                    max={100}
-                    rows={2}
-                    value="Well done, faithful servant! Keep God's Word in your heart."
-                  />
+                <Field label="Amen / Encouragement Message" optional>
+                  <TextArea max={100} rows={2} value="Well done, faithful servant! Keep God's Word in your heart." />
                 </Field>
               </div>
             </div>
 
-            {/* ---- Card 6 : Publishing ---- */}
-            <div
-              className={`${CARD} p-3`}
-              style={{ display: "flex", flexDirection: "column", gap: 10 }}
-            >
-              <p className="text-[14px] font-semibold text-[#1E1B4B]">Publishing</p>
+            <div className={`${CARD} flex flex-col gap-[10px] p-3`}>
+              <p className={T_SECTION}>Publishing</p>
 
               <Field label="Status">
                 <Select value="Published" options={["Published", "Draft", "Scheduled"]} />
               </Field>
 
-              <div className="grid grid-cols-2" style={{ gap: 10 }}>
+              <div className="grid grid-cols-2 gap-[10px]">
                 <Field label="Start Date">
                   <div className="relative">
-                    <TextInput value="May 12, 2024" readOnly className="pr-8" />
+                    <TextInput value="May 12, 2024" className="pr-8" />
                     <LuCalendar
-                      size={13}
+                      size={ICON.sm - 1}
+                      strokeWidth={ICON_STROKE}
                       className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#6B7280]"
                     />
                   </div>
@@ -736,7 +702,8 @@ export default function AddEditMemoryVerse() {
                       className={`${FIELD} ${INPUT_H} pr-8 placeholder:text-[#6B7280]`}
                     />
                     <LuCalendar
-                      size={13}
+                      size={ICON.sm - 1}
+                      strokeWidth={ICON_STROKE}
                       className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2 text-[#6B7280]"
                     />
                   </div>
@@ -744,23 +711,23 @@ export default function AddEditMemoryVerse() {
               </div>
 
               <Field label="Display Order">
-                <TextInput value="10" readOnly />
+                <TextInput value="10" />
               </Field>
 
               <div className="flex items-center justify-between">
-                <p className={LABEL}>Display Order</p>
+                <p className={T_LABEL}>Show on Level Map</p>
                 <button
                   type="button"
                   role="switch"
-                  aria-checked={showLevelToggle}
-                  onClick={() => setShowLevelToggle((v) => !v)}
+                  aria-checked={showOnLevelMap}
+                  onClick={() => setShowOnLevelMap((v) => !v)}
                   className={`relative h-[20px] w-[36px] shrink-0 cursor-pointer rounded-full transition-colors ${
-                    showLevelToggle ? "bg-[#041581]" : "bg-[#D1D5DB]"
+                    showOnLevelMap ? "bg-[#041581]" : "bg-[#D1D5DB]"
                   }`}
                 >
                   <span
                     className={`absolute top-[2px] h-4 w-4 rounded-full bg-white transition-all ${
-                      showLevelToggle ? "left-[18px]" : "left-[2px]"
+                      showOnLevelMap ? "left-[18px]" : "left-[2px]"
                     }`}
                   />
                 </button>
@@ -768,7 +735,6 @@ export default function AddEditMemoryVerse() {
             </div>
           </div>
 
-          {/* ============ RIGHT COLUMN ============ */}
           <PhonePreview />
         </div>
       </div>

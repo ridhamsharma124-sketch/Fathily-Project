@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { LuHeadphones, LuUpload } from "react-icons/lu";
-import liveQuestionImage from "../../../assets/live question img.png";
+import { LuUpload } from "react-icons/lu";
+import musicIcon from "../../../assets/activities/icon-music-app.svg";
+import liveQuestionImage from "../../../assets/activities/live question img.webp";
 import {
   ActivityPageHeader,
   AudioFileCard,
@@ -38,10 +39,6 @@ const DESCRIPTION =
 const DURATION_LABEL = "09:48 min • 10.2 MB";
 const INTRO_TIME = "00:10 / 00:10";
 
-/* ==========================================================================
-   STORY ENTRY PREVIEW (right card)
-   Figma: card 465 wide, radius 8, border 1px #E2DFFC, bg #F9F9FF
-   ========================================================================== */
 const PREVIEW_TRUNCATE_AT = 74;
 
 function truncate(text, limit) {
@@ -52,7 +49,6 @@ function StoryEntryPreview({ title, description, image }) {
     <section className="w-full min-w-0 shrink-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-8">
       <div className="flex flex-col gap-3">
         <div>
-          {/* Figma: Inter 600 / 22px / lh 100% */}
           <h2 className="text-[22px] font-semibold leading-none text-[#0A0847]">
             Story Entry Preview
           </h2>
@@ -69,24 +65,21 @@ function StoryEntryPreview({ title, description, image }) {
           />
         )}
 
-        {/* Figma: Inter 600 / 16px / lh 30px */}
         <p className="mt-1 text-[16px] font-semibold leading-[30px] text-[#0A0847]">
           {title}
         </p>
 
-        {/* Figma: Inter italic / 14px / lh 30px */}
         <p className="text-[14px] font-semibold italic leading-[30px] text-[#041581]">
           John 3
         </p>
 
         <div className="flex items-center gap-2">
-          <LuHeadphones size={14} className="shrink-0 text-[#0A084799]" aria-hidden />
+          <img src={musicIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
           <p className="text-[14px] font-medium italic leading-[30px] text-[#0A084799]">
             <span className="font-semibold">09:48</span> • 24 Plays
           </p>
         </div>
 
-        {/* Figma: Inter 500 italic / 14px */}
         <p className="line-clamp-2 text-[14px] font-medium italic leading-[21px] text-[#0A084799]">
           {truncate(description, PREVIEW_TRUNCATE_AT)}
         </p>
@@ -140,7 +133,6 @@ export default function AddChapterAudioStory() {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 max={500}
-                /* Figma: textarea height is 116px (was 100px) */
                 className="h-[116px]"
               />
             </Field>
@@ -160,8 +152,6 @@ export default function AddChapterAudioStory() {
             </div>
 
             <div>
-              {/* Figma: helper text sits INSIDE the card, below a divider.
-                  Inter 500 / 12px, 2 lines = 30px tall */}
               <AudioFileCard>
                 <p className="pt-[26px] pr-4 pb-[44px] pl-[82px] text-[12px] font-medium leading-[15px] text-[#0A0847]">
                   This audio will be used as the story narration.
@@ -172,7 +162,6 @@ export default function AddChapterAudioStory() {
             </div>
 
             <div>
-              {/* Figma: label Inter 600 / 14px, value Inter 500 / 12px */}
               <p className="text-[14px] font-semibold text-[#0A0847]">
                 Duration (Based on Audio)
               </p>

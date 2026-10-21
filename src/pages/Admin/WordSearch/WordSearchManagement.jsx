@@ -3,11 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LuPlus,
   LuSearch,
-  LuGrid2X2,
-  LuCircleCheck,
-  LuFileText,
-  LuCircleX,
-  LuList,
   LuEye,
   LuPencil,
   LuEllipsis,
@@ -15,51 +10,139 @@ import {
   LuChevronLeft,
   LuChevronRight,
 } from "react-icons/lu";
-import audioRevelation from "../../../assets/word search/Audio Revelation.png";
-import mysteryScripture from "../../../assets/word search/Mystery Scripture.png";
+import audioRevelation from "../../../assets/word search/Audio Revelation.webp";
+import mysteryScripture from "../../../assets/word search/Mystery Scripture.webp";
 import EditWordSearchPanel from "./EditWordSearchPanel";
 
-/* ==========================================================================
-   DESIGN TOKENS
-   ========================================================================== */
+
 const NAVY = "#001984";
-const HEADING = "#1B1F4B";
-const GRAY = "#6B7194";
-const BORDER = "#E4E7F5";
+const HEADING = "#0A0847";
+const GRAY = "rgba(10,8,71,0.6)";
+const TEXT_80 = "rgba(10,8,71,0.8)";
+const BORDER = "#E2DFFC";
 const PAGE_BG = "#F7F8FF";
-const TH_BG = "#F3F4FC";
+const TH_BG = "#F2F5FD"; 
+
+
+function StatSvg({ size = 62, style, children, ...rest }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 62 62"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={style}
+      {...rest}
+    >
+      {children}
+    </svg>
+  );
+}
+
+
+const PuzzleGridIcon = (props) => (
+  <StatSvg {...props}>
+    <g strokeWidth="1.6">
+      <rect x="18.1" y="17.5" width="10.6" height="10.6" rx="2.2" />
+      <rect x="33.3" y="17.5" width="10.6" height="10.6" rx="2.2" />
+      <rect x="18.1" y="33.1" width="10.6" height="10.6" rx="2.2" />
+      <rect x="33.3" y="33.1" width="10.6" height="10.6" rx="2.2" />
+    </g>
+  </StatSvg>
+);
+
+
+const PublishedIcon = (props) => (
+  <StatSvg {...props}>
+    <path d="M39.55 19.9A14 14 0 1 0 44.35 26.8" strokeWidth="1.8" />
+    <path
+      d="M23.2 29.4 29.4 31.3 43.1 22.5 43.1 23.8 29.7 37 22.8 30.8Z"
+      fill="currentColor"
+      strokeWidth="1.2"
+    />
+  </StatSvg>
+);
+
+
+const DraftIcon = (props) => (
+  <StatSvg {...props}>
+    <g strokeWidth="1.5">
+      <path d="M24.6 20.35H33L39.45 26.9V39.25a2 2 0 0 1-2 2H24.6a2 2 0 0 1-2-2V22.35a2 2 0 0 1 2-2Z" />
+      <path d="M27.25 29.7h4.4M27.25 34.4h7.65" />
+    </g>
+  </StatSvg>
+);
+
+
+const DisabledIcon = (props) => (
+  <StatSvg {...props}>
+    <circle cx="31" cy="31" r="13.2" strokeWidth="1.8" />
+    <path d="M25.9 25.9l10.2 10.2M36.1 25.9L25.9 36.1" strokeWidth="1.8" />
+  </StatSvg>
+);
+
+
+function ArticlesIcon({ size = 20, className = "", style }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={style}
+      aria-hidden="true"
+    >
+      <path d="M4.5 9.5 10 4h7a2 2 0 0 1 2 2v12.5a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2Z" />
+      <path d="M4.5 9.5H8a2 2 0 0 0 2-2V4" />
+      <path d="M9 14h6M9 17.2h6" />
+    </svg>
+  );
+}
+
+
+const CHECK_TICK =
+  "checked:bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5l3 3 6-6.5'/%3E%3C/svg%3E\")]";
+const checkboxClass = `h-[14px] w-[14px] shrink-0 cursor-pointer appearance-none rounded-[3px] border-[1.5px] border-[#8A8A93] bg-white bg-center bg-no-repeat checked:border-[#001984] checked:bg-[#001984] ${CHECK_TICK}`;
+
 
 const STAT_CARDS = [
-  { iconBg: "#F0E6FF", iconColor: "#7B2FF7", Glyph: LuGrid2X2, value: "248", label: "Total Puzzles" },
-  { iconBg: "#E6F6EA", iconColor: "#2EB84B", Glyph: LuCircleCheck, value: "216", label: "Published" },
-  { iconBg: "#FBEEE6", iconColor: "#C5651A", Glyph: LuFileText, value: "21", label: "Drafts" },
-  { iconBg: "#FBE3EA", iconColor: "#D0103A", Glyph: LuCircleX, value: "11", label: "Disabled" },
+  { iconBg: "rgba(98,9,253,0.10)", iconColor: "#6209FD", Glyph: PuzzleGridIcon, value: "248", label: "Total Puzzles" },
+  { iconBg: "rgba(43,164,82,0.10)", iconColor: "#2BA452", Glyph: PublishedIcon, value: "216", label: "Published" },
+  { iconBg: "rgba(198,84,6,0.10)", iconColor: "#C65406", Glyph: DraftIcon, value: "21", label: "Drafts" },
+  { iconBg: "rgba(216,0,39,0.10)", iconColor: "#D80027", Glyph: DisabledIcon, value: "11", label: "Disabled" },
 ];
 
 const STATUS = {
-  Published: { pillBg: "#E3F7E6", pillColor: "#2EB84B", trackOn: "#2EB84B", on: true },
-  Draft: { pillBg: "#FBEEE6", pillColor: "#C5651A", trackOn: "#C5651A", on: false },
-  Disable: { pillBg: "#FBE3EA", pillColor: "#D0103A", trackOn: "#D0103A", on: false },
+  Published: { pillBg: "rgba(43,164,82,0.10)", pillBorder: "rgba(43,164,82,0.25)", pillColor: "#2BA452", trackOn: "#2BA452", on: true },
+  Draft: { pillBg: "rgba(198,84,6,0.10)", pillBorder: "rgba(198,84,6,0.25)", pillColor: "#C65406", trackOn: "#C65406", on: false },
+  Disable: { pillBg: "rgba(216,0,39,0.10)", pillBorder: "rgba(216,0,39,0.25)", pillColor: "#D80027", trackOn: "#D80027", on: false },
 };
 
 const FILTERS = [
-  { id: "ws-testament", all: "All Testaments", options: ["Old Testament", "New Testament"] },
-  { id: "ws-book", all: "All Books", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "ws-chapter", all: "All Chapters", options: ["1", "3", "14", "23"] },
+  { id: "ws-testament", w: 137, all: "All Testaments", options: ["Old Testament", "New Testament"] },
+  { id: "ws-book", w: 112, all: "All Books", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "ws-chapter", w: 119, all: "All Chapters", options: ["1", "3", "14", "23"] },
   {
     id: "ws-type",
+    w: 122,
     all: "All Types",
     options: ["Hidden Restoration", "Verse Restoration", "Audio Revelation", "Mystery Scripture"],
   },
-  { id: "ws-method", all: "Creation Method", options: ["Chapter Default", "AI Generated"] },
+  { id: "ws-method", w: 169, all: "Creation Method", options: ["Chapter Default", "AI Generated"] },
 ];
 
 const PAGES = [1, 2, 3, 4, 5];
 const PAGE_SIZES = [10, 20, 50];
 
-/* ==========================================================================
-   MOCK DATA
-   ========================================================================== */
+
 const PUZZLES = [
   {
     id: 1,
@@ -115,15 +198,12 @@ const PUZZLES = [
   },
 ];
 
-/* ==========================================================================
-   SHARED CLASSES
-   ========================================================================== */
-const selectClass =
-  "h-[38px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E4E7F5] bg-white pl-3 pr-8 text-[13px] text-[#6B7194] outline-none focus:border-[#001984]";
 
-/* ==========================================================================
-   PIECES
-   ========================================================================== */
+const selectClass =
+  "h-[36px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[30px] text-[12px] font-medium text-[#0A0847]/80 outline-none focus:border-[#001984]";
+
+
+
 function Toggle({ on, color, onChange, label }) {
   return (
     <button
@@ -132,12 +212,12 @@ function Toggle({ on, color, onChange, label }) {
       aria-checked={on}
       aria-label={label}
       onClick={() => onChange(!on)}
-      className="relative h-[18px] w-[32px] shrink-0 cursor-pointer rounded-full transition-colors"
+      className="relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors"
       style={{ backgroundColor: on ? color : "#D9DCEA" }}
     >
       <span
-        className="absolute top-[2px] h-[14px] w-[14px] rounded-full bg-white shadow-sm transition-all"
-        style={{ left: on ? 16 : 2 }}
+        className="absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white shadow-sm transition-all"
+        style={{ left: on ? 13 : 2 }}
       />
     </button>
   );
@@ -155,24 +235,37 @@ function RowToggle({ row, value, onChange }) {
   );
 }
 
+
 function StatusPill({ status }) {
   const cfg = STATUS[status];
   return (
     <span
-      className="inline-block whitespace-nowrap rounded-full px-[10px] py-[3px] text-[11px] font-semibold"
-      style={{ backgroundColor: cfg.pillBg, color: cfg.pillColor }}
+      className="inline-block whitespace-nowrap rounded-[8px] border px-[10px] py-[4px] text-[12px] leading-[15px] font-medium"
+      style={{ backgroundColor: cfg.pillBg, borderColor: cfg.pillBorder, color: cfg.pillColor }}
     >
       {status}
     </span>
   );
 }
 
-const actionBtn =
-  "flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-[6px] border border-[#E4E7F5] bg-white transition-colors";
 
-/* ==========================================================================
-   SCREEN 1 — WORD SEARCH MANAGEMENT (list page)
-   ========================================================================== */
+const actionBtn =
+  "flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-[6px] border border-[#ECECEC] bg-white transition-colors";
+
+const TABLE_COLUMNS = [
+  { label: "Topic", w: "w-[186px]" },
+  { label: "Type", w: "w-[120px]" },
+  { label: "Bible Location", w: "w-[100px]" },
+  { label: "Level", w: "w-[80px]" },
+  { label: "Words / Items", w: "w-[96px]" },
+  { label: "Image Source", w: "w-[100px]" },
+  { label: "Created By", w: "w-[84px]" },
+  { label: "Status", w: "w-[150px]" },
+  { label: "Updated", w: "w-[110px]" },
+  { label: "Actions", w: "w-[130px]" },
+];
+
+
 export default function WordSearchManagement() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
@@ -211,13 +304,12 @@ export default function WordSearchManagement() {
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
       <div className="mx-auto max-w-[1220px] px-5 py-6">
-        {/* header */}
         <div className="flex flex-nowrap items-center justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-[28px] leading-tight font-bold" style={{ color: HEADING }}>
+            <h1 className="text-[22px] leading-[27px] font-semibold" style={{ color: HEADING }}>
               Word Search Management
             </h1>
-            <p className="mt-1 text-[14px] whitespace-nowrap" style={{ color: GRAY }}>
+            <p className="mt-[8px] text-[16px] leading-[19px] font-medium whitespace-nowrap" style={{ color: GRAY }}>
               Create, organize, and manage help content.
             </p>
           </div>
@@ -225,33 +317,32 @@ export default function WordSearchManagement() {
           <button
             type="button"
             onClick={() => navigate("/admin/word-search/add-edit")}
-            className="flex h-11 w-[190px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] px-4 text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+            className="flex h-[42px] w-[182px] shrink-0 cursor-pointer items-center justify-center gap-[16px] rounded-[8px] px-[16px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
             style={{ backgroundColor: NAVY }}
           >
-            <LuPlus size={17} />
+            <LuPlus size={16} strokeWidth={2.2} />
             Add Word Search
           </button>
         </div>
 
-        {/* stat cards */}
-        <div className="mt-[40px] grid grid-cols-4 gap-[18px]">
+        <div className="mt-[40px] grid grid-cols-4 gap-[17px]">
           {STAT_CARDS.map(({ iconBg, iconColor, Glyph, value, label }) => (
             <div
               key={label}
-              className="flex h-[120px] items-center gap-4 rounded-[8px] border bg-white px-5"
+              className="flex h-[115px] items-center gap-[16px] rounded-[8px] border bg-white pl-[16px]"
               style={{ borderColor: BORDER }}
             >
               <span
-                className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[12px]"
+                className="flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px]"
                 style={{ backgroundColor: iconBg }}
               >
-                <Glyph size={30} style={{ color: iconColor }} strokeWidth={1.8} aria-hidden />
+                <Glyph size={62} style={{ color: iconColor }} aria-hidden />
               </span>
               <div className="min-w-0">
-                <p className="text-[20px] leading-tight font-bold" style={{ color: HEADING }}>
+                <p className="text-[22px] leading-[27px] font-semibold" style={{ color: TEXT_80 }}>
                   {value}
                 </p>
-                <p className="mt-1 truncate text-[13px] font-bold" style={{ color: GRAY }}>
+                <p className="mt-[9px] truncate text-[14px] leading-[17px] font-semibold" style={{ color: NAVY }}>
                   {label}
                 </p>
               </div>
@@ -259,8 +350,7 @@ export default function WordSearchManagement() {
           ))}
         </div>
 
-        {/* search + filters */}
-        <div className="mt-[40px] flex flex-nowrap items-center justify-between gap-2">
+        <div className="mt-[40px] flex flex-nowrap items-center justify-between gap-[10px]">
           <div className="relative w-[300px] shrink-0">
             <LuSearch
               size={16}
@@ -275,21 +365,21 @@ export default function WordSearchManagement() {
                 setPage(1);
               }}
               placeholder="Search puzzles"
-              className="h-[40px] w-full rounded-[8px] border border-[#E4E7F5] bg-white pr-3 pl-9 text-[13px] outline-none placeholder:text-[#6B7194A6] focus:border-[#001984]"
+              className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pr-3 pl-9 text-[13px] font-normal outline-none placeholder:text-[rgba(10,8,71,0.6)] focus:border-[#001984]"
               style={{ color: HEADING }}
             />
           </div>
 
-          <div className="flex flex-nowrap items-center gap-2">
-            {FILTERS.map(({ id, all, options }) => (
-              <div key={id} className="relative min-w-0 flex-1">
+          <div className="flex flex-nowrap items-center gap-[10px]">
+            {FILTERS.map(({ id, w, all, options }) => (
+              <div key={id} className="relative shrink-0" style={{ width: w }}>
                 <select
                   id={id}
                   value={filterValues[id] || ""}
                   onChange={(e) =>
                     setFilterValues((prev) => ({ ...prev, [id]: e.target.value }))
                   }
-                  className={`${selectClass} truncate whitespace-nowrap`}
+                  className={`${selectClass} whitespace-nowrap`}
                 >
                   <option value="">{all}</option>
                   {options.map((option) => (
@@ -298,56 +388,55 @@ export default function WordSearchManagement() {
                     </option>
                   ))}
                 </select>
-                <LuChevronDown
-                  size={15}
-                  className="pointer-events-none absolute top-1/2 right-2.5 -translate-y-1/2"
-                  style={{ color: GRAY }}
+                <svg
+                  width="8"
+                  height="5"
+                  viewBox="0 0 8 5"
+                  fill="none"
                   aria-hidden
-                />
+                  className="pointer-events-none absolute top-1/2 right-[17px] -translate-y-1/2"
+                >
+                  <path
+                    d="M1 1l3 3 3-3"
+                    stroke="#0A0847"
+                    strokeOpacity="0.6"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
             ))}
           </div>
         </div>
 
-        {/* table card */}
-        <div className="mt-6 overflow-hidden rounded-[8px] border bg-white" style={{ borderColor: BORDER }}>
-          <div className="flex items-center gap-2 px-4 py-3.5">
-            <LuList size={17} style={{ color: NAVY }} aria-hidden />
-            <h2 className="text-[14px] font-bold" style={{ color: HEADING }}>
+        <div className="mt-6 overflow-hidden rounded-[7.5px] border-[0.75px] bg-white" style={{ borderColor: BORDER }}>
+          <div className="flex items-center gap-[8px] px-[16px] py-[14px]">
+            <ArticlesIcon size={20} style={{ color: NAVY }} />
+            <h2 className="text-[14px] leading-[17px] font-semibold" style={{ color: NAVY }}>
               Total articles
             </h2>
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[1180px] border-collapse text-left">
+            <table className="w-full min-w-[1180px] table-fixed border-collapse text-left">
               <thead>
                 <tr style={{ backgroundColor: TH_BG }}>
-                  <th scope="col" className="w-[36px] px-3 py-3">
+                  <th scope="col" className="h-[50px] w-[40px] px-[12px]">
                     <input
                       type="checkbox"
                       checked={allSelected}
                       onChange={toggleAll}
                       aria-label="Select all puzzles"
-                      className="h-[15px] w-[15px] cursor-pointer rounded-[3px] accent-[#001984]"
+                      className={checkboxClass}
                     />
                   </th>
-                  {[
-                    { label: "Topic", w: "w-[186px]" },
-                    { label: "Type", w: "w-[120px]" },
-                    { label: "Bible Location", w: "w-[78px]" },
-                    { label: "Level", w: "w-[66px]" },
-                    { label: "Words / Items", w: "w-[84px]" },
-                    { label: "Image Source", w: "w-[80px]" },
-                    { label: "Crea ted By", w: "w-[64px]" },
-                    { label: "Status", w: "w-[168px]" },
-                    { label: "Updated", w: "w-[104px]" },
-                    { label: "Actions", w: "w-[116px]" },
-                  ].map(({ label, w }) => (
+                  {TABLE_COLUMNS.map(({ label, w }) => (
                     <th
                       key={label}
                       scope="col"
-                      className={`${w} px-3 py-3 text-[12px] leading-[1.35] font-semibold`}
-                      style={{ color: "#3A4170" }}
+                      className={`${w} h-[50px] px-[12px] text-[14px] leading-[17px] font-medium [overflow-wrap:anywhere]`}
+                      style={{ color: TEXT_80 }}
                     >
                       {label}
                     </th>
@@ -360,10 +449,10 @@ export default function WordSearchManagement() {
                   <tr
                     key={row.id}
                     onClick={() => setPanelRow(row)}
-                    className="cursor-pointer border-t transition-colors hover:bg-[#FAFAFE]"
+                    className="h-[62px] cursor-pointer border-t-[0.75px] transition-colors hover:bg-[#FAFAFE]"
                     style={{ borderColor: BORDER }}
                   >
-                    <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
+                    <td className="px-[12px]" onClick={(e) => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         checked={!!selected[row.id]}
@@ -371,48 +460,41 @@ export default function WordSearchManagement() {
                           setSelected((prev) => ({ ...prev, [row.id]: !prev[row.id] }))
                         }
                         aria-label={`Select ${row.topic}`}
-                        className="h-[15px] w-[15px] cursor-pointer rounded-[3px] accent-[#001984]"
+                        className={checkboxClass}
                       />
                     </td>
 
-                    <td className="px-3 py-3">
-                      <div className="flex items-center gap-2.5">
+                    <td className="px-[12px]">
+                      <div className="flex items-center gap-[10px]">
                         <img
                           src={row.image}
                           alt=""
-                          className="h-10 w-10 shrink-0 rounded-[8px] border object-cover"
+                          className="h-[38px] w-[38px] shrink-0 rounded-[8px] border object-cover"
                           style={{ borderColor: BORDER }}
                         />
                         <span
-                          className="text-[12px] leading-[1.3] font-bold whitespace-nowrap"
-                          style={{ color: HEADING }}
+                          className="text-[12px] leading-[15px] font-medium"
+                          style={{ color: TEXT_80 }}
                         >
                           {row.topic}
                         </span>
                       </div>
                     </td>
 
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.type}
-                    </td>
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.location}
-                    </td>
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.level}
-                    </td>
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.words}
-                    </td>
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.imageSource}
-                    </td>
-                    <td className="px-3 py-3 text-[12px]" style={{ color: GRAY }}>
-                      {row.createdBy}
-                    </td>
+                    {[row.type, row.location, row.level, row.words, row.imageSource, row.createdBy].map(
+                      (cell, i) => (
+                        <td
+                          key={i}
+                          className="px-[12px] text-[12px] leading-[15px] font-medium"
+                          style={{ color: TEXT_80 }}
+                        >
+                          {cell}
+                        </td>
+                      ),
+                    )}
 
-                    <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-2">
+                    <td className="px-[12px]" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-[2px]">
                         <RowToggle
                           row={row}
                           value={!!toggles[row.id]}
@@ -424,20 +506,23 @@ export default function WordSearchManagement() {
                       </div>
                     </td>
 
-                    <td className="px-3 py-3 text-[12px] whitespace-nowrap" style={{ color: GRAY }}>
+                    <td
+                      className="px-[12px] text-[12px] leading-[15px] font-medium whitespace-nowrap"
+                      style={{ color: TEXT_80 }}
+                    >
                       {row.updated}
                     </td>
 
-                    <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-1.5">
+                    <td className="px-[12px]" onClick={(e) => e.stopPropagation()}>
+                      <div className="flex items-center gap-[8px]">
                         <button
                           type="button"
                           onClick={() => setPanelRow(row)}
-                          aria-label={`Edit ${row.topic}`}
+                          aria-label={`View ${row.topic}`}
                           className={`${actionBtn} hover:bg-[#F0F2FB]`}
                           style={{ color: NAVY }}
                         >
-                          <LuEye size={15} />
+                          <LuEye size={16} />
                         </button>
                         <button
                           type="button"
@@ -446,13 +531,13 @@ export default function WordSearchManagement() {
                           className={`${actionBtn} hover:bg-[#F0F2FB]`}
                           style={{ color: NAVY }}
                         >
-                          <LuPencil size={15} />
+                          <LuPencil size={16} />
                         </button>
                         <button
                           type="button"
                           aria-label={`More actions for ${row.topic}`}
-                          className={`${actionBtn} border-0`}
-                          style={{ backgroundColor: "#E9EAF3", color: GRAY }}
+                          className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[6px]"
+                          style={{ backgroundColor: "rgba(10,8,71,0.10)", color: GRAY }}
                         >
                           <LuEllipsis size={15} />
                         </button>
@@ -463,7 +548,7 @@ export default function WordSearchManagement() {
 
                 {visible.length === 0 && (
                   <tr>
-                    <td colSpan={10} className="px-4 py-12 text-center text-[13px]" style={{ color: GRAY }}>
+                    <td colSpan={11} className="px-4 py-12 text-center text-[13px]" style={{ color: GRAY }}>
                       No puzzles match your filters.
                     </td>
                   </tr>
@@ -473,16 +558,15 @@ export default function WordSearchManagement() {
           </div>
         </div>
 
-        {/* footer — outside the card */}
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-[12px]" style={{ color: GRAY }}>
+          <div className="flex items-center gap-2 text-[12px] font-medium" style={{ color: HEADING }}>
             Display
             <div className="relative">
               <select
                 value={pageSize}
                 onChange={(e) => setPageSize(Number(e.target.value))}
                 aria-label="Items per page"
-                className="h-[30px] w-[60px] cursor-pointer appearance-none rounded-[8px] border border-[#E4E7F5] bg-white pr-5 pl-2.5 text-[12px] outline-none focus:border-[#001984]"
+                className="h-[30px] w-[60px] cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pr-5 pl-2.5 text-[12px] outline-none focus:border-[#001984]"
                 style={{ color: HEADING }}
               >
                 {PAGE_SIZES.map((size) => (

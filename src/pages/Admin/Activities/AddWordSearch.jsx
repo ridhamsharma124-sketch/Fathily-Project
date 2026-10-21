@@ -1,9 +1,9 @@
 import { useState } from "react";
-import selectorBookIcon from "../../../assets/activities/selector_book.png";
-import chevronIcon from "../../../assets/activities/sel_chevron.png";
-import chipXIcon from "../../../assets/activities/ws_chip_x.png";
-import plusIcon from "../../../assets/activities/ws_plus.png";
-import downloadIcon from "../../../assets/activities/ws_download.png";
+import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
+import chevronIcon from "../../../assets/activities/icon-chevron-down.svg";
+import chipXIcon from "../../../assets/activities/ws_chip_x.svg";
+import plusIcon from "../../../assets/activities/ws_plus.svg";
+import downloadIcon from "../../../assets/activities/icon-download.svg";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified

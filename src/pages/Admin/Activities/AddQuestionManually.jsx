@@ -1,7 +1,7 @@
 import { useState } from "react";
-import liveQuestionImage from "../../../assets/live question img.png";
+import liveQuestionImage from "../../../assets/activities/live question img.webp";
 import { LuChevronDown, LuChevronRight } from "react-icons/lu";
-import selectorBookIcon from "../../../assets/activities/selector_book.png";
+import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
 /* ==========================================================================
    MOCK DATA — hardcoded exactly as specified (unchanged)

@@ -1,27 +1,23 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  LuArchive,
-  LuCalendar,
-  LuChevronDown,
-  LuChevronLeft,
-  LuChevronRight,
-  LuCircleCheck,
-  LuCopy,
-  LuEllipsisVertical,
-  LuFileText,
-  LuFilter,
-  LuPlus,
-  LuScroll,
-  LuSearch,
-  LuTrash2,
-} from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
+import statScrollIcon from "../../../assets/memory-verse/icon-book-outline.svg";
+import statCheckIcon from "../../../assets/memory-verse/icon-check-circle-green.svg";
+import statFileIcon from "../../../assets/memory-verse/icon-document-orange.svg";
+import statCalendarIcon from "../../../assets/memory-verse/icon-calendar.svg";
+import searchIcon from "../../../assets/memory-verse/icon-search.svg";
+import filterIcon from "../../../assets/memory-verse/icon-filter.svg";
+import menuScheduleIcon from "../../../assets/memory-verse/icon-calendar-purple.svg";
+import menuDuplicateIcon from "../../../assets/memory-verse/icon-copy.svg";
+import menuArchiveIcon from "../../../assets/memory-verse/icon-inbox.svg";
+import menuDeleteIcon from "../../../assets/memory-verse/icon-trash.svg";
+import chevronRightIcon from "../../../assets/memory-verse/icon-chevron-right.svg";
+import ellipsisIcon from "../../../assets/memory-verse/icon-more-vertical.svg";
+import chevronDownIcon from "../../../assets/memory-verse/ic-angle-down.svg";
 import { pageShellClass } from "../Activities/activityFormShared";
-import beStrongAndCourageous from "../../../assets/Be strong and courageous.png";
+import beStrongAndCourageous from "../../../assets/Be strong and courageous.webp";
 
-/* ==========================================================================
-   TOKENS
-   ========================================================================== */
+
 const PURPLE = "#7C3AED";const GREEN = "#21AC1C";
 const ORANGE = "#C65406";
 
@@ -29,39 +25,33 @@ const PURPLE_TINT = "rgba(124, 58, 237, 0.10)";
 const GREEN_TINT = "rgba(33, 172, 28, 0.10)";
 const ORANGE_TINT = "rgba(198, 84, 6, 0.10)";
 
-/* ==========================================================================
-   MOCK DATA
-   ========================================================================== */
+
 const STATS = [
   {
     label: "Total Verses",
     value: "128",
-    icon: LuScroll,
-    size: 32,
+    icon: statScrollIcon,
     color: PURPLE,
     tint: PURPLE_TINT,
   },
   {
     label: "Published",
     value: "94",
-    icon: LuCircleCheck,
-    size: 28,
+    icon: statCheckIcon,
     color: GREEN,
     tint: GREEN_TINT,
   },
   {
     label: "Drafts",
     value: "18",
-    icon: LuFileText,
-    size: 28,
+    icon: statFileIcon,
     color: ORANGE,
     tint: ORANGE_TINT,
   },
   {
     label: "Scheduled",
     value: "16",
-    icon: LuCalendar,
-    size: 28,
+    icon: statCalendarIcon,
     color: PURPLE,
     tint: PURPLE_TINT,
   },
@@ -86,10 +76,10 @@ const STATUS_STYLES = {
 };
 
 const ROW_MENU = [
-  { id: "schedule", label: "Schedule", icon: LuCalendar },
-  { id: "duplicate", label: "Duplicate", icon: LuCopy },
-  { id: "archive", label: "Archive", icon: LuArchive },
-  { id: "delete", label: "Delete", icon: LuTrash2, danger: true },
+  { id: "schedule", label: "Schedule", icon: menuScheduleIcon },
+  { id: "duplicate", label: "Duplicate", icon: menuDuplicateIcon },
+  { id: "archive", label: "Archive", icon: menuArchiveIcon },
+  { id: "delete", label: "Delete", icon: menuDeleteIcon, danger: true },
 ];
 
 const VERSES = [
@@ -149,9 +139,7 @@ const PAGE_SIZES = ["10", "25", "50", "100"];
 const COLS =
   "grid grid-cols-[minmax(200px,1.4fr)_110px_155px_70px_105px_95px_210px] items-center";
 
-/* ==========================================================================
-   SMALL PIECES
-   ========================================================================== */
+
 function FilterGroup({ label, value, onChange, options }) {
   return (
     <div className="flex shrink-0 flex-col gap-[10px]">
@@ -167,9 +155,10 @@ function FilterGroup({ label, value, onChange, options }) {
             <option key={o}>{o}</option>
           ))}
         </select>
-        <LuChevronDown
-          size={16}
-          className="pointer-events-none absolute top-1/2 right-[16px] -translate-y-1/2 text-[#0A0847]/60"
+        <img
+          src={chevronDownIcon}
+          alt=""
+          className="pointer-events-none absolute top-1/2 right-[16px] w-[10px] -translate-y-1/2"
         />
       </div>
     </div>
@@ -225,14 +214,13 @@ function RowToggle({ on, onChange, label }) {
 }
 
 function StatCard({ stat }) {
-  const Icon = stat.icon;
   return (
     <div className="flex h-[123px] min-w-0 items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] py-0 pr-[29px] pl-[16px]">
       <span
         className="flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] p-[7px]"
         style={{ background: stat.tint }}
       >
-        <Icon size={stat.size} style={{ color: stat.color }} />
+        <img src={stat.icon} alt="" className="h-[28px] w-auto" />
       </span>
       <div className="flex w-[138px] flex-col gap-[8px]">
         <p className="text-[14px] font-medium text-[#0A0847]/80">{stat.label}</p>
@@ -242,9 +230,7 @@ function StatCard({ stat }) {
   );
 }
 
-/* ==========================================================================
-   PAGE
-   ========================================================================== */
+
 export default function MemoryVerseManagement() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -271,7 +257,6 @@ export default function MemoryVerseManagement() {
   return (
     <div className={`${pageShellClass} min-h-[calc(100vh-72px)] w-full min-w-0`}>
       <div className="flex w-full min-w-0 flex-col gap-[24px] p-6">
-        {/* ---------------- header ---------------- */}
         <div className="flex flex-wrap items-start justify-between gap-[16px]">
           <div className="flex flex-col gap-[8px]">
             <h1 className="text-[22px] leading-none font-semibold text-[#0A0847]">
@@ -287,23 +272,22 @@ export default function MemoryVerseManagement() {
             onClick={() => navigate("/admin/memory-verse/add-edit/ai-generate")}
             className="flex h-[42px] min-w-[178px] cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] bg-[#001984] px-[16px] py-[10px] text-[14px] font-medium text-white"
           >
-            <LuPlus size={16} /> Add Memory Verse
+            <LuPlus size={16} strokeWidth={2.2} /> Add Memory Verse
           </button>
         </div>
 
-        {/* ---------------- stat cards ---------------- */}
         <div className="grid w-full grid-cols-4 gap-[16px]">
           {STATS.map((s) => (
             <StatCard key={s.label} stat={s} />
           ))}
         </div>
 
-        {/* ---------------- filter row ---------------- */}
         <div className="flex flex-wrap items-end justify-between gap-[16px]">
           <div className="relative w-[234px] shrink-0">
-            <LuSearch
-              size={16}
-              className="pointer-events-none absolute top-1/2 left-[12px] -translate-y-1/2 text-[#0A0847]/60"
+            <img
+              src={searchIcon}
+              alt=""
+              className="pointer-events-none absolute top-1/2 left-[12px] h-[14px] w-[14px] -translate-y-1/2"
             />
             <input
               type="text"
@@ -339,14 +323,12 @@ export default function MemoryVerseManagement() {
               type="button"
               className="flex h-[36px] shrink-0 cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#E6E7F7] px-[16px] py-[10px] text-[12px] font-medium text-[#0A0847]"
             >
-              <LuFilter size={14} /> Filters
+              <img src={filterIcon} alt="" className="h-[16px] w-auto" /> Filters
             </button>
           </div>
         </div>
 
-        {/* ---------------- table card ---------------- */}
         <div className="w-full overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
-          {/* header row */}
           <div
             className={`${COLS} h-[50px] border-b-[0.75px] border-[#E2DFFC] bg-[#F3F7FD]`}
           >
@@ -365,13 +347,11 @@ export default function MemoryVerseManagement() {
             )}
           </div>
 
-          {/* body rows */}
           {rows.map((v) => (
             <div
               key={v.id}
               className={`${COLS} h-[92px] border-b-[0.75px] border-[#E2DFFC] bg-white`}
             >
-              {/* verse */}
               <div className="flex min-w-0 items-center gap-[8px] pr-[7.85px] pl-[20px]">
                 <img
                   src={v.image}
@@ -388,34 +368,28 @@ export default function MemoryVerseManagement() {
                 </div>
               </div>
 
-              {/* bible location */}
               <span className="flex items-center justify-center px-[7.85px] text-center text-[12px] font-medium text-[#0A0847]">
                 {v.location}
               </span>
 
-              {/* steps */}
               <div className="flex flex-col items-center gap-[6px] px-[7.85px]">
                 <StepDots />
                 <p className="text-[11px] font-medium text-[#0A0847]/80">5/5 Ready</p>
               </div>
 
-              {/* reward */}
               <span className="flex items-center justify-center px-[7.85px] text-center text-[12px] font-medium text-[#0A0847]">
                 {v.reward}
               </span>
 
-              {/* status */}
               <span className="flex items-center justify-center px-[7.85px]">
                 <StatusPill status={v.status} />
               </span>
 
-              {/* updated */}
               <div className="flex flex-col items-center gap-[2px] px-[7.85px] text-center">
                 <p className="text-[12px] font-medium text-[#0A0847]">{v.updatedDate}</p>
                 <p className="text-[12px] font-medium text-[#0A0847]">{v.updatedTime}</p>
               </div>
 
-              {/* actions */}
               <div className="relative flex h-[30px] items-center justify-center gap-[4px] pr-[20px] pl-[7.85px]">
                 <button
                   type="button"
@@ -443,7 +417,7 @@ export default function MemoryVerseManagement() {
                   onClick={() => setOpenMenu(openMenu === v.id ? null : v.id)}
                   className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-[4px] bg-[#E6E7F7] text-[#0A0847]"
                 >
-                  <LuEllipsisVertical size={14} />
+                  <img src={ellipsisIcon} alt="" className="h-[14px] w-auto" />
                 </button>
 
                 {openMenu === v.id && (
@@ -456,7 +430,6 @@ export default function MemoryVerseManagement() {
                     <div className="absolute top-[32px] right-[20px] z-20 h-[165px] w-[116px] rounded-[4px] border border-[#E2DFFC] bg-white pt-[12px] pr-[20px] pb-[37px] pl-[12px] shadow-[0_6px_18px_rgba(10,8,71,0.12)]">
                       <div className="flex flex-col gap-[10px]">
                         {ROW_MENU.map((item) => {
-                          const Icon = item.icon;
                           return (
                             <button
                               key={item.id}
@@ -466,7 +439,7 @@ export default function MemoryVerseManagement() {
                                 item.danger ? "text-[#D92D20]" : "text-[#0A0847]"
                               }`}
                             >
-                              <Icon size={14} />
+                              <img src={item.icon} alt="" className="h-[14px] w-[14px]" />
                               {item.label}
                             </button>
                           );
@@ -485,7 +458,6 @@ export default function MemoryVerseManagement() {
             </p>
           )}
 
-          {/* ---------------- footer ---------------- */}
           <div className="flex flex-wrap items-center justify-between gap-[12px] px-[20px] py-[16px]">
             <div className="flex items-center gap-[8px]">
               <span className="text-[12px] font-medium text-[#0A0847]/80">Display</span>
@@ -500,9 +472,10 @@ export default function MemoryVerseManagement() {
                     <option key={s}>{s}</option>
                   ))}
                 </select>
-                <LuChevronDown
-                  size={13}
-                  className="pointer-events-none absolute top-1/2 right-[6px] -translate-y-1/2 text-[#0A0847]/60"
+                <img
+                  src={chevronDownIcon}
+                  alt=""
+                  className="pointer-events-none absolute top-1/2 right-[6px] w-[8px] -translate-y-1/2"
                 />
               </div>
               <span className="text-[12px] font-medium text-[#0A0847]/80">Entries</span>
@@ -520,7 +493,7 @@ export default function MemoryVerseManagement() {
                     : "cursor-pointer hover:border-[#001984] hover:text-[#001984]"
                 }`}
               >
-                <LuChevronLeft size={14} />
+                <img src={chevronRightIcon} alt="" className="h-[14px] w-auto rotate-180" />
               </button>
 
               {PAGE_NUMBERS.map((n) => (
@@ -544,7 +517,7 @@ export default function MemoryVerseManagement() {
                 onClick={() => setPage((p) => Math.min(PAGE_NUMBERS.length, p + 1))}
                 className="flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:border-[#001984] hover:text-[#001984]"
               >
-                <LuChevronRight size={14} />
+                <img src={chevronRightIcon} alt="" className="h-[14px] w-auto" />
               </button>
             </div>
           </div>

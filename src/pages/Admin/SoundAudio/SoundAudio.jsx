@@ -20,12 +20,7 @@ import {
   PiXCircle,
 } from "react-icons/pi";
 
-/* ==========================================================================
-   DESIGN TOKENS (taken from the Figma inspect panel)
-   Text colour in Figma is always #0A0847 with different opacity:
-     100% -> headings / values,  80% -> table header & filters,  60% -> muted
-   ========================================================================== */
-const NAVY = "#001984"; // icons / primary button (Figma vector colour)
+const NAVY = "#001984";
 const INK = "#0A0847"; // base text colour
 const BORDER = "#E9E9E9"; // table line-color (0.75px)
 
@@ -66,10 +61,6 @@ const AUDIO_ROWS = [
   mk(8, "Prayer Amen", "Scripture", "book", "00:07"),
 ];
 
-/* ==========================================================================
-   STAT CARD ICONS — custom SVGs traced from the Figma icons
-   (Phosphor icons look different, so these are drawn by hand)
-   ========================================================================== */
 const svgProps = (size, style) => ({
   width: size,
   height: size,
@@ -179,7 +170,6 @@ function Select({ value, onChange, options = [], className = "" }) {
   );
 }
 
-/* Dense waveform: ~44 thin bars like the Figma preview (≈133px wide) */
 const WAVE = Array.from({ length: 44 }, (_, i) => {
   const v = Math.abs(Math.sin(i * 1.7) * 9 + Math.cos(i * 0.6) * 7);
   return Math.max(4, Math.min(24, Math.round(v + 6)));
@@ -209,12 +199,11 @@ export default function SoundAudio() {
   const [category, setCategory] = useState("All Categories");
   const [status, setStatus] = useState("All Status");
   const [drawerRow, setDrawerRow] = useState(null);
-  const [pageSize, setPageSize] = useState(5); // display label only (mock pagination like Figma)
+  const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(1);
 
   const tabs = ["All", ...CATEGORY_ORDER];
 
-  // Mock numbers exactly as in Figma (only 8 sample rows are listed below)
   const STATS = STAT_META.map((m, i) => ({ ...m, value: [15, 13, 2, "48.6 MB"][i] }));
 
   const filteredRows = rows.filter((row) => {
@@ -234,7 +223,6 @@ export default function SoundAudio() {
   const isDefaultView =
     tab === "All" && !search.trim() && category === "All Categories" && status === "All Status";
 
-  // Figma shows all 8 sample rows + static pages 1-5 (mock pagination)
   const totalPages = 5;
   const safePage = page;
   const pagedRows = filteredRows;
@@ -277,7 +265,6 @@ export default function SoundAudio() {
         </div>
       </div>
 
-      {/* 2. Stat cards — Figma: 255x127, radius 8, border 1px, pl 16 / pr 29, gap 10 */}
       <div className="mt-[20px] grid grid-cols-1 gap-[20px] sm:grid-cols-2 lg:grid-cols-4">
         {STATS.map(({ bg, color, Icon, label, value }) => (
           <div
@@ -302,7 +289,6 @@ export default function SoundAudio() {
         ))}
       </div>
 
-      {/* 3. Info text (no background in Figma) */}
       <div className="mt-[16px] flex items-center gap-[8px] text-[12px] font-semibold leading-none text-[#0A0847]/60">
         <PiInfo size={16} className="shrink-0 text-[#0A0847]/70" />
         Featured Date appears on the homepage card and both experience screens.
@@ -345,7 +331,6 @@ export default function SoundAudio() {
         </div>
       </div>
 
-      {/* 5. White card: tabs + table + pagination (all inside one card in Figma) */}
       <div className="mt-[16px] overflow-hidden rounded-[10px] border border-[#E5E4EC] bg-white">
         {/* Tabs */}
         <div className="flex items-center overflow-x-auto px-[16px] pt-[16px]">
@@ -555,11 +540,6 @@ export default function SoundAudio() {
   );
 }
 
-/* ==========================================================================
-   EDIT AUDIO MODAL — values taken from the Figma inspect panel
-   Panel 260px wide · labels 12px/600 · values 12px/500 80% · sub text 10px
-   Input 40px high, radius 8, border 1px #E2DFFC · section gaps 16 / 28
-   ========================================================================== */
 const MODAL_BORDER = "border-[#E2DFFC]";
 
 function EditDrawer({ row, onClose }) {

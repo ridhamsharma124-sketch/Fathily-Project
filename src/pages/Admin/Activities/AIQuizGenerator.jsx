@@ -1,10 +1,10 @@
 import { useState } from "react";
-import level1Image from "../../../assets/level1.png";
-import level2Image from "../../../assets/level2.png";
-import level3Image from "../../../assets/level3.png";
+import level1Image from "../../../assets/activities/level1.webp";
+import level2Image from "../../../assets/activities/level2.webp";
+import level3Image from "../../../assets/activities/level3.webp";
 import { LuPencil, LuExternalLink, LuRefreshCw } from "react-icons/lu";
 
-import selectorBookIcon from "../../../assets/activities/selector_book.png";
+import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
 
 /* ==========================================================================
@@ -70,9 +70,6 @@ const GENERATED_QUESTIONS = [
   },
 ];
 
-/* ==========================================================================
-   SHARED STYLE TOKENS (all values taken from Figma)
-   ========================================================================== */
 /* label: Inter 600 / 12px / lh 15 */
 const labelCls =
   "block text-[12px] font-semibold leading-[15px] text-[#0A0847]";
@@ -186,7 +183,6 @@ function Checkbox({ checked, onChange, label }) {
   );
 }
 
-/* small 7.5 x 4.84 chevron, #0A0847 @ 60% (matches Figma ic_down_arrow) */
 function SmallChevron({ className = "" }) {
   return (
     <svg
@@ -471,7 +467,6 @@ export default function AIQuizGenerator() {
               </div>
             </div>
 
-            {/* Level counts: left flexible, right fixed 169 (Figma) */}
             <div className="grid grid-cols-[minmax(0,1fr)_169px] gap-2">
               <div className="flex min-w-0 flex-col gap-2">
                 <label htmlFor="level-count" className={labelCls}>

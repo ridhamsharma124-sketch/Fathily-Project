@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 // Adjust these paths to where assets/terms/*.png live in your project.
-import checkIconSrc from "../../../assets/terms/check.png";
-import warningIconSrc from "../../../assets/terms/warning.png";
-import docIconSrc from "../../../assets/terms/doc.png";
+import CheckMarkIcon from "../../../assets/terms/CheckMarkIcon.svg";
+import warningIconSrc from "../../../assets/terms/warning.svg";
+import docIconSrc from "../../../assets/terms/doc.svg";
 import {
   LuPlus,
   LuSearch,
@@ -73,7 +73,7 @@ const STATS = [
   {
     label: "Published",
     value: 2,
-    iconSrc: checkIconSrc,
+    iconSrc: CheckMarkIcon,
     iconSize: 32,
     badge: "bg-green-bg text-green-icon",
     valueClass: "text-heading",

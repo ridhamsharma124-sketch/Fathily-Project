@@ -15,7 +15,7 @@ import InformationFilledIcon from "../../../assets/PrayWithMeSvgs/InformationFil
 import Edit from "../../../assets/PrayWithMeSvgs/Edit.svg";
 import TrashRedIcon from "../../../assets/PrayWithMeSvgs/TrashRedIcon.svg";
 import ReplaceIcon from "../../../assets/PrayWithMeSvgs/ReplaceIcon.svg";
-import UploadIcon2 from "../../../assets/PrayWithMeSvgs/UploadIcon2.svg";
+import UploadIcon2 from "../../../assets/PrayWithMeSvgs/Uploadicon2.svg";
 import SaveIcon from "../../../assets/PrayWithMeSvgs/SaveIcon.svg";
 
 

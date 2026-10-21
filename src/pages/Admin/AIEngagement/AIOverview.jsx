@@ -7,8 +7,6 @@ import {
   PiPlusBold,
 } from "react-icons/pi";
 
-/* ---------- Custom icons traced from Figma (24x24 grid) ---------------- */
-// Custom icons traced from the Figma design (24x24 grid, colour = currentColor).
 // "bg" is the colour of the icon box (#3231DB at 10% on white) used for cut-outs.
 const BG = "#ECEBFB";
 
@@ -127,16 +125,6 @@ const CoinsIcon = ({ size = 24 }) => (
   </svg>
 );
 
-/* ==========================================================================
-   FIGMA TOKENS (measured from the Figma properties panel)
-   --------------------------------------------------------------------------
-   Text dark ......... #0A0847   (100% title, 80% labels, 60% sub-text)
-   Primary / accent .. #001984   (stat values, buttons, toggles)
-   Icon colour ....... #3231DB   (icon bg = same colour at 10%)
-   Card border ....... #E2DFFC   (section cards, inputs)
-   Divider ........... #001984 at 10%
-   Section card ...... radius 7.5, border 0.75, padding 28/27/29/27
-   ========================================================================== */
 
 /* ---------- Switch ------------------------------------------------------- */
 // sm = AI Assistant cards (track 20 x 12), md = Search / Credit rows (track 26 x 15)
