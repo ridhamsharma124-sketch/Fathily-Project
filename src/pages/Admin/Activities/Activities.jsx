@@ -25,15 +25,14 @@ import { WordSearchGlyph, MemoryVerseGlyph } from "./activityGlyphs";
 import quizIcon from "../../../assets/activities/quiz.png";
 import wordSearchIcon from "../../../assets/activities/icon-grid-green.svg";
 import audioTileIcon from "../../../assets/activities/icon-headphones-tile.svg";
-import memoryTileIcon from "../../../assets/activities/icon-book-orange.svg";
-import memoryTableIcon from "../../../assets/activities/tile_memory_table.png";
+import memoryTileIcon from "../../../assets/activities/memory_verse_tile.svg";
+import memoryTableIcon from "../../../assets/activities/memory_verse_tile.svg";
 import statHeadphones from "../../../assets/activities/icon-headphones.svg";
 import statClock from "../../../assets/activities/icon-clock.svg";
 import statBookmark from "../../../assets/activities/icon-bookmark-orange.svg";
 import statCheck from "../../../assets/activities/icon-check-circle-orange.svg";
 import btnEye from "../../../assets/activities/icon-eye.svg";
 import btnExternal from "../../../assets/activities/btn_external.svg";
-import btnGear from "../../../assets/activities/icon-gear.svg";
 import tipBulb from "../../../assets/activities/icon-lightbulb-orange.svg";
 import audioHeadphones from "../../../assets/activities/icon-headphones-outline.svg";
 import selectorBook from "../../../assets/activities/icon-book-purple.svg";
@@ -44,7 +43,7 @@ import statWsActive from "../../../assets/activities/stat_ws_active.png";
 import statWsWords from "../../../assets/activities/icon-meeting-green.svg";
 
 const btnImage = (label) =>
-  label.startsWith("View") ? btnEye : label.startsWith("Preview") ? btnExternal : label.startsWith("Manage") ? btnGear : null;
+  label.startsWith("View") ? btnEye : label.startsWith("Preview") ? btnExternal : null;
 
 
 /* ==========================================================================
@@ -494,7 +493,7 @@ export default function Activities() {
                               <img src={row.icon} alt="" className="h-[24px] w-[24px]" />
                             </span>
                           ) : row.icon ? (
-                            <img src={row.icon} alt="" className={`${row.id === "4" ? "h-[47px] w-[47px]" : "h-[36px] w-[36px]"} shrink-0`} />
+                            <img src={row.icon} alt="" className="h-[36px] w-[36px] shrink-0" />
                           ) : (
                             <span
                               className={`flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[10px] ${row.tint}`}
