@@ -25,13 +25,13 @@ export const formCardClass =
 export const pageShellClass = "min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]";
 
 /* outer gutter layer (page-wide horizontal padding) */
-export const pageBodyClass = "w-full px-7 py-6";
+export const pageBodyClass = "w-full px-4 py-6 sm:px-7";
 
 /* centered content wrapper: max width 1072px */
 export const pageInnerClass = "mx-auto w-full max-w-[1072px]";
 
 /* left card 578px fixed, preview takes the rest */
-export const cardRowClass = "mt-6 grid grid-cols-[578px_minmax(0,1fr)] gap-6";
+export const cardRowClass = "mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[578px_minmax(0,1fr)]";
 
 /* ~56px between cards and the button row */
 export const actionRowClass =
@@ -373,7 +373,9 @@ export function Waveform() {
         <span
           key={index}
           style={{ height }}
-          className="w-[1.5px] shrink-0 rounded-full bg-[#8B9BE0]"
+          className={`w-[1.5px] shrink-0 rounded-full bg-[#8B9BE0] ${
+            index >= 30 ? "max-sm:hidden" : ""
+          }`}
         />
       ))}
     </div>

@@ -256,13 +256,13 @@ function QuestionCard({ question, selected, onSelect }) {
           />
         </div>
 
-        <div className="flex min-w-0 flex-1 gap-8">
+        <div className="flex min-w-0 flex-1 flex-col gap-6 sm:flex-row sm:gap-8">
           <img
             src={LEVEL_IMAGES[question.level]}
             alt={`${question.level} illustration`}
             width={194}
             height={229}
-            className="h-[229px] w-[194px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover"
+            className="h-auto w-full max-w-[194px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover sm:h-[229px] sm:w-[194px]"
           />
 
           {/* tag, question, options */}
@@ -271,7 +271,7 @@ function QuestionCard({ question, selected, onSelect }) {
               {question.level}
             </span>
 
-            <div className="flex w-full max-w-[260px] flex-col gap-[18px]">
+            <div className="flex w-full max-w-[260px] flex-col gap-[18px] sm:max-w-none">
               <p className="text-[14px] font-semibold leading-[18px] text-[#0A0847]">
                 {question.text}
               </p>
@@ -295,15 +295,15 @@ function QuestionCard({ question, selected, onSelect }) {
 
       {/* action buttons row: aligned with the card's left padding */}
       <div className="mt-[24px] flex flex-wrap items-center gap-3">
-        <button type="button" className={`${actionButton} w-[101px]`}>
+        <button type="button" className={`${actionButton} w-full sm:w-[101px]`}>
           <LuPencil size={16} aria-hidden />
           Edit
         </button>
-        <button type="button" className={`${actionButton} w-[179px]`}>
+        <button type="button" className={`${actionButton} w-full sm:w-[179px]`}>
           <LuExternalLink size={16} aria-hidden />
           Regenerate Question
         </button>
-        <button type="button" className={`${actionButton} w-[161px]`}>
+        <button type="button" className={`${actionButton} w-full sm:w-[161px]`}>
           <LuRefreshCw size={16} aria-hidden />
           Regenerate Image
         </button>
@@ -351,7 +351,7 @@ export default function AIQuizGenerator() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="flex w-full min-w-0 flex-col px-7 py-6">
+      <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-7">
         {/* ---------- header ---------- */}
         <Breadcrumb items={BREADCRUMBS} />
 
@@ -369,7 +369,7 @@ export default function AIQuizGenerator() {
         </div>
 
         {/* ---------- two columns ---------- */}
-        <div className="mt-[30px] grid grid-cols-[376px_minmax(0,1fr)] items-stretch gap-6">
+        <div className="mt-[30px] grid grid-cols-1 items-stretch gap-6 lg:grid-cols-[376px_minmax(0,1fr)]">
           {/* LEFT — configure */}
           <section className="flex min-w-0 flex-col gap-[14px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
             <h2 className="text-[16px] font-semibold leading-[20px] text-[#0A0847]">
@@ -442,7 +442,7 @@ export default function AIQuizGenerator() {
             {/* Level Setup */}
             <div className="flex flex-col gap-2">
               <p className={labelCls}>Level Setup{requiredMark}</p>
-              <div className="flex">
+              <div className="flex overflow-x-auto">
                 {LEVEL_TABS.map((tab, index) => {
                   const active = levelSetup === tab.id;
                   return (
@@ -452,8 +452,8 @@ export default function AIQuizGenerator() {
                       onClick={() => setLevelSetup(tab.id)}
                       className={`flex h-[33px] cursor-pointer items-center justify-center px-2 py-1 text-[12px] font-medium leading-[15px] transition-colors ${
                         index === 0
-                          ? "w-[169px] rounded-l-[7.47px]"
-                          : "w-[172px] rounded-r-[7.47px]"
+                          ? "w-[150px] shrink-0 rounded-l-[7.47px] sm:w-[169px]"
+                          : "w-[150px] shrink-0 rounded-r-[7.47px] sm:w-[172px]"
                       } ${
                         active
                           ? "z-10 border border-[#001984] bg-[#001984]/10 text-[#0A0847]"
@@ -467,7 +467,7 @@ export default function AIQuizGenerator() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[minmax(0,1fr)_169px] gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_169px]">
               <div className="flex min-w-0 flex-col gap-2">
                 <label htmlFor="level-count" className={labelCls}>
                   Number of Levels{requiredMark}
@@ -590,7 +590,7 @@ export default function AIQuizGenerator() {
             </div>
 
             {/* select-all row */}
-            <div className="mt-[18px] flex h-[42px] items-center justify-between gap-3">
+            <div className="mt-[18px] flex flex-wrap items-center justify-between gap-3">
               <label className="flex cursor-pointer items-center gap-2 text-[12px] font-semibold leading-[15px] text-[#0A0847]">
                 <Checkbox
                   checked={allSelected}
@@ -601,7 +601,7 @@ export default function AIQuizGenerator() {
               </label>
               <button
                 type="button"
-                className="flex h-[42px] w-[136px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] bg-[#F3F7FD] px-[13px] py-3 text-[12px] font-semibold leading-[15px] text-[#0A0847] transition-colors hover:bg-[#E8EEFB]"
+                className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] bg-[#F3F7FD] px-[13px] py-3 text-[12px] font-semibold leading-[15px] text-[#0A0847] transition-colors hover:bg-[#E8EEFB] sm:w-[136px]"
               >
                 <LuRefreshCw size={16} aria-hidden />
                 Regenerate All
@@ -623,24 +623,24 @@ export default function AIQuizGenerator() {
         </div>
 
         {/* ---------- bottom bar ---------- */}
-        <div className="mt-10 flex h-[48px] w-full min-w-0 items-center justify-between gap-4">
+        <div className="mt-10 flex w-full min-w-0 flex-col items-stretch justify-between gap-4 sm:h-[48px] sm:flex-row sm:items-center">
           <button
             type="button"
-            className="flex h-[48px] w-[309px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4B1ECB] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#3F17AD]"
+            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4B1ECB] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#3F17AD] sm:w-[309px]"
           >
             <span aria-hidden>✨</span>
             Generate Questions &amp; Images
           </button>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
             <button
               type="button"
-              className="flex h-[48px] w-[152px] cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-white text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
+              className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-white text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE] sm:w-[152px]"
             >
               Save as Draft
             </button>
             <button
               type="button"
-              className="flex h-[48px] w-[175px] cursor-pointer items-center justify-center rounded-lg bg-[#4B1ECB] text-[13px] font-semibold text-white transition-colors hover:bg-[#3F17AD]"
+              className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-lg bg-[#4B1ECB] text-[13px] font-semibold text-white transition-colors hover:bg-[#3F17AD] sm:w-[175px]"
             >
               Publish Selected
             </button>

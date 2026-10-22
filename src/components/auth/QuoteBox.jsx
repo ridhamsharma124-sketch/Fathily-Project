@@ -28,9 +28,9 @@ function BibleIcon({ size = 38 }) {
 
 export default function QuoteBox() {
   return (
-    <div className="mt-6 flex min-h-[65px] items-center gap-5 rounded-[4px] border border-[var(--auth-quote-border)] bg-[#EFF6FE] px-3.5 pb-[13px] pt-3">
+    <div className="mt-6 flex min-h-[65px] items-start gap-3 rounded-[4px] border border-[var(--auth-quote-border)] bg-[#EFF6FE] px-3.5 pb-[13px] pt-3 sm:items-center sm:gap-5">
       <BibleIcon size={38} />
-      <div>
+      <div className="min-w-0">
         <p className="text-[10px] font-normal leading-[15px] text-[#0A0847]">
           &ldquo;I can do all things through Christ who strengthens me.&rdquo;
         </p>

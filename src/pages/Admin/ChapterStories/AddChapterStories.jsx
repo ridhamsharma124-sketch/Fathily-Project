@@ -242,7 +242,7 @@ export default function AddChapterStoryPage() {
   const hasImage = form.image && !imgError;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 sm:p-6">
       {/* Hidden inputs */}
       <input type="file" ref={imageRef} accept="image/png,image/jpeg" onChange={handleImage} className="hidden" />
       <input type="file" ref={audioInputRef} accept="audio/*" onChange={handleAudioInput} className="hidden" />
@@ -285,7 +285,7 @@ export default function AddChapterStoryPage() {
               ))}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <Label>Book</Label>
                 <SelectField value={form.book} onChange={(v) => set("book", v)} options={BOOKS[form.testament]} />

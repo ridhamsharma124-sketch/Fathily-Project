@@ -161,7 +161,7 @@ export default function RolesPermissionsPage() {
   if (!draft) return null;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
@@ -191,7 +191,7 @@ export default function RolesPermissionsPage() {
               key={r.id}
               type="button"
               onClick={() => setSelectedId(r.id)}
-              className={`text-left rounded-lg border p-6 flex items-start gap-4 transition-colors cursor-pointer ${
+              className={`text-left rounded-lg border p-4 flex items-start gap-4 transition-colors cursor-pointer sm:p-6 ${
                 active ? "bg-[#F1F0F0] border-[#D9D9D9]" : "bg-white border-[#E2DFFC] hover:bg-gray-50"
               }`}
             >
@@ -226,7 +226,7 @@ export default function RolesPermissionsPage() {
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_440px] gap-6 items-start">
         {/* Permissions Matrix */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-5 sm:p-6">
           <h3 className="text-base font-semibold text-[#0A0847]">Permissions Matrix</h3>
 
           <div className="overflow-x-auto">
@@ -288,7 +288,7 @@ export default function RolesPermissionsPage() {
         </div>
 
         {/* Edit Role */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 flex flex-col min-h-[600px]">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 flex flex-col min-h-0 sm:p-6 xl:min-h-[600px]">
           <h3 className="text-base font-semibold text-[#0A0847]">
             Edit Role: <span className="text-[#0A084799] font-medium">{selected.name}</span>
           </h3>

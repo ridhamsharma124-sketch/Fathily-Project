@@ -122,13 +122,13 @@ export default function LevelsSection({ mode, s, set }) {
             )}
           </div>
         </div>
-        <div className="border border-[#E2DFFC] rounded-md overflow-hidden text-xs text-[#0A0847CC]">
-          <div className="grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 bg-[#F3F7FD] font-semibold">
+        <div className="border border-[#E2DFFC] rounded-md overflow-x-auto text-xs text-[#0A0847CC]">
+          <div className="min-w-[420px] grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 bg-[#F3F7FD] font-semibold">
             <Box checked={on.length === s.passages.length} onClick={() => set({ passages: s.passages.map((p) => ({ ...p, on: on.length !== s.passages.length })) })} />
             <span>Level</span><span>Bible Passage</span><span>Questions</span>
           </div>
           {s.passages.map((p) => (
-            <div key={p.level} className="grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 border-t border-[#E2DFFC]">
+            <div key={p.level} className="min-w-[420px] grid grid-cols-[28px_1fr_1.4fr_80px] gap-2 items-center px-3 py-2.5 border-t border-[#E2DFFC]">
               <Box checked={p.on} onClick={() => setP(p.level, { on: !p.on })} />
               <span>{p.level}</span>
               <span className="font-medium">{p.passage}</span>
@@ -136,7 +136,7 @@ export default function LevelsSection({ mode, s, set }) {
                 className="w-14 h-8 border border-[#E2DFFC] rounded text-center outline-none focus:border-[#001984]" />
             </div>
           ))}
-          <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#E2DFFC] font-semibold text-[#0A0847]">
+          <div className="min-w-[420px] flex items-center justify-between px-4 py-2.5 border-t border-[#E2DFFC] font-semibold text-[#0A0847]">
             Total Questions <Total total={total} count={s.count} />
           </div>
         </div>

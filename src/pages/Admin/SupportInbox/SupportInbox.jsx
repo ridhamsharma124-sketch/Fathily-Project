@@ -387,9 +387,9 @@ export default function SupportInbox() {
 
   return (
     <div className="min-h-screen w-full bg-[#F8FAFC] font-[Inter] text-[#0A0847]">
-      <div className="w-full min-w-0 space-y-6 px-5 py-6">
+      <div className="w-full min-w-0 space-y-6 px-4 py-6 sm:px-5">
         {/* ================= PAGE HEADER ================= */}
-        <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
           <div>
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
               Support Inbox &amp; Settings
@@ -408,7 +408,7 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= STAT CARDS ================= */}
-        <div className="grid grid-cols-[repeat(4,minmax(0,1fr))] gap-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-[repeat(4,minmax(0,1fr))]">
           {STATS.map((stat) => (
             <div
               key={stat.label}
@@ -438,8 +438,8 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= SEARCH + FILTER ================= */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="relative w-[408px]">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="relative w-full sm:w-[408px]">
             <LuSearch
               size={17}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
@@ -468,7 +468,7 @@ export default function SupportInbox() {
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`flex h-[34px] w-[130px] cursor-pointer items-center justify-center rounded-[7.47px] text-[12px] font-medium transition-colors ${
+              className={`flex h-[34px] w-full cursor-pointer items-center justify-center rounded-[7.47px] text-[12px] font-medium transition-colors sm:w-[130px] ${
                 activeTab === tab
                   ? "border border-[#001984] bg-[#001984] text-white"
                   : "border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:bg-gray-50"
@@ -483,20 +483,20 @@ export default function SupportInbox() {
         <div className="flex w-full flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-5">
           {/* bulk actions */}
           <div className="flex flex-wrap items-center gap-3">
-            <Select id="bulk-assign" className="w-[130px]" selectClass={bulkSelectClass}>
+            <Select id="bulk-assign" className="w-full sm:w-[130px]" selectClass={bulkSelectClass}>
               <option>Assign</option>
               <option>Maya</option>
               <option>Peter</option>
               <option>Alex</option>
             </Select>
-            <Select id="bulk-resolve" className="w-[130px]" selectClass={bulkSelectClass}>
+            <Select id="bulk-resolve" className="w-full sm:w-[130px]" selectClass={bulkSelectClass}>
               <option>Mark Resolved</option>
               <option>Mark Open</option>
               <option>Mark Waiting</option>
             </Select>
             <button
               type="button"
-              className="flex h-[36px] w-[130px] cursor-pointer items-center justify-center rounded-[7.47px] border border-[#D23033] bg-white px-3 text-[12px] font-medium text-[#D23033] transition-colors hover:bg-[#FEF2F2]"
+              className="flex h-[36px] w-full cursor-pointer items-center justify-center rounded-[7.47px] border border-[#D23033] bg-white px-3 text-[12px] font-medium text-[#D23033] transition-colors hover:bg-[#FEF2F2] sm:w-[130px]"
             >
               Delete / Archive
             </button>
@@ -600,7 +600,7 @@ export default function SupportInbox() {
         {/* ================= SETTINGS ================= */}
         <div className="w-full rounded-[8px] border border-[#E2DFFC] bg-white px-5 pb-6 pt-0">
           {/* tab bar — 4 equal columns, full-width divider, underline per tab */}
-          <div className="grid w-full grid-cols-[repeat(4,minmax(0,1fr))] border-b-[2px] border-[#E8E8E8]">
+          <div className="grid w-full grid-cols-2 border-b-[2px] border-[#E8E8E8] sm:grid-cols-[repeat(4,minmax(0,1fr))]">
             {SETTINGS_TABS.map((tab) => (
               <button
                 key={tab}
@@ -624,7 +624,7 @@ export default function SupportInbox() {
           </div>
 
           {/* settings columns — each one is a bordered card */}
-          <div className="mt-6 grid grid-cols-[repeat(4,minmax(0,1fr))] gap-6 2xl:gap-10">
+          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-[repeat(4,minmax(0,1fr))] 2xl:gap-10">
             {/* ---- COLUMN 1: General (Help Center Enabled — navy border) ---- */}
             <div id="settings-general" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "General" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
               <div className="flex items-center justify-between gap-3 border-b border-[#E2DFFC] pb-3">

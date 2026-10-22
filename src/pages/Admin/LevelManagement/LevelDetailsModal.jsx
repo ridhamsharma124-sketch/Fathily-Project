@@ -158,7 +158,7 @@ export default function LevelDetailsModal({
       className="fixed inset-0 z-[9998] bg-black/45 flex items-start justify-center overflow-y-auto p-4 sm:p-8 font-[Inter]"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] lg:ml-60 p-6 space-y-6">
+      <div className="bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] lg:ml-60 p-4 space-y-6 sm:p-6">
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -238,7 +238,7 @@ export default function LevelDetailsModal({
         </div>
 
         {/* Questions */}
-        <div className="rounded-lg p-6 bg-[#F3F2FF] border border-[#E2DFFC]">
+        <div className="rounded-lg p-4 bg-[#F3F2FF] border border-[#E2DFFC] sm:p-6">
           <div className="flex items-center justify-between mb-4 pl-10">
             <h3 className="text-base font-semibold text-[#0A0847CC]">
               Questions in this level ({questions.length})
@@ -345,7 +345,7 @@ export default function LevelDetailsModal({
 
         {/* Quick actions */}
         <Section title="Quick Actions">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <QuickBtn onClick={onDuplicate}><CopyIconSvg size={14} /> Duplicate Level</QuickBtn>
             <QuickBtn onClick={() => console.log("move level", level.id)}><DirectionIconSvg size={18} /> Move Level</QuickBtn>
             <QuickBtn onClick={() => onPreview?.(level)}><FiEye size={14} /> Preview Level</QuickBtn>

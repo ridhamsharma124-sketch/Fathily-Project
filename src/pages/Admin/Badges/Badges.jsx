@@ -135,9 +135,9 @@ export default function Badges() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="w-full px-7 py-6">
+      <div className="w-full px-4 py-6 sm:px-7">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
-          <div className="flex items-start justify-between gap-6">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
             <div>
               <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
                 Badges Management
@@ -149,7 +149,7 @@ export default function Badges() {
             <button
               type="button"
               onClick={() => navigate("/admin/badges/add")}
-              className="flex h-[42px] w-[163px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#001984] text-[16px] font-semibold text-white transition-colors hover:bg-[#001984]/90"
+              className="flex h-[42px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#001984] text-[16px] font-semibold text-white transition-colors hover:bg-[#001984]/90 sm:w-[163px]"
             >
               <LuPlus size={16} />
               Add New Badge
@@ -157,7 +157,7 @@ export default function Badges() {
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="relative w-[407px]">
+            <div className="relative w-full sm:w-[407px]">
               <LuSearch
                 size={15}
                 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
@@ -171,7 +171,7 @@ export default function Badges() {
               />
             </div>
 
-            <div className="flex items-center gap-[10px]">
+            <div className="flex w-full flex-wrap items-center gap-[10px] sm:w-auto">
               {[
                 { id: "badge-tier", w: "w-[129px]", options: ["All Tiers", "Seed", "Sprout", "Tree"] },
                 {
@@ -205,8 +205,8 @@ export default function Badges() {
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
-            <div className="px-[13px] pt-[13px]">
+          <div className="overflow-x-auto rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
+            <div className="min-w-[880px] px-[13px] pt-[13px]">
               <table className="w-full min-w-[880px] border-collapse">
                 <thead>
                   <tr className="h-[50px] bg-[#EFEDF8]">

@@ -298,7 +298,7 @@ export default function HelpCenter() {
   });
 
   return (
-    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-6 font-[Inter]">
+    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
@@ -311,7 +311,7 @@ export default function HelpCenter() {
         </div>
         <button
           onClick={() => setModal({ mode: "create", article: null })}
-          className="flex h-[43px] w-[152px] cursor-pointer items-center justify-center gap-[8px] self-start rounded-[8px] bg-[#001984] text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:self-auto"
+          className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] self-start rounded-[8px] bg-[#001984] text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[152px] sm:self-auto"
         >
           <LuPlus size={20} strokeWidth={1.6} />
           New Article
@@ -479,7 +479,7 @@ export default function HelpCenter() {
           </h2>
           <button
             type="button"
-            className="flex h-[42px] w-[166px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-semibold leading-none text-[#0A0847] transition-colors hover:bg-gray-50"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-semibold leading-none text-[#0A0847] transition-colors hover:bg-gray-50 sm:w-[166px]"
           >
             <LuPlus size={16} />
             Add Category

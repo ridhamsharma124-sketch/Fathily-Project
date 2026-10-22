@@ -261,7 +261,7 @@ export default function UserManagementPage() {
 };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div>
         <h1 className="text-xl font-semibold text-[#0A0847]">User Management</h1>
@@ -314,7 +314,7 @@ export default function UserManagementPage() {
       </div>
 
       {/* Table card */}
-      <div className="bg-white rounded-lg border border-[#E2DFFC] p-5 space-y-4">
+      <div className="bg-white rounded-lg border border-[#E2DFFC] p-3 space-y-4 sm:p-5">
         {selected.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center gap-4">

@@ -269,7 +269,7 @@ export default function DailyVersesPage() {
   });
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header Title Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

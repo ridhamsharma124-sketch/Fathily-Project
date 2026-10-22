@@ -15,15 +15,15 @@ export default function AuthCard({
       />
 
     
-      <div className="relative flex h-full max-h-full w-full flex-col overflow-y-auto rounded-[20px] bg-white px-7 py-7 shadow-[0_10px_40px_rgba(0,0,0,0.12)] lg:px-20">
+      <div className="relative flex h-full max-h-full w-full flex-col overflow-y-auto rounded-[20px] bg-white px-5 py-6 shadow-[0_10px_40px_rgba(0,0,0,0.12)] sm:px-7 sm:py-7 lg:px-20">
         <div className="my-auto w-full">
           {title && (
-            <h2 className="mb-1 text-[32px] font-semibold leading-[48px] text-[#0A0847]">
+            <h2 className="mb-1 text-[26px] font-semibold leading-[36px] text-[#0A0847] sm:text-[32px] sm:leading-[48px]">
               {title}
             </h2>
           )}
           {subtitle && (
-            <p className="mb-8 text-sm font-medium leading-[21px] text-[#0A0847]/60">
+            <p className="mb-6 text-sm font-medium leading-[21px] text-[#0A0847]/60 sm:mb-8">
               {subtitle}
             </p>
           )}

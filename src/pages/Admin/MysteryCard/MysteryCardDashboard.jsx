@@ -30,8 +30,10 @@ const CARD = "rounded-[8px] border border-[#E2DFFC] bg-white";
 const ICON = { xs: 12, sm: 14, md: 16, lg: 28 };
 const ICON_STROKE = 1.5;
 
+/* Column widths: Card column is minmax(200px,1fr) so the thumbnail + title never get squeezed.
+   Table min width is set to match, so the table scrolls sideways instead of crushing columns. */
 const GRID =
-  "grid items-center gap-x-[40px] grid-cols-[minmax(0,1fr)_105px_60px_144px_86px_62px_140px]";
+  "grid items-center gap-x-[24px] grid-cols-[minmax(200px,1fr)_105px_80px_144px_86px_62px_140px]";
 
 const TXT = "text-[#0A0847CC]";
 
@@ -117,13 +119,14 @@ function StatCard({ stat }) {
 }
 
 
+/* Full width on mobile (2-per-row grid), fixed 111px from sm up. */
 function FilterSelect({ label }) {
   return (
     <button
       type="button"
-      className={`flex h-[38px] w-[111px] cursor-pointer items-center justify-between rounded-[7.5px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium ${INK}`}
+      className={`flex h-[38px] w-full cursor-pointer items-center justify-between rounded-[7.5px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium sm:w-[111px] ${INK}`}
     >
-      <span className="opacity-80">{label}</span>
+      <span className="truncate opacity-80">{label}</span>
       <LuChevronDown size={ICON.sm} strokeWidth={ICON_STROKE} className="shrink-0" />
     </button>
   );
@@ -254,7 +257,7 @@ export default function MysteryCardDashboard() {
   const navigate = useNavigate();
 
   return (
-    <div className={`min-h-screen w-full p-6 font-[Inter] ${PAGE_BG}`}>
+    <div className={`min-h-screen w-full p-4 font-[Inter] sm:p-6 ${PAGE_BG}`}>
       <div className="w-full min-w-0">
         <div className="flex flex-wrap items-start justify-between gap-[16px]">
           <div>
@@ -274,14 +277,17 @@ export default function MysteryCardDashboard() {
           </button>
         </div>
 
-        <div className="mt-6 grid grid-cols-4 gap-[16px]">
+        <div className="mt-6 grid grid-cols-1 gap-[16px] sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <StatCard key={s.label} stat={s} />
           ))}
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-[10px]">
-          <div className="flex h-[42px] w-[408px] max-w-full items-center gap-[12px] rounded-[7.5px] border border-[#E2DFFC] bg-white px-[12px]">
+        {/* Search + filters
+            Mobile: search full width, then Testament | Activity, then Status | Reset (2-column grid).
+            sm+: search left, filters and Reset grouped right in one row. */}
+        <div className="mt-6 flex w-full flex-col gap-[10px] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="flex h-[42px] w-full items-center gap-[12px] rounded-[7.5px] border border-[#E2DFFC] bg-white px-[12px] sm:w-[408px] sm:max-w-full">
             <LuSearch size={ICON.md} strokeWidth={ICON_STROKE} className={`shrink-0 ${INK} opacity-60`} />
             <input
               type="text"
@@ -290,13 +296,13 @@ export default function MysteryCardDashboard() {
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-[10px]">
+          <div className="grid w-full grid-cols-2 gap-[10px] sm:flex sm:w-auto sm:flex-wrap sm:items-center">
             <FilterSelect label="Testament" />
             <FilterSelect label="Activity" />
             <FilterSelect label="Status" />
             <button
               type="button"
-              className="h-[38px] w-[100px] cursor-pointer rounded-[7.5px] text-[12px] font-medium"
+              className="h-[38px] w-full cursor-pointer rounded-[7.5px] text-[12px] font-medium sm:w-[100px]"
               style={{ background: "#E6E7F7", color: DEEP_NAVY }}
             >
               Reset
@@ -305,69 +311,71 @@ export default function MysteryCardDashboard() {
         </div>
 
         <div
-          className={`${CARD} mt-5 flex min-h-[508px] w-full flex-col overflow-hidden p-[14px]`}
+          className={`${CARD} mt-5 flex min-h-[508px] w-full flex-col p-[14px]`}
           style={{ borderColor: BORDER }}
         >
-          <div
-            className={`${GRID} shrink-0 rounded-[4px] px-5 text-left text-[14px] font-medium whitespace-nowrap ${TXT}`}
-            style={{ height: 48, background: "#F3F4FC" }}
-          >
-            <span>Card</span>
-            <span>Category</span>
-            <span>Testament</span>
-            <span>Appears In</span>
-            <span>Reward</span>
-            <span className="text-center">Status</span>
-            <span className="ml-auto w-[112px] text-center">Actions</span>
-          </div>
-
-          {ROWS.map((r) => (
+          <div className="w-full overflow-x-auto">
             <div
-              key={r.title}
-              className={`${GRID} shrink-0 border-b border-[#EEF0F8] px-5`}
-              style={{ height: 68 }}
+              className={`${GRID} min-w-[1000px] shrink-0 rounded-[4px] px-5 text-left text-[14px] font-medium whitespace-nowrap ${TXT}`}
+              style={{ height: 48, background: "#F3F4FC" }}
             >
-              <div className="flex min-w-0 items-center gap-[10px]">
-                <img
-                  src={r.image}
-                  alt=""
-                  className="h-[38px] w-[38px] shrink-0 rounded-[8px] bg-[#F1F2F8] object-cover"
-                />
-                <div className="min-w-0">
-                  <p className={`truncate text-[12px] leading-none font-medium ${TXT}`}>{r.title}</p>
-                  <p className={`mt-1 truncate text-[10px] leading-none font-medium ${INK} opacity-60`}>{r.subtitle}</p>
+              <span>Card</span>
+              <span>Category</span>
+              <span>Testament</span>
+              <span>Appears In</span>
+              <span>Reward</span>
+              <span className="text-center">Status</span>
+              <span className="w-[112px] text-center">Actions</span>
+            </div>
+
+            {ROWS.map((r) => (
+              <div
+                key={r.title}
+                className={`${GRID} min-w-[1000px] shrink-0 border-b border-[#EEF0F8] px-5`}
+                style={{ height: 68 }}
+              >
+                <div className="flex min-w-0 items-center gap-[10px]">
+                  <img
+                    src={r.image}
+                    alt=""
+                    className="h-[38px] w-[38px] shrink-0 rounded-[8px] bg-[#F1F2F8] object-cover"
+                  />
+                  <div className="min-w-0">
+                    <p className={`truncate text-[12px] leading-none font-medium ${TXT}`}>{r.title}</p>
+                    <p className={`mt-1 truncate text-[10px] leading-none font-medium ${INK} opacity-60`}>{r.subtitle}</p>
+                  </div>
+                </div>
+
+                <span className="flex justify-start">
+                  <CategoryBadge value={r.category} />
+                </span>
+
+                <span className="flex justify-center">
+                  <TestamentBadge value={r.testament} />
+                </span>
+
+                <div className="flex flex-wrap items-center justify-center gap-[4px]">
+                  {r.appearsIn.map((a) => (
+                    <span key={a} className={CHIP}>
+                      {a}
+                    </span>
+                  ))}
+                </div>
+
+                <span className={`text-left text-[12px] font-medium whitespace-nowrap ${TXT}`}>
+                  {r.reward}
+                </span>
+
+                <span className="flex justify-center">
+                  <StatusBadge value={r.status} />
+                </span>
+
+                <div className="flex justify-end">
+                  <ActionGroup title={r.title} onEdit={() => navigate("/admin/mystery-card/edit")} />
                 </div>
               </div>
-
-              <span className="flex justify-start">
-                <CategoryBadge value={r.category} />
-              </span>
-
-              <span className="flex justify-center">
-                <TestamentBadge value={r.testament} />
-              </span>
-
-              <div className="flex flex-nowrap items-center justify-center gap-[4px]">
-                {r.appearsIn.map((a) => (
-                  <span key={a} className={CHIP}>
-                    {a}
-                  </span>
-                ))}
-              </div>
-
-              <span className={`text-left text-[12px] font-medium whitespace-nowrap ${TXT}`}>
-                {r.reward}
-              </span>
-
-              <span className="flex justify-center">
-                <StatusBadge value={r.status} />
-              </span>
-
-              <div className="flex justify-end">
-                <ActionGroup title={r.title} onEdit={() => navigate("/admin/mystery-card/edit")} />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-[10px] px-2 pt-4 pb-7">
             <div className="flex items-center gap-2">

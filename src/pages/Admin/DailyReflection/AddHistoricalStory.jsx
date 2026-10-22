@@ -343,7 +343,7 @@ function AudioPlayer({ time, fill, rightTime = false, s1 = false }) {
 const headerOutlineBtn =
   "flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[12px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]";
 const headerPrimaryBtn =
-  "flex h-[42px] w-[160px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition hover:bg-[#001266]";
+  "flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition hover:bg-[#001266] sm:w-[160px]";
 
 function TopHeader({ step, setStep }) {
   return (
@@ -372,7 +372,7 @@ function TopHeader({ step, setStep }) {
       </div>
 
       {/* Stepper */}
-      <div className="flex h-[32px] items-center gap-[12px]">
+      <div className="flex h-auto min-h-[32px] flex-wrap items-center gap-[12px]">
         <div className="flex items-center gap-[8px]">
           <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-[#001984] text-[14px] font-semibold text-white">
             1
@@ -381,7 +381,7 @@ function TopHeader({ step, setStep }) {
             Homepage & Story
           </span>
         </div>
-        <span className="h-px w-[135px] shrink-0 bg-[#0019841A]" />
+        <span className="h-px w-[40px] shrink-0 bg-[#0019841A] sm:w-[135px]" />
         <div className="flex items-center gap-[8px]">
           <span
             className={`flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full text-[14px] font-semibold transition ${
@@ -446,8 +446,8 @@ function StepOne({ v, upd, setStep, navigate }) {
           </div>
         </div>
 
-        <div className="mt-[20px] flex flex-wrap gap-[40px]">
-          <Field label="Featured Date:" className="w-[170px]" labelClassName={s1Label}>
+        <div className="mt-[20px] flex flex-wrap gap-[16px] sm:gap-[40px]">
+          <Field label="Featured Date:" className="w-full sm:w-[170px]" labelClassName={s1Label}>
             <div className="relative">
               <PiCalendarBlank
                 size={15}
@@ -460,7 +460,7 @@ function StepOne({ v, upd, setStep, navigate }) {
               />
             </div>
           </Field>
-          <Field label="Start Time:" className="w-[156px]" labelClassName={s1Label}>
+          <Field label="Start Time:" className="w-full sm:w-[156px]" labelClassName={s1Label}>
             <div className="relative">
               <PiClock
                 size={15}
@@ -480,7 +480,7 @@ function StepOne({ v, upd, setStep, navigate }) {
               </button>
             </div>
           </Field>
-          <Field label="End Time:" className="w-[156px]" labelClassName={s1Label}>
+          <Field label="End Time:" className="w-full sm:w-[156px]" labelClassName={s1Label}>
             <div className="relative">
               <PiClock
                 size={15}
@@ -493,7 +493,7 @@ function StepOne({ v, upd, setStep, navigate }) {
               />
             </div>
           </Field>
-          <Field label="Time Zone:" className="w-[225px]" labelClassName={s1Label}>
+          <Field label="Time Zone:" className="w-full sm:w-[225px]" labelClassName={s1Label}>
             <S1Select
               height="h-[52px]"
               arrowRight="right-[30px]"
@@ -511,7 +511,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           </Field>
         </div>
 
-        <div className="mt-[20px] flex flex-wrap gap-[24px]">
+        <div className="mt-[20px] flex flex-wrap gap-[16px] sm:gap-[24px]">
           <S1Toggle label="Show on Homepage" checked={v.showHomepage} onChange={upd("showHomepage")} />
           <S1Toggle label="Show NEW Badge" checked={v.newBadge} onChange={upd("newBadge")} />
           <S1Toggle label="Keep Available in Archive" checked={v.archive} onChange={upd("archive")} />
@@ -655,7 +655,7 @@ function StepOne({ v, upd, setStep, navigate }) {
             <S1RichTextBox value={v.summary} onChange={upd("summary")} />
           </Field>
           <div className="flex flex-col gap-[16px]">
-            <div className="grid grid-cols-2 gap-[16px]">
+            <div className="grid grid-cols-1 gap-[16px] sm:grid-cols-2">
               <Field label="Verse Reference:" labelClassName={s1Label}>
                 <input value={v.verseRef} onChange={upd("verseRef")} className={s1Input} />
               </Field>
@@ -741,7 +741,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           <h3 className="text-[16px] font-semibold text-[#0A0847]">Story Audio</h3>
           <div className="mt-[14px]">
             <p className={s1Label}>File Actions:</p>
-            <div className="grid grid-cols-3 gap-[12px]">
+            <div className="grid grid-cols-1 gap-[12px] sm:grid-cols-3">
               <button type="button" className={audioActionBtn}>
                 <PiUploadSimple size={18} />
                 Upload
@@ -762,12 +762,12 @@ function StepOne({ v, upd, setStep, navigate }) {
 
           <AudioPlayer s1 time="0:30/2:48" fill="40%" />
 
-          <div className="mt-[14px] flex items-center justify-between gap-[10px]">
+          <div className="mt-[14px] flex flex-wrap items-center justify-between gap-[10px]">
             <S1Checkbox label="Transcript / Captions" labelClass="whitespace-nowrap" checked={v.transcript1} onChange={upd("transcript1")} />
             <div className="flex shrink-0 items-center gap-[10px]">
               <span className="text-[12px] font-semibold text-[#0A0847CC]">Playback Speed:</span>
               <S1Select
-                className="w-[100px]"
+                className="w-full sm:w-[100px]"
                 value={v.playerSpeed1}
                 onChange={upd("playerSpeed1")}
                 options={["0.5x", "1.0x", "1.5x", "2.0x"]}
@@ -905,7 +905,7 @@ function StepTwo({ v, upd, setStep }) {
                 className="hidden"
                 onChange={handleAudioUpload}
               />
-              <div className="grid grid-cols-4 gap-[8px]">
+              <div className="grid grid-cols-2 gap-[8px] sm:grid-cols-4">
                 <button
                   type="button"
                   onClick={() => audioFileRef.current?.click()}
@@ -956,7 +956,7 @@ function StepTwo({ v, upd, setStep }) {
               <div className="flex shrink-0 items-center gap-[8px]">
                 <span className="text-[11px] text-[#5B5F8C]">Playback Speed:</span>
                 <SelectBox
-                  className="w-[72px]"
+                  className="w-full sm:w-[72px]"
                   compact
                   value={v.playerSpeed2}
                   onChange={upd("playerSpeed2")}
@@ -1027,7 +1027,7 @@ function StepTwo({ v, upd, setStep }) {
               </Field>
             </div>
 
-            <div className="mt-[14px] grid grid-cols-2 gap-[16px]">
+            <div className="mt-[14px] grid grid-cols-1 gap-[16px] sm:grid-cols-2">
               <div className="flex items-center gap-[10px]">
                 <Toggle label="Show Only Once" checked={v.showOnlyOnce} onChange={upd("showOnlyOnce")} />
               </div>
@@ -1119,7 +1119,7 @@ function StepTwo({ v, upd, setStep }) {
                 <img src={clockIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 <button
                   type="button"
-                  className="flex h-[35px] w-[95px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
+                  className="flex h-[35px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC] sm:w-[95px]"
                 >
                   <img src={speedIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                   {v.playerSpeed2}
@@ -1182,7 +1182,7 @@ function StepTwo({ v, upd, setStep }) {
             <div className="mt-[16px]">
               <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">Status:</p>
               <SelectBox
-                className="w-[240px]"
+                className="w-full sm:w-[240px]"
                 value={v.status}
                 onChange={upd("status")}
                 options={["Scheduled", "Live", "Draft"]}
@@ -1262,7 +1262,7 @@ function StepTwo({ v, upd, setStep }) {
       <div className="flex flex-wrap items-center justify-between gap-[16px]">
         <button
           onClick={() => setStep(1)}
-          className="flex h-[43px] w-[197px] cursor-pointer items-center justify-center gap-[6px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
+          className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[6px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-[197px]"
         >
           Back
         </button>
@@ -1278,7 +1278,7 @@ function StepTwo({ v, upd, setStep }) {
             <img src={floppyIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
             Save draft
           </button>
-          <button className="flex h-[46px] w-[260px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68]">
+          <button className="flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68] sm:w-[260px]">
             <PiCalendarBlank size={16} />
             Schedule Story
           </button>
@@ -1365,7 +1365,7 @@ export default function AddHistoricalStory() {
       setV((p) => ({ ...p, [key]: e && e.target ? e.target.value : e }));
 
   return (
-    <div className="flex min-h-screen flex-col gap-[16px] bg-[#F8FAFC] p-6 font-[Inter]">
+    <div className="flex min-h-screen flex-col gap-[16px] bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       <TopHeader step={step} setStep={setStep} />
       {step === 1 ? (
         <StepOne v={v} upd={upd} setStep={setStep} navigate={navigate} />

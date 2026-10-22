@@ -34,7 +34,7 @@ export default function Login() {
           required
         />
 
-        <div className="mt-4 flex h-[18px] items-center justify-between">
+        <div className="mt-4 flex min-h-[18px] flex-wrap items-center justify-between gap-2">
           <label className="flex cursor-pointer items-center gap-2 text-xs font-semibold leading-[18px] text-[#0A0847]/60">
             <input
               type="checkbox"

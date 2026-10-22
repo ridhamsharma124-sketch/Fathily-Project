@@ -128,7 +128,7 @@ export default function BibleBooksPage() {
   const deleteBook = (id) => setBooks((prev) => prev.filter((b) => b.id !== id));
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -137,7 +137,7 @@ export default function BibleBooksPage() {
             Manage all Bible books and their user page content.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             className="px-5 py-2.5 bg-white border border-[#001984] text-[#001984] rounded-md text-xs font-semibold flex items-center gap-2 hover:bg-[#EEF2FF] transition-colors cursor-pointer"
@@ -164,7 +164,7 @@ export default function BibleBooksPage() {
 
       {/* Tabs + filters */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-        <div className="flex items-center gap-6 text-xs font-medium">
+        <div className="flex items-center gap-6 overflow-x-auto text-xs font-medium">
           {tabs.map((t) => {
             const active = tab === t.label;
             return (
@@ -189,7 +189,7 @@ export default function BibleBooksPage() {
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               placeholder="Search topics..."
-              className="w-64 bg-white border border-[#E2DFFC] rounded-md pl-9 pr-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984]"
+              className="w-full bg-white border border-[#E2DFFC] rounded-md pl-9 pr-3 py-3 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] sm:w-64"
             />
           </div>
           <Dropdown value={testamentFilter} onChange={(v) => { setTestamentFilter(v); setPage(1); }} options={["Old Testament", "New Testament"]} allLabel="All Testaments" />

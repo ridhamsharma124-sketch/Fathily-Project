@@ -102,7 +102,7 @@ const MediaUpload = ({
       >
         {/* Column 1: narrow heading + upload */}
         <div>
-          <div className="max-w-[260px]">
+          <div className="max-w-full sm:max-w-[260px]">
             <CardHeader icon={icon} title={title} desc={desc} />
           </div>
 
@@ -255,7 +255,7 @@ export default function SiteSettingsPage() {
   };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -293,7 +293,7 @@ export default function SiteSettingsPage() {
         <Card>
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_200px] gap-6">
             <div>
-              <div className="max-w-[260px]">
+              <div className="max-w-full sm:max-w-[260px]">
                 <CardHeader
                   icon={FiBookOpen}
                   title="Add Verse to Sign-In Page"

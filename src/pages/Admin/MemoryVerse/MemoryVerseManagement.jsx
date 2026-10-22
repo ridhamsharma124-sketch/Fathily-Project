@@ -137,7 +137,7 @@ const PAGE_NUMBERS = [1, 2, 3, 4, 5];
 const PAGE_SIZES = ["10", "25", "50", "100"];
 
 const COLS =
-  "grid grid-cols-[minmax(200px,1.4fr)_110px_155px_70px_105px_95px_210px] items-center";
+  "grid min-w-[960px] grid-cols-[minmax(200px,1.4fr)_110px_155px_70px_105px_95px_210px] items-center";
 
 
 function FilterGroup({ label, value, onChange, options }) {
@@ -222,7 +222,7 @@ function StatCard({ stat }) {
       >
         <img src={stat.icon} alt="" className="h-[28px] w-auto" />
       </span>
-      <div className="flex w-[138px] flex-col gap-[8px]">
+      <div className="flex w-full max-w-[138px] flex-col gap-[8px]">
         <p className="text-[14px] font-medium text-[#0A0847]/80">{stat.label}</p>
         <p className="text-[24px] leading-none font-bold text-[#001984]">{stat.value}</p>
       </div>
@@ -256,7 +256,7 @@ export default function MemoryVerseManagement() {
 
   return (
     <div className={`${pageShellClass} min-h-[calc(100vh-72px)] w-full min-w-0`}>
-      <div className="flex w-full min-w-0 flex-col gap-[24px] p-6">
+      <div className="flex w-full min-w-0 flex-col gap-[24px] p-4 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-[16px]">
           <div className="flex flex-col gap-[8px]">
             <h1 className="text-[22px] leading-none font-semibold text-[#0A0847]">
@@ -276,14 +276,14 @@ export default function MemoryVerseManagement() {
           </button>
         </div>
 
-        <div className="grid w-full grid-cols-4 gap-[16px]">
+        <div className="grid w-full grid-cols-1 gap-[16px] sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <StatCard key={s.label} stat={s} />
           ))}
         </div>
 
         <div className="flex flex-wrap items-end justify-between gap-[16px]">
-          <div className="relative w-[234px] shrink-0">
+          <div className="relative w-full shrink-0 sm:w-[234px]">
             <img
               src={searchIcon}
               alt=""
@@ -328,7 +328,7 @@ export default function MemoryVerseManagement() {
           </div>
         </div>
 
-        <div className="w-full overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
+        <div className="w-full overflow-x-auto rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
           <div
             className={`${COLS} h-[50px] border-b-[0.75px] border-[#E2DFFC] bg-[#F3F7FD]`}
           >

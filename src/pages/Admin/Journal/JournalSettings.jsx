@@ -93,7 +93,7 @@ const FeatureRow = ({ icon, title, desc, children, footer }) => (
         {icon}
         <div>
           <p className="text-sm font-semibold text-[#0A0847]">{title}</p>
-          <p className="text-[11px] text-[#0A084799] font-medium mt-0.5 max-w-[260px]">{desc}</p>
+          <p className="text-[11px] text-[#0A084799] font-medium mt-0.5 max-w-full sm:max-w-[260px]">{desc}</p>
         </div>
       </div>
       <div className="shrink-0">{children}</div>
@@ -203,7 +203,7 @@ export default function JournalSettingsPage() {
   ];
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

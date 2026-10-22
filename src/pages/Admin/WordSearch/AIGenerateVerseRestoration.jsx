@@ -64,6 +64,28 @@ function Chevron() {
   );
 }
 
+/* Defined at module level (not inside VerseForm) so it isn't re-created on every render. */
+function FormSelect({ id, value, onChange, options, className = "w-full" }) {
+  return (
+    <div className={`relative ${className}`}>
+      <select
+        id={id}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className={selectCls}
+        style={{ color: VALUE }}
+      >
+        {options.map((o) => (
+          <option key={o} value={o}>
+            {o}
+          </option>
+        ))}
+      </select>
+      <Chevron />
+    </div>
+  );
+}
+
 function Toggle({ on, onChange, label, color = GREEN }) {
   return (
     <button
@@ -83,10 +105,11 @@ function Toggle({ on, onChange, label, color = GREEN }) {
   );
 }
 
-function NumberStepper({ value, onChange, label }) {
+function NumberStepper({ id, value, onChange, label }) {
   return (
     <div className="relative">
       <input
+        id={id}
         type="number"
         min="0"
         aria-label={label}
@@ -147,16 +170,17 @@ function CircleCheckFilled({ size = 14 }) {
 
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
+/* Tabs share the width on mobile; original padding from sm up. */
 function TabsRow() {
   return (
-    <div className="mt-[30px] flex items-stretch border-b" style={{ borderColor: BORDER }}>
+    <div className="mt-[30px] flex items-stretch overflow-x-auto border-b" style={{ borderColor: BORDER }}>
       {TABS.map((t) => {
         const active = t === "AI Generate";
         return (
           <button
             key={t}
             type="button"
-            className={`-mb-px px-8 pb-[18px] text-[14px] leading-none ${
+            className={`-mb-px min-w-0 flex-1 whitespace-nowrap px-2 pb-[18px] text-[14px] leading-none sm:flex-none sm:px-8 ${
               active ? "border-b-2 font-semibold" : "font-medium"
             }`}
             style={{
@@ -173,6 +197,7 @@ function TabsRow() {
 }
 
 
+/* Each row: 2-col grid on mobile (wide fields span both), original flex row from sm up. */
 function VerseForm() {
   const [verseRange, setVerseRange] = useState(VERSE_RANGE_OPTIONS[0]);
   const [translation, setTranslation] = useState(TRANSLATION_OPTIONS[0]);
@@ -188,38 +213,31 @@ function VerseForm() {
 
   const removeLevel = (lv) => setLevels((p) => p.filter((x) => x !== lv));
 
-  const Select = ({ value, onChange, options, w }) => (
-    <div className="relative" style={{ width: w }}>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className={selectCls} style={{ color: VALUE }}>
-        {options.map((o) => (<option key={o} value={o}>{o}</option>))}
-      </select>
-      <Chevron />
-    </div>
-  );
+  const row = "grid grid-cols-2 gap-x-3 gap-y-4 sm:flex sm:flex-wrap sm:items-start sm:gap-6";
 
   return (
     <div
-      className="flex w-full flex-col rounded-[7.5px] border bg-white pt-4 pr-7 pb-4 pl-[27px]"
+      className="flex w-full flex-col rounded-[7.5px] border bg-white px-4 pt-4 pb-4 sm:pr-7 sm:pl-[27px]"
       style={{ borderWidth: "0.75px", borderColor: BORDER }}
     >
-      <div className="flex items-start gap-6">
-        <div className="shrink-0" style={{ width: 190 }}>
+      <div className={`${row} items-end`}>
+        <div className="col-span-2 w-full sm:col-auto sm:w-[190px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Verse Range</label>
-          <Select value={verseRange} onChange={setVerseRange} options={VERSE_RANGE_OPTIONS} w="100%" />
+          <FormSelect value={verseRange} onChange={setVerseRange} options={VERSE_RANGE_OPTIONS} />
         </div>
-        <div className="shrink-0" style={{ width: 228 }}>
+        <div className="col-span-2 w-full sm:col-auto sm:w-[228px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Bible Translation</label>
-          <Select value={translation} onChange={setTranslation} options={TRANSLATION_OPTIONS} w="100%" />
+          <FormSelect value={translation} onChange={setTranslation} options={TRANSLATION_OPTIONS} />
         </div>
-        <div className="shrink-0" style={{ width: 163 }}>
-          <label className={`${lbl} whitespace-nowrap`} style={{ color: LABEL }}>Missing Words per Verse</label>
-          <Select value={missing} onChange={setMissing} options={MISSING_OPTIONS} w="100%" />
+        <div className="w-full sm:w-[163px] sm:shrink-0">
+          <label className={`${lbl} sm:whitespace-nowrap`} style={{ color: LABEL }}>Missing Words per Verse</label>
+          <FormSelect value={missing} onChange={setMissing} options={MISSING_OPTIONS} />
         </div>
-        <div className="shrink-0" style={{ width: 131 }}>
+        <div className="w-full sm:w-[131px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Word Bank</label>
-          <Select value={wordBank} onChange={setWordBank} options={WORD_BANK_OPTIONS} w="100%" />
+          <FormSelect value={wordBank} onChange={setWordBank} options={WORD_BANK_OPTIONS} />
         </div>
-        <div className="flex min-w-0 flex-1 items-center gap-3 pt-6">
+        <div className="col-span-2 flex min-w-0 items-center gap-3 sm:col-auto sm:flex-1 sm:pt-6">
           <span className="whitespace-nowrap text-[12px] font-semibold leading-none" style={{ color: LABEL }}>
             Preserve Verse Wording
           </span>
@@ -229,13 +247,13 @@ function VerseForm() {
 
       <div className="mt-[19px] mb-[21px] h-px w-full" style={{ backgroundColor: BORDER }} />
 
-      <div className="flex items-start gap-6">
-        <div className="shrink-0" style={{ width: 169 }}>
+      <div className={row}>
+        <div className="w-full sm:w-[169px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Number of Puzzles</label>
-          <Select value={count} onChange={setCount} options={PUZZLE_COUNT_OPTIONS} w="100%" />
+          <FormSelect value={count} onChange={setCount} options={PUZZLE_COUNT_OPTIONS} />
         </div>
 
-        <div className="shrink-0" style={{ width: 133 }}>
+        <div className="w-full sm:w-[133px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Grid Size</label>
           <div className="relative">
             <select
@@ -251,9 +269,12 @@ function VerseForm() {
           </div>
         </div>
 
-        <div className="shrink-0" style={{ width: 335 }}>
+        <div className="col-span-2 w-full sm:col-auto sm:w-[335px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>New Levels</label>
-          <div className="flex h-[40px] w-full items-center gap-2 rounded-[7.47px] border bg-white px-3" style={{ borderColor: BORDER }}>
+          <div
+            className="flex min-h-[40px] w-full flex-wrap items-center gap-2 rounded-[7.47px] border bg-white px-3 py-[6px]"
+            style={{ borderColor: BORDER }}
+          >
             {levels.map((lv) => (
               <span
                 key={lv}
@@ -269,10 +290,10 @@ function VerseForm() {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="col-span-2 min-w-0 sm:col-auto sm:flex-1">
           <label className={lbl} style={{ color: LABEL }}>Puzzles per Level</label>
           <div
-            className="flex h-[40px] items-center gap-6 rounded-[7.47px] border bg-white px-3 text-[12px] font-medium leading-none"
+            className="flex min-h-[40px] flex-wrap items-center gap-x-6 gap-y-1 rounded-[7.47px] border bg-white px-3 py-2 text-[12px] font-medium leading-none sm:py-0"
             style={{ borderColor: BORDER, color: VALUE }}
           >
             {levels.map((lv) => (
@@ -284,25 +305,35 @@ function VerseForm() {
 
       <div className="mt-[19px] mb-[21px] h-px w-full" style={{ backgroundColor: BORDER }} />
 
-      <div className="flex items-start gap-6">
-        <div className="flex shrink-0 items-center gap-3.5 pt-[6px]" style={{ width: 333 }}>
+      <div className={row}>
+        <div className="col-span-2 flex w-full items-center gap-3.5 sm:col-auto sm:w-[333px] sm:shrink-0 sm:pt-[6px]">
           <Toggle on={aiImage} onChange={setAiImage} label="Generate a unique AI image for every puzzle" />
-          <span className="text-[12px] font-semibold leading-none" style={{ color: LABEL }}>
+          <span className="text-[12px] font-semibold leading-[1.3]" style={{ color: LABEL }}>
             Generate a unique AI image for every puzzle
           </span>
         </div>
 
-        <div className="shrink-0" style={{ width: 202 }}>
+        <div className="w-full sm:w-[202px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>AI Image Style</label>
-          <Select value={imageStyle} onChange={setImageStyle} options={IMAGE_STYLE_OPTIONS} w={173} />
+          <FormSelect
+            value={imageStyle}
+            onChange={setImageStyle}
+            options={IMAGE_STYLE_OPTIONS}
+            className="w-full sm:w-[173px]"
+          />
         </div>
 
-        <div className="shrink-0" style={{ width: 178 }}>
+        <div className="w-full sm:w-[178px] sm:shrink-0">
           <label className={lbl} style={{ color: LABEL }}>Image Safety</label>
-          <Select value={safety} onChange={setSafety} options={SAFETY_OPTIONS} w={149} />
+          <FormSelect
+            value={safety}
+            onChange={setSafety}
+            options={SAFETY_OPTIONS}
+            className="w-full sm:w-[149px]"
+          />
         </div>
 
-        <div className="flex min-w-0 flex-1 items-center gap-6 pt-[6px]">
+        <div className="col-span-2 flex min-w-0 items-center gap-6 sm:col-auto sm:flex-1 sm:pt-[6px]">
           <span className="whitespace-nowrap text-[12px] font-semibold leading-none" style={{ color: LABEL }}>
             No text in image
           </span>
@@ -330,7 +361,7 @@ const CARD_2_VERSES = [
 function ImagePlaceholder({ src, alt }) {
   return (
     <div
-      className="flex h-[225px] w-[229px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
+      className="flex h-[225px] w-full max-w-[229px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
       style={{ backgroundColor: "#F3F4F6" }}
     >
       {src ? (
@@ -347,7 +378,7 @@ function SmallOutline({ icon: Icon, label }) {
   return (
     <button
       type="button"
-      className="flex h-[32px] cursor-pointer items-center gap-1.5 rounded-[8px] border bg-white px-[10px] text-[11px] font-semibold leading-none transition-colors hover:bg-[#F7F8FE]"
+      className="flex h-[32px] cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-[8px] border bg-white px-[10px] text-[11px] font-semibold leading-none transition-colors hover:bg-[#F7F8FE]"
       style={{ borderColor: BORDER, color: LABEL }}
     >
       <span className="flex items-center" style={{ color: NAVY }}>
@@ -364,7 +395,7 @@ function VersePuzzleCard({ level, puzzle, title = CARD_TITLE, verses = CARD_VERS
 
   return (
     <div
-      className="flex w-full flex-col rounded-[7.5px] border bg-white pt-[15px] pr-[21px] pb-[28px] pl-5"
+      className="flex w-full min-w-0 flex-col rounded-[7.5px] border bg-white px-4 pt-[15px] pb-[28px] sm:pr-[21px] sm:pl-5"
       style={{ minHeight: "413px", borderWidth: "0.75px", borderColor: BORDER }}
     >
       <div className="flex items-start justify-between">
@@ -379,10 +410,10 @@ function VersePuzzleCard({ level, puzzle, title = CARD_TITLE, verses = CARD_VERS
         </span>
       </div>
 
-      <div className="mt-[10px] flex items-start gap-5">
+      <div className="mt-[10px] flex flex-col items-center gap-5 sm:flex-row sm:items-start">
         <ImagePlaceholder src={level === "Level 1" ? earthImg : waterImg} alt={`${level} image`} />
 
-        <div className="w-[229px] shrink-0">
+        <div className="w-full max-w-[229px] shrink-0">
           <p className="text-justify text-[10px] font-bold leading-[12px]" style={{ color: LABEL }}>
             {title}
           </p>
@@ -397,17 +428,17 @@ function VersePuzzleCard({ level, puzzle, title = CARD_TITLE, verses = CARD_VERS
         </div>
       </div>
 
-      <div className="mt-[14px] flex items-center gap-2.5">
+      <div className="mt-[14px] flex flex-wrap items-center gap-2.5">
         <SmallOutline icon={LuRotateCw} label="Regenerate Puzzle" />
         <SmallOutline icon={ImageSparkleIcon} label="Regenerate Image" />
         <SmallOutline icon={ImageSparkleIcon} label="Replace Image" />
       </div>
 
-      <div className="mt-6 flex items-center gap-2.5">
+      <div className="mt-6 flex flex-wrap items-center gap-2.5">
         <SmallOutline icon={LuPencil} label="Edit" />
         <button
           type="button"
-          className="flex h-[32px] cursor-pointer items-center gap-1.5 rounded-[8px] px-[10px] text-[11px] font-semibold leading-none text-white transition-opacity hover:opacity-90"
+          className="flex h-[32px] cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-[8px] px-[10px] text-[11px] font-semibold leading-none text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: NAVY }}
         >
           <CircleCheckFilled size={14} />
@@ -434,48 +465,39 @@ export default function AIGenerateVerseRestoration() {
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1102px] px-5 py-6">
-        <h1 className="text-[22px] font-semibold leading-none" style={{ color: HEADING }}>
+      <div className="mx-auto w-full max-w-[1102px] px-4 py-6 sm:px-5">
+        <h1 className="text-[22px] font-semibold leading-[1.2]" style={{ color: HEADING }}>
           Add / Edit Word Search
         </h1>
-        <p className="mt-3 text-[14px] leading-none" style={{ color: VALUE }}>
+        <p className="mt-3 text-[14px] leading-[1.35]" style={{ color: VALUE }}>
           Choose the activity type and how you want to create it.
         </p>
 
-        <div
-          className="mt-6 grid gap-6"
-          style={{ gridTemplateColumns: "223fr 190fr 160fr 198fr 195fr" }}
-        >
+        <div className="mt-6 grid grid-cols-2 gap-x-3 gap-y-4 sm:gap-6 lg:grid-cols-5">
           {HEADER_FIELDS.map(({ id, label, options }) => (
             <div key={id}>
               <label htmlFor={id} className={lbl} style={{ color: LABEL }}>{label}</label>
-              <div className="relative">
-                <select
-                  id={id}
-                  value={values[id]}
-                  onChange={(e) => setValues((p) => ({ ...p, [id]: e.target.value }))}
-                  className={selectCls}
-                  style={{ color: VALUE }}
-                >
-                  {options.map((o) => (<option key={o} value={o}>{o}</option>))}
-                </select>
-                <Chevron />
-              </div>
+              <FormSelect
+                id={id}
+                value={values[id]}
+                onChange={(v) => setValues((p) => ({ ...p, [id]: v }))}
+                options={options}
+              />
             </div>
           ))}
 
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label htmlFor="points" className={lbl} style={{ color: LABEL }}>Points per Puzzle</label>
-            <NumberStepper value={points} onChange={setPoints} label="Points per Puzzle" />
+            <NumberStepper id="points" value={points} onChange={setPoints} label="Points per Puzzle" />
           </div>
         </div>
 
         <TabsRow />
 
-        <h2 className="mt-[30px] text-[22px] font-semibold leading-none" style={{ color: HEADING }}>
+        <h2 className="mt-[30px] text-[20px] font-semibold leading-[1.2] sm:text-[22px]" style={{ color: HEADING }}>
           AI Generate — Verse Restoration
         </h2>
-        <p className="mt-3 text-[16px] leading-none" style={{ color: VALUE }}>
+        <p className="mt-3 text-[14px] leading-[1.35] sm:text-[16px]" style={{ color: VALUE }}>
           Generate puzzles where players restore missing words in Bible verses.
         </p>
 
@@ -487,24 +509,25 @@ export default function AIGenerateVerseRestoration() {
           Generated Puzzles Preview
         </h3>
 
-        <div className="mt-4 grid grid-cols-2 gap-[21px]">
+        {/* Two columns only from xl: each card needs ~519px for image + text. */}
+        <div className="mt-4 grid grid-cols-1 gap-[21px] xl:grid-cols-2">
           <VersePuzzleCard level="Level 1" puzzle={1} listStyle="ol" />
           <VersePuzzleCard level="Level 2" puzzle={1} title={CARD_2_TITLE} verses={CARD_2_VERSES} listStyle="ul" />
         </div>
 
-        <div className="mt-[44px] flex items-center justify-end gap-4 pb-6">
+        <div className="mt-[40px] flex flex-col-reverse gap-3 pb-6 sm:mt-[44px] sm:flex-row sm:items-center sm:justify-end sm:gap-4">
           <button
             type="button"
-            className="flex h-[38px] w-[89px] cursor-pointer items-center justify-center rounded-[7.47px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#F0F2FB]"
+            className="flex h-[38px] w-full cursor-pointer items-center justify-center rounded-[7.47px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#F0F2FB] sm:w-[89px]"
             style={{ borderColor: BORDER, color: HEADING }}
           >
             Cancel
           </button>
 
-          <div className="flex items-center gap-2.5">
+          <div className="grid grid-cols-2 gap-2.5 sm:flex sm:items-center">
             <button
               type="button"
-              className="flex h-[38px] w-[124px] cursor-pointer items-center justify-center gap-2 rounded-[7.47px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#F0F2FB]"
+              className="flex h-[38px] w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[7.47px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#F0F2FB] sm:w-[124px]"
               style={{ borderColor: BORDER, color: HEADING }}
             >
               <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
@@ -512,7 +535,7 @@ export default function AIGenerateVerseRestoration() {
             </button>
             <button
               type="button"
-              className="flex h-[38px] w-[190px] cursor-pointer items-center justify-center gap-2 rounded-[7.47px] text-[12px] font-semibold text-white transition-opacity hover:opacity-90"
+              className="flex h-[38px] w-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[7.47px] text-[12px] font-semibold text-white transition-opacity hover:opacity-90 sm:w-[190px]"
               style={{ backgroundColor: NAVY }}
             >
               <LuArrowRight size={14} />

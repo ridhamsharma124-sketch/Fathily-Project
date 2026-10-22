@@ -60,7 +60,7 @@ export default function QuestionMetaHeader({
   meta, onMetaChange, typeKey, typeOptions, onTypeChange, entryMethod, onEntryMethod, disabled,
 }) {
   return (
-    <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
+    <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-5 sm:p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.3fr_1.2fr_1fr_1fr_1.2fr] gap-5">
         <Select
           label="Testament"

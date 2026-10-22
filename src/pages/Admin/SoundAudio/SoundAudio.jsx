@@ -236,10 +236,10 @@ export default function SoundAudio() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FC] p-6 font-[Inter]">
+    <div className="min-h-screen bg-[#F8F9FC] p-4 font-[Inter] sm:p-6">
       {/* 1. Header row */}
-      <div className="flex items-center justify-between gap-4">
-        <div>
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
           <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
             Audio Management
           </h1>
@@ -247,17 +247,17 @@ export default function SoundAudio() {
             Manage music and sound effects across the entire app.
           </p>
         </div>
-        <div className="flex items-center gap-[16px]">
+        <div className="flex w-full flex-wrap items-center gap-[12px] sm:w-auto sm:flex-nowrap sm:gap-[16px]">
           <button
             type="button"
-            className="flex h-[44px] cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E5E4EC] bg-white px-[20px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition hover:border-[#001984]"
+            className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#E5E4EC] bg-white px-[20px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition hover:border-[#001984] sm:w-auto sm:justify-start"
           >
             <PiSlidersHorizontal size={18} color={NAVY} />
             Audio Settings
           </button>
           <button
             type="button"
-            className="flex h-[44px] cursor-pointer items-center gap-[10px] rounded-[8px] bg-[#001984] px-[20px] text-[14px] font-semibold leading-none text-white transition hover:bg-[#0a1c68]"
+            className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-[20px] text-[14px] font-semibold leading-none text-white transition hover:bg-[#0a1c68] sm:w-auto sm:justify-start"
           >
             <PiPlus size={18} />
             Upload Audio
@@ -289,14 +289,16 @@ export default function SoundAudio() {
         ))}
       </div>
 
-      <div className="mt-[16px] flex items-center gap-[8px] text-[12px] font-semibold leading-none text-[#0A0847]/60">
-        <PiInfo size={16} className="shrink-0 text-[#0A0847]/70" />
-        Featured Date appears on the homepage card and both experience screens.
+      <div className="mt-[16px] flex items-start gap-[8px] text-[12px] font-semibold leading-[16px] text-[#0A0847]/60">
+        <PiInfo size={16} className="mt-[1px] shrink-0 text-[#0A0847]/70" />
+        <span>Featured Date appears on the homepage card and both experience screens.</span>
       </div>
 
-      {/* 4. Search + filters */}
-      <div className="mt-[16px] flex flex-wrap items-center justify-between gap-[12px]">
-        <div className="relative w-[330px] max-w-full">
+      {/* 4. Search + filters
+          Mobile: search full width, category + status side by side, count below.
+          sm+: search left, filters + count grouped right. */}
+      <div className="mt-[16px] flex w-full flex-col gap-[12px] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <div className="relative w-full sm:w-[330px] sm:max-w-full">
           <PiMagnifyingGlass
             size={16}
             className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#0A0847]/70"
@@ -310,22 +312,22 @@ export default function SoundAudio() {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-[12px]">
-          <div className="w-[160px]">
+        <div className="grid w-full grid-cols-2 gap-[12px] sm:flex sm:w-auto sm:flex-wrap sm:items-center">
+          <div className="min-w-0 sm:w-[160px]">
             <Select
               value={category}
               onChange={(e) => resetPage(setCategory)(e.target.value)}
               options={["All Categories", ...CATEGORY_ORDER]}
             />
           </div>
-          <div className="w-[130px]">
+          <div className="min-w-0 sm:w-[130px]">
             <Select
               value={status}
               onChange={(e) => resetPage(setStatus)(e.target.value)}
               options={["All Status", "Enabled", "Disabled"]}
             />
           </div>
-          <span className="text-[12px] font-semibold leading-none text-[#001984]">
+          <span className="col-span-2 text-[12px] font-semibold leading-none text-[#001984] sm:col-span-1">
             {`${isDefaultView ? 15 : filteredRows.length} audio files`}
           </span>
         </div>

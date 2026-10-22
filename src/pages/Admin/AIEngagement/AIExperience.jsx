@@ -81,7 +81,7 @@ function SectionCard({ title, subtitle, action, className = "", style, gap = 24,
       style={{ ...style, gap: `${gap}px` }}
       className={`flex flex-col rounded-[7.5px] border-[0.75px] border-[color:var(--border-soft)] bg-[color:var(--card-bg)] ${className}`}
     >
-      <div className={`flex ${action ? "items-center justify-between gap-[16px]" : ""}`}>
+      <div className="flex flex-wrap items-center justify-between gap-[16px]">
         <div className="flex h-[40px] flex-col gap-[4px]">
           <h2 className="text-[16px] font-semibold text-[color:var(--text)]">
             {title}
@@ -163,7 +163,7 @@ export default function AIExperience() {
   const [selectedVersion, setSelectedVersion] = useState("New International Version");
 
   return (
-    <div className="aie-theme min-h-screen space-y-[16px] bg-[#F8FAFC] p-6 font-[Inter] leading-[100%]">
+    <div className="aie-theme min-h-screen space-y-[16px] bg-[#F8FAFC] p-4 font-[Inter] leading-[100%] sm:p-6">
       {/* Header */}
       <div className="mx-auto w-[1072px] max-w-full">
         <h1 className="text-[22px] font-semibold text-[color:var(--text)]">
@@ -178,10 +178,9 @@ export default function AIExperience() {
       <SectionCard
         title="Bible Version Management"
         subtitle="Manage available Bible versions for AI responses."
-        className="mx-auto w-[1072px] max-w-full"
-        style={{ padding: "25px 33px 36px" }}
+        className="mx-auto w-[1072px] max-w-full p-[16px] sm:p-[25px] sm:px-[33px] sm:pb-[36px]"
         action={
-          <OutlineButton className="w-[178px]" gap={10}>
+          <OutlineButton className="w-full sm:w-[178px]" gap={10}>
             Add Version
           </OutlineButton>
         }
@@ -229,8 +228,7 @@ export default function AIExperience() {
       <SectionCard
         title="Response Style Management"
         subtitle="Manage the style and tone of AI responses."
-        className="mx-auto w-[1072px] max-w-full"
-        style={{ padding: "25px 33px 36px" }}
+        className="mx-auto w-[1072px] max-w-full p-[16px] sm:p-[25px] sm:px-[33px] sm:pb-[36px]"
       >
         <div className="flex flex-col gap-[20px]">
           <div className="overflow-x-auto">
@@ -263,7 +261,7 @@ export default function AIExperience() {
           </div>
 
           <div>
-            <OutlineButton className="w-[141px]">Add New</OutlineButton>
+            <OutlineButton className="w-full sm:w-[141px]">Add New</OutlineButton>
           </div>
         </div>
       </SectionCard>
@@ -279,7 +277,7 @@ export default function AIExperience() {
           gap={10}
         >
           <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-left">
+            <table className="w-full min-w-[420px] border-collapse text-left">
               <thead>
                 <tr>
                   <th className={thCls}>Homepage Prompt Suggestions</th>
@@ -302,7 +300,7 @@ export default function AIExperience() {
           </div>
 
           <div>
-            <OutlineButton className="w-[141px]">Add Prompt</OutlineButton>
+            <OutlineButton className="w-full sm:w-[141px]">Add Prompt</OutlineButton>
           </div>
         </SectionCard>
 
@@ -340,7 +338,7 @@ export default function AIExperience() {
           </div>
 
           <div>
-            <OutlineButton className="w-[141px]">Add New</OutlineButton>
+            <OutlineButton className="w-full sm:w-[141px]">Add New</OutlineButton>
           </div>
         </SectionCard>
       </div>
@@ -349,7 +347,7 @@ export default function AIExperience() {
       <div className="mx-auto flex w-[1072px] max-w-full justify-end">
         <button
           type="button"
-          className="flex h-[42px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[color:var(--navy)] px-[20px] text-[14px] font-semibold text-white transition hover:bg-[#0a1c68]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[color:var(--navy)] px-[20px] text-[14px] font-semibold text-white transition hover:bg-[#0a1c68] sm:w-auto"
         >
           <SaveIcon size={16} />
           Save All Changes

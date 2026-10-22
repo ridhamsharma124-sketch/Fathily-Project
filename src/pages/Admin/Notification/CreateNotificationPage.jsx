@@ -181,7 +181,7 @@ export default function CreateNotificationPage() {
   const hasBanner = f.banner && !imgError;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       <h1 className="text-xl font-semibold text-[#0A0847]">Create Notification</h1>
 
       <input type="file" ref={imageRef} accept="image/png,image/jpeg" onChange={handleImage} className="hidden" />
@@ -363,7 +363,7 @@ export default function CreateNotificationPage() {
             <p className="text-[10px] text-[#0A084799] font-medium mt-2 leading-snug">{f.message || "Detailed message appears here."}</p>
 
             <div className="mt-4 bg-[#E9EAF7] rounded-lg p-3 space-y-3">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="flex items-start gap-2">
                   <FiCheckSquare size={16} className="text-[#001984] mt-0.5" />
                   <div><p className="text-[10px] text-[#0A084799]">Start Date</p><p className="text-[11px] font-semibold text-[#0A0847]">{fmtDate(f.startDate)}</p></div>
@@ -404,7 +404,7 @@ export default function CreateNotificationPage() {
       </div>
 
       {/* Footer buttons */}
-      <div className="grid grid-cols-2 lg:grid-cols-[1fr_1.3fr_1.4fr_2fr] gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1.3fr_1.4fr_2fr]">
         <button type="button" onClick={() => submit("Save Draft")} className="py-3 border border-[#E2DFFC] bg-white text-[#0A0847] text-xs font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
           <FiSave size={15} /> Save Draft
         </button>

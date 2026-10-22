@@ -15,13 +15,11 @@ import liveBook from "../../../assets/mystery-card/Live Preview book.webp";
 import floppyIcon from "../../../assets/mystery-card/icon-floppy.svg";
 import bookIcon from "../../../assets/mystery-card/icon-book.svg";
 
-const BORDER = "#E2DFFC"; 
+const BORDER = "#E2DFFC";
 const NAVY = "#001984";
-const BTN_NAVY = "#00007A"; 
-const TEXT = "#0A0847"; 
 const PAGE_BG = "#F8F8FF";
 const GOLD = "#D9A93A";
-const NAVY_TINT = "rgba(0, 25, 132, 0.10)"; 
+const NAVY_TINT = "rgba(0, 25, 132, 0.10)";
 const REQUIRED = "#C2185B";
 
 
@@ -197,7 +195,7 @@ function RewardTile({ label, active, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-[85px] w-[134px] shrink-0 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[7.47px] border ${
+      className={`flex h-[85px] w-full shrink-0 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[7.47px] border sm:w-[134px] ${
         active ? "border-[#001984]" : "border-[#E2DFFC] bg-white"
       }`}
       style={active ? { background: NAVY_TINT } : undefined}
@@ -235,28 +233,34 @@ export default function CreateMysteryCard() {
 
   return (
     <div
-      className="min-h-screen w-full p-6 font-inter"
+      className="min-h-screen w-full p-4 font-inter sm:p-6"
       style={{ background: PAGE_BG, fontFamily: "Inter, sans-serif" }}
     >
       <div
-        className="relative w-full min-w-0 rounded-[8px] border bg-white p-[24px]"
+        className="w-full min-w-0 rounded-[8px] border bg-white p-[16px] sm:p-[24px]"
         style={{ borderColor: BORDER }}
       >
-        <button
-          type="button"
-          onClick={() => navigate("/admin/mystery-card")}
-          aria-label="Back to Mystery Card Dashboard"
-          className="absolute top-[30px] -left-[37px] flex h-[28px] w-[28px] cursor-pointer items-center justify-center rounded-full border border-[#E2DFFC] bg-white text-[#001984]"
-        >
-          <LuArrowLeft size={14} strokeWidth={2.2} />
-        </button>
+        {/* Header: back button sits inline beside the title (no absolute positioning,
+            so it can never cover the heading text). */}
+        <div className="flex items-start gap-[12px]">
+          <button
+            type="button"
+            onClick={() => navigate("/admin/mystery-card")}
+            aria-label="Back to Mystery Card Dashboard"
+            className="mt-[2px] flex h-[28px] w-[28px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[#E2DFFC] bg-white text-[#001984] transition-colors hover:bg-[#F7F7FC]"
+          >
+            <LuArrowLeft size={14} strokeWidth={2.2} />
+          </button>
 
-        <h1 className="text-[18px] font-bold text-[#0A0847]">Create New Mystery Card</h1>
-        <p className="mt-2 text-[14px] text-[#0A0847]/60">
-          Fill in the details below to create a new Mystery Card.
-        </p>
+          <div className="min-w-0">
+            <h1 className="text-[18px] font-bold leading-[24px] text-[#0A0847]">Create New Mystery Card</h1>
+            <p className="mt-2 text-[14px] text-[#0A0847]/60">
+              Fill in the details below to create a new Mystery Card.
+            </p>
+          </div>
+        </div>
 
-        <div className="mt-6 grid grid-cols-[627px_minmax(0,1fr)] items-start gap-[24px]">
+        <div className="mt-6 grid grid-cols-1 items-start gap-[24px] lg:grid-cols-[627px_minmax(0,1fr)]">
           <div
             className="flex min-w-0 flex-col gap-[24px] rounded-[8px] border bg-white pt-[21px] pr-[20px] pb-[41px] pl-[20px]"
             style={{ borderColor: BORDER }}
@@ -286,7 +290,7 @@ export default function CreateMysteryCard() {
 
             <Field>
               <Label>Eligible Activities</Label>
-              <div className="mt-[4px] flex max-w-[573px] flex-wrap gap-x-[28px] gap-y-[20px]">
+              <div className="mt-[4px] flex w-full max-w-[573px] flex-wrap gap-x-[16px] gap-y-[20px] sm:gap-x-[28px]">
                 {Object.keys(activities).map((k) => (
                   <CheckOption
                     key={k}
@@ -298,7 +302,7 @@ export default function CreateMysteryCard() {
               </div>
             </Field>
 
-            <div className="grid grid-cols-[264px_minmax(0,1fr)] gap-[24px]">
+            <div className="grid grid-cols-1 gap-[24px] sm:grid-cols-[264px_minmax(0,1fr)]">
               <Field>
                 <Label optional>Book</Label>
                 <Select placeholder="Select book" />
@@ -321,7 +325,7 @@ export default function CreateMysteryCard() {
               />
             </Field>
 
-            <div className="grid grid-cols-[264px_minmax(0,1fr)] gap-[24px]">
+            <div className="grid grid-cols-1 gap-[24px] sm:grid-cols-[264px_minmax(0,1fr)]">
               <Field>
                 <Label>Bible Verse Reference</Label>
                 <Select placeholder="e.g. 1 Samuel 17:45" />
@@ -354,7 +358,7 @@ export default function CreateMysteryCard() {
               />
             </Field>
 
-            <div className="flex items-center justify-between">
+            <div className="grid grid-cols-2 gap-[10px] sm:flex sm:items-center sm:justify-between">
               {["None", "Faith Points", "AI Credits", "Badge"].map((r) => (
                 <RewardTile
                   key={r}
@@ -421,7 +425,7 @@ export default function CreateMysteryCard() {
         </div>
 
         <div className="mt-[24px] flex flex-col gap-[24px]">
-          <div className="grid grid-cols-[336px_minmax(0,1fr)] gap-[24px]">
+          <div className="grid grid-cols-1 gap-[24px] sm:grid-cols-[336px_minmax(0,1fr)]">
             <Field>
               <Label bare>Reward Amount</Label>
               <input
@@ -480,7 +484,7 @@ export default function CreateMysteryCard() {
           </Field>
         </div>
 
-        <div className="mt-6 flex justify-end gap-[16px]">
+        <div className="mt-6 flex flex-wrap justify-end gap-[16px]">
           <button
             type="button"
             onClick={() => navigate("/admin/mystery-card")}

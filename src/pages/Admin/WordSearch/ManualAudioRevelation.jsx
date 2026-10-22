@@ -19,11 +19,11 @@ const PAGE_BG = "#F8F9FE";
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 const FILTER_FIELDS = [
-  { id: "testament", label: "Testament", w: "w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
-  { id: "book", label: "Book", w: "w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "chapter", label: "Chapter", w: "w-[130px]", value: "1", options: ["1", "2", "3"] },
-  { id: "level", label: "Level", w: "w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
-  { id: "difficulty", label: "Difficulty", w: "w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
+  { id: "testament", label: "Testament", w: "w-full sm:w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
+  { id: "book", label: "Book", w: "w-full sm:w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "chapter", label: "Chapter", w: "w-full sm:w-[130px]", value: "1", options: ["1", "2", "3"] },
+  { id: "level", label: "Level", w: "w-full sm:w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
+  { id: "difficulty", label: "Difficulty", w: "w-full sm:w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
 const GRID_OPTIONS = ["10 × 10", "12 × 12", "15 × 15", "20 × 20"];
@@ -75,10 +75,11 @@ function Chevron({ className = "top-1/2 right-2.5 -translate-y-1/2", size = 14 }
   );
 }
 
-function Select({ value, onChange, options, className = "" }) {
+function Select({ id, value, onChange, options, className = "" }) {
   return (
     <div className={`relative ${className}`}>
       <select
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`${field} cursor-pointer appearance-none pr-8`}
@@ -143,13 +144,14 @@ function Slider({ fill = 55 }) {
   );
 }
 
+/* Bars can shrink (no shrink-0 / min-w-0) so the waveform never overflows on narrow screens. */
 function Waveform() {
   return (
-    <div className="flex h-[28px] min-w-0 flex-1 items-center justify-between">
+    <div className="flex h-[28px] min-w-0 flex-1 items-center justify-between overflow-hidden">
       {WAVE_BARS.map((h, i) => (
         <span
           key={i}
-          className="w-[2px] shrink-0 rounded-full"
+          className="w-[2px] min-w-0 rounded-full"
           style={{ height: `${h}px`, backgroundColor: "#1F2A8C" }}
         />
       ))}
@@ -172,6 +174,7 @@ function DistractorChip({ children }) {
 }
 
 
+/* Mobile: 2-column grid (3 even rows). sm and up: original fixed-width row. */
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -179,13 +182,14 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="flex items-start gap-6">
+    <div className="grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:flex sm:flex-wrap sm:gap-6">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
-        <div key={id} className={w}>
+        <div key={id} className={`${w} min-w-0`}>
           <label htmlFor={id} className="mb-2 block text-[14px] font-medium text-[#0A0240]">
             {label}
           </label>
           <Select
+            id={id}
             value={values[id]}
             onChange={(v) => setValues((p) => ({ ...p, [id]: v }))}
             options={options}
@@ -194,7 +198,7 @@ function FilterFields() {
         </div>
       ))}
 
-      <div className="w-[130px] shrink-0">
+      <div className="w-full min-w-0 sm:w-[130px] sm:shrink-0">
         <label htmlFor="reward" className="mb-2 block text-[14px] font-medium text-[#0A0240]">
           Reward Points
         </label>
@@ -235,14 +239,14 @@ function FilterFields() {
 
 function TabsRow() {
   return (
-    <div className="mt-[30px] flex items-stretch border-b border-[#E4E5F0]">
+    <div className="mt-[30px] flex items-stretch overflow-x-auto border-b border-[#E4E5F0]">
       {TABS.map((t) => {
         const active = t === "Manual Entry";
         return (
           <button
             key={t}
             type="button"
-            className={`h-[46px] px-6 text-[14px] ${
+            className={`h-[46px] shrink-0 whitespace-nowrap px-4 text-[14px] sm:px-6 ${
               active
                 ? "-mb-px border-b-2 border-[#001984] font-semibold text-[#001984]"
                 : "font-medium text-[#0A0847]/60"
@@ -256,10 +260,11 @@ function TabsRow() {
   );
 }
 
+/* Mobile: status on top, then Save draft | Preview side by side, Add Puzzle full width. */
 function BottomBar() {
   const [published, setPublished] = useState(true);
   return (
-    <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
+    <div className="mt-10 flex flex-col items-stretch gap-4 sm:mt-12 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
       <div className="flex items-center gap-3">
         <span className="text-[14px] font-semibold text-[#0A0847]/60">Status</span>
         <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
@@ -271,24 +276,24 @@ function BottomBar() {
         </span>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
         <button
           type="button"
-          className="flex h-[40px] w-[119px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[119px]"
         >
           <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
           Save draft
         </button>
         <button
           type="button"
-          className="flex h-[40px] w-[158px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[158px]"
         >
           <Icon src={eyeIcon} w={16} h={12} />
           Preview
         </button>
         <button
           type="button"
-          className="flex h-[40px] w-[190px] cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          className="col-span-2 flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[190px]"
           style={{ backgroundColor: NAVY }}
         >
           <Icon src={arrowRightIcon} w={16} />
@@ -301,13 +306,13 @@ function BottomBar() {
 
 function PuzzleImageCard() {
   return (
-    <div className={`${cardCls} flex w-[298px] shrink-0 flex-col px-[17px] py-4`}>
+    <div className={`${cardCls} flex w-full shrink-0 flex-col px-[17px] py-4 xl:w-[298px]`}>
       <h2 className="text-[14px] font-semibold text-[#0A0847]/80">Puzzle Image</h2>
 
       <img
         src={puzzleImg}
         alt="Genesis garden and lake"
-        className="mt-4 h-[152px] w-[264px] rounded-[8px] border border-[#AEB7D0] object-cover"
+        className="mt-4 h-[152px] w-full rounded-[8px] border border-[#AEB7D0] object-cover sm:h-[200px] xl:h-[152px]"
       />
 
       <div className="mt-4 flex items-start justify-between gap-2">
@@ -324,24 +329,23 @@ function PuzzleImageCard() {
         </span>
       </div>
 
-      <div className="mt-4 flex h-[32px] items-center gap-2">
+      <div className="mt-4 flex flex-wrap items-center gap-2">
         <button
           type="button"
-          className="flex h-[32px] w-[122px] shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-[#FEFEFE] px-2 text-[12px] font-semibold whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-[8px] bg-[#FEFEFE] px-2 text-[12px] font-semibold whitespace-nowrap text-[#0A0240] transition-colors hover:bg-[#F7F8FE] sm:w-[122px]"
           style={{ border: "1px solid #E2DFFC" }}
         >
           <Icon src={replaceIcon} w={14} />
           Replace Default
         </button>
         <button
-                        type="button"
-                        className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: NAVY }}
-                      >
-                                  <img src={aiImageIcon} alt="" aria-hidden className="h-[15px] w-[15px] shrink-0" />
-      
-                        Generate AI Image
-                      </button>
+          type="button"
+          className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[131px]"
+          style={{ backgroundColor: NAVY }}
+        >
+          <Icon src={aiImageIcon} w={15} />
+          Generate AI Image
+        </button>
       </div>
 
       <button
@@ -359,10 +363,10 @@ function PuzzleImageCard() {
 
 function UploadAudioCard() {
   return (
-    <div className={`${cardCls} w-[403px] shrink-0 px-[19px] py-4`}>
+    <div className={`${cardCls} w-full shrink-0 px-4 py-4 sm:px-[19px]`}>
       <h2 className={cardTitle}>Upload Audio</h2>
 
-      <div className="mt-3 flex h-[56px] items-center gap-3 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
+      <div className="mt-3 flex h-[56px] items-center gap-3 rounded-[8px] border border-[#E4E5F0] bg-white px-3 sm:px-3.5">
         <Icon src={fileMusicIcon} w={32} h={36} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[12px] font-semibold text-[#0A0847]/80">psalm-23-niv.mp3</p>
@@ -370,14 +374,14 @@ function UploadAudioCard() {
         </div>
         <button
           type="button"
-          className="h-[32px] shrink-0 cursor-pointer rounded-[8px] bg-white px-4 text-[12px] font-semibold whitespace-nowrap text-[#001984] transition-colors hover:bg-[#F7F8FE]"
+          className="h-[32px] shrink-0 cursor-pointer rounded-[8px] bg-white px-3 text-[12px] font-semibold whitespace-nowrap text-[#001984] transition-colors hover:bg-[#F7F8FE] sm:px-4"
           style={{ border: "1px solid #001984" }}
         >
           Change File
         </button>
       </div>
 
-      <div className="mt-3 flex h-[48px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-3.5">
+      <div className="mt-3 flex h-[48px] items-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white px-3 sm:px-3.5">
         <PlayButton size={28} tri={18} />
         <Waveform />
         <span className="shrink-0 text-[12px] font-medium text-[#0A0847]/80">00:10 / 00:10</span>
@@ -396,7 +400,7 @@ function UploadAudioCard() {
 function TranscriptCard() {
   const [transcript, setTranscript] = useState(TRANSCRIPT);
   return (
-    <div className={`${cardCls} flex w-[403px] shrink-0 flex-1 flex-col px-[19px] py-4`}>
+    <div className={`${cardCls} flex w-full flex-1 flex-col px-4 py-4 sm:px-[19px]`}>
       <label className={lbl}>Transcript (optional)</label>
       <textarea
         value={transcript}
@@ -414,7 +418,7 @@ function PromptCard() {
   const [prompt, setPrompt] = useState(PROMPT);
   const [answer, setAnswer] = useState(CORRECT_ANSWER);
   return (
-    <div className={`${cardCls} shrink-0 px-[19px] py-4`}>
+    <div className={`${cardCls} shrink-0 px-4 py-4 sm:px-[19px]`}>
       <label className={lbl}>Prompt</label>
       <textarea
         value={prompt}
@@ -429,12 +433,12 @@ function PromptCard() {
 
 function DistractorCard() {
   return (
-    <div className={`${cardCls} shrink-0 px-[19px] py-4`}>
+    <div className={`${cardCls} shrink-0 px-4 py-4 sm:px-[19px]`}>
       <span className={`block ${cardTitle}`}>Distractor Answers</span>
       <span className="block text-[10px] font-medium italic text-[#0A0847]/60">
         (use incorrect options in word bank)
       </span>
-      <div className="mt-2 flex items-stretch gap-2 rounded-[8px] border border-[#E4E5F0] bg-white p-2">
+      <div className="mt-2 flex flex-wrap items-stretch gap-2 rounded-[8px] border border-[#E4E5F0] bg-white p-2">
         <div className="flex min-w-0 flex-1 flex-wrap items-start gap-x-2 gap-y-2">
           {DISTRACTORS.map((d) => (
             <DistractorChip key={d}>{d}</DistractorChip>
@@ -450,7 +454,7 @@ function DistractorCard() {
 
 function VolumeCard() {
   return (
-    <div className={`${cardCls} flex min-h-[84px] flex-1 flex-col px-[19px] py-4`}>
+    <div className={`${cardCls} flex min-h-[84px] flex-1 flex-col px-4 py-4 sm:px-[19px]`}>
       <h2 className={cardTitle}>Volume Preview</h2>
       <div className="mt-3 flex items-center gap-2.5">
         <Icon src={volumeIcon} w={24} h={19} />
@@ -475,32 +479,33 @@ export default function ManualAudioRevelation() {
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1118px] px-7 py-6">
-        <nav className="text-[16px] font-medium text-[#0A0847]/60">
+      <div className="mx-auto w-full max-w-[1118px] px-4 py-6 sm:px-7">
+        <nav className="flex flex-wrap items-center text-[14px] font-medium text-[#0A0847]/60 sm:text-[16px]">
           Word Search <span className="mx-1">&gt;</span> Add <span className="mx-1">&gt;</span> Manual
         </nav>
 
-        <h1 className="mt-[13px] text-[22px] leading-[1.2] font-semibold text-[#0A0240]">
+        <h1 className="mt-[13px] text-[20px] leading-[1.2] font-semibold text-[#0A0240] sm:text-[22px]">
           Add Word Search — Manual Entry
         </h1>
 
-        <p className="mt-[13px] text-[14px] font-semibold text-[#0A0847]/60">
+        <p className="mt-[10px] text-[14px] leading-[1.3] font-semibold text-[#0A0847]/60">
           Manual — Audio Revelation
         </p>
 
-        <div className="mt-[23px]">
+        <div className="mt-5 sm:mt-[23px]">
           <FilterFields />
         </div>
 
         <TabsRow />
 
-        <div className="mt-8">
-          <div className="flex items-stretch gap-5">
+        <div className="mt-6 sm:mt-8">
+          <div className="flex flex-col items-stretch gap-5 xl:flex-row">
             <PuzzleImageCard />
 
-            <div className="flex w-[744px] shrink-0 flex-col">
-              <div className="flex h-[97px] items-stretch gap-[18px]">
-                <div className={`${cardCls} w-[526px] shrink-0 px-[19px] py-4`}>
+            {/* Right column: fixed 744px only at xl; fluid below. */}
+            <div className="flex w-full min-w-0 flex-col xl:w-[744px] xl:shrink-0">
+              <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:gap-[18px] xl:h-[97px]">
+                <div className={`${cardCls} w-full min-w-0 px-4 py-4 sm:flex-1 sm:px-[19px] xl:w-[526px] xl:flex-none`}>
                   <label className={lbl}>Puzzle Title</label>
                   <input
                     value={puzzleTitle}
@@ -508,18 +513,18 @@ export default function ManualAudioRevelation() {
                     className={field}
                   />
                 </div>
-                <div className={`${cardCls} w-[200px] shrink-0 px-[19px] py-4`}>
+                <div className={`${cardCls} w-full min-w-0 px-4 py-4 sm:w-[200px] sm:shrink-0 sm:px-[19px]`}>
                   <label className={lbl}>Grid Size</label>
                   <Select value={size} onChange={setSize} options={GRID_OPTIONS} className="w-full" />
                 </div>
               </div>
 
-              <div className="mt-[21px] flex min-h-[437px] items-stretch gap-[23px]">
-                <div className="flex w-[403px] shrink-0 flex-col gap-3">
+              <div className="mt-4 flex flex-col items-stretch gap-3 sm:mt-[21px] lg:min-h-[437px] lg:flex-row lg:gap-[23px]">
+                <div className="flex w-full min-w-0 flex-col gap-3 lg:flex-1 xl:w-[403px] xl:flex-none">
                   <UploadAudioCard />
                   <TranscriptCard />
                 </div>
-                <div className="flex w-[318px] shrink-0 flex-col gap-3">
+                <div className="flex w-full min-w-0 flex-col gap-3 lg:flex-1 xl:w-[318px] xl:flex-none">
                   <PromptCard />
                   <DistractorCard />
                   <VolumeCard />

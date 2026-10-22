@@ -24,11 +24,11 @@ const CARD_BORDER = "#EFECFB";
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 const FILTER_FIELDS = [
-  { id: "testament", label: "Testament", w: "w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
-  { id: "book", label: "Book", w: "w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "chapter", label: "Chapter", w: "w-[130px]", value: "1", options: ["1", "2", "3"] },
-  { id: "level", label: "Level", w: "w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
-  { id: "difficulty", label: "Difficulty", w: "w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
+  { id: "testament", label: "Testament", w: "w-full sm:w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
+  { id: "book", label: "Book", w: "w-full sm:w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "chapter", label: "Chapter", w: "w-full sm:w-[130px]", value: "1", options: ["1", "2", "3"] },
+  { id: "level", label: "Level", w: "w-full sm:w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
+  { id: "difficulty", label: "Difficulty", w: "w-full sm:w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
 const GRID_OPTIONS = ["10 × 10", "12 × 12", "15 × 15", "20 × 20"];
@@ -120,9 +120,9 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="flex items-start gap-[24px]">
+    <div className="flex flex-wrap items-start gap-[16px] sm:gap-[24px]">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
-        <div key={id} className={w}>
+        <div key={id} className={`${w} min-w-0`}>
           <label htmlFor={id} className="mb-[8px] block text-[14px] font-medium" style={{ color: HEADING }}>
             {label}
           </label>
@@ -135,7 +135,7 @@ function FilterFields() {
         </div>
       ))}
 
-      <div className="w-[130px] shrink-0">
+      <div className="w-full min-w-0 shrink-0 sm:w-[130px]">
         <label htmlFor="reward" className="mb-[8px] block text-[14px] font-medium" style={{ color: HEADING }}>
           Reward Points
         </label>
@@ -179,14 +179,14 @@ function FilterFields() {
 
 function TabsRow() {
   return (
-    <div className="mt-[30px] flex items-stretch border-b" style={{ borderColor: BORDER }}>
+    <div className="mt-[30px] flex items-stretch overflow-x-auto border-b" style={{ borderColor: BORDER }}>
       {TABS.map((t) => {
         const active = t === "Manual Entry";
         return (
           <button
             key={t}
             type="button"
-            className={`h-[50px] px-[24px] text-[14px] ${
+            className={`h-[50px] shrink-0 whitespace-nowrap px-[16px] text-[14px] sm:px-[24px] ${
               active ? "-mb-px border-b-2 font-semibold" : "font-medium"
             }`}
             style={active ? { borderColor: NAVY, color: NAVY } : { color: MUTED }}
@@ -216,10 +216,10 @@ function BottomBar() {
         </span>
       </div>
 
-      <div className="flex items-center gap-[12px]">
+      <div className="flex w-full flex-wrap items-center gap-[12px] sm:w-auto">
         <button
           type="button"
-          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[119px]"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
@@ -227,7 +227,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-[158px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[158px]"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <img src={eyeIcon} alt="" aria-hidden className="h-[12px] w-[16px] shrink-0" />
@@ -235,7 +235,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-[196px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90 sm:w-[196px]"
           style={{ backgroundColor: NAVY }}
         >
           <img src={arrowRightIcon} alt="" aria-hidden className="h-[12px] w-[12px]" />
@@ -248,7 +248,7 @@ function BottomBar() {
 
 function PuzzleImageCard() {
   return (
-    <div className={`${cardCls} flex w-[305px] shrink-0 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+    <div className={`${cardCls} flex w-full shrink-0 flex-col p-[16px] xl:w-[305px]`} style={{ borderColor: CARD_BORDER }}>
       <h2 className="text-[14px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
         Puzzle Image
       </h2>
@@ -256,7 +256,7 @@ function PuzzleImageCard() {
       <img
         src={puzzleImg}
         alt="Genesis garden and lake"
-        className="mt-[16px] h-[152px] w-[264px] rounded-[8px] object-cover"
+        className="mt-[16px] h-[152px] w-full rounded-[8px] object-cover"
       />
 
       <div className="mt-[16px] flex items-center justify-between gap-[8px]">
@@ -273,10 +273,10 @@ function PuzzleImageCard() {
         </span>
       </div>
 
-      <div className="mt-[16px] flex h-[32px] items-center gap-[10px]">
+      <div className="mt-[16px] flex flex-wrap items-center gap-[10px]">
         <button
           type="button"
-          className="flex h-[32px] w-[123px] shrink-0 cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[123px]"
           style={{ border: "1px solid #E2DFFC", color: HEADING }}
         >
           <img src={replaceIcon} alt="" aria-hidden className="h-[13px] w-[13px]" />
@@ -284,7 +284,7 @@ function PuzzleImageCard() {
         </button>
           <button
                   type="button"
-                  className="flex h-[32px] w-[131px] shrink-0 cursor-pointer items-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90"
+                  className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-1 rounded-[8px] px-1 text-[12px] font-medium whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[131px]"
                   style={{ backgroundColor: NAVY }}
                 >
                             <img src={aiImageIcon} alt="" aria-hidden className="h-[15px] w-[15px] shrink-0" />
@@ -312,8 +312,8 @@ function WordListTable({ rows }) {
       <p className={lbl} style={{ color: HEADING }}>
         Word List
       </p>
-      <div className="mt-[16px] w-full">
-        <table className="w-full table-fixed border-collapse text-left">
+      <div className="mt-[16px] w-full min-w-0 overflow-x-auto">
+        <table className="w-full min-w-[520px] table-fixed border-collapse text-left">
           <colgroup>
             <col style={{ width: "9.5%" }} />
             <col style={{ width: "21.4%" }} />
@@ -376,7 +376,7 @@ function WordListTable({ rows }) {
       </div>
       <button
         type="button"
-        className="mt-[24px] flex h-[40px] w-[128px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-medium transition-colors hover:bg-[#F7F8FE]"
+        className="mt-[24px] flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-medium transition-colors hover:bg-[#F7F8FE] sm:w-[128px]"
         style={{ borderColor: BORDER, color: "#3D3561" }}
       >
         <img src={plusIcon} alt="" aria-hidden className="h-[14px] w-[14px]" />
@@ -393,8 +393,8 @@ function HiddenMiddle() {
 
   return (
     <div className={`${cardCls} flex min-w-0 flex-1 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
-      <div className="flex items-start gap-[16px]">
-        <div className="w-[231px] shrink-0">
+      <div className="flex flex-col items-start gap-[16px] sm:flex-row sm:gap-[16px]">
+        <div className="w-full min-w-0 sm:w-[231px] sm:shrink-0">
           <label className={lbl} style={{ color: HEADING }}>Puzzle Title</label>
           <input
             value={title}
@@ -457,7 +457,7 @@ export default function ManualHiddenRestoration() {
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1118px] px-[28px] py-[24px]">
+      <div className="mx-auto w-full max-w-[1118px] px-[16px] py-[24px] sm:px-[28px]">
         <Breadcrumb />
 
         <h1 className="mt-[13px] text-[22px] leading-[22px] font-semibold" style={{ color: HEADING }}>
@@ -475,11 +475,11 @@ export default function ManualHiddenRestoration() {
         <TabsRow />
 
         <div className="mt-[30px]">
-          <div className="flex items-stretch gap-[20px]">
+          <div className="flex flex-col items-stretch gap-[20px] xl:flex-row">
             <PuzzleImageCard />
-            <div className="flex min-w-0 flex-1 items-stretch gap-[20px]">
+            <div className="flex min-w-0 flex-1 flex-col items-stretch gap-[20px] xl:flex-row">
               <HiddenMiddle />
-              <div className="flex w-[200px] shrink-0 flex-col">
+              <div className="flex w-full min-w-0 shrink-0 flex-col xl:w-[200px]">
                 <HiddenRight />
               </div>
             </div>

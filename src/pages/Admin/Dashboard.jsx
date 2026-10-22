@@ -231,7 +231,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen p-6 space-y-6">
+    <div className="bg-gray-50 min-h-screen p-4 space-y-6 sm:p-6">
       {/* Welcome */}
       <div>
         <h1 className="text-xl text-[#0A0847] font-[Inter]">
@@ -264,7 +264,7 @@ export default function Dashboard() {
             return (
               <div
                 key={item.key}
-                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC] h-[142px] px-4 flex items-center gap-4 font-[Inter]"
+                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC] min-h-[142px] px-4 py-4 flex items-center gap-4 font-[Inter]"
               >
                 <div
                   className={`h-[60px] w-[60px] shrink-0 rounded-[18px] flex items-center justify-center ${colorMap[item.color]}`}
@@ -275,7 +275,7 @@ export default function Dashboard() {
                   <p className="text-[13px] font-[Inter] font-semibold text-[#001984]">
                     {item.label}
                   </p>
-                  <div className="flex items-center gap-6 mt-1">
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mt-1">
                     <p className="text-[22px] leading-none font-semibold font-[Inter] text-[#0A0847]">
                       {typeof item.value === "number"
                         ? item.value.toLocaleString()
@@ -304,7 +304,7 @@ export default function Dashboard() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-stretch">
         {/* User Growth */}
-        <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] p-6 flex flex-col justify-between">
+        <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] p-4 flex flex-col justify-between sm:p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-[#0A0847] text-base">
               User Growth
@@ -402,15 +402,15 @@ export default function Dashboard() {
 
         {/* Devices By Platform */}
         <div className="bg-white rounded-lg border border-[#E2DFFC] font-[Inter] overflow-hidden flex flex-col justify-between">
-          <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC]">
+          <div className="bg-[#F3F7FD] px-4 py-4 border-b border-[#E2DFFC] sm:px-6">
             <h3 className="font-semibold text-base text-[#0A0847]">
               Devices By Platform
             </h3>
           </div>
 
-          <div className="p-6 flex flex-wrap items-center justify-center gap-x-[43px] gap-y-6 flex-1">
+          <div className="p-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-6 flex-1 sm:p-6 sm:gap-x-[43px]">
             {/* Left: Donut Chart */}
-            <div className="relative w-[220px] h-[220px] shrink-0 flex items-center justify-center">
+            <div className="relative w-[190px] h-[190px] shrink-0 flex items-center justify-center sm:w-[220px] sm:h-[220px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -440,7 +440,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[70px_auto] gap-x-16 gap-y-[38px] items-center">
+            <div className="grid grid-cols-[70px_auto] gap-x-6 gap-y-[24px] items-center sm:gap-x-16 sm:gap-y-[38px]">
               {data.devices.map((d) => (
                 <Fragment key={d.name}>
                   <span className="flex items-center gap-2.5 text-[13px] leading-4 font-semibold text-[#7A7A7A]">
@@ -465,14 +465,14 @@ export default function Dashboard() {
         {/* Tools & Services */}
         <div className="bg-white rounded-lg border border-[#E2DFFC] overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC]">
+          <div className="bg-[#F3F7FD] px-4 py-4 border-b border-[#E2DFFC] sm:px-6">
             <h3 className="font-bold text-base text-[#0A0847]">
               Tools & Services
             </h3>
           </div>
 
           {/* Items */}
-          <div className="p-6 space-y-4 flex-1 flex flex-col ">
+          <div className="p-4 space-y-4 flex-1 flex flex-col sm:p-6">
             {/* AI Comprehension */}
             <button className="w-full flex items-center justify-between border border-[#E2DFFC] rounded-lg px-4 py-4 text-left hover:bg-[#F8FAFC] transition-colors group">
               <div className="flex items-center gap-3">
@@ -510,7 +510,7 @@ export default function Dashboard() {
         {/* Recent Activity */}
         <div className="lg:col-span-2 bg-white rounded-lg border border-[#E2DFFC] overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="bg-[#F3F7FD] px-6 py-4 border-b border-[#E2DFFC] flex items-center justify-between">
+          <div className="bg-[#F3F7FD] px-4 py-4 border-b border-[#E2DFFC] flex items-center justify-between sm:px-6">
             <h3 className="font-bold text-base text-[#0A0847]">
               Recent Activity
             </h3>
@@ -520,15 +520,15 @@ export default function Dashboard() {
           </div>
 
           {/* Activity List */}
-          <div className="p-6 divide-y divide-[#F1F5F9] flex-1 flex flex-col justify-between">
+          <div className="p-4 divide-y divide-[#F1F5F9] flex-1 flex flex-col justify-between sm:p-6">
             {data.recentActivity.map((a, i) => {
               const Icon = activityIconMap[a.icon];
               return (
                 <div
                   key={i}
-                  className="flex items-center justify-between py-3.5 first:pt-0 last:pb-0"
+                  className="flex flex-wrap items-center justify-between gap-2 py-3.5 first:pt-0 last:pb-0"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex min-w-0 items-center gap-4">
                     {/* Distinct colored icon container */}
                     <div
                       className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 ${activityBgMap[a.icon] || "bg-gray-100 text-gray-600"}`}
@@ -564,7 +564,7 @@ export default function Dashboard() {
         />
 
         {/* Centered Overlay Text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center sm:p-6">
           <p className="text-xl md:text-2xl font-bold text-[#0A0847]">
             "Trust in the Lord with all your heart."
           </p>

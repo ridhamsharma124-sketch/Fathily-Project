@@ -351,7 +351,7 @@ export default function ChapterStoriesPage() {
   const draftCount = stories.filter((s) => s.status === "Draft").length;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Hidden audio input for Replace Audio */}
       <input type="file" ref={audioInputRef} accept="audio/*" onChange={handleAudioChosen} className="hidden" />
 
@@ -386,7 +386,7 @@ export default function ChapterStoriesPage() {
 
         <input type="file" ref={heroRef} accept="image/png,image/jpeg" onChange={handleHeroUpload} className="hidden" />
 
-        <div className="border border-[#E2DFFC] bg-[#F6F7FF] rounded-lg p-6 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-6 items-center">
+        <div className="border border-[#E2DFFC] bg-[#F6F7FF] rounded-lg p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-6 items-center">
           <div className="rounded-xl overflow-hidden bg-gray-100 h-52 flex items-center justify-center">
             {heroImage && !heroError ? (
               <img

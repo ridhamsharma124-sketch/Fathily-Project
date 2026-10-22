@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -155,7 +155,7 @@ export default function DailyReflectionList() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col gap-[20px] bg-[#F8FAFC] p-6 font-['Inter',sans-serif]">
+    <div className="flex min-h-screen flex-col gap-[20px] bg-[#F8FAFC] p-4 font-['Inter',sans-serif] sm:p-6">
       {/* Header */}
       <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
         <div>

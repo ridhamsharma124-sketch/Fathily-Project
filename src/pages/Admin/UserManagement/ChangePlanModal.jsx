@@ -86,7 +86,7 @@ export default function ChangePlanModal({ user, onClose, onSave }) {
         <FiX size={34} className="border-2 border-white rounded-full p-1" />
       </button> */}
 
-      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-7 space-y-5">
+      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-4 space-y-5 sm:p-7">
         
         <button type="button" onClick={onClose}
                   className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 cursor-pointer">

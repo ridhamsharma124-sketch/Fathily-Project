@@ -126,7 +126,7 @@ export default function AddBadge() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="w-full px-7 py-6">
+      <div className="w-full px-4 py-6 sm:px-7">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
           <div>
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
@@ -208,8 +208,8 @@ export default function AddBadge() {
                   <FieldSelect id="badge-tier" options={["Select tier", "Seed", "Sprout", "Tree"]} />
                 </div>
 
-                <div className="mt-4 flex items-center">
-                  <span className="w-[244px] shrink-0 text-[12px] font-semibold text-[#0A0847]">Status</span>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <span className="w-full shrink-0 text-[12px] font-semibold text-[#0A0847] sm:w-[244px]">Status</span>
                   <div className="flex items-center gap-2.5">
                     <Toggle checked={active} onChange={setActive} label="Status" />
                     <span className="text-[12px] font-medium text-[#0A0847]">Active</span>
@@ -301,7 +301,7 @@ export default function AddBadge() {
 
                 <div className="mt-4">
                   <p className={labelClass}>Badge Color (Optional)</p>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     {SWATCHES.map((swatch) => {
                       const selected = color === swatch.hex;
                       return (
@@ -328,18 +328,18 @@ export default function AddBadge() {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex flex-wrap justify-end gap-4">
             <button
               type="button"
               onClick={() => navigate("/admin/badges")}
-              className="h-[41px] w-[211px] cursor-pointer rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE]"
+              className="h-[41px] w-full cursor-pointer rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE] sm:w-[211px]"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={() => navigate("/admin/badges")}
-              className="flex h-[41px] w-[211px] cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition-colors hover:bg-[#000F5C]"
+              className="flex h-[41px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition-colors hover:bg-[#000F5C] sm:w-[211px]"
             >
               <img src={saveIcon} alt="" className="h-4 w-auto shrink-0" />
               Save Badge

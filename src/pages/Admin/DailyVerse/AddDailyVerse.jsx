@@ -453,7 +453,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
   };
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Top Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -590,7 +590,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               </div>
 
               {/* Time Zone */}
-              <div className="flex-1 w-[240px]">
+              <div className="w-full flex-1 sm:w-[240px]">
                 <Label>Time Zone</Label>
                 <div className="relative inline-block">
                   <EarthSvg size={16} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -754,7 +754,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
             <div className="mb-4">
               <Label>Translations</Label>
-              <div className="flex items-center gap-3 sm:gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 {["KJV", "NIV", "NLT"].map((lang) => {
                   const isSelected = formData.activeTranslations.includes(lang);
                   return (
@@ -769,7 +769,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
                           : [...formData.activeTranslations, lang];
                         updateField("activeTranslations", next);
                       }}
-                      className={`px-4 sm:px-6 py-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-3 border transition-colors cursor-pointer ${
+                      className={`px-4 sm:px-6 py-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-3 border transition-colors cursor-pointer w-full sm:w-auto ${
                         isSelected
                           ? "border-[#CBC6F8] bg-[#F1F2F9] text-[#0A0847]"
                           : "border-[#E2DFFC] bg-white text-[#0A0847] hover:bg-gray-50"

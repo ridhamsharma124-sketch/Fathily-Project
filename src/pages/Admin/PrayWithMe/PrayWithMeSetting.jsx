@@ -197,7 +197,7 @@ export default function PrayWithMeSettingsPage() {
   };
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div>
         <h1 className="text-xl font-semibold text-[#0A0847]">Pray With Me Settings</h1>

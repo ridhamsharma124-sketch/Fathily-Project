@@ -52,7 +52,7 @@ export default function AuthLayout() {
         className="flex min-h-screen w-full flex-col lg:absolute lg:left-0 lg:top-0 lg:min-h-0"
         style={frameStyle}
       >
-        <main className="relative flex min-h-0 flex-1 overflow-hidden ">
+        <main className="relative flex min-h-0 flex-1 lg:overflow-hidden">
           {/* Background */}
           <img
             src={bgImage}
@@ -61,16 +61,28 @@ export default function AuthLayout() {
             className="absolute inset-0 h-full w-full object-fill"
           />
 
-          <div className="relative flex w-full items-center justify-end px-[24px] lg:pl-0 lg:pr-[4%]">
+          <div className="relative flex w-full flex-col items-stretch px-[20px] pt-[104px] pb-[32px] sm:px-[24px] md:pt-[150px] lg:flex-row lg:items-center lg:justify-end lg:px-0 lg:pt-0 lg:pb-0 lg:pl-0 lg:pr-[4%]">
             <Logo
               className="absolute left-[24px] top-[24px] z-10 h-[66px] w-[150px] object-contain
              md:left-[36px] md:top-[34px] md:h-[92px] md:w-[208px]
              lg:left-[43px] lg:top-[30px] lg:h-[112px] lg:w-[230px]"
             />
 
-            <div className="pointer-events-none absolute left-0 right-1/2 top-[41%] lg:right-[54%] z-10 flex -translate-y-1/2 items-center justify-center">
+            <div className="pointer-events-none absolute left-0 right-1/2 top-[41%] z-10 hidden -translate-y-1/2 items-center justify-center lg:right-[54%] lg:flex">
               <div className="w-full max-w-[460px] px-6 text-center">
                 <h1 className="text-[34px] font-bold leading-tight text-[var(--auth-ink)]">
+                  Welcome Back!
+                </h1>
+                <p className="mt-[10px] text-[13px] font-medium text-[var(--auth-subtitle)]">
+                  We're glad to see you again.
+                </p>
+              </div>
+            </div>
+
+            {/* mobile / tablet heading - in normal flow so it never overlaps the card */}
+            <div className="relative z-10 mb-8 w-full text-center lg:hidden">
+              <div className="mx-auto w-full max-w-[460px]">
+                <h1 className="text-[28px] font-bold leading-tight text-[var(--auth-ink)] sm:text-[34px]">
                   Welcome Back!
                 </h1>
                 <p className="mt-[10px] text-[13px] font-medium text-[var(--auth-subtitle)]">

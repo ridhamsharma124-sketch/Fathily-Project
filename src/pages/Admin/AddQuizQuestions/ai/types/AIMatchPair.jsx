@@ -73,12 +73,12 @@ export const Settings = ({ s, set }) => {
 export const PreviewBody = ({ it, i }) => (
   <>
     <p className="text-sm font-semibold text-[#0A0847]">{i + 1}. {it.q}</p>
-    <div className="mt-4 grid grid-cols-[1fr_1.6fr] gap-6 text-xs text-[#0A084799]">
+    <div className="mt-4 grid grid-cols-1 gap-6 text-xs text-[#0A084799] sm:grid-cols-[1fr_1.6fr]">
       <div>
         <p className="font-semibold text-[#001984] mb-2">Column A</p>
         {it.a.map((t, k) => <p key={t} className="mb-1.5">{"ABCDEF"[k]}. {t}</p>)}
       </div>
-      <div className="border-l border-[#E2DFFC] pl-5">
+      <div className="border-t border-[#E2DFFC] pt-4 sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
         <p className="font-semibold text-[#001984] mb-2">Column B</p>
         {it.b.map((t, k) => <p key={t} className="mb-1.5">{k + 1}. {t}</p>)}
       </div>

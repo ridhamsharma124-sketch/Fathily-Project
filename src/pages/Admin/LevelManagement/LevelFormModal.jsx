@@ -61,7 +61,7 @@ const SelectField = ({ value, onChange, options, placeholder, error }) => (
 );
 
 const Section = ({ title, children, className = "" }) => (
-  <div className={`border border-[#E2DFFC] rounded-lg p-6 ${className}`}>
+  <div className={`border border-[#E2DFFC] rounded-lg p-4 sm:p-6 ${className}`}>
     <h3 className="text-base font-semibold text-[#0A0847CC] mb-5">{title}</h3>
     {children}
   </div>
@@ -78,7 +78,7 @@ const QuestionPicker = ({ selected, max, onClose, onConfirm }) => {
       className="fixed inset-0 z-[10000] bg-black/50 flex items-center justify-center p-4 font-[Inter]"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-lg w-full max-w-[560px] p-6 space-y-4">
+      <div className="bg-white rounded-lg w-full max-w-[560px] p-4 space-y-4 sm:p-6">
         <div className="flex items-center justify-between">
           <h4 className="text-base font-semibold text-[#0A0847]">Select Questions</h4>
           <span className="text-xs font-semibold text-[#0A084799]">{ids.length} / {max}</span>
@@ -103,7 +103,7 @@ const QuestionPicker = ({ selected, max, onClose, onConfirm }) => {
             );
           })}
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <button type="button" onClick={onClose}
             className="py-3 border border-[#001984] rounded-md text-xs font-semibold text-[#0A0847] cursor-pointer hover:bg-gray-50">
             Cancel
@@ -220,7 +220,7 @@ export default function LevelFormModal({ mode = "add", level, levels = [], onClo
       className="fixed inset-0 z-[9998] bg-black/45 flex items-start justify-center overflow-y-auto p-4 sm:p-8 font-[Inter]"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="relative bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] lg:ml-60 p-6 space-y-6">
+      <div className="relative bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] lg:ml-60 p-4 space-y-6 sm:p-6">
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
@@ -289,7 +289,7 @@ export default function LevelFormModal({ mode = "add", level, levels = [], onClo
         </Section>
 
         {/* Content */}
-        <div className={`rounded-lg p-6 bg-[#F3F2FF] border ${errors.questions ? "border-[#EB0C10]" : "border-[#E2DFFC]"}`}>
+        <div className={`rounded-lg p-4 bg-[#F3F2FF] border sm:p-6 ${errors.questions ? "border-[#EB0C10]" : "border-[#E2DFFC]"}`}>
           <h3 className="text-base font-semibold text-[#0A0847CC] mb-4">Content</h3>
 
           <div className="flex items-start justify-between gap-4 mb-4">

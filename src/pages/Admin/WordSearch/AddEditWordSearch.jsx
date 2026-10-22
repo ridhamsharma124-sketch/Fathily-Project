@@ -54,7 +54,7 @@ const CREATION_METHODS = [
     icon: pencilIcon,
     descLeading: "leading-[15px]",
     descGap: "mt-[8px]",
-    buttons: [{ label: "Start Manual Entry", variant: "primary", width: "w-[145px]", height: "h-[30px]" }],
+    buttons: [{ label: "Start Manual Entry", variant: "primary", width: "w-full sm:w-[145px]", height: "h-[30px]" }],
   },
   {
     id: "csv",
@@ -65,7 +65,7 @@ const CREATION_METHODS = [
     descGap: "mt-[8px]",
     buttons: [
       { label: "Download Template", variant: "outline", width: "", height: "h-[32px]", padding: "px-[14px]" },
-      { label: "Generate AI Image", variant: "dashed", width: "w-[291px]", height: "h-[37px]", icon: uploadIcon, flush: true },
+      { label: "Generate AI Image", variant: "dashed", width: "w-full sm:w-[291px]", height: "h-[37px]", icon: uploadIcon, flush: true },
     ],
   },
   {
@@ -75,7 +75,7 @@ const CREATION_METHODS = [
     icon: sparkleIcon,
     descLeading: "leading-[23px]",
     descGap: "mt-[4px]",
-    buttons: [{ label: "Generate with AI", variant: "primary", width: "w-[144px]", height: "h-[30px]" }],
+    buttons: [{ label: "Generate with AI", variant: "primary", width: "w-full sm:w-[144px]", height: "h-[30px]" }],
   },
 ];
 
@@ -139,7 +139,7 @@ export default function AddEditWordSearch() {
 
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
-      <div className="mx-auto max-w-[1102px] px-5 py-6">
+      <div className="mx-auto w-full max-w-[1102px] px-4 py-6 sm:px-5">
         <h1 className="text-[22px] leading-[22px] font-semibold" style={{ color: HEADING }}>
           Add / Edit Word Search
         </h1>
@@ -147,9 +147,9 @@ export default function AddEditWordSearch() {
           Choose the activity type and how you want to create it.
         </p>
 
-        <div className="mt-[28px] flex items-start gap-[26px]">
+        <div className="mt-[28px] flex flex-wrap items-start gap-[16px] sm:gap-[26px]">
           {FIELDS.map(({ id, label, options, width }) => (
-            <div key={id} style={{ width }} className="shrink-0">
+            <div key={id} style={{ width, maxWidth: "100%" }} className="max-sm:!w-full max-w-full shrink-0">
               <label htmlFor={id} className="mb-[8px] block text-[14px] leading-[17px] font-semibold" style={{ color: HEADING }}>
                 {label}
               </label>
@@ -177,7 +177,7 @@ export default function AddEditWordSearch() {
             </div>
           ))}
 
-          <div className="min-w-0 shrink-0" style={{ width: REWARD_WIDTH }}>
+          <div className="max-sm:!w-full w-full min-w-0 max-w-full shrink-0" style={{ width: REWARD_WIDTH, maxWidth: "100%" }}>
             <label htmlFor="reward" className="mb-[8px] block text-[14px] leading-[17px] font-semibold" style={{ color: HEADING }}>
               Reward Points
             </label>
@@ -218,17 +218,17 @@ export default function AddEditWordSearch() {
         </div>
 
         <div
-          className="mt-[24px] flex items-start rounded-[8px] border px-[26px] py-[28px]"
+          className="mt-[24px] flex flex-col items-start rounded-[8px] border px-[18px] py-[24px] sm:flex-row sm:px-[26px] sm:py-[28px]"
           style={{ backgroundColor: TINT_BG, borderColor: TINT_BORDER }}
         >
           <img
             src={puzzleImg}
             alt="Puzzle"
-            className="h-[145px] w-[296px] shrink-0 rounded-[8px] border object-cover object-top"
+            className="h-[145px] w-full max-w-[296px] shrink-0 rounded-[8px] border object-cover object-top"
             style={{ borderColor: "#AEB7E0" }}
           />
 
-          <div className="ml-[16px] min-w-0">
+          <div className="min-w-0 sm:ml-[16px]">
             <p className="text-[16px] leading-[16px] font-semibold" style={{ color: HEADING }}>
               Default image: Genesis 1
             </p>
@@ -237,10 +237,10 @@ export default function AddEditWordSearch() {
               manually or via CSV upload.
             </p>
 
-            <div className="mt-[20px] flex items-center gap-[16px]">
-              <ActionButton label="Replace Default" variant="outline" width="w-[164px]" icon={replaceIcon} />
-              <ActionButton label="Generate AI Image" variant="primary" width="w-[171px]" icon={aiImageIcon} />
-              <ActionButton label="Reset" variant="outline" width="w-[116px]" icon={resetIcon} />
+            <div className="mt-[20px] flex flex-wrap items-center gap-[16px]">
+              <ActionButton label="Replace Default" variant="outline" width="w-full sm:w-[164px]" icon={replaceIcon} />
+              <ActionButton label="Generate AI Image" variant="primary" width="w-full sm:w-[171px]" icon={aiImageIcon} />
+              <ActionButton label="Reset" variant="outline" width="w-full sm:w-[116px]" icon={resetIcon} />
             </div>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default function AddEditWordSearch() {
           1. Choose Word Search Type
         </h2>
 
-        <div className="mt-[22px] grid grid-cols-4 gap-[16px]">
+        <div className="mt-[22px] grid grid-cols-1 gap-[16px] sm:grid-cols-2 lg:grid-cols-4">
           {WORD_SEARCH_TYPES.map(({ id, title, description, icon }) => {
             const selected = wsType === id;
             return (
@@ -289,11 +289,11 @@ export default function AddEditWordSearch() {
         </h2>
 
         <div
-          className="mt-[22px] grid h-[182px] rounded-[8px] border bg-white"
-          style={{ borderColor: BORDER, gridTemplateColumns: "359px 361px 1fr" }}
+          className="mt-[22px] grid grid-cols-1 rounded-[8px] border bg-white sm:grid-cols-2 lg:h-[182px] lg:grid-cols-[359px_361px_1fr]"
+          style={{ borderColor: BORDER }}
         >
           {CREATION_METHODS.map(({ id, title, description, icon, descLeading, descGap, buttons }) => (
-            <div key={id} className="flex flex-col pt-[18px] pb-[24px] pl-[27px]">
+            <div key={id} className="flex min-w-0 flex-col pt-[18px] pb-[24px] pl-[16px] sm:pl-[27px]">
               <div className="flex items-start gap-[12px]">
                 <span
                   className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-full"
@@ -313,7 +313,7 @@ export default function AddEditWordSearch() {
 
               <div className="mt-auto flex flex-col items-start gap-[12px]">
                 {buttons.map((btn) => {
-                  const indent = btn.flush ? "" : "ml-[48px]";
+                  const indent = btn.flush ? "" : "ml-0 sm:ml-[48px]";
                   const onClick = btn.variant === "primary" ? () => openCreation(id) : undefined;
                   return (
                     <div key={btn.label} className={indent}>
@@ -342,9 +342,9 @@ export default function AddEditWordSearch() {
             Image Usage Policy
           </p>
 
-          <div className="mt-[33px] grid" style={{ gridTemplateColumns: "403px 372px 1fr" }}>
+          <div className="mt-[33px] grid grid-cols-1 gap-y-[18px] sm:grid-cols-2 lg:grid-cols-[403px_372px_1fr]">
             {POLICY.map(({ icon, label, text, leading }) => (
-              <div key={label} className="flex items-start gap-[12px] pl-[27px]">
+              <div key={label} className="flex items-start gap-[12px] pl-[16px] sm:pl-[27px]">
                 <span className="flex h-[40px] w-[40px] shrink-0 items-center justify-center">
                   <img src={icon} alt="" aria-hidden className="max-h-[40px] max-w-[40px] object-contain" />
                 </span>
@@ -361,7 +361,7 @@ export default function AddEditWordSearch() {
           </div>
         </div>
 
-        <div className="mt-[40px] flex items-center justify-between gap-[16px] pb-6">
+        <div className="mt-[40px] flex flex-col items-stretch gap-[16px] pb-6 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             className="flex h-[40px] cursor-pointer items-center px-[20px] text-[14px] font-semibold"
@@ -370,7 +370,7 @@ export default function AddEditWordSearch() {
             Cancel
           </button>
 
-          <div className="flex items-center gap-[16px]">
+          <div className="flex flex-col items-stretch gap-[12px] sm:flex-row sm:items-center sm:gap-[16px]">
             <button
               type="button"
               className="flex h-[40px] cursor-pointer items-center gap-[8px] rounded-[6px] border bg-white px-[16px] text-[14px] font-semibold"
@@ -389,7 +389,7 @@ export default function AddEditWordSearch() {
             </button>
             <button
               type="button"
-              className="flex h-[40px] w-[190px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white"
+              className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white sm:w-[190px]"
               style={{ backgroundColor: NAVY }}
             >
               <img src={arrowRightIcon} alt="" aria-hidden className="h-[12px] w-[12px] object-contain" />

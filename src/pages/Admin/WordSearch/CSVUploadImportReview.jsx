@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PiCloudArrowUp } from "react-icons/pi";
 import chapterDefaultImage from "../../../assets/word search/Chapter Default Image.webp";
@@ -19,6 +19,36 @@ const CARD_BORDER = "#E2DFFC";
 const LINE = "#E9E9E9";
 const HEADER_BG = "#F2F5FC";
 const GREEN = "#21AC1C";
+
+// Layout switches, based on the width of the page content (not the screen), so it also works
+// when the sidebar is open or closed.
+const CARDS_4_COLS_AT = 800; // 4 summary cards in one row
+const CARDS_2_COLS_AT = 400; // 2 per row (below this: 1 per row)
+const OPTIONS_INLINE_AT = 900; // Import Options toggles + green notice on one line
+
+
+// Returns [ref, width]: the content width of the element the ref is attached to.
+function useElementWidth() {
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+
+    const measure = () => {
+      const cs = getComputedStyle(el);
+      return el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    };
+
+    setWidth(measure());
+    const ro = new ResizeObserver(() => setWidth(measure()));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return [ref, width];
+}
 
 
 
@@ -191,7 +221,11 @@ const SUMMARY_ROWS = [
 const READY_TO_IMPORT = 22;
 
 
-const TABLE_COLS = "grid-cols-[37px_133px_162px_150px_102px_86px_158px_minmax(0,1fr)]";
+// Figma widths (37 / 133 / 162 / 150 / 102 / 86 / 158 / rest). The "fr" part makes the columns scale
+// proportionally when the card is wider or narrower; each column has a floor (the Clue, Answer and
+// Maps To columns can shrink a bit, the others keep their Figma width). Sum of the floors = 860px.
+const TABLE_COLS =
+  "grid-cols-[minmax(37px,37fr)_minmax(133px,133fr)_minmax(130px,162fr)_minmax(120px,150fr)_minmax(102px,102fr)_minmax(86px,86fr)_minmax(128px,158fr)_minmax(124px,193fr)]";
 
 
 
@@ -201,9 +235,14 @@ export default function CSVUploadImportReview() {
   const [showToast, setShowToast] = useState(true);
   const [selectedRow, setSelectedRow] = useState(1);
 
+  const [contentRef, contentWidth] = useElementWidth();
+  const cardCols =
+    contentWidth >= CARDS_4_COLS_AT ? "grid-cols-4" : contentWidth >= CARDS_2_COLS_AT ? "grid-cols-2" : "grid-cols-1";
+  const optionsInline = contentWidth >= OPTIONS_INLINE_AT;
+
   return (
     <div className="min-h-[calc(100vh-72px)] bg-[#F9FAFE] font-inter text-[#0A1050]">
-      <div className="mx-auto w-full max-w-[1111px] px-6 py-6 pb-12">
+      <div ref={contentRef} className="mx-auto w-full max-w-[1111px] px-4 py-6 pb-12 sm:px-6">
         <p className="text-[16px] leading-[19px] font-medium" style={{ color: TEXT_60 }}>
           Add / Edit Word Search — CSV Upload
         </p>
@@ -216,11 +255,12 @@ export default function CSVUploadImportReview() {
           Review your import summary before finalizing.
         </p>
 
-        <div className="mt-[19px] grid grid-cols-4 gap-[22px]">
+        {/* Summary cards: 4 / 2 / 1 per row, depending on the width of the page content */}
+        <div className={`mt-[19px] grid gap-[22px] ${cardCols}`}>
           {SUMMARY_CARDS.map((card) => (
             <section
               key={card.label}
-              className={`flex h-[115px] flex-col items-center justify-center gap-[4px] rounded-[8px] border px-4 ${card.box}`}
+              className={`flex h-[115px] min-w-0 flex-col items-center justify-center gap-[4px] rounded-[8px] border px-4 text-center ${card.box}`}
             >
               <p className="text-[22px] leading-[27px] font-semibold" style={{ color: card.color }}>
                 {card.value}
@@ -234,7 +274,7 @@ export default function CSVUploadImportReview() {
             </section>
           ))}
 
-          <section className="flex h-[115px] flex-col justify-center gap-[8px] rounded-[8px] border bg-white px-4" style={{ borderColor: CARD_BORDER }}>
+          <section className="flex h-[115px] min-w-0 flex-col justify-center gap-[8px] rounded-[8px] border bg-white px-4" style={{ borderColor: CARD_BORDER }}>
             <p className="text-[14px] leading-[17px] font-semibold" style={{ color: NAVY }}>
               File Summary
             </p>
@@ -263,9 +303,10 @@ export default function CSVUploadImportReview() {
             Import Summary (24 Puzzles)
           </h2>
 
-          <div className="w-full">
+          {/* Header and rows share the same min width, so on small screens the table scrolls sideways as one piece */}
+          <div className="w-full overflow-x-auto">
             <div
-              className={`grid h-[50px] w-full items-center border-b-[0.75px] ${TABLE_COLS}`}
+              className={`grid h-[50px] w-full min-w-[860px] items-center border-b-[0.75px] ${TABLE_COLS}`}
               style={{ backgroundColor: HEADER_BG, borderColor: LINE }}
             >
               <span className="flex justify-center text-[14px] leading-[17px] font-semibold" style={{ color: TEXT_80 }}>
@@ -290,7 +331,7 @@ export default function CSVUploadImportReview() {
               <div
                 key={row.no}
                 onClick={() => setSelectedRow(row.no)}
-                className={`grid h-[61px] cursor-pointer items-center border-b-[0.75px] ${TABLE_COLS}`}
+                className={`grid min-h-[61px] w-full min-w-[860px] cursor-pointer items-center border-b-[0.75px] ${TABLE_COLS}`}
                 style={{ borderColor: LINE }}
               >
                 <span className="flex justify-center">
@@ -336,8 +377,13 @@ export default function CSVUploadImportReview() {
               Import Options
             </h2>
 
-            <div className="mt-[16px] flex items-center">
-              <div className="flex items-center gap-[61px]">
+            {/* Toggles + green notice on one line from 900px of content width, otherwise stacked */}
+            <div
+              className={`mt-[16px] flex gap-[12px] ${
+                optionsInline ? "flex-row items-center" : "flex-col items-start"
+              }`}
+            >
+              <div className="flex flex-wrap items-center gap-x-[61px] gap-y-[16px]">
                 <OptionToggle
                   label="Save as Draft"
                   sub="Save puzzles as draft for later review"
@@ -355,12 +401,14 @@ export default function CSVUploadImportReview() {
 
               {showToast && (
                 <div
-                  className="ml-auto flex h-[58px] w-[355px] items-center gap-[10px] rounded-[8px] border px-4"
+                  className={`flex h-auto min-h-[58px] w-full max-w-[355px] items-center gap-[10px] rounded-[8px] border px-4 ${
+                    optionsInline ? "ml-auto" : ""
+                  }`}
                   style={{ backgroundColor: "rgba(33,172,28,0.1)", borderColor: "#DAF3C8" }}
                 >
                   <img src={checkMarkIcon} alt="" aria-hidden width={26} height={26} className="block shrink-0" />
 
-                  <span className="flex-1 whitespace-nowrap text-[14px] leading-[14px] font-semibold" style={{ color: TEXT_60 }}>
+                  <span className="flex-1 text-[14px] leading-[14px] font-semibold" style={{ color: TEXT_60 }}>
                     CSV validated and images assigned
                   </span>
 
@@ -378,24 +426,25 @@ export default function CSVUploadImportReview() {
           </div>
         </section>
 
-        <div className="mt-8 flex items-center justify-between">
+        {/* Buttons: full width stacked on mobile; from sm they sit in one row and wrap if there is not enough room */}
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-[12px]">
           <OutlineButton
-            className="w-[97px] px-0"
+            className="w-full px-0 sm:w-[97px]"
             onClick={() => navigate("/admin/word-search/add-edit/csv-upload/review-images")}
           >
             Back
           </OutlineButton>
 
-          <div className="flex items-center gap-3">
+          <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <OutlineButton
-              className="w-[129px] px-0"
+              className="w-full px-0 sm:w-[129px]"
               icon={<img src={floppyIcon} alt="" aria-hidden width={16} height={16} className="block shrink-0" />}
             >
               Save draft
             </OutlineButton>
 
             <PrimaryButton
-              className="w-[201px]"
+              className="w-full sm:w-[201px]"
               icon={<PiCloudArrowUp size={16} className="shrink-0" />}
             >
               Import {READY_TO_IMPORT} Puzzles

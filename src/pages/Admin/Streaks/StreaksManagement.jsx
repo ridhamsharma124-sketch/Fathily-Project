@@ -118,7 +118,7 @@ export default function StreakManagementPage() {
   const available = ACTIVITY_OPTIONS.filter((a) => !s.activities.includes(a));
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
@@ -314,7 +314,7 @@ export default function StreakManagementPage() {
           </div>
 
           {/* Protection */}
-          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 flex items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-[#E2DFFC] bg-white p-4 sm:p-6">
             <div className="flex items-start gap-3">
               <GuardIconSvg size={28} className="text-[#001984] mt-0.5" />
               <div>

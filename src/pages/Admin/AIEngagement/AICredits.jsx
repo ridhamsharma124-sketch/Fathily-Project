@@ -104,7 +104,7 @@ function DraggableList({
 
 function ConversionRow({ prefix, numberValue, inputId, unit }) {
   return (
-    <div className="grid grid-cols-[268px_97px_auto] items-center gap-[10px]">
+    <div className="grid grid-cols-1 items-center gap-[10px] sm:grid-cols-[268px_97px_auto]">
       <label
         htmlFor={inputId}
         className="truncate text-[13px] font-medium text-ink-body"
@@ -115,7 +115,7 @@ function ConversionRow({ prefix, numberValue, inputId, unit }) {
         id={inputId}
         type="number"
         defaultValue={numberValue}
-        className="h-[33px] w-[97px] rounded-[8px] border border-edge-input bg-white px-[12px] text-[14px] font-semibold text-ink-body outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10"
+        className="h-[33px] w-full rounded-[8px] border border-edge-input bg-white px-[12px] text-[14px] font-semibold text-ink-body outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10 sm:w-[97px]"
       />
       <span className="text-left text-[12px] font-medium text-ink-muted">
         {unit}
@@ -427,13 +427,13 @@ export default function AICredits() {
         </p>
       </div>
 
-      <div className="flex items-center gap-[4px] border-b border-[#E5E7EB]">
+      <div className="flex items-center gap-[4px] overflow-x-auto border-b border-[#E5E7EB]">
         {["Configuration", "Credit Packs & Bonuses"].map((tabName) => (
           <button
             key={tabName}
             type="button"
             onClick={() => setTab(tabName)}
-            className={`-mb-px flex h-[41px] w-[196px] cursor-pointer items-center justify-center whitespace-nowrap border-b-2 text-[13px] transition ${
+            className={`-mb-px flex h-[41px] w-[196px] shrink-0 cursor-pointer items-center justify-center whitespace-nowrap border-b-2 text-[13px] transition ${
               tab === tabName
                 ? "rounded-t-[8px] border-transparent bg-[#E4E7F4] font-semibold text-[#1E1B4B]"
                 : "border-transparent font-medium text-[#6B7280] hover:text-[#1E1B4B]"

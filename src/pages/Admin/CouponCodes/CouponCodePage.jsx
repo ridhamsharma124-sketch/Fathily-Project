@@ -267,7 +267,8 @@ const CouponDetailsModal = ({ coupon, onClose, onEdit, onDuplicate, onToggleActi
         </div>
 
         <div className="border border-[#E2DFFC] rounded-lg p-3">
-          <table className="w-full text-left text-xs">
+          <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-[420px] text-left text-xs">
             <thead className="bg-[#F3F7FD]">
               <tr>
                 <th className="p-3 font-medium text-[#0A0847CC]">Date</th>
@@ -285,11 +286,12 @@ const CouponDetailsModal = ({ coupon, onClose, onEdit, onDuplicate, onToggleActi
               ))}
             </tbody>
           </table>
+          </div>
         </div>
 
         {/* Actions */}
         <div className="border-t border-[#E2DFFC] mt-5 pt-5 space-y-3">
-          <div className="grid grid-cols-[1fr_1.4fr_1.4fr] gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1.4fr_1.4fr]">
             <button onClick={onEdit} className="py-2.5 border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer">
               <FiEdit2 size={13} /> Edit
             </button>
@@ -355,7 +357,7 @@ export default function CouponCodesPage() {
   const td = "p-4 font-medium text-[#0A0847CC]";
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
         <div>

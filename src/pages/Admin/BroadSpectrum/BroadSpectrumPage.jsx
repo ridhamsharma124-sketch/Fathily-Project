@@ -315,7 +315,7 @@ export default function BroadSpectrumPage() {
   };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -324,7 +324,7 @@ export default function BroadSpectrumPage() {
             Manage daily journey experience, questions, prayers and rewards.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button type="button" className="px-5 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
             <FiFilter size={14} /> Preview Journey
           </button>
@@ -429,7 +429,7 @@ export default function BroadSpectrumPage() {
           </div>
 
           <p className="text-sm font-semibold text-[#0A0847] mt-5 mb-3">Question Difficulty Distribution</p>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             <div>
               <p className="text-[11px] font-medium text-[#0A0847CC] mb-1">Easy</p>
               <Select value={s.easy} onChange={(v) => set("easy", v)} options={["30%", "40%", "50%", "60%"]} />
@@ -602,7 +602,7 @@ export default function BroadSpectrumPage() {
             <div key={k} className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-xs font-semibold text-[#0A0847]">{title}</p>
-                <p className="text-[10px] text-[#0A084799] font-medium mt-0.5 max-w-[220px]">{desc}</p>
+                <p className="text-[10px] text-[#0A084799] font-medium mt-0.5 max-w-full sm:max-w-[220px]">{desc}</p>
               </div>
               <Toggle checked={s[k]} onChange={(v) => set(k, v)} />
             </div>

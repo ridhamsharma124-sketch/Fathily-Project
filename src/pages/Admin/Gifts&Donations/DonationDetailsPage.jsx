@@ -173,7 +173,7 @@ export default function DonationDetailsPage() {
   const amount = `$${Number(donation.amount).toFixed(2)}`;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 sm:p-6">
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <button

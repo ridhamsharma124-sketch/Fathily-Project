@@ -88,11 +88,11 @@ export default function WhoAmIForm({ data, onChange, errors }) {
           </div>
         </Field>
 
-        <div>
+        <div className="overflow-x-auto">
           <p className="text-sm font-semibold text-[#0A0847] mb-3">
             Clues <span className="font-normal text-[#0A084799]">(Drag to Reorder)</span>
           </p>
-          <div className="grid grid-cols-[28px_44px_1fr_110px_110px_36px] gap-3 px-1 mb-2 text-xs font-semibold text-[#0A0847]">
+          <div className="min-w-[520px] grid grid-cols-[28px_44px_1fr_110px_110px_36px] gap-3 px-1 mb-2 text-xs font-semibold text-[#0A0847]">
             <span />
             <span className="text-center">#</span>
             <span>Clue</span>
@@ -100,7 +100,7 @@ export default function WhoAmIForm({ data, onChange, errors }) {
             <span>Reveal Order</span>
             <span />
           </div>
-          <div className="space-y-3">
+          <div className="min-w-[520px] space-y-3">
             {data.clues.map((c, i) => (
               <div
                 key={c.id}

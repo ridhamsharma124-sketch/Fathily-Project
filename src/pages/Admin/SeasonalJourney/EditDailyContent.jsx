@@ -76,7 +76,7 @@ const SectionCard = ({ n, title, subtitle, startDate, endDate, onStart, onEnd, c
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 w-full lg:w-1/2">
+      <div className="grid grid-cols-1 gap-3 w-full sm:grid-cols-2 lg:w-1/2">
         <div>
           <Label required>Start Date</Label>
           <DateField value={startDate} onChange={onStart} />
@@ -364,7 +364,7 @@ const [days, setDays] = useState(() =>
   };
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -373,17 +373,17 @@ const [days, setDays] = useState(() =>
             Customize the content and settings for your daily journey.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={() => handleAction("Save draft")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer">
+         <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+           <button type="button" onClick={() => handleAction("Save draft")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer w-full sm:w-auto">
             <SaveIconSvg size={16} /> Save draft
-          </button>
-          <button type="button" onClick={() => handleAction("Preview")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-2 transition-colors cursor-pointer">
-            <FiEye size={16} /> Preview
-          </button>
-          <button type="button" onClick={() => handleAction("Publish Journey")} className="px-4 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold hover:bg-[#001266] flex items-center gap-2 transition-colors cursor-pointer">
-            <PublishWhiteIconSvg size={16} /> Publish Journey
-          </button>
-        </div>
+           </button>
+           <button type="button" onClick={() => handleAction("Preview")} className="px-4 py-2.5 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer w-full sm:w-auto">
+             <FiEye size={16} /> Preview
+           </button>
+           <button type="button" onClick={() => handleAction("Publish Journey")} className="px-4 py-2.5 bg-[#001984] text-white rounded-md text-xs font-semibold hover:bg-[#001266] flex items-center justify-center gap-2 transition-colors cursor-pointer w-full sm:w-auto">
+             <PublishWhiteIconSvg size={16} /> Publish Journey
+           </button>
+         </div>
       </div>
 
       {/* Day Tabs */}
@@ -615,7 +615,7 @@ const [days, setDays] = useState(() =>
             <h3 className="text-base font-semibold text-[#0A0847]">Day Content Settings</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 gap-3 mb-4 sm:grid-cols-2">
             <div>
               <Label required>Start Date</Label>
               <DateField
@@ -632,7 +632,7 @@ const [days, setDays] = useState(() =>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 gap-3 mb-4 sm:grid-cols-2">
             <div>
               <Label>Background Image</Label>
               <input type="file" ref={bgImageRef} accept="image/*" onChange={handleBgImageUpload} className="hidden" />
@@ -725,7 +725,7 @@ const [days, setDays] = useState(() =>
             <h3 className="text-base font-semibold text-[#0A0847]">Journey Navigation</h3>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mb-4">
+          <div className="grid grid-cols-1 gap-3 mb-4 sm:grid-cols-2">
             <div>
               <Label required>Start Date</Label>
               <DateField

@@ -138,7 +138,7 @@ export default function EditUserSecurityModal({ user, onClose, onSave }) {
       className="fixed inset-0 z-[9998] bg-black/45 flex items-start justify-center overflow-y-auto p-4 sm:p-8 font-[Inter]"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-7 space-y-6">
+      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-4 space-y-6 sm:p-7">
         <button type="button" onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 cursor-pointer">
           <FiX size={18} />
@@ -158,9 +158,9 @@ export default function EditUserSecurityModal({ user, onClose, onSave }) {
             <input className={inputCls} value={form.displayName} onChange={(e) => set("displayName", e.target.value)} />
           </FieldRow>
           <FieldRow label="Email Address">
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-3 sm:gap-6">
               <input type="email" className={`${inputCls} ${err("email")}`} value={form.email} onChange={(e) => set("email", e.target.value)} />
-              <span className={`w-[172px] shrink-0 flex items-center justify-center rounded-md border text-xs font-medium ${
+              <span className={`w-full shrink-0 flex items-center justify-center rounded-md border text-xs font-medium sm:w-[172px] ${
                 security.verified ? "bg-[#21AC1C0D] border-[#B7E4B4] text-[#21AC1C]" : "bg-[#F59E0B1A] border-[#FADCC7] text-[#C65406]"
               }`}>
                 {security.verified ? "Verified" : "Unverified"}
@@ -193,11 +193,11 @@ export default function EditUserSecurityModal({ user, onClose, onSave }) {
             <SelectField value={form.plan} onChange={(v) => set("plan", v)} options={PLANS} />
           </FieldRow>
           <FieldRow label="Discount / Coupon Code">
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-3 sm:gap-6">
               <input className={inputCls} value={form.coupon}
                 onChange={(e) => { set("coupon", e.target.value); setCouponApplied(false); }} />
               <button type="button" onClick={() => form.coupon.trim() && setCouponApplied(true)}
-                className={`w-[172px] shrink-0 rounded-md border text-xs font-semibold cursor-pointer ${
+                className={`w-full shrink-0 rounded-md border text-xs font-semibold cursor-pointer sm:w-[172px] ${
                   couponApplied ? "bg-[#21AC1C0D] border-[#B7E4B4] text-[#21AC1C]" : "bg-white border-[#001984] text-[#001984] hover:bg-[#EEF2FF]"
                 }`}>
                 {couponApplied ? "Applied" : "Apply"}

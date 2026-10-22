@@ -38,10 +38,10 @@ const fieldCls =
   "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
 
 const outlineButton =
-  "flex h-[48px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9] sm:w-auto";
 
 const purpleButton =
-  "flex h-[48px] w-[174px] cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[13px] font-semibold text-white transition-colors hover:opacity-90";
+  "flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[13px] font-semibold text-white transition-colors hover:opacity-90 sm:w-[174px]";
 
 function Breadcrumb({ items }) {
   return (
@@ -214,7 +214,7 @@ export default function AddQuestionManually() {
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       {/* ONE container — width 100%, every section a direct child */}
-      <div className="flex w-full min-w-0 flex-col gap-6 px-6 py-6">
+      <div className="flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6">
         <Breadcrumb
           items={["Dashboard", "Activities", "John", "Chapter 3", "Quiz"]}
         />
@@ -231,7 +231,7 @@ export default function AddQuestionManually() {
         <LocationChip />
 
         {/* two columns — 578 max left, rest right, top-aligned */}
-        <div className="grid grid-cols-[minmax(0,578px)_minmax(0,1fr)] gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,578px)_minmax(0,1fr)]">
           {/* LEFT — create form */}
           <section className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
             <div className="min-w-0">
@@ -337,13 +337,13 @@ export default function AddQuestionManually() {
               <p className={labelCls}>
                 Upload Image <span className="text-[#E11D48]">*</span>
               </p>
-              <div className="flex gap-[20px]">
+              <div className="flex flex-col gap-[12px] sm:flex-row sm:gap-[20px]">
                 <img
                   src={liveQuestionImage}
                   alt="JESUS AND NICODEMUS"
-                  className="h-[112px] w-[250px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover"
+                  className="h-auto w-full max-w-[250px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover sm:h-[112px]"
                 />
-                <div className="flex h-[112px] min-w-0 flex-1 flex-col justify-center rounded-lg border border-[#E2DFFC] bg-[#FAFBFE] p-3">
+                <div className="flex h-auto min-w-0 w-full flex-1 flex-col justify-center rounded-lg border border-[#E2DFFC] bg-[#FAFBFE] p-3 sm:h-[112px]">
                   <p className="text-[14px] font-semibold text-[#0A0847]">
                     JESUS AND NICODEMUS
                   </p>
@@ -368,7 +368,7 @@ export default function AddQuestionManually() {
                 value={status}
                 options={STATUS_OPTIONS}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-[249px]"
+                className="w-full max-w-[249px]"
               />
             </Field>
           </section>
@@ -382,14 +382,14 @@ export default function AddQuestionManually() {
         </div>
 
         {/* FOOTER — full-width row, height 48, space-between */}
-        <div className="flex h-[48px] w-full min-w-0 items-center justify-between gap-4">
+        <div className="flex w-full min-w-0 flex-col items-stretch justify-between gap-4 sm:h-[48px] sm:flex-row sm:items-center">
           <button
             type="button"
-            className="flex h-[48px] w-[152px] cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9]"
+            className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9] sm:w-[152px]"
           >
             Cancel
           </button>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
             <button type="button" className={outlineButton}>
               Save &amp; Add Another
             </button>

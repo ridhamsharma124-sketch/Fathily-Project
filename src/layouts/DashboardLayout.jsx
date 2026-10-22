@@ -576,7 +576,7 @@ function Navbar({ collapsed, onMenuClick, figmaText = false, bellDot = false }) 
           <PiList size={20} />
         </button>
 
-        <div className="relative w-[270px] shrink-0">
+        <div className="relative w-full max-w-[270px] shrink">
           <PiMagnifyingGlass
             size={16}
             className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 ${
@@ -713,7 +713,7 @@ export default function DashboardLayout() {
             location.pathname.startsWith("/admin/terms-privacy/edit")
           }
         />
-        <main className="flex-1 ">
+        <main className="min-w-0 flex-1">
           <Outlet />
         </main>
       </div>

@@ -108,16 +108,16 @@ const stepButton =
   "flex h-10 min-w-[133px] w-fit shrink-0 cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-4 py-2 text-[13px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
 
 const outlineButton =
-  "flex h-12 w-[152px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-12 w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:w-[152px]";
 
 const purpleButton =
-  "flex h-12 w-[174px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90";
+  "flex h-12 w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90 sm:w-[174px]";
 
 const formatSize = (bytes) => `${(bytes / 1024).toFixed(1)} KB`;
 
 /* Columns: checkbox | No. | Description | Correct Answer | Bible Reference | Status | Actions */
 const TABLE_GRID =
-  "grid grid-cols-[48px_56px_minmax(0,1fr)_120px_130px_100px_104px] items-center gap-3 px-4";
+  "grid min-w-[760px] grid-cols-[48px_56px_minmax(0,1fr)_120px_130px_100px_104px] items-center gap-3 px-4";
 
 /* ==========================================================================
    SUB-COMPONENTS
@@ -144,7 +144,7 @@ function Breadcrumb({ items }) {
 
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
-    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
+    <div className="inline-flex w-fit max-w-full items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
       <img
         src={selectorBookIcon}
         alt="Book Icon"
@@ -208,7 +208,7 @@ export default function BulkUploadQuizQuestions() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="flex w-full min-w-0 flex-col px-6 py-6">
+      <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-6">
         <Breadcrumb
           items={[
             "Bible Content",
@@ -280,7 +280,9 @@ export default function BulkUploadQuizQuestions() {
             }
           />
 
-          {/* STEP 2 — Drag-and-drop dropzone */}
+          {/* STEP 2 — Drag-and-drop dropzone
+              Mobile: content stacks vertically and the Browse button sits below it (no overlap).
+              sm+: content sits centered in the space left of the Browse button. */}
           <StepRow
             step={2}
             title="Upload Completed CSV"
@@ -319,11 +321,11 @@ export default function BulkUploadQuizQuestions() {
                 setDragActive(false);
                 acceptFiles(e.dataTransfer.files);
               }}
-              className={`relative mx-auto flex h-[147px] w-full max-w-[874px] cursor-pointer items-center justify-between rounded-lg border border-dashed border-[#001984] px-8 transition-colors ${
+              className={`relative mx-auto flex min-h-[147px] w-full max-w-[874px] cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-[#001984] px-6 py-6 transition-colors sm:flex-row sm:justify-between sm:px-8 ${
                 dragActive ? "bg-[#E4E4F7]" : "bg-[#F3F4FF] hover:bg-[#EFEDF9]"
               }`}
             >
-              <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-3">
+              <div className="flex flex-col items-center gap-3 text-center sm:flex-1 sm:flex-row sm:justify-center">
                 <img
                   src={uploadCloudIcon}
                   alt=""
@@ -346,7 +348,7 @@ export default function BulkUploadQuizQuestions() {
                   e.stopPropagation();
                   openPicker();
                 }}
-                className="ml-auto flex h-[43px] w-[217px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] p-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]"
+                className="flex h-[43px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:w-[217px]"
               >
                 Browse File
               </button>
@@ -393,7 +395,7 @@ export default function BulkUploadQuizQuestions() {
           </div>
 
           {/* STAT CARDS */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {STAT_CARDS.map((stat) => {
               const Icon = stat.icon;
               return (
@@ -420,7 +422,7 @@ export default function BulkUploadQuizQuestions() {
           </div>
 
           {/* VALIDATION TABLE */}
-          <div className="w-full overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
+          <div className="w-full overflow-x-auto rounded-lg border border-[#E2DFFC] bg-white">
             <div
               className={`${TABLE_GRID} h-[50px] bg-[#F3F7FD] text-[14px] font-medium text-[#0A0847]/80`}
             >
@@ -467,7 +469,7 @@ export default function BulkUploadQuizQuestions() {
                   </span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <div className="flex w-[72px] gap-2">
+                  <div className="flex w-[72px] shrink-0 gap-2">
                     <button
                       type="button"
                       aria-label={`Edit row ${row.no}`}
@@ -489,19 +491,23 @@ export default function BulkUploadQuizQuestions() {
           </div>
         </section>
 
-        {/* BOTTOM ACTION ROW */}
-        <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-3">
-          <button type="button" className={outlineButton}>
+        {/* BOTTOM ACTION ROW
+            Mobile (2-column grid): Cancel full width · Replace File | Save as Draft · Import full width.
+            sm+: single row — Cancel left, the rest grouped right.
+            `contents` on the group lets its buttons join the parent grid on mobile. */}
+        <div className="mt-6 grid w-full grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
+          <button type="button" className={`${outlineButton} col-span-2 sm:col-span-1`}>
             Cancel
           </button>
-          <div className="flex flex-wrap items-center gap-4">
+
+          <div className="contents sm:flex sm:flex-wrap sm:items-center sm:gap-4">
             <button type="button" onClick={openPicker} className={outlineButton}>
               Replace File
             </button>
             <button type="button" className={outlineButton}>
               Save as Draft
             </button>
-            <button type="button" className={purpleButton}>
+            <button type="button" className={`${purpleButton} col-span-2 sm:col-span-1`}>
               Import {READY_COUNT} Questions
             </button>
           </div>

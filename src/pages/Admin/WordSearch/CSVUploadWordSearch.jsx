@@ -90,9 +90,13 @@ function ChevronSvg() {
 }
 
 
+// Mobile: fills its grid cell (2 per row). sm and up: fixed Figma width via --filter-w.
 function FilterSelect({ id, label, width, value, options, onChange }) {
   return (
-    <div className="shrink-0" style={{ width }}>
+    <div
+      className="w-full min-w-0 sm:w-[var(--filter-w)] sm:max-w-full sm:shrink-0"
+      style={{ "--filter-w": `${width}px` }}
+    >
       <label htmlFor={id} className="mb-[8px] block text-[12px] leading-none font-semibold" style={{ color: LABEL }}>
         {label}
       </label>
@@ -127,7 +131,7 @@ function TypeCard({ id, title, description, icon, selected, onSelect }) {
       type="button"
       aria-pressed={selected}
       onClick={() => onSelect(id)}
-      className="relative flex h-[156px] w-[254px] shrink-0 cursor-pointer flex-col items-center rounded-[8px] border px-[24px] pt-[14px] pr-[25px] pb-[14px] text-center transition-colors hover:bg-[#EDEFF8]"
+      className="relative flex min-h-[156px] w-full min-w-0 cursor-pointer flex-col items-center rounded-[8px] border px-[24px] pt-[14px] pr-[25px] pb-[14px] text-center transition-colors hover:bg-[#EDEFF8]"
       style={{
         borderColor: selected ? NAVY : BORDER,
         backgroundColor: selected ? "#F1F0FB" : "#FFFFFF",
@@ -186,7 +190,7 @@ function UploadBox() {
       }}
       onDrop={onDrop}
       onClick={() => inputRef.current?.click()}
-      className="mt-[10px] flex h-[195px] w-[650px] max-w-full cursor-pointer flex-col items-center justify-center gap-[4px] rounded-[8px] px-[24px] py-[20px] transition-colors"
+      className="mt-[10px] flex min-h-[195px] w-full cursor-pointer flex-col items-center justify-center gap-[4px] rounded-[8px] px-[16px] py-[20px] text-center transition-colors sm:px-[24px]"
       style={{
         border: `1px dashed ${dragging ? NAVY : "rgba(10, 8, 71, 0.4)"}`,
         backgroundColor: dragging ? "#E4E7F4" : "#EDEFF8",
@@ -210,11 +214,15 @@ function UploadBox() {
         Browse File
       </button>
 
-      <div className="mt-[4px] flex items-center gap-[8px] text-[10px] leading-[12px] font-medium" style={{ color: MUTED }}>
+      {/* Mobile: stacked lines, no dots. sm and up: one row with dots (wraps if the column is narrow). */}
+      <div
+        className="mt-[4px] flex flex-col items-center gap-[2px] text-[10px] leading-[12px] font-medium sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-[8px] sm:gap-y-[2px]"
+        style={{ color: MUTED }}
+      >
         <span>Accepted format: .csv only</span>
-        <span>•</span>
+        <span className="hidden sm:inline">•</span>
         <span>Max file size: 10MB</span>
-        <span>•</span>
+        <span className="hidden sm:inline">•</span>
         <span>Max 1,000 rows</span>
       </div>
 
@@ -226,19 +234,20 @@ function UploadBox() {
 
 function ColumnsPreview({ typeTitle, columns }) {
   return (
-    <div className="mt-[24px] w-[650px] max-w-full rounded-[7.5px] border-[0.75px] p-[16px]" style={{ borderColor: BORDER }}>
+    <div className="mt-[24px] w-full rounded-[7.5px] border-[0.75px] p-[16px]" style={{ borderColor: BORDER }}>
       <p className="text-[12px] leading-none font-semibold" style={{ color: LABEL }}>
         Required Columns Preview ({typeTitle})
       </p>
 
-      <div className="mt-[16px] flex flex-wrap gap-[16px]">
+      {/* Below lg: 2-column grid so chips fill the card neatly. lg and up: natural-width chips that wrap (Figma look). */}
+      <div className="mt-[16px] grid grid-cols-2 gap-[16px] lg:flex lg:flex-wrap">
         {columns.map(({ name, type, description }) => (
           <div
             key={name}
-            className="flex h-[54px] shrink-0 flex-col justify-center gap-[4px] rounded-[8px] border-[0.75px] bg-white px-[12px]"
+            className="flex min-h-[54px] min-w-0 flex-col justify-center gap-[4px] rounded-[8px] border-[0.75px] bg-white px-[12px] py-[8px] last:odd:col-span-2 lg:h-[54px] lg:max-w-full lg:shrink-0 lg:py-0"
             style={{ borderColor: BORDER }}
           >
-            <p className="text-[12px] leading-none whitespace-nowrap">
+            <p className="text-[12px] leading-[1.3] lg:leading-none lg:whitespace-nowrap">
               <span className="font-semibold" style={{ color: LABEL }}>
                 {name}
               </span>{" "}
@@ -246,7 +255,7 @@ function ColumnsPreview({ typeTitle, columns }) {
                 ({type})
               </span>
             </p>
-            <p className="text-[10px] leading-[18px] font-medium whitespace-nowrap" style={{ color: MUTED }}>
+            <p className="text-[10px] leading-[18px] font-medium lg:whitespace-nowrap" style={{ color: MUTED }}>
               {description}
             </p>
           </div>
@@ -267,20 +276,21 @@ export default function CSVUploadWordSearch() {
 
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
-      <div className="mx-auto w-full max-w-[1110px] px-6 pt-10 pb-6">
+      <div className="mx-auto w-full max-w-[1110px] px-4 pt-6 pb-6 sm:px-6 sm:pt-10">
         <p className="text-[16px] leading-none font-medium" style={{ color: MUTED }}>
           Add / Edit Word Search - CSV Upload
         </p>
 
-        <h1 className="mt-[12px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+        <h1 className="mt-[12px] text-[18px] leading-[1.3] font-semibold sm:text-[22px] md:leading-none" style={{ color: HEADING }}>
           1. CSV Upload — Choose Type &amp; File
         </h1>
 
-        <p className="mt-[12px] text-[14px] leading-none font-medium" style={{ color: MUTED }}>
+        <p className="mt-[12px] text-[14px] leading-[1.4] font-medium md:leading-none" style={{ color: MUTED }}>
           Choose the word search type, select your Bible content, and upload your CSV file.
         </p>
 
-        <div className="mt-[20px] flex w-full gap-[24px]">
+        {/* Filters: 2 per row on mobile, fixed Figma widths from sm up (wraps if needed) */}
+        <div className="mt-[20px] grid w-full grid-cols-2 gap-[16px] sm:flex sm:flex-wrap sm:gap-[24px]">
           {FILTERS.map(({ id, label, w, options }) => (
             <FilterSelect
               key={id}
@@ -298,7 +308,8 @@ export default function CSVUploadWordSearch() {
           1. Choose Word Search Type
         </h2>
 
-        <div className="mt-[16px] flex w-full gap-[24px]">
+        {/* Type cards: 1 col (mobile) → 2 cols (sm) → 4 cols (xl) */}
+        <div className="mt-[16px] grid w-full grid-cols-1 gap-[16px] sm:grid-cols-2 sm:gap-[24px] xl:grid-cols-4">
           {WORD_SEARCH_TYPES.map(({ id, title, description, icon }) => (
             <TypeCard
               key={id}
@@ -312,10 +323,17 @@ export default function CSVUploadWordSearch() {
           ))}
         </div>
 
-        <div className="mt-[24px] flex items-start gap-[31px]">
-          <div className="flex w-[650px] shrink-0 flex-col">
+        {/*
+          Two columns that adapt to the available width (so it also works when the sidebar is open/closed):
+          - left column: grows up to 650px, never smaller than 480px
+          - right card: 381px beside the left column
+          If both don't fit side by side, the right card drops below and stretches to the full width
+          (up to 650px) so it lines up with the cards above it.
+        */}
+        <div className="mt-[24px] flex flex-wrap items-start gap-x-[31px] gap-y-[24px]">
+          <div className="flex min-w-0 max-w-[650px] flex-[1000_1_480px] flex-col">
             <div>
-              <h3 className="text-[14px] leading-none">
+              <h3 className="text-[14px] leading-[1.4] md:leading-none">
                 <span className="font-semibold" style={{ color: HEADING }}>
                   2. Download CSV Template
                 </span>{" "}
@@ -326,7 +344,7 @@ export default function CSVUploadWordSearch() {
 
               <button
                 type="button"
-                className="mt-[12px] flex h-[38px] w-[220px] cursor-pointer items-center justify-center gap-[8px] rounded-[7.5px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#EDEFF8]"
+                className="mt-[12px] flex h-[38px] w-full max-w-[220px] cursor-pointer items-center justify-center gap-[8px] rounded-[7.5px] border bg-white text-[12px] font-semibold transition-colors hover:bg-[#EDEFF8]"
                 style={{ borderColor: BORDER, color: HEADING }}
               >
                 Download CSV Template
@@ -346,7 +364,7 @@ export default function CSVUploadWordSearch() {
           </div>
 
           <aside
-            className="flex h-[353px] w-[381px] shrink-0 flex-col items-center gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[18px] pr-[24px] pb-[18px] pl-[23px]"
+            className="flex h-auto min-h-[353px] min-w-0 max-w-[650px] flex-[1_1_381px] flex-col items-center gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[18px] pr-[24px] pb-[18px] pl-[23px]"
             style={{ borderColor: BORDER }}
           >
             <p className="text-center text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
@@ -356,10 +374,10 @@ export default function CSVUploadWordSearch() {
             <img
               src={chapterDefaultImage}
               alt="Chapter Default Image"
-              className="min-h-0 w-full flex-1 rounded-[8px] object-cover"
+              className="aspect-[334/271] max-h-[420px] w-full flex-none rounded-[8px] object-cover"
             />
 
-            <p className="w-[178px] text-center text-[12px] leading-none font-semibold" style={{ color: MUTED }}>
+            <p className="w-full max-w-[178px] text-center text-[12px] leading-none font-semibold" style={{ color: MUTED }}>
               Applied automatically to imported puzzles.
             </p>
           </aside>

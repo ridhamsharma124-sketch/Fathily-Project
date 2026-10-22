@@ -113,7 +113,7 @@ export default function RecordDonationPage() {
     errors[k] ? <p className="text-[11px] text-[#EB0C10] font-medium mt-1">{errors[k]}</p> : null;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 sm:p-6">
       {/* Top bar */}
       <div className="flex items-center justify-between">
         <button

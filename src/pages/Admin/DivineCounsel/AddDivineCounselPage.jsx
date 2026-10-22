@@ -417,7 +417,7 @@ const removeCover = () => {
 };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 text-xs text-[#0A0847]">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-5 text-xs text-[#0A0847] sm:p-6">
       <input
         type="file"
         ref={imageRef}
@@ -526,7 +526,7 @@ const removeCover = () => {
                     onChange={(e) => set("desc", e.target.value)}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <Label required>Category</Label>
                     <Select
@@ -544,7 +544,7 @@ const removeCover = () => {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <div>
                     <Label required>Status</Label>
                     <Select
@@ -636,7 +636,7 @@ const removeCover = () => {
                       onChange={(e) => set("reflectionDesc", e.target.value)}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <div>
                       <Label required>Verse Reference</Label>
                       <Input
@@ -1013,7 +1013,7 @@ const removeCover = () => {
                   value={f.encouragementVerse}
                   onChange={(e) => set("encouragementVerse", e.target.value)}
                 />
-                <div className="grid grid-cols-2 gap-2 mt-3">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 mt-3">
                   <div>
                     <Label required>Verse Reference</Label>
                     <Input
@@ -1040,7 +1040,7 @@ const removeCover = () => {
                 <p className="text-xs font-semibold text-[#0A0847CC] mt-3 mb-1.5">
                     Feelings (Multiple select)
                   </p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {[
                       { label: "Peaceful", Icon: GreenBirdIconSvg, bg: "bg-[#E8F7E8]" },
                       { label: "Grateful", Icon: YellowHandsIconSvg, bg: "bg-[#FFF4DC]" },
@@ -1268,7 +1268,7 @@ const removeCover = () => {
             </div>
 
             {/* BOTTOM MINI CARDS GRID */}
-            <div className="grid grid-cols-2 gap-2 text-[9px] pt-1">
+            <div className="grid grid-cols-1 gap-2 pt-1 text-[9px] sm:grid-cols-2">
               {/* Mini Prayer Card */}
               <div
                 onClick={() => setActiveTab("prayer")}

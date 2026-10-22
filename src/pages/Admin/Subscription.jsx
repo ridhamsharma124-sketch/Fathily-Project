@@ -165,8 +165,8 @@ const PriceInputRow = ({
     </div>
 
     {/* Inputs and inline optional tag on XL screens */}
-    <div className="flex items-center gap-1.5 shrink-0">
-      <div className="flex items-center border border-[#E2DFFC] rounded-lg px-2.5 py-1.5 bg-white w-20 sm:w-24">
+    <div className="flex items-center gap-1.5 min-w-0">
+      <div className="flex items-center border border-[#E2DFFC] rounded-lg px-2.5 py-1.5 bg-white w-16 sm:w-20 md:w-24">
         <span className="text-[#0A0847] font-bold mr-1">
           <BiDollar size={16} />
         </span>
@@ -183,7 +183,7 @@ const PriceInputRow = ({
       <select
         value={duration || "month"}
         onChange={(e) => onChangeDuration && onChangeDuration(e.target.value)}
-        className="border border-[#E2DFFC] rounded-lg px-2 py-1.5 bg-white text-xs font-medium text-[#0A0847] outline-none cursor-pointer"
+        className="border border-[#E2DFFC] rounded-lg px-1.5 py-1.5 bg-white text-xs font-medium text-[#0A0847] outline-none cursor-pointer max-w-[90px] sm:max-w-none"
       >
         <option value="month">month</option>
         <option value="3 month">3 month</option>
@@ -399,14 +399,14 @@ const AddItemInput = ({
   };
 
   return (
-    <div className="flex items-center gap-3 mt-6">
+    <div className="flex flex-wrap items-center gap-3 mt-6">
       <input
         type="text"
         placeholder={placeholder}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-        className={`flex-1 border border-[#E2DFFC] rounded-lg px-4 py-2.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] ${inputClassName}`}
+        className={`min-w-0 flex-1 border border-[#E2DFFC] rounded-lg px-4 py-2.5 text-xs text-[#0A0847] placeholder-gray-400 outline-none focus:border-[#001984] ${inputClassName}`}
       />
       <button
         onClick={handleAdd}
@@ -477,7 +477,7 @@ export default function Subscription() {
   }
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Title Header */}
       <div>
         <h1 className="text-xl font-semibold text-[#0A0847]">
@@ -491,10 +491,10 @@ export default function Subscription() {
       </div>
 
       {/* Sub-Navigation Tabs */}
-      <div className="border-b border-[#E2DFFC] flex items-center gap-8">
+      <div className="border-b border-[#E2DFFC] flex items-center gap-4 overflow-x-auto sm:gap-8">
         <button
           onClick={() => setActiveTab("plans")}
-          className={`flex items-center gap-2 px-4 pb-3 text-xs font-bold transition-colors border-b-2 ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap px-4 pb-3 text-xs font-bold transition-colors border-b-2 ${
             activeTab === "plans"
               ? "border-[#001984] border-lg text-[#001984]"
               : "border-transparent text-gray-500 hover:text-gray-800 cursor-pointer"
@@ -505,7 +505,7 @@ export default function Subscription() {
         </button>
         <button
           onClick={() => setActiveTab("cancellation")}
-          className={`flex items-center gap-2 pb-3 text-xs font-bold transition-colors border-b-2 ${
+          className={`flex shrink-0 items-center gap-2 whitespace-nowrap pb-3 text-xs font-bold transition-colors border-b-2 ${
             activeTab === "cancellation"
               ? "border-[#001984] border-lg text-[#001984]"
               : "border-transparent text-gray-500 hover:text-gray-800 cursor-pointer"
@@ -531,7 +531,7 @@ export default function Subscription() {
                 }`}
               >
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-[#0019841A] pb-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#0019841A] pb-3">
                   <div className="flex items-center gap-3">
                     <div
                       className={`w-9 h-9 rounded-xl ${plan.iconColor} text-white flex items-center justify-center`}
@@ -607,7 +607,7 @@ export default function Subscription() {
           </div>
 
           {/* Plan Features Card */}
-          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-6">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-6 sm:p-6">
             <div className="flex items-start gap-3">
               <FiSettings
                 size={22}
@@ -691,7 +691,7 @@ export default function Subscription() {
           </div>
 
           {/* Cancellation Reasons */}
-          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-4 sm:p-6">
             <h3 className="font-bold text-sm text-[#0A0847] flex items-center gap-2">
               <FileIconSvg size={22} className="text-[#001984]" />
               Cancellation Reasons
@@ -735,7 +735,7 @@ export default function Subscription() {
           </div>
 
           {/* Free Trial Settings */}
-          <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-5">
+          <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-5 sm:p-6">
             <h3 className="font-semibold text-base text-[#0A0847] flex items-center gap-3">
               <BlueGiftSvg size={32} />  
               <span>
@@ -748,7 +748,7 @@ export default function Subscription() {
 
             <div className="divide-y divide-[#0019841A] text-xs font-[Inter]">
               {/* Row 1: Enable Free Trial */}
-              <div className="py-5 flex items-center justify-between border-t border-[#0019841A]">
+              <div className="py-5 flex flex-wrap items-center justify-between gap-3 border-t border-[#0019841A]">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
                   <span className="flex shrink-0 items-center justify-center rounded-full">
                     <GreenToggleSvg size={32} /> 
@@ -764,7 +764,7 @@ export default function Subscription() {
               </div>
 
               {/* Row 2: Trial Duration */}
-              <div className="py-5 flex items-center justify-between">
+              <div className="py-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
                   <span className="flex shrink-0 items-center justify-center rounded-full text-white">
                     <TimeBoxSvg size={32} />  
@@ -790,7 +790,7 @@ export default function Subscription() {
               </div>
 
               {/* Row 3: Require Payment Method */}
-              <div className="py-5 flex items-center justify-between">
+              <div className="py-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
                   <span className="flex shrink-0 items-center justify-center rounded-[3px] text-white">
                     <GreenCreditSvg size={32} /> 
@@ -806,7 +806,7 @@ export default function Subscription() {
               </div>
 
               {/* Row 4: Auto-start paid plan */}
-              <div className="py-5 flex items-center justify-between">
+              <div className="py-5 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-4 text-[13px] leading-none font-semibold tracking-[0.005em] text-[#0A0847]/80">
                   <span className="flex shrink-0 items-center justify-center rounded-full bg-[var(--cancel-green)] text-white">
                     <GreenPlaySvg size={32} />  

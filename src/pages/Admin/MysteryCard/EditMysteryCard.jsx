@@ -84,7 +84,7 @@ function Segmented({ options, value, onChange, widthClass = "w-full", emphasized
             key={opt}
             type="button"
             onClick={() => onChange(opt)}
-            className={`flex h-[40px] flex-1 cursor-pointer items-center justify-center border border-edge-input text-[12px] font-medium first:rounded-l-[8px] last:rounded-r-[8px] ${
+            className={`flex h-[40px] min-w-0 flex-1 cursor-pointer items-center justify-center border border-edge-input px-1 text-[12px] font-medium first:rounded-l-[8px] last:rounded-r-[8px] ${
               i > 0 ? "-ml-px" : ""
             } ${
               active
@@ -184,7 +184,7 @@ function RewardTile({ label, active, onClick }) {
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-[85px] min-w-0 flex-1 cursor-pointer flex-col items-center justify-center rounded-[8px] border ${
+      className={`flex h-[85px] min-w-0 cursor-pointer flex-col items-center justify-center rounded-[8px] border px-[4px] ${
         active ? "border-action-navy bg-action-navy/10" : "border-edge-input bg-white"
       }`}
     >
@@ -193,7 +193,9 @@ function RewardTile({ label, active, onClick }) {
         strokeWidth={label === "None" ? 2.5 : 1.7}
         className={filled ? "fill-star text-star" : "fill-none text-brand-navy"}
       />
-      <span className="mt-[8px] text-[16px] leading-[19px] font-semibold text-brand-navy">{label}</span>
+      <span className="mt-[8px] truncate text-[14px] leading-[19px] font-semibold text-brand-navy sm:text-[16px]">
+        {label}
+      </span>
     </button>
   );
 }
@@ -281,8 +283,8 @@ export default function EditMysteryCard() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-page-canvas p-6 font-inter">
-      <div className="rounded-[8px] border border-edge-input bg-white p-6">
+    <div className="min-h-screen w-full bg-page-canvas p-4 font-inter sm:p-6">
+      <div className="rounded-[8px] border border-edge-input bg-white p-4 sm:p-6">
         <button
           type="button"
           onClick={() => navigate("/admin/mystery-card")}
@@ -293,14 +295,15 @@ export default function EditMysteryCard() {
         </button>
 
         <div>
-          <h1 className="text-[24px] font-bold text-deep-navy">Edit Mystery Card</h1>
-          <p className="mt-2 text-[16px] leading-[19px] font-medium text-grey-navy">
+          <h1 className="text-[22px] font-bold text-deep-navy sm:text-[24px]">Edit Mystery Card</h1>
+          <p className="mt-2 text-[14px] leading-[19px] font-medium text-grey-navy sm:text-[16px]">
             Update card details and manage its visibility.
           </p>
         </div>
 
-        <div className="mt-6 flex items-start gap-[18px]">
-          <div className="flex min-h-[1406px] min-w-0 flex-[627_1_0px] flex-col gap-[24px] rounded-[8px] border border-edge-input bg-white pt-[21px] pr-5 pb-[41px] pl-5">
+        {/* Mobile/tablet: single column stack. lg+: form (left) + preview & overview (right). */}
+        <div className="mt-6 flex flex-col items-stretch gap-[18px] lg:flex-row lg:items-start">
+          <div className="flex min-w-0 flex-col gap-[24px] rounded-[8px] border border-edge-input bg-white p-4 sm:p-5 lg:flex-[627_1_0px] lg:min-h-[1406px] lg:pt-[21px] lg:pr-5 lg:pb-[41px] lg:pl-5">
             <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Card Information</h2>
 
             <div>
@@ -328,7 +331,7 @@ export default function EditMysteryCard() {
 
             <div>
               <Label>Eligible Activities</Label>
-              <div className="mt-[10px] flex flex-wrap gap-x-[24px] gap-y-[14px]">
+              <div className="mt-[10px] grid grid-cols-2 gap-x-[16px] gap-y-[14px] sm:flex sm:flex-wrap sm:gap-x-[24px]">
                 {Object.keys(activities).map((k) => (
                   <CheckOption
                     key={k}
@@ -340,14 +343,14 @@ export default function EditMysteryCard() {
               </div>
             </div>
 
-            <div className="flex gap-[24px]">
-              <div className="flex-1">
+            <div className="grid grid-cols-1 gap-[16px] sm:grid-cols-2 sm:gap-[24px]">
+              <div className="min-w-0">
                 <Label optional>Book</Label>
                 <div className="mt-[8px]">
                   <Select value="1 Samuel" />
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="min-w-0">
                 <Label optional>Chapter</Label>
                 <input type="text" defaultValue="17" className={`${FIELD} mt-[8px] h-[40px]`} />
               </div>
@@ -361,14 +364,14 @@ export default function EditMysteryCard() {
               />
             </div>
 
-            <div className="flex items-start gap-[24px]">
-              <div className="flex-1">
+            <div className="grid grid-cols-1 gap-[16px] sm:grid-cols-2 sm:gap-[24px]">
+              <div className="min-w-0">
                 <Label>Bible Verse Reference</Label>
                 <div className="mt-[8px]">
                   <Select value="1 Samuel 17:45" />
                 </div>
               </div>
-              <div className="flex-1">
+              <div className="min-w-0">
                 <Label>Bible Verse Text</Label>
                 <textarea
                   defaultValue="You come to me with a sword and a spear and a javelin, but I come to you in the name of the Lord Almighty."
@@ -395,18 +398,18 @@ export default function EditMysteryCard() {
               />
             </div>
 
-            <div className="flex gap-[16px]">
+            <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-4 sm:gap-[16px]">
               {["None", "Faith Points", "AI Credits", "Badge"].map((r) => (
                 <RewardTile key={r} label={r} active={rewardType === r} onClick={() => setRewardType(r)} />
               ))}
             </div>
 
-            <div className="flex items-start gap-[16px]">
-              <div className="flex-1">
+            <div className="flex flex-col items-stretch gap-[16px] sm:flex-row sm:items-start">
+              <div className="min-w-0 flex-1">
                 <Label bare>Reward Amount</Label>
                 <input type="text" defaultValue="100" className={`${FIELD} mt-[8px] h-[40px]`} />
               </div>
-              <div className="w-[388px] shrink-0">
+              <div className="w-full min-w-0 sm:w-[388px] sm:shrink-0">
                 <Label bare>Rarity</Label>
                 <div className="mt-[8px]">
                   <Segmented
@@ -421,28 +424,30 @@ export default function EditMysteryCard() {
 
             <div>
               <Label bare>Card Image</Label>
-              <div className="mt-[8px] flex h-[98px] w-full items-center rounded-[7.47px] border border-edge-input bg-lavender p-3">
-                {cardImage ? (
-                  <img
-                    src={cardImage}
-                    alt={cardImageName || "Card image"}
-                    className="h-[64px] w-[64px] shrink-0 rounded-[4px] bg-lavender object-cover"
-                  />
-                ) : (
-                  <div className="h-[64px] w-[64px] shrink-0 rounded-[4px] bg-lavender-slot" />
-                )}
+              <div className="mt-[8px] flex flex-col gap-[12px] rounded-[7.47px] border border-edge-input bg-lavender p-3 sm:h-[98px] sm:flex-row sm:items-center">
+                <div className="flex items-center gap-[16px]">
+                  {cardImage ? (
+                    <img
+                      src={cardImage}
+                      alt={cardImageName || "Card image"}
+                      className="h-[64px] w-[64px] shrink-0 rounded-[4px] bg-lavender object-cover"
+                    />
+                  ) : (
+                    <div className="h-[64px] w-[64px] shrink-0 rounded-[4px] bg-lavender-slot" />
+                  )}
 
-                <div className="ml-[16px] flex flex-col">
-                  <button
-                    type="button"
-                    onClick={() => cardFileRef.current?.click()}
-                    className="flex h-[35px] w-[161px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-action-navy bg-[#FEFEFE] px-[12px] text-[12px] font-semibold text-action-navy"
-                  >
-                    Change Image
-                  </button>
-                  <span className="mt-[6px] text-[11px] text-grey-navy">
-                    {cardImageName || "PNG or JPG, max 5MB"}
-                  </span>
+                  <div className="flex min-w-0 flex-col">
+                    <button
+                      type="button"
+                      onClick={() => cardFileRef.current?.click()}
+                      className="flex h-[35px] cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border border-action-navy bg-[#FEFEFE] px-[12px] text-[12px] font-semibold text-action-navy sm:w-[161px]"
+                    >
+                      Change Image
+                    </button>
+                    <span className="mt-[6px] truncate text-[11px] text-grey-navy">
+                      {cardImageName || "PNG or JPG, max 5MB"}
+                    </span>
+                  </div>
                 </div>
 
                 <input
@@ -457,7 +462,7 @@ export default function EditMysteryCard() {
                   type="button"
                   aria-label="Delete image"
                   onClick={handleCardImageDelete}
-                  className="ml-auto flex h-[44px] w-[44px] shrink-0 cursor-pointer items-center justify-center rounded-[6px] border border-blush-edge bg-blush"
+                  className="flex h-[44px] w-full cursor-pointer items-center justify-center rounded-[6px] border border-blush-edge bg-blush sm:ml-auto sm:w-[44px] sm:shrink-0"
                 >
                   <LuTrash2 size={17} className="text-rose" />
                 </button>
@@ -476,12 +481,12 @@ export default function EditMysteryCard() {
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-[348_1_0px] flex-col gap-[18px]">
-            <div className="h-[856px] rounded-[8px] border border-edge-input bg-white p-[14px]">
+          <div className="flex min-w-0 flex-col gap-[18px] lg:flex-[348_1_0px]">
+            <div className="rounded-[8px] border border-edge-input bg-white p-[14px] lg:h-[856px]">
               <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Live Preview</h2>
 
               <div
-                className="relative mt-[12px] h-[804px] w-full overflow-hidden rounded-[12px] border border-lavender-line bg-lavender-deep bg-cover bg-center bg-no-repeat"
+                className="relative mx-auto mt-[12px] aspect-[348/804] w-full max-w-[420px] overflow-hidden rounded-[12px] border border-lavender-line bg-lavender-deep bg-cover bg-center bg-no-repeat lg:mx-0 lg:aspect-auto lg:h-[804px] lg:max-w-none"
                 style={{ backgroundImage: `url(${mysteryCardPreview})` }}
               >
                 <GoldCorner />
@@ -530,10 +535,10 @@ export default function EditMysteryCard() {
               </div>
             </div>
 
-            <div className="flex h-[526px] flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white pt-[22px] pr-[145px] pb-[119px] pl-[19px]">
+            <div className="flex flex-col gap-[10px] rounded-[8px] border border-edge-input bg-white p-5 lg:h-[526px] lg:pt-[22px] lg:pr-[145px] lg:pb-[119px] lg:pl-[19px]">
               <h2 className="text-[16px] leading-[19px] font-semibold text-deep-navy">Card Overview</h2>
 
-              <div className="mt-[6px] flex flex-col gap-[24px]">
+              <div className="mt-[6px] grid grid-cols-1 gap-[24px] sm:grid-cols-2 lg:flex lg:flex-col">
                 {OVERVIEW.map((item) => (
                   <OverviewRow key={item.label} item={item} />
                 ))}
@@ -542,18 +547,18 @@ export default function EditMysteryCard() {
           </div>
         </div>
 
-        <div className="mt-6 flex h-[44px] items-center justify-between">
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
-            className="h-[44px] cursor-pointer rounded-[6px] border-[1.5px] border-rose-strong bg-white px-10 text-[14px] font-semibold text-rose-strong"
+            className="h-[44px] w-full cursor-pointer rounded-[6px] border-[1.5px] border-rose-strong bg-white px-10 text-[14px] font-semibold text-rose-strong sm:w-auto"
           >
             Unpublished
           </button>
 
-          <div className="flex items-center gap-[14px]">
+          <div className="grid w-full grid-cols-2 gap-[12px] sm:flex sm:w-auto sm:items-center sm:gap-[14px]">
             <button
               type="button"
-              className="flex h-[44px] cursor-pointer items-center gap-[9px] rounded-[6px] border border-edge-input bg-white px-5 text-[14px] font-semibold text-strong-navy"
+              className="flex h-[44px] cursor-pointer items-center justify-center gap-[9px] rounded-[6px] border border-edge-input bg-white px-3 text-[14px] font-semibold whitespace-nowrap text-strong-navy sm:px-5"
             >
               <img
                 src={floppyIcon}
@@ -566,7 +571,7 @@ export default function EditMysteryCard() {
             </button>
             <button
               type="button"
-              className="flex h-[44px] cursor-pointer items-center gap-[9px] rounded-[6px] bg-publish-navy px-10 text-[14px] font-semibold text-white"
+              className="flex h-[44px] cursor-pointer items-center justify-center gap-[9px] rounded-[6px] bg-publish-navy px-3 text-[14px] font-semibold whitespace-nowrap text-white sm:px-10"
             >
               <LuArrowRight size={17} strokeWidth={2} /> Publish
             </button>

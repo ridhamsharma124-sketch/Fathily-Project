@@ -262,7 +262,7 @@ export default function CreateCouponPage() {
       .join(", ") || "Everyone";
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -275,17 +275,17 @@ export default function CreateCouponPage() {
     />
           <h1 className="text-xl font-semibold text-[#0A0847] mt-2">Create Coupon Code</h1>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:gap-3">
           <button type="button" onClick={() => handleAction("Save draft")}
-            className="px-4 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+            className="px-4 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer w-full sm:w-auto">
             <FiSave size={14} /> Save draft
           </button>
           <button type="button" onClick={() => handleAction("Preview")}
-            className="px-4 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center gap-2 hover:bg-gray-50 cursor-pointer">
+            className="px-4 py-2.5 bg-white border border-[#E2DFFC] text-[#0A0847] text-xs font-semibold rounded-md flex items-center justify-center gap-2 hover:bg-gray-50 cursor-pointer w-full sm:w-auto">
             <FiEye size={14} /> Preview
           </button>
           <button type="button" onClick={() => handleAction("Activate Coupon")}
-            className="px-5 py-2.5 bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold rounded-md flex items-center gap-2 cursor-pointer">
+            className="px-5 py-2.5 bg-[#001984] hover:bg-[#001266] text-white text-xs font-semibold rounded-md flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto">
             <FiSend size={14} /> Activate Coupon
           </button>
         </div>
@@ -368,7 +368,7 @@ export default function CreateCouponPage() {
             <Label>Maximum Uses Per User</Label>
             <Input type="number" min="1" value={f.maxPerUser} onChange={(e) => set("maxPerUser", e.target.value)} />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="bg-[#F1F2F9] rounded-lg p-4 flex items-center gap-3">
               <TwousersIconSvg size={28} className="text-[#001984]" />
               <div>
@@ -456,7 +456,7 @@ export default function CreateCouponPage() {
         <Card n={8} title="Gift Subscription Controls">
           <div>
             <Label required>Allow Coupon on Gift Purchase</Label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <Select value={f.giftAllow} onChange={(v) => set("giftAllow", v)} options={YES_NO} />
               <Select value={f.giftMode} onChange={(v) => set("giftMode", v)} options={["Redemption", "Purchase"]} />
             </div>
@@ -499,7 +499,7 @@ export default function CreateCouponPage() {
             </span>
             <h3 className="text-base font-semibold text-[#0A0847]">Need Help?</h3>
           </div>
-          <p className="text-sm font-semibold text-[#0A0847] max-w-[300px]">
+          <p className="text-sm font-semibold text-[#0A0847] max-w-full sm:max-w-[300px]">
             Learn how to expertly configure promotions and coupon rules.
           </p>
           <button

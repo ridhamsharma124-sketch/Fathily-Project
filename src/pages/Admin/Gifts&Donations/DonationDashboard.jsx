@@ -381,7 +381,7 @@ export default function DonationsDashboardPage() {
   const pageNumbers = Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1);
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header Title Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-xl font-semibold text-[#0A0847]">Donations Dashboard</h1>

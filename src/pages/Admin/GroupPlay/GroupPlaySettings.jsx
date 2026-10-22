@@ -255,7 +255,7 @@ const GroupPlaySettings = () => {
   };
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen space-y-6 text-[#0A0847] font-[Inter]">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen space-y-6 text-[#0A0847] font-[Inter] sm:p-6">
       
       {/* 1. Header Bar */}
       <div className="flex items-center justify-between">
@@ -318,7 +318,7 @@ const GroupPlaySettings = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* Card 1: Room Configuration */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={CogIconSvg}
             title="Room Configuration"
@@ -396,7 +396,7 @@ const GroupPlaySettings = () => {
         </div>
 
         {/* Card 2: Question Bank for Group Play */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={FiBookOpen}
             title="Question Bank for Group Play"
@@ -445,7 +445,7 @@ const GroupPlaySettings = () => {
         </div>
 
         {/* Card 3: Chat Settings */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={MessageIconSvg}
             title="Chat Settings"
@@ -492,7 +492,7 @@ const GroupPlaySettings = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         {/* Card 4: Team Mode Settings */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={ThreeUsersSvg}
             title="Team Mode Settings"
@@ -549,7 +549,7 @@ const GroupPlaySettings = () => {
         </div>
 
         {/* Card 5: Opening & Closing Prayers */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={FiBookOpen}
             title="Opening & Closing Prayers"
@@ -615,7 +615,7 @@ const GroupPlaySettings = () => {
         </div>
 
         {/* Card 6: Other Game Settings */}
-        <div className="bg-white border border-[#E2DFFC] rounded-lg p-5 space-y-4">
+        <div className="bg-white border border-[#E2DFFC] rounded-lg p-3 space-y-4 sm:p-5">
           <CardHeader
             icon={GameRemoteIconSvg}
             title="Other Game Settings"
@@ -711,7 +711,7 @@ const GroupPlaySettings = () => {
         key={tab}
         type="button"
         onClick={() => setSelectedCategoryTab(tab)}
-        className={`min-w-[72px] px-4 py-2 rounded-md border bg-white whitespace-nowrap transition-colors ${
+        className={`px-4 py-2 rounded-md border bg-white whitespace-nowrap transition-colors ${
           selectedCategoryTab === tab
             ? "border-[#001984] text-[#001984] font-bold"
             : "border-[#E2DFFC] text-[#0A0847] hover:bg-gray-50"
@@ -764,7 +764,7 @@ const GroupPlaySettings = () => {
   </div>
 
   {/* Footer Pagination */}
-  <div className="flex items-center justify-between pt-2 text-xs text-gray-500">
+  <div className="flex flex-col items-start gap-3 pt-2 text-xs text-gray-500 sm:flex-row sm:items-center sm:justify-between">
     <div className="flex items-center gap-2">
       <span>Display</span>
       <select className="border border-[#E2DFFC] rounded-md px-2 py-1 text-xs bg-white text-[#0A0847]">
@@ -775,7 +775,7 @@ const GroupPlaySettings = () => {
       <span>images</span>
     </div>
 
-    <div className="flex items-center gap-1 font-semibold">
+    <div className="flex flex-wrap items-center gap-1 font-semibold">
       <button type="button" className="w-7 h-7 rounded-md border border-[#E2DFFC] text-gray-400 flex items-center justify-center">‹</button>
       <button type="button" className="w-7 h-7 rounded-md bg-[#001984] text-white flex items-center justify-center">1</button>
       {[2, 3, 4, 5].map((n) => (

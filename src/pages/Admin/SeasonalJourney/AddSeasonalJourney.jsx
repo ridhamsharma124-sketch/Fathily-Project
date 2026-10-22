@@ -614,7 +614,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
   const hasCoverImage = formData.coverImage && !imgError;
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -1082,12 +1082,12 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
           <SectionTitle n={4} title="Daily Journey Schedule" />
         </div>
 
-        <div className="flex items-center justify-between gap-2 mb-5">
-          <div className=" flex gap-2">
+        <div className="flex flex-col items-start gap-2 mb-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex w-full gap-2 sm:w-auto">
             <button
               type="button"
               onClick={() => setView("list")}
-              className={`px-5 py-2.5 w-40 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+              className={`px-5 py-2.5 w-full sm:w-40 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                 view === "list"
                   ? "bg-[#001984] text-white"
                   : "border border-[#E2DFFC] text-[#0A0847] hover:bg-gray-50"
@@ -1098,7 +1098,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             <button
               type="button"
               onClick={() => setView("calendar")}
-              className={`px-5 py-2.5 w-40 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+              className={`px-5 py-2.5 w-full sm:w-40 rounded-md text-xs font-medium transition-colors cursor-pointer ${
                 view === "calendar"
                   ? "bg-[#001984] text-white"
                   : "border border-[#E2DFFC] text-[#0A0847] hover:bg-gray-50"

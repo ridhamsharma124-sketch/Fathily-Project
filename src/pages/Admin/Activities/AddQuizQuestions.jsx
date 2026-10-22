@@ -177,9 +177,9 @@ function LocationChip() {
           height={24}
           className="h-6 w-6 shrink-0"
         />
-      <p className="flex items-center gap-4 text-[16px] font-semibold leading-6 text-[#0A0847CC]">
+      <p className="flex flex-wrap items-center gap-2 text-[16px] font-semibold leading-6 text-[#0A0847CC] sm:gap-4">
         {LOCATION_PARTS.map((part, index) => (
-          <span key={part} className="flex items-center gap-4">
+          <span key={part} className="flex items-center gap-2 sm:gap-4">
             {index > 0 && <span aria-hidden>&gt;</span>}
             <span>{part}</span>
           </span>
@@ -241,7 +241,7 @@ function MethodCard({ title, description, icon, iconColor, active, children }) {
       <h3 className="mt-5 text-[16px] font-semibold leading-4 text-[#0A0847CC]">
         {title}
       </h3>
-      <p className="mt-3 w-[200px] text-[14px] font-medium leading-[21px] text-[#0A0847CC]">
+      <p className="mt-3 w-full max-w-[200px] text-[14px] font-medium leading-[21px] text-[#0A0847CC]">
         {description}
       </p>
       <div className="mt-auto flex w-full flex-col gap-4">{children}</div>
@@ -258,7 +258,7 @@ export default function AddQuizQuestions() {
 
   return (
     <div className="min-h-screen bg-[#F8F9FE] font-[Inter] text-[#0A0847]">
-      <div className="max-w-[1067px] px-5 py-6">
+      <div className="w-full max-w-[1067px] px-4 py-6 sm:px-5">
         {/* header */}
         <Breadcrumb />
 

@@ -303,13 +303,13 @@ export default function WordSearchManagement() {
 
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
-      <div className="mx-auto max-w-[1220px] px-5 py-6">
-        <div className="flex flex-nowrap items-center justify-between gap-4">
+      <div className="mx-auto w-full max-w-[1220px] px-4 py-6 sm:px-5">
+        <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <h1 className="text-[22px] leading-[27px] font-semibold" style={{ color: HEADING }}>
               Word Search Management
             </h1>
-            <p className="mt-[8px] text-[16px] leading-[19px] font-medium whitespace-nowrap" style={{ color: GRAY }}>
+            <p className="mt-[8px] text-[16px] leading-[19px] font-medium" style={{ color: GRAY }}>
               Create, organize, and manage help content.
             </p>
           </div>
@@ -317,7 +317,7 @@ export default function WordSearchManagement() {
           <button
             type="button"
             onClick={() => navigate("/admin/word-search/add-edit")}
-            className="flex h-[42px] w-[182px] shrink-0 cursor-pointer items-center justify-center gap-[16px] rounded-[8px] px-[16px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+            className="flex h-[42px] w-full shrink-0 cursor-pointer items-center justify-center gap-[16px] rounded-[8px] px-[16px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[182px]"
             style={{ backgroundColor: NAVY }}
           >
             <LuPlus size={16} strokeWidth={2.2} />
@@ -325,7 +325,7 @@ export default function WordSearchManagement() {
           </button>
         </div>
 
-        <div className="mt-[40px] grid grid-cols-4 gap-[17px]">
+        <div className="mt-[40px] grid grid-cols-1 gap-[17px] sm:grid-cols-2 lg:grid-cols-4">
           {STAT_CARDS.map(({ iconBg, iconColor, Glyph, value, label }) => (
             <div
               key={label}
@@ -350,8 +350,8 @@ export default function WordSearchManagement() {
           ))}
         </div>
 
-        <div className="mt-[40px] flex flex-nowrap items-center justify-between gap-[10px]">
-          <div className="relative w-[300px] shrink-0">
+        <div className="mt-[40px] flex flex-col items-start gap-[10px] sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative w-full shrink-0 sm:w-[300px]">
             <LuSearch
               size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2"
@@ -370,9 +370,9 @@ export default function WordSearchManagement() {
             />
           </div>
 
-          <div className="flex flex-nowrap items-center gap-[10px]">
+          <div className="flex flex-wrap items-center gap-[10px]">
             {FILTERS.map(({ id, w, all, options }) => (
-              <div key={id} className="relative shrink-0" style={{ width: w }}>
+              <div key={id} className="relative w-full max-w-full shrink-0" style={{ width: w, maxWidth: "100%" }}>
                 <select
                   id={id}
                   value={filterValues[id] || ""}
@@ -465,7 +465,7 @@ export default function WordSearchManagement() {
                     </td>
 
                     <td className="px-[12px]">
-                      <div className="flex items-center gap-[10px]">
+                      <div className="flex flex-wrap items-center gap-[10px]">
                         <img
                           src={row.image}
                           alt=""
@@ -494,7 +494,7 @@ export default function WordSearchManagement() {
                     )}
 
                     <td className="px-[12px]" onClick={(e) => e.stopPropagation()}>
-                      <div className="flex items-center gap-[2px]">
+                      <div className="flex flex-wrap items-center gap-[2px]">
                         <RowToggle
                           row={row}
                           value={!!toggles[row.id]}
@@ -558,7 +558,7 @@ export default function WordSearchManagement() {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2 text-[12px] font-medium" style={{ color: HEADING }}>
             Display
             <div className="relative">

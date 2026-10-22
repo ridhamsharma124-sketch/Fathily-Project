@@ -253,11 +253,11 @@ export default function EditWordSearchPanel({ row, onClose }) {
 
                 <div className="mt-[16px] h-px w-full bg-[#0A0847]/10" />
 
-                <div className="mt-[16px] flex items-center justify-between gap-4">
+                <div className="mt-[16px] flex flex-wrap items-center justify-between gap-4">
                   <span className="text-[14px] leading-[normal] font-semibold text-[#0A0847]/60">
                     Status
                   </span>
-                  <div className="flex items-center gap-[2px]">
+                  <div className="flex flex-wrap items-center gap-[2px]">
                     <button
                       type="button"
                       role="switch"

@@ -238,7 +238,7 @@ export default function DivineCounselManagementPage() {
   const hasHero = heroImage && !heroError;
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       <input type="file" ref={heroRef} accept="image/png,image/jpeg" onChange={handleHeroUpload} className="hidden" />
 
       {/* Header */}

@@ -81,7 +81,7 @@ const HIGHLIGHTS = [
    PAGE-LOCAL STYLES (activityFormShared.jsx left untouched for other pages)
    ========================================================================== */
 const cardClass =
-  "flex w-full min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[24px]";
+  "flex w-full min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[16px] pr-[16px] pb-[24px] pl-[16px] sm:pr-[22px] sm:pb-[35px] sm:pl-[24px]";
 
 const labelCls = "mb-2 block text-[12px] font-semibold text-[#0A0847]";
 
@@ -91,10 +91,10 @@ const fieldCls =
 const dividerCls = "h-px w-full bg-[#0A0847]/10";
 
 const outlineButton =
-  "flex h-12 w-[152px] shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-12 w-full shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:w-[152px]";
 
 const purpleButton =
-  "flex h-12 w-[174px] shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90";
+  "flex h-12 w-full shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90 sm:w-[174px]";
 
 const stepButton =
   "flex h-[43px] shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
@@ -195,40 +195,47 @@ function Select({ id, value, options, onChange }) {
 /* ==========================================================================
    LIVE PUZZLE PREVIEW (right card)
    ========================================================================== */
+/* grid metrics — used to place each highlight pill behind a whole word */
+const GRID_COLS = 12;
+const CELL_H = 36; // h-9
+const ROW_GAP = 20; // gap-y-5
+
 function PuzzleGrid() {
   return (
-    <div className="w-full rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[26px]">
-      <div className="grid grid-cols-12 gap-y-5">
-        {GRID.map((rowLetters, rowIndex) =>
-          [...rowLetters].map((letter, colIndex) => {
-            const highlight = HIGHLIGHTS.find(
-              (item) => item.row === rowIndex && item.col === colIndex,
-            );
-            const tone = highlight ? PILLS[highlight.tone] : null;
+    <div className="w-full rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[12px] sm:p-[26px]">
+      <div className="overflow-x-auto">
+        <div className="relative min-w-[330px]">
+          {/* highlight pills — one rounded rectangle behind each whole word */}
+          {HIGHLIGHTS.map((h) => (
+            <span
+              key={`pill-${h.row}-${h.col}`}
+              aria-hidden
+              style={{
+                left: `${(h.col / GRID_COLS) * 100}%`,
+                width: `${(h.length / GRID_COLS) * 100}%`,
+                top: `${h.row * (CELL_H + ROW_GAP)}px`,
+                background: PILLS[h.tone].bg,
+                borderColor: PILLS[h.tone].border,
+              }}
+              className="absolute z-0 h-9 rounded-lg border"
+            />
+          ))}
 
-            return (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className="relative flex h-9 items-center justify-center"
-              >
-                {tone && (
-                  <span
-                    aria-hidden
-                    style={{
-                      width: `calc(${highlight.length} * 100%)`,
-                      background: tone.bg,
-                      borderColor: tone.border,
-                    }}
-                    className="absolute left-0 top-1/2 z-0 h-9 -translate-y-1/2 rounded-lg border"
-                  />
-                )}
-                <span className="relative z-[1] text-[16px] font-medium text-[#0A0847]">
-                  {letter}
-                </span>
-              </div>
-            );
-          }),
-        )}
+          <div className="relative z-[1] grid grid-cols-12 gap-y-5">
+            {GRID.map((rowLetters, rowIndex) =>
+              [...rowLetters].map((letter, colIndex) => (
+                <div
+                  key={`${rowIndex}-${colIndex}`}
+                  className="relative flex h-9 items-center justify-center"
+                >
+                  <span className="relative z-[1] text-[16px] font-medium text-[#0A0847]">
+                    {letter}
+                  </span>
+                </div>
+              )),
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -239,7 +246,7 @@ function WordsToFind({ words }) {
     <div className="rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[19px] pl-[22px]">
       <h3 className="text-[22px] font-semibold text-[#0A0847]">Words to Find</h3>
 
-      <ul className="mt-4 grid grid-flow-col grid-rows-4 gap-x-6 gap-y-3">
+      <ul className="mt-4 grid grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-6">
         {words.map((word) => (
           <li
             key={word}
@@ -283,7 +290,7 @@ export default function AddWordSearch() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="flex w-full min-w-0 flex-col px-5 py-6">
+      <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-5">
         <Breadcrumb
           items={[
             "Bible Content",
@@ -306,7 +313,7 @@ export default function AddWordSearch() {
         </div>
 
         {/* TWO COLUMNS — equal, fluid, equal heights (bottoms aligned) */}
-        <div className="mt-5 grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-6">
+        <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           {/* LEFT — configure form */}
           <section className={cardClass}>
             <h2 className="text-[14px] font-semibold text-[#001984]">
@@ -347,7 +354,7 @@ export default function AddWordSearch() {
                 Word Direction
               </p>
 
-              <div className="mt-2.5 flex w-[245px] flex-col gap-4">
+              <div className="mt-2.5 flex w-full max-w-[245px] flex-col gap-4">
                 {WORD_DIRECTIONS.map((direction) => (
                   <label
                     key={direction}
@@ -401,12 +408,12 @@ export default function AddWordSearch() {
             </div>
 
             <div className="flex flex-wrap gap-2.5">
-              <button type="button" className={`${stepButton} w-[164px] font-semibold`}>
+              <button type="button" className={`${stepButton} w-full font-semibold sm:w-[164px]`}>
                 <img src={plusIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                 Add New Book
               </button>
 
-              <button type="button" className={`${stepButton} w-[244px] font-semibold`}>
+              <button type="button" className={`${stepButton} w-full font-semibold sm:w-[244px]`}>
                 <img src={downloadIcon} alt="" className="h-[13px] w-[12px] shrink-0" />
                 Import Words from Chapter
               </button>
@@ -476,12 +483,12 @@ export default function AddWordSearch() {
         </div>
 
         {/* BOTTOM ACTION ROW */}
-        <div className="mt-6 flex w-full flex-wrap items-center justify-between gap-4">
+        <div className="mt-6 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <button type="button" className={outlineButton}>
             Cancel
           </button>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex w-full flex-col items-stretch gap-4 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <button type="button" className={outlineButton}>
               Save as Draft
             </button>

@@ -252,8 +252,8 @@ function SelectorCard({ selector }) {
 function ActivityCard({ card, enabled, onToggle }) {
   const { title, description, tint, iconColor, Glyph, icon, tileBg, stats, buttons } = card;
   return (
-    <article className="flex h-[268px] min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[22px] pr-[18px] pb-[26px] pl-[17px]">
-      <div className="flex items-start justify-between">
+    <article className="flex h-auto min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[18px] sm:pt-[22px] sm:pb-[26px] sm:pl-[17px]">
+      <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-3">
           {tileBg ? (
             <span
@@ -285,11 +285,11 @@ function ActivityCard({ card, enabled, onToggle }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-[10px]">
+      <div className="grid grid-cols-1 gap-[10px] sm:grid-cols-2">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="flex h-[77px] min-w-0 items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FAF9FE] p-[12px]"
+            className="flex min-h-[77px] min-w-0 items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FAF9FE] p-[12px]"
           >
             <span
               className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-lg"
@@ -311,12 +311,12 @@ function ActivityCard({ card, enabled, onToggle }) {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-[10px]">
+      <div className="grid grid-cols-1 gap-[10px] sm:grid-cols-2">
         {buttons.map((btn) => (
           <button
             key={btn.label}
             type="button"
-            className="flex h-[43px] min-w-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-2 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#001984]/5"
+            className="flex h-[43px] min-w-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[#001984] bg-white px-2 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#001984]/5"
           >
             {btnImage(btn.label) ? (
               <img src={btnImage(btn.label)} alt="" className="h-[18px] w-[18px] shrink-0" />
@@ -353,7 +353,7 @@ export default function Activities() {
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       {/* ONE container — every section is a direct child, full width, min-w-0 */}
-      <div className="flex w-full min-w-0 flex-col gap-6 px-6 py-6">
+      <div className="flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6">
         {/* HEADER */}
         <div className="flex w-full min-w-0 flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
@@ -391,7 +391,7 @@ export default function Activities() {
         </div>
 
         {/* SELECTED LOCATION — full width, same edges as selector row */}
-        <section className="flex h-[175px] w-full min-w-0 items-center justify-between gap-6 overflow-hidden rounded-lg border border-[#E2DFFC] bg-gradient-to-r from-[#FBF8FF] to-[#F6F1FF] px-6">
+        <section className="flex h-auto min-h-[175px] w-full min-w-0 flex-col items-start justify-between gap-6 overflow-hidden rounded-lg border border-[#E2DFFC] bg-gradient-to-r from-[#FBF8FF] to-[#F6F1FF] px-4 py-6 sm:flex-row sm:items-center sm:px-6">
           <div className="min-w-0">
             <p className="text-[16px] font-semibold text-[#0A0847]">Selected Location</p>
             <p className="mt-2 text-[13px] text-[#0A0847]/60">
@@ -402,7 +402,7 @@ export default function Activities() {
           <img
             src={bookImage}
             alt="Open book illustration"
-            className="h-[110px] w-[220px] shrink-0 object-contain"
+            className="h-auto w-full max-w-[220px] shrink-0 object-contain sm:h-[110px]"
           />
         </section>
 
@@ -452,8 +452,8 @@ export default function Activities() {
             </button>
           </div>
 
-          <div className="mt-4 w-full min-w-0 overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
-            <table className="w-full border-collapse text-left">
+          <div className="mt-4 w-full min-w-0 overflow-x-auto rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
+            <table className="w-full min-w-[860px] border-collapse text-left">
               <thead>
                 <tr className="h-[50px] bg-[#F3F7FD]">
                   <th scope="col" className="px-5 py-[11.85px]">
@@ -554,7 +554,7 @@ export default function Activities() {
         </section>
 
         {/* TIP BANNER */}
-        <section className="flex h-[75px] w-full min-w-0 items-center justify-between gap-[10px] rounded-lg bg-[#FE9809]/10 pt-4 pr-[31px] pb-[15px] pl-[18px]">
+        <section className="flex min-h-[75px] w-full min-w-0 flex-col items-start justify-between gap-[10px] rounded-lg bg-[#FE9809]/10 px-[18px] py-4 sm:h-[75px] sm:flex-row sm:items-center sm:pr-[31px] sm:pb-[15px] sm:pl-[18px]">
           <p className="flex min-w-0 items-start gap-[10px] text-[12px] font-medium text-[#FE9809]">
             <img src={tipBulb} alt="" className="mt-[1px] h-[27px] w-[27px] shrink-0" />
             <span>
@@ -564,7 +564,7 @@ export default function Activities() {
           </p>
           <button
             type="button"
-            className="flex h-[43px] shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-white px-4 text-[14px] font-medium text-[#FE9809] transition-colors hover:bg-[#FFF7ED]"
+            className="flex h-[43px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-white px-4 text-[14px] font-medium text-[#FE9809] transition-colors hover:bg-[#FFF7ED] sm:w-auto sm:justify-start"
           >
             <LuSettings size={15} style={{ color: "#FE9809" }} />
             Go to Activity Settings

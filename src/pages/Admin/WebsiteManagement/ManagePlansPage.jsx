@@ -335,7 +335,7 @@ export default function ManagePlansPage() {
           <div className="flex flex-col gap-[8px]">
             <span className="text-[12px] font-medium text-[#0A0847]">Logo</span>
             <div className="flex flex-wrap items-center gap-[14px]">
-              <div className="flex h-[90px] w-[200px] shrink-0 items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-[#F1EFFB] p-2">
+              <div className="flex h-[90px] w-full max-w-[200px] shrink-0 items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-[#F1EFFB] p-2">
                 <Logo className="max-h-full max-w-full object-contain" />
               </div>
               <button
@@ -416,28 +416,32 @@ export default function ManagePlansPage() {
 
             <div className="flex flex-col gap-[12px]">
               {features.map((feature) => (
-                <div key={feature.id} className="flex items-center gap-[12px]">
-                  <GripVertical size={20} className="shrink-0 text-[#001984]" />
-                  <input
-                    type="text"
-                    value={feature.name}
-                    onChange={(event) => updateFeature(feature.id, "name", event.target.value)}
-                    className={`${INPUT_BASE} w-[230px] shrink-0 pl-[11px]`}
-                  />
-                  <input
-                    type="text"
-                    value={feature.desc}
-                    onChange={(event) => updateFeature(feature.id, "desc", event.target.value)}
-                    className={`${INPUT_BASE} min-w-0 flex-1 pl-[11px]`}
-                  />
-                  <button
-                    type="button"
-                    aria-label="Remove feature"
-                    onClick={() => removeFeature(feature.id)}
-                    className="ml-[25px] flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#DE2128] transition hover:border-[#DE2128]/40 hover:bg-[#FEF2F2]"
-                  >
-                    <Trash2 size={16} strokeWidth={1.8} />
-                  </button>
+                <div key={feature.id} className="flex flex-col gap-[8px] sm:flex-row sm:items-center sm:gap-[12px]">
+                  <div className="flex items-center gap-[12px]">
+                    <GripVertical size={20} className="shrink-0 text-[#001984]" />
+                    <input
+                      type="text"
+                      value={feature.name}
+                      onChange={(event) => updateFeature(feature.id, "name", event.target.value)}
+                      className={`${INPUT_BASE} w-full min-w-0 sm:w-[230px] sm:shrink-0 pl-[11px]`}
+                    />
+                  </div>
+                  <div className="flex items-center gap-[12px]">
+                    <input
+                      type="text"
+                      value={feature.desc}
+                      onChange={(event) => updateFeature(feature.id, "desc", event.target.value)}
+                      className={`${INPUT_BASE} min-w-0 flex-1 pl-[11px]`}
+                    />
+                    <button
+                      type="button"
+                      aria-label="Remove feature"
+                      onClick={() => removeFeature(feature.id)}
+                      className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#DE2128] transition hover:border-[#DE2128]/40 hover:bg-[#FEF2F2] sm:ml-[25px]"
+                    >
+                      <Trash2 size={16} strokeWidth={1.8} />
+                    </button>
+                  </div>
                 </div>
               ))}
 

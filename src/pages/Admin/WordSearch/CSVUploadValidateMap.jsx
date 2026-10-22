@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useLayoutEffect, useRef, useState } from "react";
 import { LuArrowRight } from "react-icons/lu";
 
 
@@ -14,6 +14,41 @@ const GREEN = "#22C55E";
 const GREEN_TEXT = "#16A34A";
 const TICK_GREEN = "#21AC1C";
 const RED_TEXT = "#D80027";
+
+// Table column templates. The numbers are the Figma widths; the "fr" part makes the columns
+// scale up proportionally when the card is wider (so rows always fill the card).
+const MAP_COLS = "grid-cols-[minmax(90px,90fr)_minmax(135px,135fr)_minmax(130px,130fr)_minmax(134px,134fr)]";
+const REVIEW_COLS = "grid-cols-[minmax(68px,68fr)_minmax(117px,117fr)_minmax(80px,80fr)_minmax(135px,204fr)]";
+const GUIDE_COLS = "grid-cols-[minmax(107px,107fr)_minmax(124px,124fr)_minmax(117px,117fr)_minmax(100px,133fr)]";
+
+// Layout switches, based on the width of the page content (not the screen), so it also works
+// when the sidebar is open or closed.
+const SPLIT_TOP_AT = 720; // Uploaded File + Validation Summary side by side
+const TWO_COL_AT = 1058; // 517 + 24 + 517 -> Column Mapping beside the right column
+
+
+// Returns [ref, width]: the content width of the element the ref is attached to.
+function useElementWidth() {
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+
+    const measure = () => {
+      const cs = getComputedStyle(el);
+      return el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    };
+
+    setWidth(measure());
+    const ro = new ResizeObserver(() => setWidth(measure()));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return [ref, width];
+}
 
 
 function CsvFileIcon() {
@@ -182,24 +217,31 @@ export default function CSVUploadValidateMap() {
     reward_points: "Reward Points",
   }));
 
+  const [contentRef, contentWidth] = useElementWidth();
+  const splitTop = contentWidth >= SPLIT_TOP_AT;
+  const twoCol = contentWidth >= TWO_COL_AT;
+
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: PAGE_BG, color: HEADING }}>
-      <div className="mx-auto w-full max-w-[1110px] px-6 py-6">
+      <div ref={contentRef} className="mx-auto w-full max-w-[1110px] px-4 py-6 sm:px-6">
         <p className="text-[16px] leading-none font-medium" style={{ color: MUTED }}>
           Add / Edit Word Search - CSV Upload
         </p>
 
-        <h1 className="mt-[12px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+        <h1 className="mt-[12px] text-[18px] leading-[1.3] font-semibold sm:text-[22px] md:leading-none" style={{ color: HEADING }}>
           1. CSV Upload — Validate &amp; Map
         </h1>
 
-        <p className="mt-[12px] text-[14px] leading-none font-medium" style={{ color: MUTED }}>
+        <p className="mt-[12px] text-[14px] leading-[1.4] font-medium md:leading-none" style={{ color: MUTED }}>
           We&apos;ve validated your file and mapped the columns to the correct fields.
         </p>
 
-        <div className="mt-[24px] flex items-start gap-[24px]">
+        {/* Row 1: Uploaded File + Validation Summary (stacked on narrow content, side by side from 720px) */}
+        <div className={`mt-[24px] flex gap-[24px] ${splitTop ? "flex-row items-start" : "flex-col items-stretch"}`}>
           <section
-            className="flex h-[149px] w-[340px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px]"
+            className={`flex h-auto min-h-[149px] shrink-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px] ${
+              splitTop ? "w-[340px]" : "w-full"
+            }`}
             style={{ borderColor: BORDER }}
           >
             <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
@@ -225,25 +267,25 @@ export default function CSVUploadValidateMap() {
           </section>
 
           <section
-            className="flex h-[149px] flex-1 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px]"
+            className="flex h-auto min-h-[149px] w-full min-w-0 flex-1 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white px-[20px] py-[20px]"
             style={{ borderColor: BORDER }}
           >
             <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               Validation Summary
             </h2>
 
-            <div className="flex items-center justify-between">
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#F0FAF0]" style={{ borderColor: GREEN }}>
+            <div className="flex flex-wrap items-center justify-between gap-[12px]">
+              <div className="flex h-[90px] w-full max-w-[209px] min-w-[88px] flex-1 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#F0FAF0]" style={{ borderColor: GREEN }}>
                 <p className="text-[22px] leading-none font-semibold" style={{ color: "#15803D" }}>22</p>
                 <p className="text-[12px] leading-none font-semibold" style={{ color: "#15803D" }}>Valid Rows</p>
               </div>
 
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#FFF6EE]" style={{ borderColor: "#F97316" }}>
+              <div className="flex h-[90px] w-full max-w-[209px] min-w-[88px] flex-1 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-[#FFF6EE]" style={{ borderColor: "#F97316" }}>
                 <p className="text-[22px] leading-none font-semibold" style={{ color: "#EA580C" }}>2</p>
                 <p className="text-[12px] leading-none font-semibold" style={{ color: "#EA580C" }}>Need Review</p>
               </div>
 
-              <div className="flex h-[90px] w-[209px] shrink-0 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-white" style={{ borderColor:"#E2DFFC" }}>
+              <div className="flex h-[90px] w-full max-w-[209px] min-w-[88px] flex-1 flex-col items-center justify-center gap-[6px] rounded-[8px] border-[0.75px] bg-white" style={{ borderColor: "#E2DFFC" }}>
                 <p className="text-[22px] leading-none font-semibold" style={{ color: HEADING }}>0</p>
                 <p className="text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Duplicates</p>
               </div>
@@ -251,18 +293,21 @@ export default function CSVUploadValidateMap() {
           </section>
         </div>
 
-        <div className="mt-[24px] grid grid-cols-[517px_517px] gap-[24px]">
+        {/* Row 2: two columns from 1058px of content width, otherwise stacked full width */}
+        <div className={`mt-[24px] grid gap-[24px] ${twoCol ? "grid-cols-2" : "grid-cols-1"}`}>
           <section
-            className="flex min-h-[742px] w-[517px] flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[21px] pr-[10px] pb-[32px] pl-[16px]"
+            className={`flex w-full min-w-0 flex-col gap-[10px] rounded-[7.5px] border-[0.75px] bg-white pt-[21px] pr-[10px] pb-[32px] pl-[16px] ${
+              twoCol ? "min-h-[742px] w-[517px]" : "w-full"
+            }`}
             style={{ borderColor: BORDER }}
           >
             <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
               1. Column Mapping
             </h2>
 
-            <div className="mt-[6px] w-full">
+            <div className="mt-[6px] w-full overflow-x-auto">
               <div
-                className="grid h-[50px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px]"
+                className={`grid h-[50px] w-full min-w-[489px] ${MAP_COLS} items-center border-b-[0.75px]`}
                 style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
               >
                 <span className="px-[8px] text-[12px] leading-[15px] font-semibold" style={{ color: HEADING }}>
@@ -282,7 +327,7 @@ export default function CSVUploadValidateMap() {
               {MAPPING_ROWS.map(({ column, sample, options }) => (
                 <div
                   key={column}
-                  className="grid h-[62px] w-full grid-cols-[90px_135px_130px_134px] items-center border-b-[0.75px]"
+                  className={`grid h-[62px] w-full min-w-[489px] ${MAP_COLS} items-center border-b-[0.75px]`}
                   style={{ borderColor: ROW_BORDER }}
                 >
                   <span className="px-[8px] text-[12px] leading-[15px] font-medium break-words" style={{ color: LABEL }}>
@@ -310,18 +355,18 @@ export default function CSVUploadValidateMap() {
             </div>
           </section>
 
-          <div className="flex w-[517px] flex-col gap-[24px]">
+          <div className={`flex min-w-0 flex-col gap-[24px] ${twoCol ? "w-[517px]" : "w-full"}`}>
             <section
-              className="flex w-[517px] shrink-0 flex-col gap-[24px] rounded-[7.5px] border-[0.75px] bg-white px-[23px] py-[20px]"
+              className="flex w-full min-w-0 shrink-0 flex-col gap-[24px] rounded-[7.5px] border-[0.75px] bg-white px-[23px] py-[20px]"
               style={{ borderColor: BORDER }}
             >
               <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
                 2. Rows Needing Review (2)
               </h2>
 
-              <div className="w-full">
+              <div className="w-full overflow-x-auto">
                 <div
-                  className="grid h-[50px] w-full grid-cols-[68px_117px_80px_1fr] items-center border-b-[0.75px]"
+                  className={`grid h-[50px] w-full min-w-[400px] ${REVIEW_COLS} items-center border-b-[0.75px]`}
                   style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
                 >
                   <span className="px-[20px] text-[12px] leading-none font-semibold" style={{ color: HEADING }}>Row #</span>
@@ -335,7 +380,7 @@ export default function CSVUploadValidateMap() {
                 {REVIEW_ROWS.map(({ row, issue, data }) => (
                   <div
                     key={row}
-                    className="grid h-[62px] w-full grid-cols-[68px_117px_80px_1fr] items-center border-b-[0.75px]"
+                    className={`grid h-[62px] w-full min-w-[400px] ${REVIEW_COLS} items-center border-b-[0.75px]`}
                     style={{ borderColor: "#DDAEAE", backgroundColor: "#FEF5F5" }}
                   >
                     <span className="px-[20px] text-[11px] leading-none font-medium" style={{ color: RED_TEXT }}>{row}</span>
@@ -354,16 +399,16 @@ export default function CSVUploadValidateMap() {
             </section>
 
             <section
-              className="flex w-[517px] flex-1 flex-col gap-[20px] rounded-[7.5px] border-[0.75px] bg-white px-[17px] py-[20px]"
+              className="flex w-full min-w-0 flex-1 flex-col gap-[20px] rounded-[7.5px] border-[0.75px] bg-white px-[17px] py-[20px]"
               style={{ borderColor: BORDER }}
             >
               <h2 className="text-[14px] leading-none font-semibold" style={{ color: HEADING }}>
                 3. Column Guide by Type
               </h2>
 
-              <div className="w-[483px]">
+              <div className="w-full overflow-x-auto">
                 <div
-                  className="grid h-[50px] w-[483px] grid-cols-[107px_124px_117px_1fr] items-center border-b-[0.75px]"
+                  className={`grid h-[50px] w-full min-w-[448px] ${GUIDE_COLS} items-center border-b-[0.75px]`}
                   style={{ borderColor: ROW_BORDER, backgroundColor: HEADER_BG }}
                 >
                   {GUIDE_HEADERS.map((h) => (
@@ -376,7 +421,7 @@ export default function CSVUploadValidateMap() {
                 {GUIDE_ROWS.map((row) => (
                   <div
                     key={row.join("-")}
-                    className="grid h-[62px] w-[483px] grid-cols-[107px_124px_117px_1fr] items-center border-b-[0.75px]"
+                    className={`grid h-[62px] w-full min-w-[448px] ${GUIDE_COLS} items-center border-b-[0.75px]`}
                     style={{ borderColor: ROW_BORDER }}
                   >
                     {row.map((cell, i) => (
@@ -389,10 +434,10 @@ export default function CSVUploadValidateMap() {
           </div>
         </div>
 
-        <div className="mt-[24px] flex h-[43px] w-full items-center justify-between">
+        <div className="mt-[24px] flex h-auto min-h-[43px] w-full flex-wrap items-center justify-between gap-[12px]">
           <button
             type="button"
-            className="flex h-[43px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+            className="flex h-[43px] w-full cursor-pointer items-center justify-center rounded-[6px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD] sm:w-[97px]"
             style={{ borderColor: BORDER, color: NAVY }}
           >
             Back
@@ -400,7 +445,7 @@ export default function CSVUploadValidateMap() {
 
           <button
             type="button"
-            className="flex h-[43px] w-[200px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+            className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90 sm:w-[200px]"
             style={{ backgroundColor: NAVY }}
           >
             <LuArrowRight size={16} strokeWidth={2} aria-hidden />

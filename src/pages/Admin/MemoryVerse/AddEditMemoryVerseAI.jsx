@@ -72,7 +72,7 @@ const GENERATED = [
 ];
 
 const shellClass = "min-h-[calc(100vh-72px)] bg-[#F9FAFE] font-inter text-[#0A0847]";
-const bodyClass = "mx-auto w-full max-w-[1107px] px-5 py-6";
+const bodyClass = "mx-auto w-full max-w-[1107px] px-4 py-6 sm:px-5";
 
 const fieldLabelClass = "mb-2 block text-[12px] font-semibold leading-[15px] text-[#0A0847CC]";
 
@@ -234,14 +234,14 @@ export default function AddEditMemoryVerseAI() {
             Add / Edit Memory Verse
           </h1>
 
-          <div className="flex items-center gap-4">
-            <button type="button" className={`${headerOutlineBtn} w-[120px]`}>
+          <div className="flex w-full flex-wrap items-center gap-[12px] sm:w-auto sm:gap-4">
+            <button type="button" className={`${headerOutlineBtn} w-full sm:w-[120px]`}>
               <LuSave size={20} /> Save draft
             </button>
-            <button type="button" className={headerOutlineBtn}>
+            <button type="button" className={`${headerOutlineBtn} w-full sm:w-auto`}>
               <LuEye size={20} /> Preview
             </button>
-            <button type="button" className={`${headerFilledBtn} w-[178px]`}>
+            <button type="button" className={`${headerFilledBtn} w-full sm:w-[178px]`}>
               <LuSend size={20} /> Publish Update
             </button>
           </div>
@@ -269,7 +269,7 @@ export default function AddEditMemoryVerseAI() {
           })}
         </div>
 
-        <section className="mt-6 flex w-[1065px] max-w-full flex-col gap-6 rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-5 pr-[15px] pb-5 pl-5">
+        <section className="mt-6 flex w-full max-w-full flex-col gap-6 rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-5 pr-[15px] pb-5 pl-5">
           <div className="flex flex-col gap-1">
             <h2 className="text-[14px] font-semibold leading-[17px] text-[#0A0847]">
               AI Memory Verse Generator
@@ -281,7 +281,7 @@ export default function AddEditMemoryVerseAI() {
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[546px_minmax(0,1fr)]">
             <div className="flex flex-col gap-4">
-              <div className="grid grid-cols-3 gap-4 lg:grid-cols-[167px_188px_160px]">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-[167px_188px_160px]">
                 <LabelledField label="Testament">
                   <Dropdown
                     value={testament}
@@ -312,7 +312,7 @@ export default function AddEditMemoryVerseAI() {
                 />
               </LabelledField>
 
-              <div className="grid grid-cols-2 gap-4 lg:grid-cols-[270px_minmax(0,1fr)]">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-[270px_minmax(0,1fr)]">
                 <LabelledField label="Number of Memory Verses">
                   <Dropdown
                     value={verseCount}
@@ -334,7 +334,7 @@ export default function AddEditMemoryVerseAI() {
               <div>
                 <p className={fieldLabelClass}>Assign to Levels</p>
                 <div className="relative">
-                  <div className="flex h-[39px] w-full items-center gap-3 rounded-[7.5px] border border-[#E1DFFC] bg-white pr-1.5 pl-[11px]">
+                  <div className="flex min-h-[39px] w-full flex-wrap items-center gap-3 rounded-[7.5px] border border-[#E1DFFC] bg-white py-1 pr-1.5 pl-[11px]">
                     {levels.map((lvl) => (
                       <button
                         key={lvl}
@@ -410,8 +410,8 @@ export default function AddEditMemoryVerseAI() {
               </div>
             </div>
 
-            <div className="flex items-start gap-6">
-              <div className="flex h-[331px] w-[201px] shrink-0 flex-col gap-3 rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-3 pr-3 pb-3 pl-3">
+            <div className="flex flex-col items-start gap-6 lg:flex-row">
+              <div className="flex h-auto min-h-[331px] w-full max-w-[201px] shrink-0 flex-col gap-3 rounded-[7.5px] border-[0.75px] border-[#E1DFFC] bg-white pt-3 pr-3 pb-3 pl-3 lg:w-[201px]">
                 <p className="text-[14px] font-semibold leading-[17px] text-[#0A0847CC]">
                   AI Will Create
                 </p>
@@ -427,7 +427,7 @@ export default function AddEditMemoryVerseAI() {
                 </ul>
               </div>
 
-              <div className="flex w-[224px] min-w-0 flex-col gap-[18px]">
+              <div className="flex w-full min-w-0 flex-col gap-[18px] lg:w-[224px]">
                 <ToggleRow
                   label="Generate unique AI image for every verse"
                   checked={genImages}
@@ -493,14 +493,14 @@ export default function AddEditMemoryVerseAI() {
                       label={`Select ${v.title}`}
                     />
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col gap-3 sm:flex-row">
                       <img
                         src={v.image}
                         alt=""
-                        className="h-[95px] w-[129px] shrink-0 rounded-[6px] bg-[#F1F2F8] object-cover"
+                        className="h-[95px] w-full max-w-[129px] shrink-0 rounded-[6px] bg-[#F1F2F8] object-cover sm:w-[129px]"
                       />
 
-                      <div className="w-[244px] min-w-0">
+                      <div className="w-full min-w-0 sm:w-[244px]">
                         <div className="flex items-center gap-2.5">
                           <p className="text-[12px] font-semibold leading-[15px] text-[#0A0847CC]">
                             {v.title}

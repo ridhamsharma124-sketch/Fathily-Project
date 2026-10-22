@@ -182,9 +182,10 @@ function Chevron({ className = "" }) {
   );
 }
 
+/* fit: compact filter dropdown — full width on mobile (2-up grid), auto width from sm up. */
 function Select({ value, className = "", options = [], onChange, fit = false }) {
   const selectProps = onChange ? { value, onChange } : { defaultValue: value };
-  const sizeClass = fit ? "h-[36px] w-auto max-w-full !pr-[34px]" : "h-full";
+  const sizeClass = fit ? "h-[36px] w-full sm:w-auto max-w-full !pr-[34px]" : "h-full";
 
   return (
     <div className={`relative ${className}`}>
@@ -228,12 +229,13 @@ function StatBlock({ label, value, withInfo = false }) {
   );
 }
 
+/* Full width inside its grid cell on mobile; fixed 131px from lg up. */
 function ActionTile({ className, icon, title, caption, titleClass, captionClass, onClick }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`flex h-[62px] w-[131px] cursor-pointer flex-col justify-center gap-[4px] rounded-[8px] border p-[12px] text-left ${className}`}
+      className={`flex min-h-[62px] w-full cursor-pointer flex-col justify-center gap-[4px] rounded-[8px] border p-[12px] text-left lg:w-[131px] lg:h-[62px] ${className}`}
     >
       <span className={`flex items-center gap-[6px] text-[10px] leading-[12px] font-semibold ${titleClass}`}>
         {icon}
@@ -359,9 +361,9 @@ export default function QuizManagement() {
     );
 
   return (
-    <div className="min-h-screen w-full bg-[#F8F8FF] p-6 font-inter">
-      <div className="flex items-start justify-between">
-        <div>
+    <div className="min-h-screen w-full bg-[#F8F8FF] p-4 font-inter sm:p-6">
+      <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
           <h1 className="text-[22px] leading-[27px] font-semibold text-[#0A0847]">
             Bible Book Activities Manager
           </h1>
@@ -370,17 +372,17 @@ export default function QuizManagement() {
           </p>
         </div>
 
-        <div className="flex items-center gap-[16px]">
+        <div className="flex w-full flex-wrap items-center gap-[12px] sm:w-auto sm:gap-[16px]">
           <button
             type="button"
-            className={`${OUTLINE_BTN} h-[42px] gap-[10px] px-[16px] text-[#0A0847]/80`}
+            className={`${OUTLINE_BTN} h-[42px] flex-1 justify-center gap-[10px] px-[16px] text-[#0A0847]/80 sm:flex-none sm:justify-start`}
           >
             <LuEye size={17} strokeWidth={1.8} />
             Preview as User
           </button>
           <button
             type="button"
-            className="flex h-[42px] cursor-pointer items-center gap-[10px] rounded-[8px] bg-[#001984] px-[16px] text-[14px] font-semibold text-white"
+            className="flex h-[42px] flex-1 cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-[16px] text-[14px] font-semibold whitespace-nowrap text-white sm:flex-none sm:justify-start"
             onClick={handlePublish}
           >
             <LuSave size={20} strokeWidth={1.6} className="text-white/90" />
@@ -389,13 +391,16 @@ export default function QuizManagement() {
         </div>
       </div>
 
-      <div className="mt-[24px] flex gap-[18px]">
-        <div className={`flex h-[93px] min-w-0 flex-[727_1_0px] items-center pl-[24px] ${PANEL}`}>
+      {/* Location selectors + summary: stacked on mobile, side by side on lg. */}
+      <div className="mt-[24px] flex flex-col gap-[18px] lg:flex-row">
+        <div className={`flex min-w-0 flex-[727_1_0px] flex-col gap-[16px] p-[16px] sm:flex-row sm:items-center sm:gap-0 sm:overflow-x-auto sm:py-0 sm:pl-[24px] sm:h-[93px] ${PANEL}`}>
           {LOCATION_SELECTORS.map((s, i) => (
             <div
               key={s.step}
-              className={`relative flex h-[33px] w-[184px] shrink-0 flex-col justify-between ${
-                i < LOCATION_SELECTORS.length - 1 ? "mr-[24px] border-r border-[#F2F2F2]" : ""
+              className={`relative flex w-full shrink-0 flex-col justify-between gap-[6px] sm:h-[33px] sm:w-[184px] ${
+                i < LOCATION_SELECTORS.length - 1
+                  ? "sm:mr-[24px] sm:border-r sm:border-[#F2F2F2] border-b border-[#F2F2F2] pb-[12px] sm:border-b-0 sm:pb-0"
+                  : ""
               }`}
             >
               <span className="flex items-center gap-[6px]">
@@ -410,9 +415,9 @@ export default function QuizManagement() {
           ))}
         </div>
 
-        <div className={`flex h-[93px] min-w-0 flex-[321_1_0px] flex-col gap-[10px] p-[16px] ${PANEL}`}>
+        <div className={`flex h-auto min-h-[93px] min-w-0 flex-[321_1_0px] flex-col gap-[10px] p-[16px] ${PANEL}`}>
           <p className="text-[12px] leading-[15px] font-semibold text-[#0A0847]">Select Location</p>
-          <p className="text-[12px] leading-[15px] font-medium text-[#0A0847]/60">
+          <p className="text-[12px] leading-[15px] font-medium break-words text-[#0A0847]/60">
             Bible Content &gt; <span className="font-semibold text-[#0A0847]">Genesis</span> &gt;{" "}
             <span className="font-semibold text-[#0A0847]">Chapter 1</span> &gt; Quiz
           </p>
@@ -423,26 +428,26 @@ export default function QuizManagement() {
         </div>
       </div>
 
-      <div className="mt-[24px] flex gap-[18px]">
+      <div className="mt-[24px] flex flex-col gap-[18px] lg:flex-row">
         <div className="flex min-w-0 flex-[726_1_0px] flex-col">
           <div className="flex flex-col">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <h2 className="text-[14px] leading-[17px] font-semibold text-[#0A0847]">Chapter Activities</h2>
                 <p className="mt-[8px] text-[12px] leading-[15px] font-medium text-[#0A0847]/60">
                   Enable or disable activities for this chapter.
                 </p>
               </div>
-              <button type="button" className={`${OUTLINE_BTN} h-[40px] px-[16.5px]`}>
+              <button type="button" className={`${OUTLINE_BTN} h-[40px] w-full justify-center px-[16.5px] sm:w-auto`}>
                 Manage All Activities
               </button>
             </div>
 
-            <div className="mt-[16px] grid grid-cols-4 gap-[14px]">
+            <div className="mt-[16px] grid grid-cols-1 gap-[14px] sm:grid-cols-2 lg:grid-cols-4">
               {ACTIVITY_CARDS.map((a) => (
                 <div
                   key={a.title}
-                  className="flex h-[111px] flex-col gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] p-[8px]"
+                  className="flex min-h-[111px] flex-col gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] p-[8px]"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-[4px]">
@@ -461,7 +466,7 @@ export default function QuizManagement() {
                     {a.description}
                   </p>
 
-                  <p className="mt-auto text-[10px] leading-[12px] font-normal italic text-[#0A0847]/60">
+                  <p className="mt-auto pl-[33px] text-[10px] leading-[12px] font-normal italic text-[#0A0847]/60">
                     {a.count}
                   </p>
                 </div>
@@ -470,7 +475,7 @@ export default function QuizManagement() {
           </div>
 
           <div
-            className={`mt-[24px] flex min-h-[1028px] flex-1 flex-col gap-[24px] p-[20px] ${CARD}`}
+            className={`mt-[24px] flex flex-1 flex-col gap-[24px] p-[16px] sm:p-[20px] lg:min-h-[1028px] ${CARD}`}
           >
             <div>
               <h2 className="text-[14px] leading-[17px] font-semibold text-[#0A0847]">Quiz Level Manager</h2>
@@ -479,28 +484,30 @@ export default function QuizManagement() {
               </p>
             </div>
 
-            <div className="flex items-center">
-              <div className="w-[143px]">
-                <StatBlock
-                  label={`Questions in Level ${selectedLevel}`}
-                  value={String(LEVEL_TABS[selectedLevel - 1]?.count ?? 0)}
-                />
+            <div className="flex flex-col gap-[16px] sm:flex-row sm:flex-wrap sm:items-center">
+              <div className="grid grid-cols-2 gap-[16px] sm:flex sm:items-center">
+                <div className="min-w-0 sm:w-[143px]">
+                  <StatBlock
+                    label={`Questions in Level ${selectedLevel}`}
+                    value={String(LEVEL_TABS[selectedLevel - 1]?.count ?? 0)}
+                  />
+                </div>
+                <span className="hidden h-[36px] w-px bg-[#E2DFFC] sm:block" />
+                <div className="min-w-0 sm:ml-[32px] sm:w-[143px]">
+                  <StatBlock label={`Questions in Level ${selectedLevel}`} value="3" withInfo />
+                </div>
               </div>
-              <span className="h-[36px] w-px bg-[#E2DFFC]" />
-              <div className="ml-[32px] w-[143px]">
-                <StatBlock label={`Questions in Level ${selectedLevel}`} value="3" withInfo />
-              </div>
-              <span className="h-[36px] w-px bg-[#E2DFFC]" />
+              <span className="hidden h-[36px] w-px bg-[#E2DFFC] sm:block" />
               <button
                 type="button"
-                className={`${OUTLINE_BTN} ml-[32px] h-[40px] gap-[8px] border-[#001984] px-[22px] text-[#0A0847]/80`}
+                className={`${OUTLINE_BTN} h-[40px] w-full gap-[8px] border-[#001984] px-[22px] text-[#0A0847]/80 sm:ml-[32px] sm:w-auto`}
               >
                 <LuSettings size={16} strokeWidth={1.8} className="text-[#001984]" />
                 Level Settings
               </button>
             </div>
 
-            <div className="flex gap-[12px]">
+            <div className="grid grid-cols-2 gap-[12px] sm:flex sm:flex-wrap">
               {LEVEL_TABS.map((tab) => {
                 const isActive = LEVEL_TABS.indexOf(tab) + 1 === selectedLevel;
 
@@ -515,7 +522,7 @@ export default function QuizManagement() {
                       const firstQuestion = questions.find((question) => question.level === nextLevel);
                       if (firstQuestion) setSelectedQuestionId(firstQuestion.id);
                     }}
-                    className={`flex h-[58px] w-[100px] cursor-pointer flex-col items-start justify-center rounded-[8px] p-[8px] text-left text-[14px] font-semibold leading-[17px] ${
+                    className={`flex h-[58px] w-full cursor-pointer flex-col items-start justify-center rounded-[8px] p-[8px] text-left text-[14px] font-semibold leading-[17px] sm:w-[100px] ${
                       isActive
                         ? "bg-[#001984] text-white"
                         : "border border-[#E2DFFC] bg-[#F9F8FF] text-[#0A0847]"
@@ -528,16 +535,16 @@ export default function QuizManagement() {
               })}
               <button
                 type="button"
-                className="flex h-[58px] w-[113px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border-[1.5px] border-dashed border-[#001984] bg-[#FEFEFE] p-[8px] text-[12px] font-semibold text-[#0A0847]"
+                className="col-span-2 flex h-[58px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border-[1.5px] border-dashed border-[#001984] bg-[#FEFEFE] p-[8px] text-[12px] font-semibold text-[#0A0847] sm:col-span-1 sm:w-[113px]"
               >
                 <LuPlus size={16} strokeWidth={2} />
                 Add Level
               </button>
             </div>
 
-            <div className={`flex flex-1 flex-col gap-[14px] p-[20px] ${CARD}`}>
-              <div className="flex items-start justify-between gap-[10px]">
-                <div className="min-w-0 max-w-[300px] flex-1">
+            <div className={`flex flex-1 flex-col gap-[14px] p-[16px] sm:p-[20px] ${CARD}`}>
+              <div className="flex flex-col items-start gap-[10px] lg:flex-row lg:items-start lg:justify-between">
+                <div className="min-w-0 max-w-full flex-1 lg:max-w-[300px]">
                   <h3 className="text-[14px] leading-[17px] font-semibold text-[#0A0847]">
                     Questions in Level {selectedLevel}
                   </h3>
@@ -546,7 +553,7 @@ export default function QuizManagement() {
                   </p>
                 </div>
 
-                <div className="ml-auto flex shrink-0 gap-[4px]">
+                <div className="grid w-full grid-cols-1 gap-[8px] sm:grid-cols-3 lg:flex lg:w-auto lg:shrink-0 lg:ml-auto">
                   <ActionTile
                     className="border-[#E1ECE3] bg-[#F0F7F1]"
                     icon={<LuPlus size={14} strokeWidth={2.2} />}
@@ -578,8 +585,10 @@ export default function QuizManagement() {
 
               <div className="h-px w-full bg-[#EEF0F8]" />
 
-              <div className="flex min-h-[42px] flex-wrap items-center gap-[10px]">
-                <div className="relative h-[42px] w-[174px] shrink-0">
+              {/* Filters: search full width on mobile; dropdowns + Filters button in a 2-up grid.
+                  From sm up everything sits in one wrapping row. */}
+              <div className="flex flex-col gap-[10px] sm:min-h-[42px] sm:flex-row sm:flex-wrap sm:items-center">
+                <div className="relative h-[42px] w-full sm:w-[174px]">
                   <LuSearch
                     size={15}
                     className="pointer-events-none absolute top-1/2 left-[12px] -translate-y-1/2 text-[#0A0847]/60"
@@ -593,54 +602,57 @@ export default function QuizManagement() {
                   />
                 </div>
 
-                <Select
-                  fit
-                  value={questionTypeFilter}
-                  className="shrink-0"
-                  options={[
-                    { value: "All Question Types", label: "All Question Types" },
-                    { value: "Multiple Choice", label: "Multiple Choice" },
-                    { value: "Fill in the Blank", label: "Fill in the Blank" },
-                    { value: "True / False", label: "True / False" },
-                    { value: "Tap in Order", label: "Tap in Order" },
-                    { value: "Who Am I", label: "Who Am I" },
-                  ]}
-                  onChange={(event) => setQuestionTypeFilter(event.target.value)}
-                />
-                <Select
-                  fit
-                  value={difficultyFilter}
-                  className="shrink-0"
-                  options={[
-                    { value: "All Difficulties", label: "All Difficulties" },
-                    { value: "Easy", label: "Easy" },
-                    { value: "Medium", label: "Medium" },
-                    { value: "Hard", label: "Hard" },
-                  ]}
-                  onChange={(event) => setDifficultyFilter(event.target.value)}
-                />
-                <Select
-                  fit
-                  value={statusFilter}
-                  className="shrink-0"
-                  options={[
-                    { value: "All Status", label: "All Status" },
-                    { value: "Published", label: "Published" },
-                    { value: "Draft", label: "Draft" },
-                  ]}
-                  onChange={(event) => setStatusFilter(event.target.value)}
-                />
+                <div className="grid w-full grid-cols-2 gap-[10px] sm:flex sm:w-auto sm:flex-wrap sm:items-center">
+                  <Select
+                    fit
+                    value={questionTypeFilter}
+                    className="min-w-0"
+                    options={[
+                      { value: "All Question Types", label: "All Question Types" },
+                      { value: "Multiple Choice", label: "Multiple Choice" },
+                      { value: "Fill in the Blank", label: "Fill in the Blank" },
+                      { value: "True / False", label: "True / False" },
+                      { value: "Tap in Order", label: "Tap in Order" },
+                      { value: "Who Am I", label: "Who Am I" },
+                    ]}
+                    onChange={(event) => setQuestionTypeFilter(event.target.value)}
+                  />
+                  <Select
+                    fit
+                    value={difficultyFilter}
+                    className="min-w-0"
+                    options={[
+                      { value: "All Difficulties", label: "All Difficulties" },
+                      { value: "Easy", label: "Easy" },
+                      { value: "Medium", label: "Medium" },
+                      { value: "Hard", label: "Hard" },
+                    ]}
+                    onChange={(event) => setDifficultyFilter(event.target.value)}
+                  />
+                  <Select
+                    fit
+                    value={statusFilter}
+                    className="min-w-0"
+                    options={[
+                      { value: "All Status", label: "All Status" },
+                      { value: "Published", label: "Published" },
+                      { value: "Draft", label: "Draft" },
+                    ]}
+                    onChange={(event) => setStatusFilter(event.target.value)}
+                  />
 
-                <button
-                  type="button"
-                  className="flex h-[36px] shrink-0 cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#001984]/10 px-[12px] text-[12px] font-semibold whitespace-nowrap text-[#0A0847]"
-                >
-                  <LuFilter size={13} strokeWidth={2} className="text-[#001984]" />
-                  Filters
-                </button>
+                  <button
+                    type="button"
+                    className="flex h-[36px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#001984]/10 px-[12px] text-[12px] font-semibold whitespace-nowrap text-[#0A0847] sm:w-auto"
+                  >
+                    <LuFilter size={13} strokeWidth={2} className="text-[#001984]" />
+                    Filters
+                  </button>
+                </div>
               </div>
 
-              <table className="w-full table-fixed border-collapse">
+              <div className="w-full overflow-x-auto">
+              <table className="w-full min-w-[900px] table-fixed border-collapse">
                 <colgroup>
                   {COLUMNS.map((c) => (
                     <col key={c.key} style={{ width: c.width }} />
@@ -789,9 +801,10 @@ export default function QuizManagement() {
                   )}
                 </tbody>
               </table>
+              </div>
             </div>
 
-            <div className="flex items-center justify-between text-[12px] text-[#0A0847]">
+            <div className="flex flex-col items-start gap-[10px] text-[12px] text-[#0A0847] sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-center gap-[8px]">
                 <span className="font-medium">Display</span>
                 <div className="relative h-[24px] w-[40px]">
@@ -848,7 +861,7 @@ export default function QuizManagement() {
           <div className={`flex h-full flex-col gap-[10px] p-[16px] ${PANEL}`}>
             <p className="text-[14px] leading-[17px] font-semibold text-[#0A0847]">Question Details</p>
             <p className="text-[12px] leading-[15px] font-medium text-[#0A0847]/60">Edit the selected question.</p>
-            <div className="h-[110px]" />
+            <div className="hidden h-[110px] lg:block" />
             {selectedQuestion ? (
               <div className="flex flex-col gap-[12px]">
                 <div className="flex flex-col gap-[8px]">
@@ -904,8 +917,8 @@ export default function QuizManagement() {
                             <span className="h-[10px] w-[10px] rounded-full bg-[#2BA452]" />
                           )}
                         </button>
-                        <div className="flex h-[44px] w-[201px] shrink-0 items-center rounded-[8px] border border-[#E2DFFC] bg-white py-[7px] pr-[15px] pl-[11px]">
-                          <span className="text-[12px] font-medium text-[#0A0847]">{option}</span>
+                        <div className="flex h-[44px] w-full min-w-0 flex-1 items-center rounded-[8px] border border-[#E2DFFC] bg-white py-[7px] pr-[15px] pl-[11px]">
+                          <span className="truncate text-[12px] font-medium text-[#0A0847]">{option}</span>
                         </div>
                         <button
                           type="button"
@@ -967,7 +980,7 @@ export default function QuizManagement() {
                   <div className={COUNTER}>49 / 200</div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-[25px]">
+                <div className="grid grid-cols-1 gap-[25px] sm:grid-cols-2">
                   <div className="flex flex-col gap-[8px]">
                     <FieldLabel>Difficulty</FieldLabel>
                     <div className="relative">

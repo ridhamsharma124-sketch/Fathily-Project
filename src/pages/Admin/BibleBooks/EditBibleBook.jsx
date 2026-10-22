@@ -168,7 +168,7 @@ export default function EditBookPage() {
   };
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen p-6 font-[Inter] space-y-6">
+    <div className="bg-[#F8FAFC] min-h-screen p-4 font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -177,7 +177,7 @@ export default function EditBookPage() {
             Update the content shown on the {form.name} book page.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={() => handleAction("Preview as User")}
@@ -233,7 +233,7 @@ export default function EditBookPage() {
                 <p className="text-xs font-medium text-[#0A084799]">Header / Cover Image</p>
                 <p className="text-[10px] text-[#0A084799] mb-3">Recommended size: 1280 × 800px</p>
                 <input ref={fileRef} type="file" accept="image/*" multiple onChange={handleUpload} className="hidden" />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   {form.images.map((src, i) => (
                     <div key={src}>
                       <img src={src} alt="Book cover" className="w-full h-54 object-cover rounded-md border border-[#E2DFFC]" />
@@ -269,7 +269,7 @@ export default function EditBookPage() {
                   onChange={(e) => set("verseText", e.target.value)}
                   className={`${inputCls} resize-none`}
                 />
-                <div className="mt-4 max-w-[220px]">
+                <div className="mt-4 max-w-full sm:max-w-[220px]">
                   <Label>Reference</Label>
                   <input className={inputCls} value={form.verseRef} onChange={(e) => set("verseRef", e.target.value)} />
                 </div>
@@ -369,7 +369,7 @@ export default function EditBookPage() {
   </div>
 
   {/* Stats */}
-  <div className="grid grid-cols-2 gap-3">
+  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
     <div className="border border-[#E2DFFC] rounded-lg p-3 flex items-center gap-2">
       <div className="w-8 h-8 rounded-full bg-[#DC2626] text-white flex items-center justify-center shrink-0">
         <img src={bbook} alt="" className="w-10 h-10 mx-auto" />

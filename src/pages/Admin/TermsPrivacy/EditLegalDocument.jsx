@@ -417,7 +417,7 @@ export default function EditLegalDocument() {
     "flex h-[42px] cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[13px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB]";
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-6 font-[Inter] leading-[100%]">
+    <div className="min-h-screen bg-[#F8FAFC] p-4 font-[Inter] leading-[100%] sm:p-6">
       {/* ------------------------------ Header ------------------------------ */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div className="flex flex-wrap items-center gap-5">
@@ -442,7 +442,7 @@ export default function EditLegalDocument() {
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-[178px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266]"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[178px]"
           >
             <LuPlus size={20} strokeWidth={1.8} />
             Publish Update

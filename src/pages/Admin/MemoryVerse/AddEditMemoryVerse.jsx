@@ -252,7 +252,7 @@ function StepListCard() {
             key={s.n}
             className="flex h-[38px] items-center rounded-[6px] border border-[#E2DFFC] bg-[#F2F5FA] px-3"
           >
-            <div className="flex w-[209px] shrink-0 items-center gap-[10px]">
+            <div className="flex w-full max-w-[209px] shrink-0 items-center gap-[10px]">
               <span className="flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#0A0847]/80 text-[12px] font-semibold text-[#0A0847]/80">
                 {s.n}
               </span>
@@ -462,7 +462,7 @@ export default function AddEditMemoryVerse() {
                 <Select value="Old Testament" options={["Old Testament", "New Testament"]} />
               </Field>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Book">
                   <Select value="Joshua" options={["Joshua", "Proverbs", "Psalms"]} />
                 </Field>
@@ -471,7 +471,7 @@ export default function AddEditMemoryVerse() {
                 </Field>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Verse Reference">
                   <Select value="Joshua 1:9" options={["Joshua 1:9", "Joshua 1:8"]} />
                 </Field>
@@ -534,7 +534,7 @@ export default function AddEditMemoryVerse() {
                 })}
               </div>
 
-              <div className="mt-[10px] grid grid-cols-2 items-start gap-5">
+              <div className="mt-[10px] grid grid-cols-1 items-start gap-5 sm:grid-cols-2">
                 <div className="flex flex-col gap-4">
                   <Field label="Instruction Text" className="gap-1">
                     <BuildTextArea
@@ -611,8 +611,8 @@ export default function AddEditMemoryVerse() {
 
               <div className="mt-[10px]">
                 <p className={`mb-[6px] ${T_HELPER} not-italic`}>Chapter Default Image</p>
-                <div className="flex items-start gap-[10px]">
-                  <div className="h-[131px] w-[115px] shrink-0 overflow-hidden rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-[#F1F2F8]">
+                <div className="flex flex-col items-start gap-[10px] sm:flex-row">
+                  <div className="h-[131px] w-[115px] max-w-full shrink-0 overflow-hidden rounded-[6px] border-[0.75px] border-[#E2DFFC] bg-[#F1F2F8]">
                     <img src={memoryVerseImg} alt="Chapter default image" className="h-full w-full object-cover" />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-2">
@@ -683,7 +683,7 @@ export default function AddEditMemoryVerse() {
                 <Select value="Published" options={["Published", "Draft", "Scheduled"]} />
               </Field>
 
-              <div className="grid grid-cols-2 gap-[10px]">
+              <div className="grid grid-cols-1 gap-[10px] sm:grid-cols-2">
                 <Field label="Start Date">
                   <div className="relative">
                     <TextInput value="May 12, 2024" className="pr-8" />

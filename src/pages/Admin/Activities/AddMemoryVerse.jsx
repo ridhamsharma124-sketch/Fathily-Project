@@ -211,163 +211,174 @@ export default function AddMemoryVerse() {
           <div className={cardRowClass}>
             {/* LEFT — memory verse form */}
             <section className={formCardClass}>
-            <Field label="Verse Reference" required htmlFor="verse-reference">
-              <TextInput
-                id="verse-reference"
-                value={reference}
-                onChange={(e) => setReference(e.target.value)}
-              />
-            </Field>
-
-            <Field label="Verse Text" required htmlFor="verse-text">
-              <TextArea
-                id="verse-text"
-                value={verseText}
-                onChange={(e) => setVerseText(e.target.value)}
-                max={300}
-                className="h-[102px]"
-              />
-            </Field>
-
-            <Field label="Translation" htmlFor="translation">
-              <Select
-                id="translation"
-                value={translation}
-                options={TRANSLATION_OPTIONS}
-                onChange={(e) => setTranslation(e.target.value)}
-              />
-            </Field>
-
-            <Field label="Text Size (Medium)" htmlFor="text-size">
-              <Select
-                id="text-size"
-                value={textSize}
-                options={TEXT_SIZE_OPTIONS}
-                onChange={(e) => setTextSize(e.target.value)}
-              />
-            </Field>
-
-            <div>
-              <p className={labelClass}>Verse Alignment (Centered)</p>
-              <p className="text-[10.5px] leading-[1.5] text-[#0A084799]">
-                Select alignment &ndash; great for big screens
-                <br />
-                but can use on small screens also.
-              </p>
-              <div className="mt-2">
-                <Select
-                  id="verse-alignment"
-                  value={alignment}
-                  options={ALIGNMENT_OPTIONS}
-                  onChange={(e) => setAlignment(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <Field label="Difficulty" htmlFor="difficulty">
-              <Select
-                id="difficulty"
-                value={difficulty}
-                options={DIFFICULTY_OPTIONS}
-                onChange={(e) => setDifficulty(e.target.value)}
-              />
-            </Field>
-
-            <div className="grid grid-cols-2 gap-4">
-              <Field label="Memory Time" htmlFor="memory-time">
+              <Field label="Verse Reference" required htmlFor="verse-reference">
                 <TextInput
-                  id="memory-time"
-                  value={memoryTime}
-                  onChange={(e) => setMemoryTime(e.target.value)}
+                  id="verse-reference"
+                  value={reference}
+                  onChange={(e) => setReference(e.target.value)}
                 />
               </Field>
 
-              <Field label="Memory Unit" htmlFor="memory-unit">
+              <Field label="Verse Text" required htmlFor="verse-text">
+                <TextArea
+                  id="verse-text"
+                  value={verseText}
+                  onChange={(e) => setVerseText(e.target.value)}
+                  max={300}
+                  className="h-[102px]"
+                />
+              </Field>
+
+              <Field label="Translation" htmlFor="translation">
                 <Select
-                  id="memory-unit"
-                  value={memoryUnit}
-                  options={MEMORY_UNIT_OPTIONS}
-                  onChange={(e) => setMemoryUnit(e.target.value)}
+                  id="translation"
+                  value={translation}
+                  options={TRANSLATION_OPTIONS}
+                  onChange={(e) => setTranslation(e.target.value)}
                 />
               </Field>
-            </div>
 
-            <div>
-              <p className={labelClass}>Image / Background</p>
+              <Field label="Text Size (Medium)" htmlFor="text-size">
+                <Select
+                  id="text-size"
+                  value={textSize}
+                  options={TEXT_SIZE_OPTIONS}
+                  onChange={(e) => setTextSize(e.target.value)}
+                />
+              </Field>
 
-              <ImageUploadBox
-                image={uploadImage}
-                onSelect={setUploadImage}
-                onRemove={() => setUploadImage(null)}
-                caption={IMAGE_CAPTION}
-                alt={IMAGE_ALT}
-              />
-            </div>
-
-            <div className="h-px w-full bg-[#E5E4EC]" />
-
-            <div>
-              <p className="mb-[6px] text-[12px] font-semibold text-[#0A0847]">
-                Background Music
-              </p>
-
-              <AudioFileCard>
-                <div className="px-3 py-3">
-                  <AudioPlayer time={BACKGROUND_MUSIC_TIME} />
-                </div>
-              </AudioFileCard>
-            </div>
-
-            <Field label="Score" htmlFor="score">
-              <Select
-                id="score"
-                value={score}
-                options={SCORE_OPTIONS}
-                onChange={(e) => setScore(e.target.value)}
-              />
-            </Field>
-
-            {toggleRows.map((row) => (
-              <div key={row.label} className="flex items-center justify-between">
-                <p className="text-[12px] font-semibold text-[#0A0847]">
-                  {row.label}
+              <div>
+                <p className={labelClass}>Verse Alignment (Centered)</p>
+                <p className="text-[10.5px] leading-[1.5] text-[#0A084799]">
+                  Select alignment &ndash; great for big screens
+                  <br />
+                  but can use on small screens also.
                 </p>
-                <Toggle
-                  checked={row.value}
-                  onChange={row.setter}
-                  label={row.label}
+                <div className="mt-2">
+                  <Select
+                    id="verse-alignment"
+                    value={alignment}
+                    options={ALIGNMENT_OPTIONS}
+                    onChange={(e) => setAlignment(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <Field label="Difficulty" htmlFor="difficulty">
+                <Select
+                  id="difficulty"
+                  value={difficulty}
+                  options={DIFFICULTY_OPTIONS}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                />
+              </Field>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Memory Time" htmlFor="memory-time">
+                  <TextInput
+                    id="memory-time"
+                    value={memoryTime}
+                    onChange={(e) => setMemoryTime(e.target.value)}
+                  />
+                </Field>
+
+                <Field label="Memory Unit" htmlFor="memory-unit">
+                  <Select
+                    id="memory-unit"
+                    value={memoryUnit}
+                    options={MEMORY_UNIT_OPTIONS}
+                    onChange={(e) => setMemoryUnit(e.target.value)}
+                  />
+                </Field>
+              </div>
+
+              <div>
+                <p className={labelClass}>Image / Background</p>
+
+                <ImageUploadBox
+                  image={uploadImage}
+                  onSelect={setUploadImage}
+                  onRemove={() => setUploadImage(null)}
+                  caption={IMAGE_CAPTION}
+                  alt={IMAGE_ALT}
                 />
               </div>
-            ))}
-          </section>
 
-          {/* RIGHT — user memory verse preview */}
-          <MemoryVersePreview
-            reference={reference}
-            verseText={verseText}
-            translation={translation}
-            image={memoryVerseBg}
-          />
+              <div className="h-px w-full bg-[#E5E4EC]" />
+
+              <div>
+                <p className="mb-[6px] text-[12px] font-semibold text-[#0A0847]">
+                  Background Music
+                </p>
+
+                <AudioFileCard>
+                  <div className="px-3 py-3">
+                    <AudioPlayer time={BACKGROUND_MUSIC_TIME} />
+                  </div>
+                </AudioFileCard>
+              </div>
+
+              <Field label="Score" htmlFor="score">
+                <Select
+                  id="score"
+                  value={score}
+                  options={SCORE_OPTIONS}
+                  onChange={(e) => setScore(e.target.value)}
+                />
+              </Field>
+
+              {toggleRows.map((row) => (
+                <div key={row.label} className="flex items-center justify-between">
+                  <p className="text-[12px] font-semibold text-[#0A0847]">
+                    {row.label}
+                  </p>
+                  <Toggle
+                    checked={row.value}
+                    onChange={row.setter}
+                    label={row.label}
+                  />
+                </div>
+              ))}
+            </section>
+
+            {/* RIGHT — user memory verse preview */}
+            <MemoryVersePreview
+              reference={reference}
+              verseText={verseText}
+              translation={translation}
+              image={memoryVerseBg}
+            />
+          </div>
         </div>
 
-        {/* BOTTOM ACTION ROW */}
+        {/* BOTTOM ACTION ROW
+            Mobile: every button full width and stacked (no awkward split rows).
+            sm+: Cancel on the left, the other three grouped on the right. */}
         <div className={actionRowClass}>
-          <button type="button" className={`${outlineButton} w-[152px]`}>
+          <button
+            type="button"
+            className={`${outlineButton} w-full sm:w-[152px]`}
+          >
             Cancel
           </button>
 
-          <div className="flex flex-wrap gap-4">
-            <button type="button" className={`${outlineButton} w-[152px]`}>
+          <div className="grid w-full grid-cols-1 gap-4 sm:flex sm:w-auto sm:flex-wrap sm:justify-end">
+            <button
+              type="button"
+              className={`${outlineButton} w-full sm:w-[152px]`}
+            >
               Save as Draft
             </button>
-            <button type="button" className={`${outlineButton} w-[188px]`}>
+            <button
+              type="button"
+              className={`${outlineButton} w-full sm:w-[188px]`}
+            >
               Preview as User
             </button>
-            <button type="button" className={purpleButton}>
+            <button type="button" className={`${purpleButton} w-full sm:w-auto`}>
               Publish Story
             </button>
           </div>
-        </div>
         </div>
       </div>
     </div>

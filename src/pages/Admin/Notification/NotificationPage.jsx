@@ -197,7 +197,7 @@ export default function NotificationsPage() {
   const td = "p-4 font-medium text-[#0A0847CC]";
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       <h1 className="text-xl font-semibold text-[#0A0847]">Notifications</h1>
 
       {/* Search + New */}
@@ -282,7 +282,7 @@ export default function NotificationsPage() {
                         <span className={`w-9 h-9 rounded-full ${bg} text-white flex items-center justify-center shrink-0`}>
                           <Icon size={16} />
                         </span>
-                        <div className="max-w-[240px]">
+                        <div className="max-w-full sm:max-w-[240px]">
                           <p className="font-medium text-[#0A0847CC]">{n.title}</p>
                           <p className="text-[10px] text-[#0A084799] font-medium mt-0.5 leading-snug">{n.desc}</p>
                         </div>

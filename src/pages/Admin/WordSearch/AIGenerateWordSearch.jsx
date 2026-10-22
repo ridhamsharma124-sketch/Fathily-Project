@@ -24,7 +24,14 @@ const HEADER_FIELDS = [
   { id: "difficulty", label: "Difficulty", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
-const HEADER_COL_W = ["w-[220px]", "w-[186px]", "w-[158px]", "w-[195px]", "min-w-0 flex-1"];
+/* Mobile: 2-col grid (reward spans both columns). sm and up: original fixed widths. */
+const HEADER_COL_W = [
+  "w-full sm:w-[220px]",
+  "w-full sm:w-[186px]",
+  "w-full sm:w-[158px]",
+  "w-full sm:w-[195px]",
+  "col-span-2 min-w-0 sm:col-auto sm:flex-1",
+];
 
 const TOPIC_OPTIONS = ["Creation (Genesis 1)", "Creation (Genesis 1:1-8)", "Genesis 1 — Full Chapter"];
 const CLUE_STYLE_OPTIONS = ["Short Clues", "Long Clues", "Mixed Clues"];
@@ -262,16 +269,17 @@ function NumberStepper({ value, onChange, label, id }) {
 
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
+/* Tabs share the full width on mobile; fixed 143px from sm up. */
 function TabsRow() {
   return (
-    <div className="mt-[10px] flex h-[50px] items-stretch gap-[4px] border-b" style={{ borderColor: DIVIDER }}>
+    <div className="mt-[10px] flex h-[50px] items-stretch gap-[4px] overflow-x-auto border-b" style={{ borderColor: DIVIDER }}>
       {TABS.map((t) => {
         const active = t === "AI Generate";
         return (
           <button
             key={t}
             type="button"
-            className={`flex w-[143px] items-center justify-center text-[14px] leading-[17px] ${
+            className={`flex min-w-0 flex-1 items-center justify-center whitespace-nowrap px-2 text-[14px] leading-[17px] sm:w-[143px] sm:flex-none ${
               active ? "-mb-px border-b-2 font-semibold" : "font-medium"
             }`}
             style={{ borderColor: active ? NAVY : "transparent", color: active ? NAVY : TEXT_60 }}
@@ -285,6 +293,7 @@ function TabsRow() {
 }
 
 
+/* Each row: 2-col grid on mobile (wide fields span both), original flex row from sm up. */
 function AIGenerateForm() {
   const [topic, setTopic] = useState(TOPIC_OPTIONS[0]);
   const [words, setWords] = useState(12);
@@ -304,64 +313,63 @@ function AIGenerateForm() {
 
   const perLevel = levels.map((lv, i) => ({ label: lv, value: i === 2 ? 0 : 1 }));
 
+  const row = "grid grid-cols-2 items-start gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[25px]";
+
   return (
     <div
-      className="relative box-border h-[321px] w-[1059px] rounded-[7.5px] border-[0.75px] bg-white pt-[16px] pr-[28px] pl-[27px]"
+      className="relative box-border w-full max-w-[1059px] rounded-[7.5px] border-[0.75px] bg-white px-[16px] pt-[16px] pb-[20px] sm:pr-[28px] sm:pl-[27px]"
       style={{ borderColor: BORDER }}
     >
-      <div className="pointer-events-none absolute right-[28px] left-[27px] h-px" style={{ top: 99, backgroundColor: DIVIDER }} />
-      <div className="pointer-events-none absolute right-[28px] left-[27px] h-px" style={{ top: 203, backgroundColor: DIVIDER }} />
-
-      <div className="flex items-start gap-[25px]">
-        <div className="w-[190px] shrink-0">
+      <div className={row}>
+        <div className="col-span-2 w-full sm:col-auto sm:w-[190px]">
           <Label htmlFor="topic">Topic / Passage</Label>
           <Select id="topic" value={topic} onChange={setTopic} options={TOPIC_OPTIONS} />
         </div>
 
-        <div className="w-[132px] shrink-0">
+        <div className="w-full sm:w-[132px]">
           <Label htmlFor="words">Words per Puzzle</Label>
           <NumberStepper id="words" value={words} onChange={setWords} label="Words per Puzzle" />
         </div>
 
-        <div className="w-[138px] shrink-0">
+        <div className="w-full sm:w-[138px]">
           <Label htmlFor="clue">Clue Style</Label>
           <Select id="clue" value={clueStyle} onChange={setClueStyle} options={CLUE_STYLE_OPTIONS} />
         </div>
 
-        <div className="w-[117px] shrink-0">
+        <div className="w-full sm:w-[117px]">
           <Label center>Allow Diagonal</Label>
           <div className="flex h-[40px] items-center justify-center">
             <Toggle on={diagonal} onChange={setDiagonal} label="Allow Diagonal" />
           </div>
         </div>
 
-        <div className="w-[113px] shrink-0">
+        <div className="w-full sm:w-[113px]">
           <Label center>Allow Backward</Label>
           <div className="flex h-[40px] items-center justify-center">
             <Toggle on={backward} onChange={setBackward} label="Allow Backward" />
           </div>
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="col-span-2 min-w-0 sm:col-auto sm:flex-1">
           <Label htmlFor="unique">Answer Uniqueness</Label>
           <Select id="unique" value={uniqueness} onChange={setUniqueness} options={UNIQUE_OPTIONS} />
         </div>
       </div>
 
-      <div className="mt-[41px] flex items-start gap-[25px]">
-        <div className="w-[169px] shrink-0">
+      <div className={`${row} mt-[24px] border-t pt-[24px]`} style={{ borderColor: DIVIDER }}>
+        <div className="w-full sm:w-[169px]">
           <Label htmlFor="count">Number of Puzzles</Label>
           <Select id="count" value={count} onChange={setCount} options={PUZZLE_COUNT_OPTIONS} />
         </div>
 
-        <div className="w-[133px] shrink-0">
+        <div className="w-full sm:w-[133px]">
           <Label htmlFor="grid">Grid Size</Label>
           <Select id="grid" value={gridSize} onChange={setGridSize} options={GRID_OPTIONS} />
         </div>
 
-        <div className="w-[336px] shrink-0">
+        <div className="col-span-2 w-full sm:col-auto sm:w-[336px]">
           <Label>New Levels</Label>
-          <div className="flex h-[40px] w-full items-center gap-[5px] rounded-[6px] border border-[#E5E4EC] bg-white pr-2 pl-[11px]">
+          <div className="flex h-auto min-h-[40px] w-full flex-wrap items-center gap-[5px] rounded-[6px] border border-[#E5E4EC] bg-white py-1 pr-2 pl-[11px]">
             {levels.map((lv) => (
               <span
                 key={lv}
@@ -382,7 +390,7 @@ function AIGenerateForm() {
             ))}
             {levels.length < LEVEL_OPTIONS.length && (
               <label
-                className="relative ml-auto flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-[5px] border"
+                className="relative flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-[5px] border sm:ml-auto"
                 style={{ borderColor: BORDER }}
               >
                 <PlusSvg />
@@ -408,10 +416,10 @@ function AIGenerateForm() {
           </div>
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="col-span-2 min-w-0 sm:col-auto sm:flex-1">
           <Label>Puzzles per Level</Label>
           <div
-            className="flex h-[40px] items-center gap-[20px] rounded-[6px] border border-[#E5E4EC] bg-white px-3 text-[12px] leading-[15px] font-medium"
+            className="flex min-h-[40px] flex-wrap items-center gap-x-[20px] gap-y-1 rounded-[6px] border border-[#E5E4EC] bg-white px-3 py-2 text-[12px] leading-[15px] font-medium sm:py-0"
             style={{ color: TEXT_60 }}
           >
             {perLevel.map((p) => (
@@ -423,25 +431,25 @@ function AIGenerateForm() {
         </div>
       </div>
 
-      <div className="mt-[40px] flex items-start gap-[53px]">
-        <div className="flex h-[29px] w-[306px] shrink-0 items-center gap-[12px]">
+      <div className={`${row} mt-[24px] border-t pt-[24px] sm:gap-[53px]`} style={{ borderColor: DIVIDER }}>
+        <div className="col-span-2 flex min-h-[29px] w-full items-center gap-[12px] sm:col-auto sm:max-w-[306px]">
           <Toggle on={aiImage} onChange={setAiImage} label="Generate a unique AI image for every puzzle" />
-          <span className="text-[12px] leading-[15px] font-semibold whitespace-nowrap" style={{ color: TEXT_80 }}>
+          <span className="text-[12px] leading-[15px] font-semibold sm:whitespace-nowrap" style={{ color: TEXT_80 }}>
             Generate a unique AI image for every puzzle
           </span>
         </div>
 
-        <div className="w-[172px] shrink-0">
+        <div className="w-full sm:w-[172px]">
           <Label htmlFor="imgstyle">AI Image Style</Label>
           <Select id="imgstyle" value={imageStyle} onChange={setImageStyle} options={IMAGE_STYLE_OPTIONS} />
         </div>
 
-        <div className="w-[150px] shrink-0">
+        <div className="w-full sm:w-[150px]">
           <Label htmlFor="safety">Image Safety</Label>
           <Select id="safety" value={safety} onChange={setSafety} options={SAFETY_OPTIONS} />
         </div>
 
-        <div className="flex h-[29px] items-center gap-[23px]">
+        <div className="col-span-2 flex min-h-[29px] items-center gap-[23px] sm:col-auto">
           <span className="text-[12px] leading-[15px] font-semibold whitespace-nowrap" style={{ color: TEXT_80 }}>
             No text in image
           </span>
@@ -457,7 +465,7 @@ function AIGenerateForm() {
 
 function LetterRows({ rows }) {
   return (
-    <div className="w-[229px] pt-[2px]">
+    <div className="w-full max-w-[229px] shrink-0 pt-[2px]">
       {rows.map((row, i) => {
         const last = i === rows.length - 1;
         return (
@@ -476,7 +484,7 @@ function LetterRows({ rows }) {
 
 function ClueList() {
   return (
-    <div className="mt-[20.5px] w-[229px]">
+    <div className="mt-[20.5px] w-full max-w-[229px]">
       <p className="text-[10px] leading-[12px] font-bold" style={{ color: TEXT_80 }}>
         CLUES
       </p>
@@ -495,7 +503,7 @@ function ClueList() {
 
 function PuzzleImage({ src, alt, left }) {
   return (
-    <div className="relative h-[223px] w-[229px] shrink-0 overflow-hidden rounded-[7.5px]">
+    <div className="relative h-[223px] w-full max-w-[229px] shrink-0 overflow-hidden rounded-[7.5px]">
       <img
         src={src}
         alt={alt}
@@ -540,7 +548,7 @@ function PublishApprovedSmall() {
   return (
     <button
       type="button"
-      className="flex h-[32px] w-[121px] cursor-pointer items-center justify-center gap-[4px] rounded-[8px] text-[10px] leading-[12px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+      className="flex h-[32px] w-full cursor-pointer items-center justify-center gap-[4px] rounded-[8px] text-[10px] leading-[12px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[121px]"
       style={{ backgroundColor: NAVY }}
     >
       <CheckCircleIcon />
@@ -552,12 +560,12 @@ function PublishApprovedSmall() {
 function CardActions({ row1Gap, row2Gap }) {
   return (
     <>
-      <div className="flex items-center gap-[9px]" style={{ marginTop: row1Gap }}>
+      <div className="flex flex-wrap items-center gap-[9px]" style={{ marginTop: row1Gap }}>
         <CardBtn icon={<RefreshIcon />}>Regenerate Puzzle</CardBtn>
         <CardBtn icon={<ImageSparkIcon />}>Regenerate Image</CardBtn>
         <CardBtn icon={<ImageSparkIcon />}>Replace Image</CardBtn>
       </div>
-      <div className="flex items-center gap-[9px]" style={{ marginTop: row2Gap }}>
+      <div className="flex flex-wrap items-center gap-[9px]" style={{ marginTop: row2Gap }}>
         <CardBtn icon={<PencilIcon />} className="w-[76px] justify-center gap-[5px]">
           Edit
         </CardBtn>
@@ -567,8 +575,9 @@ function CardActions({ row1Gap, row2Gap }) {
   );
 }
 
+/* Always w-full; the 2-column grid (xl) gives each card its 519px. */
 const cardCls =
-  "box-border flex h-[413px] w-[519px] flex-col rounded-[7.5px] border-[0.75px] bg-white pt-[15px] pr-[21px] pl-[20px]";
+  "box-border flex h-auto min-h-[413px] w-full min-w-0 flex-col rounded-[7.5px] border-[0.75px] bg-white px-[16px] pt-[15px] pb-[16px] sm:pr-[21px] sm:pl-[20px]";
 
 
 function LevelOneCard({ level, puzzle }) {
@@ -581,9 +590,9 @@ function LevelOneCard({ level, puzzle }) {
         <AiBadge />
       </div>
 
-      <div className="mt-[12.5px] flex h-[223px] gap-[20px]">
+      <div className="mt-[12.5px] flex h-auto flex-col items-center gap-[20px] sm:h-[223px] sm:flex-row sm:items-start">
         <PuzzleImage src={lionImg} alt="Level 1 puzzle" left={-34.21} />
-        <div className="w-[229px] shrink-0">
+        <div className="w-full max-w-[229px] shrink-0">
           <LetterRows rows={LEVEL1_ROWS} />
           <ClueList />
         </div>
@@ -605,7 +614,7 @@ function PuzzleCard({ level, puzzle }) {
         <AiBadge />
       </div>
 
-      <div className="mt-[22px] flex h-[223px] gap-[20px]">
+      <div className="mt-[22px] flex h-auto flex-col items-center gap-[20px] sm:h-[223px] sm:flex-row sm:items-start">
         <PuzzleImage src={lion2Img} alt="Level 2 puzzle" left={-2.21} />
         <LetterRows rows={LEVEL2_ROWS} />
       </div>
@@ -616,11 +625,11 @@ function PuzzleCard({ level, puzzle }) {
 }
 
 
-function BottomBtn({ icon, children }) {
+function BottomBtn({ icon, children, className = "" }) {
   return (
     <button
       type="button"
-      className="flex h-[40px] cursor-pointer items-center gap-[8px] rounded-[8px] border-[0.75px] bg-white px-[15px] text-[14px] leading-[17px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+      className={`flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border-[0.75px] bg-white px-[15px] text-[14px] leading-[17px] font-semibold whitespace-nowrap transition-colors hover:bg-[#F7F8FE] sm:w-auto ${className}`}
       style={{ borderColor: CARD_BORDER, color: TEXT_80 }}
     >
       {icon}
@@ -645,19 +654,19 @@ export default function AIGeneratePage() {
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1103px] px-5 py-6">
+      <div className="mx-auto w-full max-w-[1103px] px-4 py-6 sm:px-5">
         <div>
           <h1 className="text-[22px] leading-[27px] font-bold" style={{ color: HEADING }}>
             Add / Edit Word Search
           </h1>
-          <p className="mt-[15px] text-[16px] leading-[19px] font-medium" style={{ color: TEXT_60 }}>
+          <p className="mt-[12px] text-[16px] leading-[1.35] font-medium sm:mt-[15px]" style={{ color: TEXT_60 }}>
             hoose the activity type and how you want to create it.
           </p>
         </div>
 
-        <div className="mt-[24px] flex items-start gap-[25px]">
+        <div className="mt-[24px] grid grid-cols-2 items-start gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[25px]">
           {HEADER_FIELDS.map(({ id, label, options }, i) => (
-            <div key={id} className={`${HEADER_COL_W[i]} shrink-0`}>
+            <div key={id} className={`${HEADER_COL_W[i]} sm:shrink-0`}>
               <Label htmlFor={id}>{label}</Label>
               <Select
                 id={id}
@@ -680,7 +689,7 @@ export default function AIGeneratePage() {
           <h2 className="text-[22px] leading-[27px] font-bold" style={{ color: HEADING }}>
             Add / Edit Word Search
           </h2>
-          <p className="mt-[12px] text-[16px] leading-[19px] font-medium" style={{ color: TEXT_60 }}>
+          <p className="mt-[12px] text-[16px] leading-[1.35] font-medium" style={{ color: TEXT_60 }}>
             hoose the activity type and how you want to create it.
           </p>
         </div>
@@ -693,20 +702,23 @@ export default function AIGeneratePage() {
           Generated Puzzles Preview
         </h3>
 
-        <div className="mt-[18px] grid w-[1059px] grid-cols-[519px_519px] gap-[21px]">
+        {/* Two columns only from xl: below that each card needs the full width for image + letters. */}
+        <div className="mt-[18px] grid w-full max-w-[1059px] grid-cols-1 gap-[21px] xl:grid-cols-2">
           <LevelOneCard level="Level 1" puzzle={1} />
           <PuzzleCard level="Level 2" puzzle={1} />
         </div>
 
-        <div className="mt-[48px] flex w-[1059px] items-center justify-between pb-6">
+        <div className="mt-[40px] flex w-full max-w-[1059px] flex-col-reverse gap-3 pb-6 sm:mt-[48px] sm:flex-row sm:items-center sm:justify-between">
           <BottomBtn>Cancel</BottomBtn>
 
-          <div className="flex items-center gap-[14px]">
-            <BottomBtn icon={<img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />}>Save draft</BottomBtn>
+          <div className="grid grid-cols-2 gap-[12px] sm:flex sm:items-center sm:gap-[14px]">
+            <BottomBtn icon={<img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />}>
+              Save draft
+            </BottomBtn>
             <BottomBtn icon={<EyeIcon />}>Preview</BottomBtn>
             <button
               type="button"
-              className="flex h-[40px] cursor-pointer items-center rounded-[8px] px-[26px] text-[14px] leading-[17px] font-semibold text-white transition-opacity hover:opacity-90"
+              className="col-span-2 flex h-[40px] w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] px-[26px] text-[14px] leading-[17px] font-semibold text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-auto"
               style={{ backgroundColor: NAVY }}
             >
               → Publish Approved

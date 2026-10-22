@@ -198,8 +198,8 @@ function StreakTable() {
   return (
     <>
       {/* ---------------- filter row ---------------- */}
-      <div className="flex h-10 items-center justify-between gap-3">
-        <div className="relative w-[340px] shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="relative w-full shrink-0 sm:w-[340px]">
           <FiSearch
             size={16}
             className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[#8B87AD]"
@@ -213,25 +213,25 @@ function StreakTable() {
           />
         </div>
 
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3 sm:w-auto sm:shrink-0">
           <Select
             value={status}
             onChange={setStatus}
             options={STATUS_OPTIONS}
-            className="h-10 w-[183px] rounded-[7.47px]"
+            className="h-10 w-full rounded-[7.47px] sm:w-[183px]"
             selectClassName={`rounded-[7.47px] py-0 pr-[50px] pl-3 text-[13px] font-medium text-[#0A0847CC]`}
           />
           <Select
             value={TIER_OPTIONS[0]}
             onChange={setTier}
             options={TIER_OPTIONS}
-            className="h-10 w-[183px] rounded-[7.47px]"
+            className="h-10 w-full rounded-[7.47px] sm:w-[183px]"
             selectClassName={`rounded-[7.47px] py-0 pr-[50px] pl-3 text-[13px] font-medium text-[#0A0847CC]`}
           />
 
           <button
             type="button"
-            className={`flex h-10 w-[162px] shrink-0 cursor-pointer items-center justify-center gap-[13px] rounded-[7.47px] bg-[#001984] text-[14px] font-medium text-white transition hover:opacity-90`}
+            className={`flex h-10 w-full shrink-0 cursor-pointer items-center justify-center gap-[13px] rounded-[7.47px] bg-[#001984] text-[14px] font-medium text-white transition hover:opacity-90 sm:w-[162px]`}
           >
             <ExportIconSvg size={16} /> Export
           </button>
@@ -392,7 +392,7 @@ export default function StreakMilestonesRewards() {
       className="min-h-[calc(100vh-72px)] font-[Inter]"
       style={{ backgroundColor: PAGE_BG, color: TEXT }}
     >
-      <div className="flex w-full min-w-0 flex-col px-6 py-6">
+      <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-6">
         {/* ---------------- header ---------------- */}
         <div>
           <div className="flex items-center gap-3">

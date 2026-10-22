@@ -50,11 +50,12 @@ function Chevron() {
   );
 }
 
+/* Labels may wrap on mobile; nowrap only from sm up. */
 function FieldLabel({ htmlFor, children }) {
   return (
     <label
       htmlFor={htmlFor}
-      className="block text-[12px] leading-none font-semibold whitespace-nowrap"
+      className="block text-[12px] leading-[1.25] font-semibold sm:leading-none sm:whitespace-nowrap"
       style={{ color: LABEL_COLOR }}
     >
       {children}
@@ -85,11 +86,12 @@ function SelectControl({ id, value, defaultValue, onChange, options, disabled = 
   );
 }
 
-function NumberStepper({ value, defaultValue, onChange, label }) {
+function NumberStepper({ id, value, defaultValue, onChange, label }) {
   const interactive = typeof onChange === "function";
   return (
     <div className="relative">
       <input
+        id={id}
         {...(interactive
           ? { type: "number", value, onChange: (e) => onChange(Number(e.target.value)) }
           : { defaultValue })}
@@ -145,7 +147,7 @@ function Toggle({ on, onChange, label }) {
 function ToggleRight({ label, on, onChange, className = "" }) {
   return (
     <div className={`flex items-center gap-[14px] ${className}`}>
-      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
+      <span className="min-w-0 text-[12px] font-semibold sm:whitespace-nowrap" style={{ color: LABEL_COLOR }}>
         {label}
       </span>
       <Toggle on={on} onChange={onChange} label={label} />
@@ -158,7 +160,7 @@ function ToggleLeft({ label, on, onChange, className = "" }) {
   return (
     <div className={`flex items-center gap-[12px] ${className}`}>
       <Toggle on={on} onChange={onChange} label={label} />
-      <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
+      <span className="min-w-0 text-[12px] font-semibold sm:whitespace-nowrap" style={{ color: LABEL_COLOR }}>
         {label}
       </span>
     </div>
@@ -166,9 +168,10 @@ function ToggleLeft({ label, on, onChange, className = "" }) {
 }
 
 
-function Field({ label, htmlFor, width = "flex-1", children }) {
+/* `width` carries the responsive width / grid-span classes. */
+function Field({ label, htmlFor, width = "sm:flex-1", children }) {
   return (
-    <div className={`${width} min-w-0 shrink-0`}>
+    <div className={`${width} min-w-0 max-w-full`}>
       <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
       <div className="mt-[8px]">{children}</div>
     </div>
@@ -176,13 +179,13 @@ function Field({ label, htmlFor, width = "flex-1", children }) {
 }
 
 
-const HEADER_WIDTHS = ["w-[222px]", "w-[222px]", "w-[160px]", "w-[171px]"];
+const HEADER_WIDTHS = ["w-full sm:w-[222px]", "w-full sm:w-[222px]", "w-full sm:w-[160px]", "w-full sm:w-[171px]"];
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 function Tabs({ activeTab = "AI Generate", onTabChange }) {
   return (
-    <div className="mt-[24px] w-full border-b border-[#E2DFFC]">
-      <div className="flex gap-[32px]">
+    <div className="mt-[24px] w-full overflow-x-auto border-b border-[#E2DFFC]">
+      <div className="flex min-w-max gap-[20px] sm:gap-[32px]">
         {TABS.map((t) => {
           const active = t === activeTab;
           return (
@@ -211,20 +214,20 @@ function Tabs({ activeTab = "AI Generate", onTabChange }) {
 function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
   return (
     <>
-      <h1 className="text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+      <h1 className="text-[22px] leading-[1.2] font-semibold" style={{ color: HEADING }}>
         Add / Edit Word Search
       </h1>
-      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+      <p className="mt-[8px] text-[14px] leading-[1.35] font-medium sm:text-[16px]" style={{ color: MUTED }}>
         Choose the activity type and how you want to create it.
       </p>
 
-      <div className="mt-[16px] flex gap-[24px]">
+      <div className="mt-[16px] grid grid-cols-2 gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[24px]">
         {headerFields.map((f, i) => (
           <Field key={f.label} label={f.label} htmlFor={f.htmlFor} width={HEADER_WIDTHS[i]}>
             {f.control}
           </Field>
         ))}
-        <Field label="Points per Puzzle" width="flex-1">
+        <Field label="Points per Puzzle" htmlFor="points" width="col-span-2 sm:col-auto sm:flex-1">
           {pointsControl}
         </Field>
       </div>
@@ -238,10 +241,10 @@ function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
 function SectionHeading({ title, subtitle }) {
   return (
     <>
-      <h2 className="mt-[24px] text-[22px] leading-none font-semibold" style={{ color: HEADING }}>
+      <h2 className="mt-[24px] text-[20px] leading-[1.2] font-semibold sm:text-[22px]" style={{ color: HEADING }}>
         {title}
       </h2>
-      <p className="mt-[8px] text-[16px] leading-none font-medium" style={{ color: MUTED }}>
+      <p className="mt-[8px] text-[14px] leading-[1.35] font-medium sm:text-[16px]" style={{ color: MUTED }}>
         {subtitle}
       </p>
     </>
@@ -250,14 +253,21 @@ function SectionHeading({ title, subtitle }) {
 
 function FormCard({ children }) {
   return (
-    <div className="mt-[16px] flex min-h-[311px] w-full flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
+    <div className="mt-[16px] flex min-h-[311px] w-full flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pt-[16px] pb-[16px] sm:pr-[28px] sm:pl-[27px]">
       {children}
     </div>
   );
 }
 
-function FormRow({ children, gap = "gap-[24px]", className = "" }) {
-  return <div className={`flex h-[63px] items-center ${gap} ${className}`}>{children}</div>;
+/* Mobile: 2-col grid. sm and up: original wrapping flex row. */
+function FormRow({ children, className = "" }) {
+  return (
+    <div
+      className={`grid grid-cols-2 gap-x-[12px] gap-y-[16px] sm:flex sm:min-h-[63px] sm:flex-wrap sm:items-center sm:gap-[24px] ${className}`}
+    >
+      {children}
+    </div>
+  );
 }
 
 function Divider() {
@@ -267,7 +277,7 @@ function Divider() {
 
 function LevelsSelect({ levels, onRemove }) {
   return (
-    <div className="flex h-[40px] w-full items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px]">
+    <div className="flex h-auto min-h-[40px] w-full flex-wrap items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[6px]">
       {levels.map((lv) => (
         <span
           key={lv}
@@ -317,12 +327,13 @@ function PreviewHeading() {
 }
 
 function PreviewGrid({ children }) {
-  return <div className="mt-[16px] flex gap-[24px]">{children}</div>;
+  return <div className="mt-[16px] flex flex-col gap-[16px] lg:flex-row lg:gap-[24px]">{children}</div>;
 }
 
+/* Cards share the row from lg (flexible); fixed 519px only at xl. */
 function PuzzleCard({ title, children, actions }) {
   return (
-    <div className="flex h-[413px] w-[519px] flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[19px] pb-[26px] pl-[22px]">
+    <div className="flex h-auto min-h-[413px] w-full min-w-0 flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pt-[24px] pb-[26px] sm:pr-[19px] sm:pl-[22px] lg:flex-1 xl:w-[519px] xl:flex-none">
       <div className="flex items-center justify-between">
         <p className="text-[12px] font-medium" style={{ color: LABEL_COLOR }}>
           {title}
@@ -335,7 +346,9 @@ function PuzzleCard({ title, children, actions }) {
         </span>
       </div>
 
-      <div className="flex h-[223px] w-full gap-[21px]">{children}</div>
+      <div className="flex h-auto w-full flex-col items-center gap-[21px] sm:h-[223px] sm:flex-row sm:items-start">
+        {children}
+      </div>
 
       <div className="flex flex-col gap-[8px]">{actions}</div>
     </div>
@@ -345,7 +358,7 @@ function PuzzleCard({ title, children, actions }) {
 function PreviewImage({ src, alt }) {
   return (
     <div
-      className="flex h-[223px] w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
+      className="flex h-[223px] w-full max-w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
       style={{ backgroundColor: "#F3F4F6" }}
     >
       {src ? (
@@ -374,20 +387,20 @@ function OutlineAction({ icon: Icon, className = "", children }) {
 function CardActions() {
   return (
     <>
-      <div className="flex gap-[8px]">
+      <div className="flex flex-wrap gap-[8px]">
         <OutlineAction icon={LuRotateCw} className="w-[130px]">
           Regenerate Puzzle
         </OutlineAction>
         <OutlineAction icon={LuImage}>Regenerate Image</OutlineAction>
         <OutlineAction icon={LuImagePlus}>Replace Image</OutlineAction>
       </div>
-      <div className="flex gap-[8px]">
+      <div className="flex flex-wrap gap-[8px]">
         <OutlineAction icon={LuPencil} className="w-[75px]">
           Edit
         </OutlineAction>
         <button
           type="button"
-          className="flex h-[32px] w-[121px] cursor-pointer items-center justify-center gap-[4px] rounded-[8px] text-[10px] leading-none font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          className="flex h-[32px] w-full cursor-pointer items-center justify-center gap-[4px] rounded-[8px] text-[10px] leading-none font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[121px]"
           style={{ backgroundColor: PRIMARY }}
         >
           <img src={checkFilledWhiteIcon} alt="" aria-hidden width={12} height={12} className="block shrink-0" />
@@ -399,21 +412,22 @@ function CardActions() {
 }
 
 
+/* Mobile: Save draft | Publish side by side, Cancel below. */
 function PageFooter() {
   return (
-    <div className="mt-[24px] flex items-center justify-between">
+    <div className="mt-[24px] flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
       <button
         type="button"
-        className="flex h-[42px] w-[97px] cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+        className="flex h-[42px] w-full cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD] sm:w-[97px]"
         style={{ color: HEADING }}
       >
         Cancel
       </button>
 
-      <div className="flex gap-[12px]">
+      <div className="grid grid-cols-2 gap-[12px] sm:flex">
         <button
           type="button"
-          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[6px] border border-[#E2DFFC] bg-white text-[14px] font-semibold transition-colors hover:bg-[#F5F8FD] sm:w-[119px]"
           style={{ color: HEADING }}
         >
           <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
@@ -421,7 +435,7 @@ function PageFooter() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-[180px] cursor-pointer items-center justify-center gap-[8px] rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[6px] text-[14px] font-semibold text-white transition-opacity hover:opacity-90 sm:w-[180px]"
           style={{ backgroundColor: PRIMARY }}
         >
           Publish Approved
@@ -457,7 +471,7 @@ const CLUES_2 = [
 
 function CluesColumn({ clues }) {
   return (
-    <div className="min-w-0 flex-1">
+    <div className="w-full min-w-0 sm:w-auto sm:flex-1">
       <p className="text-[12px] leading-none font-bold" style={{ color: LABEL_COLOR }}>
         Clues
       </p>
@@ -504,10 +518,10 @@ export default function AIGenerateMysteryScripture() {
 
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: "#F9FAFE" }}>
-      <div className="mx-auto w-full max-w-[1114px] px-6 pt-6 pb-[48px]">
+      <div className="mx-auto w-full max-w-[1114px] px-4 pt-6 pb-[48px] sm:px-6">
         <PageHeader
           headerFields={headerFields}
-          pointsControl={<NumberStepper defaultValue="10" label="Points per Puzzle" />}
+          pointsControl={<NumberStepper id="points" defaultValue="10" label="Points per Puzzle" />}
           activeTab={activeTab}
           onTabChange={setActiveTab}
         />
@@ -519,17 +533,21 @@ export default function AIGenerateMysteryScripture() {
 
         <FormCard>
           <FormRow>
-            <Field label="Scripture Range" htmlFor="scriptureRange" width="w-[188px]">
+            <Field label="Scripture Range" htmlFor="scriptureRange" width="w-full sm:w-[188px]">
               <SelectControl
                 id="scriptureRange"
                 defaultValue="Genesis 1:1–31"
                 options={["Genesis 1:1–31"]}
               />
             </Field>
-            <Field label="Clue Count" htmlFor="clueCount" width="w-[131px]">
+            <Field label="Clue Count" htmlFor="clueCount" width="w-full sm:w-[131px]">
               <SelectControl id="clueCount" defaultValue="8" options={["8"]} />
             </Field>
-            <Field label="Clue Difficulty Progression" htmlFor="clueDifficulty" width="w-[190px]">
+            <Field
+              label="Clue Difficulty Progression"
+              htmlFor="clueDifficulty"
+              width="col-span-2 w-full sm:col-auto sm:w-[190px]"
+            >
               <SelectControl
                 id="clueDifficulty"
                 defaultValue="Easy to Hard"
@@ -540,23 +558,23 @@ export default function AIGenerateMysteryScripture() {
               label="Hide Reference Until Completion"
               on={hideRef}
               onChange={setHideRef}
-              className="ml-auto"
+              className="col-span-2 justify-between sm:col-auto sm:ml-auto sm:justify-start"
             />
           </FormRow>
 
           <Divider />
 
           <FormRow>
-            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[168px]">
+            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-full sm:w-[168px]">
               <SelectControl id="numPuzzles" defaultValue="2" options={["2"]} />
             </Field>
-            <Field label="Grid Size" htmlFor="gridSize" width="w-[134px]">
+            <Field label="Grid Size" htmlFor="gridSize" width="w-full sm:w-[134px]">
               <SelectControl id="gridSize" defaultValue="15 × 15" options={["15 × 15"]} />
             </Field>
-            <Field label="New Levels" width="w-[334px]">
+            <Field label="New Levels" width="col-span-2 w-full sm:col-auto sm:w-[334px]">
               <LevelsSelect levels={["Level 1", "Level 2"]} />
             </Field>
-            <Field label="Puzzles per Level" width="flex-1">
+            <Field label="Puzzles per Level" width="col-span-2 sm:col-auto sm:flex-1">
               <PuzzlesPerLevel text="Level 1: 1    Level 2: 1" />
             </Field>
           </FormRow>
@@ -568,15 +586,16 @@ export default function AIGenerateMysteryScripture() {
               label="Generate a unique AI image for every puzzle"
               on={uniqueImg}
               onChange={setUniqueImg}
+              className="col-span-2 sm:col-auto"
             />
-            <Field label="AI Image Style" htmlFor="imageStyle" width="w-[155px]">
+            <Field label="AI Image Style" htmlFor="imageStyle" width="w-full sm:w-[155px]">
               <SelectControl
                 id="imageStyle"
                 defaultValue="Biblical Illustration"
                 options={["Biblical Illustration"]}
               />
             </Field>
-            <Field label="Image Safety" htmlFor="imageSafety" width="w-[168px]">
+            <Field label="Image Safety" htmlFor="imageSafety" width="w-full sm:w-[168px]">
               <SelectControl
                 id="imageSafety"
                 defaultValue="Family Safe"
@@ -587,7 +606,7 @@ export default function AIGenerateMysteryScripture() {
               label="No text in image"
               on={noTextImg}
               onChange={setNoTextImg}
-              className="ml-auto"
+              className="col-span-2 justify-between sm:col-auto sm:ml-auto sm:justify-start"
             />
           </FormRow>
         </FormCard>

@@ -167,14 +167,14 @@ function NumberBox({ value, type = "number" }) {
     <input
       type={type}
       defaultValue={value}
-      className={`${boxCls} w-[109px]`}
+      className={`${boxCls} w-full sm:w-[109px]`}
     />
   );
 }
 
 function CaretBox({ value }) {
   return (
-    <div className="relative w-[109px]">
+    <div className="relative w-full sm:w-[109px]">
       <input
         type="text"
         defaultValue={value}
@@ -207,7 +207,7 @@ function UnitSelect({ options = [], value, width }) {
 /* ---------- Section card (Assistant Status / Search / Credit) ------------ */
 function SectionCard({ Icon, title, subtitle, children }) {
   return (
-    <div className="flex flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pb-[29px] pl-[27px] pr-[27px] pt-[28px]">
+    <div className="flex flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pb-[20px] pl-[16px] pr-[16px] pt-[20px] sm:pb-[29px] sm:pl-[27px] sm:pr-[27px] sm:pt-[28px]">
       <div className="flex items-center gap-[12px]">
         <div className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-[8px] bg-[#3231DB]/10 p-[7px] text-[#3231DB]">
           <Icon size={24} />
@@ -298,7 +298,7 @@ export default function AIOverview() {
   const [reverseRules, setReverseRules] = useState(true);
 
   return (
-    <div className="ai-theme min-h-screen space-y-[24px] bg-[#F8FAFC] p-6 font-[Inter]">
+    <div className="ai-theme min-h-screen space-y-[24px] bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-[15px]">
@@ -311,7 +311,7 @@ export default function AIOverview() {
         </div>
         <button
           type="button"
-          className="flex h-[42px] w-[178px] cursor-pointer items-center justify-center gap-[15px] rounded-[8px] bg-[#001984] text-[14px] font-semibold leading-[17px] text-white transition hover:bg-[#00126B]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[15px] rounded-[8px] bg-[#001984] text-[14px] font-semibold leading-[17px] text-white transition hover:bg-[#00126B] sm:w-[178px]"
         >
           <PiPlusBold size={11} />
           Add New Journey
@@ -319,7 +319,7 @@ export default function AIOverview() {
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-4 gap-[17px]">
+      <div className="grid grid-cols-1 gap-[17px] sm:grid-cols-2 xl:grid-cols-4">
         {STATS.map((s) => (
           <div
             key={s.label}
@@ -354,7 +354,7 @@ export default function AIOverview() {
         title="AI Assistant Status"
         subtitle="Set when and how your verse will be displayed"
       >
-        <div className="grid grid-cols-4 gap-[8px]">
+        <div className="grid grid-cols-1 gap-[8px] sm:grid-cols-2 xl:grid-cols-4">
           {ASSISTANTS.map(({ label, Icon }) => (
             <div
               key={label}
@@ -394,7 +394,7 @@ export default function AIOverview() {
           {SEARCH_ROWS.map((row, i) => (
             <div
               key={`${row.label}-${i}`}
-              className={`flex items-center justify-between gap-[16px] border-b border-[#001984]/10 ${
+              className={`flex flex-wrap items-center justify-between gap-[16px] border-b border-[#001984]/10 ${
                 row.type === "toggle" ? "py-[16px]" : "py-[20px]"
               }`}
             >
@@ -411,7 +411,7 @@ export default function AIOverview() {
                 </p>
               </div>
 
-              <div className="flex shrink-0 items-center">
+              <div className="flex w-full shrink-0 items-center sm:w-auto">
                 {row.type === "toggle" && (
                   <Switch
                     checked={searchToggles[row.label]}
@@ -433,7 +433,7 @@ export default function AIOverview() {
         <div className="mt-[20px] flex justify-end">
           <button
             type="button"
-            className="h-[42px] w-[178px] cursor-pointer rounded-[8px] bg-[#001984] px-[16px] text-[14px] font-semibold leading-[17px] text-white transition hover:bg-[#00126B]"
+            className="h-[42px] w-full cursor-pointer rounded-[8px] bg-[#001984] px-[16px] text-[14px] font-semibold leading-[17px] text-white transition hover:bg-[#00126B] sm:w-[178px]"
           >
             Save Changes
           </button>
@@ -450,7 +450,7 @@ export default function AIOverview() {
           {CREDIT_RULES.map((row) => (
             <div
               key={row.label}
-              className="flex h-[80px] w-full items-center justify-between gap-[16px] rounded-[7.5px] border border-[#001984]/10 bg-white p-[20px]"
+              className="flex min-h-[80px] w-full flex-wrap items-center justify-between gap-[16px] rounded-[7.5px] border border-[#001984]/10 bg-white p-[20px]"
             >
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[14px] font-semibold leading-[17px] text-[#0A0847]/80">
@@ -460,7 +460,7 @@ export default function AIOverview() {
                   {row.desc}
                 </p>
               </div>
-              <div className="flex shrink-0 items-center gap-[16px]">
+              <div className="flex w-full shrink-0 items-center gap-[16px] sm:w-auto">
                 <NumberBox value={row.value} />
                 <UnitSelect
                   options={row.units}

@@ -352,7 +352,7 @@ export default function ArticleModal({ mode, article, onClose }) {
 
         {/* footer actions */}
         <div className="flex w-full min-w-0 box-border flex-col gap-[13px]">
-          <div className="grid grid-cols-2 gap-[13px]">
+          <div className="grid grid-cols-1 gap-[13px] sm:grid-cols-2">
             <button
               type="button"
               className="h-[42px] cursor-pointer rounded-lg border border-[#E2DFFC] bg-[#FAFAFC] text-[15px] font-semibold text-[#0A0847]/80 transition-colors hover:bg-chip"

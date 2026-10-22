@@ -159,7 +159,7 @@ function Chevron({ className = "" }) {
 
 function FieldSelect({ value, options, className = "", chevronClass = "right-[16px]" }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative h-full ${className}`}>
       <select aria-label={value} defaultValue={value} className={SELECT_FIELD}>
         {options.map((option) => (
           <option key={option} value={option}>
@@ -284,28 +284,28 @@ export default function AIQuizGenerator() {
     );
 
   return (
-    <div className="min-h-screen w-full bg-[#F8F8FF] p-6 font-inter">
-      <div className="flex items-start justify-between">
-        <div>
+    <div className="min-h-screen w-full bg-[#F8F8FF] p-4 font-inter sm:p-6">
+      <div className="flex flex-col items-start gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
           <h1 className="text-[22px] leading-none font-semibold text-[#0A0847]">
             AI Question Generator
           </h1>
-          <p className="mt-[12px] text-[15px] leading-none text-[#0A0847]/60">
+          <p className="mt-[12px] text-[15px] leading-[1.4] text-[#0A0847]/60">
             Generate high-quality Bible quiz questions with images using AI.
           </p>
         </div>
 
-        <div className="flex items-center gap-[14px]">
+        <div className="grid w-full grid-cols-2 gap-[12px] sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:gap-[14px]">
           <button
             type="button"
-            className="flex h-[44px] w-[163px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold text-[#001984]"
+            className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold whitespace-nowrap text-[#001984] sm:w-[163px]"
           >
             <LuCircleHelp size={18} strokeWidth={1.8} />
             How it works
           </button>
           <button
             type="button"
-            className="flex h-[44px] w-[156px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold text-[#001984]"
+            className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-[#FEFEFE] p-[12px] text-[14px] font-semibold text-[#001984] sm:w-[156px]"
           >
             <LuHistory size={18} strokeWidth={1.8} />
             History
@@ -313,17 +313,18 @@ export default function AIQuizGenerator() {
         </div>
       </div>
 
-      <div className={`mt-[40px] flex h-[92px] items-center px-[24px] ${CARD}`}>
-        <div className="flex flex-1 items-center">
+      {/* Location selectors: 2x2 grid on mobile, one row from sm up. */}
+      <div className={`mt-[40px] flex h-auto flex-col items-stretch gap-[12px] px-[12px] py-[16px] sm:min-h-[92px] sm:flex-row sm:items-center sm:px-[24px] ${CARD}`}>
+        <div className="grid w-full grid-cols-2 gap-x-[8px] gap-y-[14px] sm:flex sm:flex-1 sm:items-center sm:gap-0 sm:overflow-x-auto">
           {LOCATION_SELECTORS.map((selector, index) => (
             <Fragment key={selector.label}>
-              {index > 0 && <span className="h-[48px] w-px bg-[#E2DFFC]" />}
-              <div className="flex flex-1 items-center gap-[10px] px-[16px]">
+              {index > 0 && <span className="hidden h-[48px] w-px bg-[#E2DFFC] sm:block" />}
+              <div className="flex min-w-0 flex-1 items-center gap-[8px] px-[4px] sm:gap-[10px] sm:px-[16px]">
                 <span className="flex min-w-0 flex-col gap-[4px]">
                   <span className="text-[12px] leading-none font-medium text-[#0A0847]/60">
                     {selector.label}
                   </span>
-                  <span className="text-[16px] leading-none font-semibold text-[#0A0847]">
+                  <span className="truncate text-[16px] leading-none font-semibold text-[#0A0847]">
                     {selector.value}
                   </span>
                 </span>
@@ -333,7 +334,7 @@ export default function AIQuizGenerator() {
           ))}
         </div>
 
-        <div className="ml-[16px] flex w-[226px] shrink-0 flex-col justify-center gap-[10px] rounded-[6px] bg-[#F1EFFD] p-[12px]">
+        <div className="flex w-full shrink-0 flex-col justify-center gap-[10px] rounded-[6px] bg-[#F1EFFD] p-[12px] sm:ml-[16px] sm:w-[226px]">
           <span className="text-[14px] leading-none font-semibold text-[#0A0847]">
             Select Location
           </span>
@@ -341,20 +342,20 @@ export default function AIQuizGenerator() {
         </div>
       </div>
 
-      <div className="mt-[28px] grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-stretch gap-[24px]">
-        <div className={`flex min-w-0 flex-col px-[20px] pt-[20px] pb-[24px] ${CARD}`}>
+      <div className="mt-[28px] grid grid-cols-1 items-stretch gap-[24px] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className={`flex min-w-0 flex-col px-[16px] pt-[20px] pb-[24px] sm:px-[20px] ${CARD}`}>
           <div>
-            <div className="flex h-[48px] items-start gap-[32px]">
+            <div className="flex h-auto min-h-[48px] items-start gap-[24px] overflow-x-auto sm:gap-[32px]">
               <button
                 type="button"
-                className="relative flex h-[48px] cursor-pointer items-center text-[15px] font-medium text-[#0A0847]"
+                className="relative flex h-[48px] shrink-0 cursor-pointer items-center whitespace-nowrap text-[15px] font-medium text-[#0A0847]"
               >
                 Generate Questions
                 <span className="absolute right-0 bottom-0 left-0 h-[2px] bg-[#001984]" />
               </button>
               <button
                 type="button"
-                className="flex h-[48px] cursor-pointer items-center text-[15px] font-medium text-[#0A0847]/60"
+                className="flex h-[48px] shrink-0 cursor-pointer items-center whitespace-nowrap text-[15px] font-medium text-[#0A0847]/60"
               >
                 Generation History
               </button>
@@ -370,7 +371,7 @@ export default function AIQuizGenerator() {
             <p className={LABEL}>
               Number of Questions to Generate <span className="text-[#D80027]">*</span>
             </p>
-            <div className="mt-[8px] flex h-[47px] w-[337px] max-w-full items-stretch overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
+            <div className="mt-[8px] flex h-[47px] w-full max-w-[337px] items-stretch overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
               <button
                 type="button"
                 aria-label="Decrease"
@@ -396,7 +397,7 @@ export default function AIQuizGenerator() {
 
           <div className="mt-[24px]">
             <p className={LABEL}>Question Types</p>
-            <div className="mt-[8px] grid grid-cols-4 gap-[8px]">
+            <div className="mt-[8px] grid grid-cols-2 gap-[8px] sm:grid-cols-4">
               {QUESTION_TYPES.map((type) => {
                 const active = activeTypes.includes(type.id);
                 return (
@@ -404,12 +405,12 @@ export default function AIQuizGenerator() {
                     key={type.id}
                     type="button"
                     onClick={() => toggleType(type.id)}
-                    className={`relative flex h-[84px] min-w-0 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[8px] border px-[1px] text-center ${
+                    className={`relative flex h-[84px] min-w-0 cursor-pointer flex-col items-center justify-center gap-[10px] rounded-[8px] border px-[4px] text-center ${
                       active ? "border-[#001984] bg-[#F4F1FE]" : "border-[#E2DFFC] bg-[#F9F8FF]"
                     }`}
                   >
                     <TypeGlyph kind={type.kind} />
-                    <span className="text-[12px] leading-none font-semibold whitespace-nowrap text-[#0A0847]/80">
+                    <span className="max-w-full truncate text-[12px] leading-none font-semibold text-[#0A0847]/80">
                       {type.label}
                     </span>
                     {active && (
@@ -436,15 +437,15 @@ export default function AIQuizGenerator() {
               <p className="text-[14px] leading-none font-semibold text-[#0A0847]">Difficulty Mix</p>
               <LuCircleHelp size={16} className="text-[#0A0847]/60" />
             </div>
-            <div className="mt-[8px] flex gap-[12px]">
+            <div className="mt-[8px] grid grid-cols-3 gap-[8px] sm:flex sm:flex-wrap sm:gap-[12px]">
               {DIFFICULTY_MIX.map((entry) => (
                 <div
                   key={entry.label}
-                  className="flex h-[71px] w-[120px] shrink-0 flex-col justify-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[12px]"
+                  className="flex h-[71px] min-w-0 flex-col justify-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[10px] sm:w-full sm:max-w-[160px] sm:flex-1 sm:p-[12px]"
                 >
                   <span className="flex items-center justify-between text-[14px] leading-none font-medium text-[#0A0847]/80">
-                    {entry.label}
-                    <Chevron />
+                    <span className="truncate">{entry.label}</span>
+                    <Chevron className="shrink-0" />
                   </span>
                   <span className="text-[14px] leading-none font-medium text-[#0A0847]/80">
                     {entry.value} %
@@ -483,7 +484,7 @@ export default function AIQuizGenerator() {
           </div>
 
           <p className={`mt-[20px] ${LABEL}`}>Image Style</p>
-          <div className="mt-[8px] flex gap-[8px]">
+          <div className="mt-[8px] grid grid-cols-2 gap-[8px] sm:flex sm:flex-wrap">
             {IMAGE_STYLES.map((style) => {
               const active = styleId === style.id;
               return (
@@ -491,7 +492,7 @@ export default function AIQuizGenerator() {
                   key={style.id}
                   type="button"
                   onClick={() => setStyleId(style.id)}
-                  className={`relative flex max-w-[140px] min-w-0 flex-1 cursor-pointer flex-col items-stretch rounded-[8px] border px-[13px] pt-[11px] pb-[15px] ${
+                  className={`relative flex w-full min-w-0 cursor-pointer flex-col items-stretch rounded-[8px] border px-[8px] pt-[8px] pb-[12px] sm:max-w-[140px] sm:flex-1 sm:px-[13px] sm:pt-[11px] sm:pb-[15px] ${
                     active ? "border-[#001984] bg-[#FEFFFF]" : "border-[#E2DFFC] bg-[#FEFFFF]"
                   }`}
                 >
@@ -508,30 +509,32 @@ export default function AIQuizGenerator() {
                   <span className="mt-[10px] text-center text-[14px] leading-none font-medium text-[#0A0847]/80">
                     {style.caption}
                   </span>
-                  <span className="absolute top-[10px] right-[12px] z-10 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#2E9E3E] text-white">
+                  {active && (
+                    <span className="absolute top-[12px] right-[14px] z-10 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-[#2E9E3E] text-white sm:top-[10px] sm:right-[12px]">
                       <LuCheck size={10} strokeWidth={3} />
                     </span>
+                  )}
                 </button>
               );
             })}
           </div>
 
-          <div className="mt-[20px] flex gap-[8px]">
-            <div className="w-[272px] shrink-0">
+          <div className="mt-[20px] flex flex-col gap-[16px] sm:flex-row sm:gap-[8px]">
+            <div className="w-full min-w-0 sm:w-[272px] sm:shrink-0">
               <p className={LABEL}>Image Quality</p>
               <div className="mt-[6px] h-[44px]">
-                <FieldSelect value="High (Recommended)" options={["High (Recommended)", "Standard"]} chevronClass="right-[43px]" />
+                <FieldSelect value="High (Recommended)" options={["High (Recommended)", "Standard"]} chevronClass="right-[16px] sm:right-[43px]" />
               </div>
             </div>
             <div className="min-w-0 flex-1">
               <p className={LABEL}>Image Format</p>
               <div className="mt-[6px] h-[44px]">
-                <FieldSelect value="Landscape (16:9)" options={["Landscape (16:9)", "Square (1:1)"]} chevronClass="right-[6px]" />
+                <FieldSelect value="Landscape (16:9)" options={["Landscape (16:9)", "Square (1:1)"]} chevronClass="right-[16px] sm:right-[6px]" />
               </div>
             </div>
           </div>
 
-          <div className="mt-[16px] grid grid-cols-[46%_minmax(0,1fr)] items-end gap-[12px]">
+          <div className="mt-[16px] grid grid-cols-1 items-end gap-[12px] lg:grid-cols-[46%_minmax(0,1fr)]">
             <div className="flex min-w-0 flex-col gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#F1EFFD] p-[12px]">
               <div className="flex items-center gap-[8px]">
                 <AiGlyph />
@@ -556,13 +559,13 @@ export default function AIQuizGenerator() {
             </div>
 
             <div className="flex min-w-0 flex-col justify-end gap-[20px] pb-[8px]">
-              <div className="flex items-center gap-[8px] text-[12px] leading-none font-medium text-[#0A0847]/60">
-                <LuClock size={20} className="text-[#1A56C4]" />
+              <div className="flex flex-wrap items-center gap-[8px] text-[12px] leading-none font-medium text-[#0A0847]/60">
+                <LuClock size={20} className="shrink-0 text-[#1A56C4]" />
                 Estimated time: 30–60 seconds
               </div>
               <button
                 type="button"
-                className="flex h-[38px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#001984] bg-[#E8E8F6] text-[14px] font-semibold text-[#001984]"
+                className="flex h-[38px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] border border-[#001984] bg-[#E8E8F6] text-[14px] font-semibold whitespace-nowrap text-[#001984]"
               >
                 <SparkleGlyph />
                 Generate Questions &amp; Images
@@ -572,7 +575,7 @@ export default function AIQuizGenerator() {
         </div>
 
         <div className={`flex min-w-0 flex-col p-[16px] ${CARD}`}>
-          <div className="flex items-start justify-between gap-[10px]">
+          <div className="flex flex-col gap-[12px] sm:flex-row sm:items-start sm:justify-between sm:gap-[10px]">
             <div className="min-w-0">
               <div className="flex items-center gap-[12px]">
                 <StepDot>3</StepDot>
@@ -580,13 +583,13 @@ export default function AIQuizGenerator() {
                   Generated Questions Preview
                 </h3>
               </div>
-              <p className={`mt-[10px] pl-[24px] ${HELPER}`}>
+              <p className={`mt-[10px] pl-[36px] sm:pl-[24px] ${HELPER}`}>
                 Review and edit before adding to Level 1.
               </p>
             </div>
 
-            <div className="flex shrink-0 flex-col items-end gap-[12px]">
-              <span className="rounded-[6px] bg-[#E8E8F6] px-[10px] py-[4px] text-[12px] font-medium text-[#0A0847]">
+            <div className="flex shrink-0 items-center justify-between gap-[12px] sm:flex-col sm:items-end">
+              <span className="rounded-[6px] bg-[#E8E8F6] px-[10px] py-[4px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]">
                 15 Questions Generated
               </span>
               <label className="flex cursor-pointer items-center gap-[8px]">
@@ -608,7 +611,7 @@ export default function AIQuizGenerator() {
               return (
                 <div
                   key={q.id}
-                  className="mx-auto w-full max-w-none rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[16px]"
+                  className="mx-auto w-full max-w-none rounded-[8px] border border-[#E2DFFC] bg-[#FEFFFF] p-[12px] sm:p-[16px]"
                 >
                   <div className="relative aspect-[401/186] w-full overflow-hidden rounded-[8px] border border-[#E2DFFC] bg-white">
                     <img
@@ -669,9 +672,9 @@ export default function AIQuizGenerator() {
                   <div className="mt-[12px] h-px w-full bg-[#0A0847]/10" />
 
                   <div className="mt-[10px] flex items-end justify-between gap-[10px]">
-                    <div className="flex flex-col gap-[16px]">
+                    <div className="flex min-w-0 flex-col gap-[16px]">
                       <span className="flex items-center gap-[8px] text-[16px] leading-none font-semibold text-[#001984]">
-                        <LuBookOpen size={22} className="text-[#001984]" />
+                        <LuBookOpen size={22} className="shrink-0 text-[#001984]" />
                         {q.verse}
                       </span>
                       <div className="flex flex-col items-start gap-[8px]">
@@ -688,7 +691,7 @@ export default function AIQuizGenerator() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col gap-[8px]">
+                    <div className="flex shrink-0 flex-col gap-[8px]">
                       <button
                         type="button"
                         className="flex h-[32px] w-[46px] cursor-pointer items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[12px] font-medium text-[#0A0847]"
@@ -718,25 +721,25 @@ export default function AIQuizGenerator() {
         </div>
       </div>
 
-      <div className="mt-[24px] flex items-center justify-between">
+      <div className="mt-[24px] flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
         <span className="text-[14px] font-semibold text-[#0A0847]">15 questions generated</span>
-        <div className="flex items-center gap-[10px]">
+        <div className="flex flex-col items-stretch gap-[10px] sm:flex-row sm:items-center">
           <button
             type="button"
-            className="h-[42px] w-[158px] cursor-pointer rounded-[4px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847]"
+            className="h-[42px] w-full cursor-pointer rounded-[4px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847] sm:w-[158px]"
           >
             Cancel
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-[130px] cursor-pointer items-center justify-center gap-[8px] rounded-[4px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847]"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[4px] border border-[#E2DFFC] bg-white text-[14px] font-semibold text-[#0A0847] sm:w-[130px]"
           >
             <LuRefreshCw size={15} />
             Regenerate
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-[189px] cursor-pointer items-center justify-center gap-[8px] rounded-[4px] bg-[#001984] text-[14px] font-semibold whitespace-nowrap text-white"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[4px] bg-[#001984] text-[14px] font-semibold whitespace-nowrap text-white sm:w-[189px]"
           >
             <LuPlus size={16} strokeWidth={2.2} />
             Add All to Level 1

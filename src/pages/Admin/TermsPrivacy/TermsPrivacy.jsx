@@ -174,7 +174,7 @@ export default function TermsPrivacy() {
   });
 
   return (
-    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-6 font-[Inter]">
+    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>

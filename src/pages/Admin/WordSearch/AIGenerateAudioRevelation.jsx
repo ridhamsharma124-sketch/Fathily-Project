@@ -56,11 +56,12 @@ function Chevron() {
     />
   );
 }
+/* Labels may wrap on mobile; nowrap only from sm up. */
 function FieldLabel({ htmlFor, children }) {
   return (
     <label
       htmlFor={htmlFor}
-      className={`block text-[12px] ${LH} font-semibold whitespace-nowrap`}
+      className={`block text-[12px] ${LH} font-semibold sm:whitespace-nowrap`}
       style={{ color: LABEL_COLOR }}
     >
       {children}
@@ -87,10 +88,11 @@ function SelectControl({ id, value, defaultValue, onChange, options, disabled = 
     </div>
   );
 }
-function NumberStepper({ value, onChange, label }) {
+function NumberStepper({ id, value, onChange, label }) {
   return (
     <div className="relative">
       <input
+        id={id}
         type="number"
         min="0"
         value={value}
@@ -136,8 +138,8 @@ function Toggle({ on, onChange, label }) {
 
 function ToggleRight({ label, on, onChange, className = "" }) {
   return (
-    <div className={`flex items-center gap-[24px] ${className}`}>
-      <span className={`text-[12px] ${LH} font-semibold whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
+    <div className={`flex items-center gap-[16px] sm:gap-[24px] ${className}`}>
+      <span className={`min-w-0 text-[12px] ${LH} font-semibold sm:whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
         {label}
       </span>
       <Toggle on={on} onChange={onChange} label={label} />
@@ -149,16 +151,17 @@ function ToggleLeft({ label, on, onChange, className = "" }) {
   return (
     <div className={`flex items-center gap-[14px] ${className}`}>
       <Toggle on={on} onChange={onChange} label={label} />
-      <span className={`text-[12px] ${LH} font-semibold whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
+      <span className={`min-w-0 text-[12px] ${LH} font-semibold sm:whitespace-nowrap`} style={{ color: LABEL_COLOR }}>
         {label}
       </span>
     </div>
   );
 }
 
-function Field({ label, htmlFor, width = "flex-1", children }) {
+/* `width` carries the responsive width / grid-span classes. */
+function Field({ label, htmlFor, width = "sm:flex-1", children }) {
   return (
-    <div className={`${width} min-w-0 shrink-0`}>
+    <div className={`${width} min-w-0 max-w-full`}>
       <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
       <div className="mt-[8px]">{children}</div>
     </div>
@@ -166,12 +169,12 @@ function Field({ label, htmlFor, width = "flex-1", children }) {
 }
 
 
-const HEADER_WIDTHS = ["w-[222px]", "w-[188px]", "w-[160px]", "w-[198px]"];
+const HEADER_WIDTHS = ["w-full sm:w-[222px]", "w-full sm:w-[188px]", "w-full sm:w-[160px]", "w-full sm:w-[198px]"];
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 function Tabs({ activeTab = "AI Generate", onTabChange }) {
   return (
-    <div className="mt-[24px] flex w-full border-b border-[#E2DFFC]">
+    <div className="mt-[24px] flex w-full overflow-x-auto border-b border-[#E2DFFC]">
       {TABS.map((t) => {
         const active = t === activeTab;
         return (
@@ -179,7 +182,7 @@ function Tabs({ activeTab = "AI Generate", onTabChange }) {
             key={t}
             type="button"
             onClick={onTabChange ? () => onTabChange(t) : undefined}
-            className={`-mb-px px-8 pb-[18px] text-[14px] ${LH} ${
+            className={`-mb-px min-w-0 flex-1 whitespace-nowrap px-2 pb-[18px] text-[14px] sm:flex-none sm:px-8 ${LH} ${
               active ? "border-b-2 font-semibold" : "font-medium"
             }`}
             style={{
@@ -200,16 +203,16 @@ function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
       <h1 className={`text-[22px] ${LH} font-semibold`} style={{ color: HEADING }}>
         Add / Edit Word Search
       </h1>
-      <p className={`mt-[14px] text-[16px] ${LH} font-medium`} style={{ color: MUTED }}>
+      <p className="mt-[14px] text-[14px] leading-[1.35] font-medium sm:text-[16px]" style={{ color: MUTED }}>
         Choose the activity type and how you want to create it.
       </p>
-      <div className="mt-[24px] flex gap-[24px]">
+      <div className="mt-[24px] grid grid-cols-2 gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[24px] lg:flex-nowrap">
         {headerFields.map((f, i) => (
           <Field key={f.label} label={f.label} htmlFor={f.htmlFor} width={HEADER_WIDTHS[i]}>
             {f.control}
           </Field>
         ))}
-        <Field label="Points per Puzzle" htmlFor="points" width="w-[195px]">
+        <Field label="Points per Puzzle" htmlFor="points" width="col-span-2 w-full sm:col-auto sm:w-[195px]">
           {pointsControl}
         </Field>
       </div>
@@ -221,10 +224,10 @@ function PageHeader({ headerFields, pointsControl, activeTab, onTabChange }) {
 function SectionHeading({ title, subtitle }) {
   return (
     <>
-      <h2 className={`mt-[24px] text-[22px] ${LH} font-semibold`} style={{ color: HEADING }}>
+      <h2 className={`mt-[24px] text-[20px] ${LH} font-semibold sm:text-[22px]`} style={{ color: HEADING }}>
         {title}
       </h2>
-      <p className={`mt-[14px] text-[16px] ${LH} font-medium`} style={{ color: MUTED }}>
+      <p className="mt-[14px] text-[14px] leading-[1.35] font-medium sm:text-[16px]" style={{ color: MUTED }}>
         {subtitle}
       </p>
     </>
@@ -232,14 +235,21 @@ function SectionHeading({ title, subtitle }) {
 }
 function FormCard({ children }) {
   return (
-    <div className="mt-[24px] flex min-h-[311px] w-full max-w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[16px] pr-[28px] pb-[16px] pl-[27px]">
+    <div className="mt-[24px] flex min-h-[311px] w-full max-w-[1059px] flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pt-[16px] pb-[16px] sm:pr-[28px] sm:pl-[27px]">
       {children}
     </div>
   );
 }
 
+/* Mobile: 2-col grid. sm and up: original wrapping flex row. */
 function FormRow({ children, className = "" }) {
-  return <div className={`flex min-h-[63px] items-start gap-[24px] ${className}`}>{children}</div>;
+  return (
+    <div
+      className={`grid grid-cols-2 gap-x-[12px] gap-y-[16px] sm:flex sm:min-h-[63px] sm:flex-wrap sm:items-start sm:gap-[24px] ${className}`}
+    >
+      {children}
+    </div>
+  );
 }
 function Divider() {
   return <div className="my-[20px] h-px w-full" style={{ backgroundColor: DIVIDER_COLOR }} />;
@@ -247,7 +257,7 @@ function Divider() {
 
 function LevelsSelect({ levels, onRemove }) {
   return (
-    <div className="flex h-[40px] w-full items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px]">
+    <div className="flex h-auto min-h-[40px] w-full flex-wrap items-center gap-[8px] overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[6px]">
       {levels.map((lv) => (
         <span
           key={lv}
@@ -272,7 +282,7 @@ function LevelsSelect({ levels, onRemove }) {
 function PuzzlesPerLevel({ levels }) {
   return (
     <div
-      className="flex h-[40px] w-full items-center gap-[20px] rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium"
+      className="flex h-auto min-h-[40px] w-full flex-wrap items-center gap-x-[20px] gap-y-1 rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-2 text-[12px] font-medium sm:py-0"
       style={{ color: MUTED }}
     >
       {levels.map((lv) => (
@@ -289,13 +299,14 @@ function PreviewHeading() {
     </h3>
   );
 }
+/* Two columns only from xl: each card needs the full 519px for image + audio body. */
 function PreviewGrid({ children }) {
-  return <div className="mt-[16px] flex gap-[21px]">{children}</div>;
+  return <div className="mt-[16px] flex flex-col gap-[21px] xl:flex-row">{children}</div>;
 }
 
 function PuzzleCard({ title, children, actions }) {
   return (
-    <div className="flex h-[413px] w-[519px] shrink-0 flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pt-[24px] pr-[21px] pb-[28px] pl-[22px]">
+    <div className="flex h-auto min-h-[413px] w-full min-w-0 flex-col gap-[16px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pt-[24px] pb-[28px] sm:pr-[21px] sm:pl-[22px] xl:w-[519px] xl:shrink-0">
       <div className="flex items-center justify-between">
         <p className={`text-[11px] ${LH} font-medium`} style={{ color: LABEL_COLOR }}>
           {title}
@@ -307,7 +318,9 @@ function PuzzleCard({ title, children, actions }) {
           AI IMAGE
         </span>
       </div>
-      <div className="flex h-[224px] w-full gap-[13px]">{children}</div>
+      <div className="flex h-auto w-full flex-col items-center gap-[13px] sm:h-[224px] sm:flex-row sm:items-stretch">
+        {children}
+      </div>
       <div className="flex flex-col gap-[16px]">{actions}</div>
     </div>
   );
@@ -315,7 +328,7 @@ function PuzzleCard({ title, children, actions }) {
 function PreviewImage({ src, alt }) {
   return (
     <div
-      className="flex h-[224px] w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
+      className="flex h-[224px] w-full max-w-[230px] shrink-0 items-center justify-center overflow-hidden rounded-[8px]"
       style={{ backgroundColor: "#F3F4F6" }}
     >
       {src ? (
@@ -344,16 +357,16 @@ function OutlineAction({ icon: Icon, iconSize = 10.5, width, children }) {
 function CardActions() {
   return (
     <>
-      <div className="flex gap-[12px]">
+      <div className="flex flex-wrap gap-[12px]">
         <OutlineAction icon={LuRotateCw} width={127}>Regenerate Puzzle</OutlineAction>
         <OutlineAction icon={ImageSparkleIcon} width={122}>Regenerate Image</OutlineAction>
         <OutlineAction icon={ImageSparkleIcon} width={109}>Replace Image</OutlineAction>
       </div>
-      <div className="flex gap-[12px]">
+      <div className="flex flex-wrap gap-[12px]">
         <OutlineAction icon={LuPencil} iconSize={12} width={75}>Edit</OutlineAction>
         <button
           type="button"
-          className="flex h-[32px] w-[121px] cursor-pointer items-center justify-center gap-[5px] rounded-[8px] text-[10px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90"
+          className="flex h-[32px] w-full cursor-pointer items-center justify-center gap-[5px] rounded-[8px] text-[10px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:w-[121px]"
           style={{ backgroundColor: PRIMARY }}
         >
           <CircleCheckFilled size={14} />
@@ -364,22 +377,25 @@ function CardActions() {
   );
 }
 
+/* Mobile: Save draft | Publish side by side, Cancel below. */
 function PageFooter() {
   const base =
-    "flex h-[42px] cursor-pointer items-center justify-center rounded-[8px] text-[14px] font-semibold transition-colors";
+    "flex h-[42px] w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[8px] text-[14px] font-semibold transition-colors";
   return (
-    <div className="mt-[42px] flex items-center justify-end gap-[12px]">
-      <button type="button" className={`${base} w-[97px] border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD]`} style={{ color: LABEL_COLOR }}>
+    <div className="mt-[42px] flex flex-col-reverse gap-[12px] sm:flex-row sm:items-center sm:justify-end">
+      <button type="button" className={`${base} border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD] sm:w-[97px]`} style={{ color: LABEL_COLOR }}>
         Cancel
       </button>
-      <button type="button" className={`${base} w-[119px] gap-[8px] border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD]`} style={{ color: LABEL_COLOR }}>
-        <img src={floppyIcon} alt="" aria-hidden className="h-[18px] w-[18px] shrink-0" />
-        Save draft
-      </button>
-      <button type="button" className={`${base} w-[190px] gap-[6px] text-white hover:opacity-90`} style={{ backgroundColor: PRIMARY }}>
-        <LuArrowRight size={16} />
-        Publish Approved
-      </button>
+      <div className="grid grid-cols-2 gap-[12px] sm:flex sm:items-center">
+        <button type="button" className={`${base} gap-[8px] border border-[#E2DFFC] bg-white hover:bg-[#F5F8FD] sm:w-[119px]`} style={{ color: LABEL_COLOR }}>
+          <img src={floppyIcon} alt="" aria-hidden className="h-[18px] w-[18px] shrink-0" />
+          Save draft
+        </button>
+        <button type="button" className={`${base} gap-[6px] text-white hover:opacity-90 sm:w-[190px]`} style={{ backgroundColor: PRIMARY }}>
+          <LuArrowRight size={16} />
+          Publish Approved
+        </button>
+      </div>
     </div>
   );
 }
@@ -448,7 +464,7 @@ function AudioOption({ option, index, correct }) {
       >
         {correct && <span className="h-[8px] w-[8px] rounded-full" style={{ backgroundColor: GREEN_TEXT }} />}
       </span>
-      <span className="text-[10px] leading-[9px] whitespace-nowrap" style={{ color: HEADING }}>
+      <span className="text-[10px] leading-[9px]" style={{ color: HEADING }}>
         <span className="font-semibold">{String.fromCharCode(65 + index)}.</span>{" "}
         <span
           className={correct ? "font-semibold" : "font-medium"}
@@ -464,8 +480,8 @@ function AudioBody({ src, alt, question, options, correctIndex }) {
   return (
     <>
       <PreviewImage src={src} alt={alt} />
-      <div className="min-w-0 flex-1 pt-[6px]">
-        <p className="text-[10px] leading-[9px] font-semibold whitespace-nowrap" style={{ color: LABEL_COLOR }}>
+      <div className="w-full min-w-0 pt-[6px] sm:w-auto sm:flex-1">
+        <p className="text-[10px] leading-[1.3] font-semibold" style={{ color: LABEL_COLOR }}>
           Listen to the audio. Then answer the question.
         </p>
         <AudioPlayer />
@@ -514,10 +530,10 @@ export default function AIGenerateAudioRevelation() {
   }));
   return (
     <div className="min-h-[calc(100vh-72px)] font-[Inter]" style={{ backgroundColor: "#F9FAFE", color: HEADING }}>
-      <div className="mx-auto w-full max-w-[1114px] px-6 pt-6 pb-[48px]">
+      <div className="mx-auto w-full max-w-[1114px] px-4 pt-6 pb-[48px] sm:px-6">
         <PageHeader
           headerFields={headerFields}
-          pointsControl={<NumberStepper value={points} onChange={setPoints} label="Points per Puzzle" />}
+          pointsControl={<NumberStepper id="points" value={points} onChange={setPoints} label="Points per Puzzle" />}
           activeTab="AI Generate"
         />
         <SectionHeading
@@ -526,33 +542,38 @@ export default function AIGenerateAudioRevelation() {
         />
         <FormCard>
           <FormRow>
-            <Field label="Passage / Topic" htmlFor="passage" width="w-[191px]">
+            <Field label="Passage / Topic" htmlFor="passage" width="col-span-2 w-full sm:col-auto sm:w-[191px]">
               <SelectControl id="passage" value={passage} onChange={(e) => setPassage(e.target.value)} options={PASSAGE_OPTIONS} />
             </Field>
-            <Field label="AI Narration Voice" htmlFor="voice" width="w-[133px]">
+            <Field label="AI Narration Voice" htmlFor="voice" width="col-span-2 w-full sm:col-auto sm:w-[133px]">
               <SelectControl id="voice" value={voice} onChange={(e) => setVoice(e.target.value)} options={VOICE_OPTIONS} />
             </Field>
-            <Field label="Audio Length" htmlFor="audioLength" width="w-[162px]">
+            <Field label="Audio Length" htmlFor="audioLength" width="w-full sm:w-[162px]">
               <SelectControl id="audioLength" value={audioLength} onChange={(e) => setAudioLength(e.target.value)} options={AUDIO_LENGTH_OPTIONS} />
             </Field>
-            <Field label="Word Bank" htmlFor="wordBank" width="w-[131px]">
+            <Field label="Word Bank" htmlFor="wordBank" width="w-full sm:w-[131px]">
               <SelectControl id="wordBank" value={wordBank} onChange={(e) => setWordBank(e.target.value)} options={WORD_BANK_OPTIONS} />
             </Field>
-            <ToggleRight label="Preserve Verse Wording" on={preserve} onChange={setPreserve} className="pt-[24px]" />
+            <ToggleRight
+              label="Preserve Verse Wording"
+              on={preserve}
+              onChange={setPreserve}
+              className="col-span-2 justify-between sm:col-auto sm:justify-start sm:pt-[24px]"
+            />
           </FormRow>
           <Divider />
 
           <FormRow>
-            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-[169px]">
+            <Field label="Number of Puzzles" htmlFor="numPuzzles" width="w-full sm:w-[169px]">
               <SelectControl id="numPuzzles" value={count} onChange={(e) => setCount(e.target.value)} options={PUZZLE_COUNT_OPTIONS} />
             </Field>
-            <Field label="Grid Size" htmlFor="gridSize" width="w-[134px]">
+            <Field label="Grid Size" htmlFor="gridSize" width="w-full sm:w-[134px]">
               <SelectControl id="gridSize" disabled defaultValue="—" options={["—"]} />
             </Field>
-            <Field label="New Levels" width="flex-1">
+            <Field label="New Levels" width="col-span-2 sm:col-auto sm:flex-1">
               <LevelsSelect levels={levels} onRemove={removeLevel} />
             </Field>
-            <Field label="Puzzles per Level" width="w-[295px]">
+            <Field label="Puzzles per Level" width="col-span-2 w-full sm:col-auto sm:w-[295px]">
               <PuzzlesPerLevel levels={levels} />
             </Field>
           </FormRow>
@@ -562,16 +583,26 @@ export default function AIGenerateAudioRevelation() {
               label="Generate a unique AI image for every puzzle"
               on={aiImage}
               onChange={setAiImage}
-              className="w-[306px] shrink-0 pt-[6px]"
+              className="col-span-2 w-full sm:col-auto sm:w-[306px] sm:pt-[6px]"
             />
-            <Field label="AI Image Style" htmlFor="imageStyle" width="w-[160px]">
+            <Field label="AI Image Style" htmlFor="imageStyle" width="w-full sm:w-[160px]">
               <SelectControl id="imageStyle" value={imageStyle} onChange={(e) => setImageStyle(e.target.value)} options={IMAGE_STYLE_OPTIONS} />
             </Field>
-            <Field label="Image Safety" htmlFor="imageSafety" width="w-[152px]">
+            <Field label="Image Safety" htmlFor="imageSafety" width="w-full sm:w-[152px]">
               <SelectControl id="imageSafety" value={safety} onChange={(e) => setSafety(e.target.value)} options={SAFETY_OPTIONS} />
             </Field>
-            <ToggleRight label="No text in image" on={noText} onChange={setNoText} className="pt-[6px]" />
-            <ToggleRight label="Generate Transcript" on={transcript} onChange={setTranscript} className="ml-auto pt-[6px]" />
+            <ToggleRight
+              label="No text in image"
+              on={noText}
+              onChange={setNoText}
+              className="col-span-2 justify-between sm:col-auto sm:justify-start sm:pt-[6px]"
+            />
+            <ToggleRight
+              label="Generate Transcript"
+              on={transcript}
+              onChange={setTranscript}
+              className="col-span-2 justify-between sm:col-auto sm:ml-auto sm:justify-start sm:pt-[6px]"
+            />
           </FormRow>
         </FormCard>
         <PreviewHeading />

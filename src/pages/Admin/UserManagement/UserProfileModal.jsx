@@ -101,7 +101,7 @@ export default function UserProfileModal({ user, onClose, onEdit }) {
       className="fixed inset-0 z-[9998] bg-black/45 flex items-start justify-center overflow-y-auto p-4 sm:p-8 font-[Inter]"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-8 space-y-6">
+      <div className="relative lg:ml-60 bg-white rounded-lg border border-[#E2DFFC] w-full max-w-[1065px] p-4 space-y-6 sm:p-8">
         <button type="button" onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 cursor-pointer">
           <FiX size={18} />

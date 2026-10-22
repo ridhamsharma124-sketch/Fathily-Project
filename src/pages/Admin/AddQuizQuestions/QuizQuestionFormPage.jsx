@@ -125,10 +125,10 @@ export default function QuizQuestionFormPage() {
   const showForm = started && (isAI ? !!AI_TYPES[type] : !!reg);
 
   return (
-    <div className="p-6 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6">
+    <div className="p-4 bg-[#F8FAFC] min-h-screen font-[Inter] space-y-6 sm:p-6">
       {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
+      <div className="flex flex-col items-start justify-between gap-4 lg:flex-row">
+        <div className="min-w-0">
           <p className="text-sm font-medium text-[#0A084799]">
             Bible Content <span className="mx-1">&gt;</span>
             <span className="text-[#001984] font-semibold">{meta.book}</span>
@@ -141,7 +141,7 @@ export default function QuizQuestionFormPage() {
           <h1 className="text-xl font-semibold text-[#0A0847] mt-2">
             {showForm && isAI ? "AI Question Generator" : "Add Quiz Question"}
           </h1>
-          <div className="flex items-center gap-6 mt-3">
+          <div className="flex flex-wrap items-center gap-3 mt-3 sm:gap-6">
             <p className="text-sm text-[#0A084799] font-medium">
               {!showForm ? "Choose the type of question you want to create." : isAI ? "" : reg?.subtitle}
             </p>
@@ -153,7 +153,7 @@ export default function QuizQuestionFormPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3 lg:w-auto">
           {showForm && !isAI && reg.badge === "status" && (
             <span
               className={`px-8 py-2.5 rounded-md border text-xs font-semibold flex items-center gap-2 ${

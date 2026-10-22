@@ -125,8 +125,8 @@ export default function TiersManagement() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      <div className="mx-auto max-w-[1072px] space-y-6 px-5 py-6">
-        <div className="flex items-start justify-between gap-6">
+      <div className="mx-auto w-full max-w-[1072px] space-y-6 px-4 py-6 sm:px-5">
+        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
           <div>
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
               Tiers Management
@@ -138,15 +138,15 @@ export default function TiersManagement() {
 
           <button
             type="button"
-            className="flex h-[42px] w-[163px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition-colors hover:bg-[#001266]"
+            className="flex h-[42px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition-colors hover:bg-[#001266] sm:w-[163px]"
           >
             <LuPlus size={16} />
             Add New Tier
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
-          <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
+          <div>
             <table className="w-full min-w-[1000px] border-collapse text-left">
               <thead>
                 <tr className="h-[50px] bg-[#F3F3FD]">

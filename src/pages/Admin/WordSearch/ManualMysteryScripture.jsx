@@ -20,11 +20,11 @@ const CARD_BORDER = "#EFECFB";
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 const FILTER_FIELDS = [
-  { id: "testament", label: "Testament", w: "w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
-  { id: "book", label: "Book", w: "w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "chapter", label: "Chapter", w: "w-[130px]", value: "1", options: ["1", "2", "3"] },
-  { id: "level", label: "Level", w: "w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
-  { id: "difficulty", label: "Difficulty", w: "w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
+  { id: "testament", label: "Testament", w: "w-full sm:w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
+  { id: "book", label: "Book", w: "w-full sm:w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "chapter", label: "Chapter", w: "w-full sm:w-[130px]", value: "1", options: ["1", "2", "3"] },
+  { id: "level", label: "Level", w: "w-full sm:w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
+  { id: "difficulty", label: "Difficulty", w: "w-full sm:w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
 const GRID_OPTIONS = ["10 × 10", "12 × 12", "15 × 15", "20 × 20"];
@@ -63,10 +63,11 @@ function Icon({ src, w = 16, h = w, className = "", style }) {
   );
 }
 
-function Select({ value, onChange, options, className = "" }) {
+function Select({ id, value, onChange, options, className = "" }) {
   return (
     <div className={`relative ${className}`}>
       <select
+        id={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className={`${field} cursor-pointer appearance-none pr-[30px]`}
@@ -108,6 +109,7 @@ function Toggle({ on, onChange, label, color = "#0552AA" }) {
 }
 
 
+/* Mobile: 2-column grid (3 even rows). sm and up: original fixed-width row. */
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -115,13 +117,14 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="flex items-start gap-[24px]">
+    <div className="grid grid-cols-2 items-start gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[24px]">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
-        <div key={id} className={w}>
+        <div key={id} className={`${w} min-w-0`}>
           <label htmlFor={id} className="mb-[8px] block text-[14px] font-medium" style={{ color: INK }}>
             {label}
           </label>
           <Select
+            id={id}
             value={values[id]}
             onChange={(v) => setValues((p) => ({ ...p, [id]: v }))}
             options={options}
@@ -130,7 +133,7 @@ function FilterFields() {
         </div>
       ))}
 
-      <div className="w-[130px] shrink-0">
+      <div className="w-full min-w-0 sm:w-[130px] sm:shrink-0">
         <label htmlFor="reward" className="mb-[8px] block text-[14px] font-medium" style={{ color: INK }}>
           Reward Points
         </label>
@@ -172,14 +175,14 @@ function FilterFields() {
 
 function TabsRow() {
   return (
-    <div className="mt-[30px] flex items-stretch border-b" style={{ borderColor: BORDER }}>
+    <div className="mt-[30px] flex items-stretch overflow-x-auto border-b" style={{ borderColor: BORDER }}>
       {TABS.map((t) => {
         const active = t === "Manual Entry";
         return (
           <button
             key={t}
             type="button"
-            className={`h-[50px] px-[24px] text-[14px] ${
+            className={`h-[50px] shrink-0 whitespace-nowrap px-[16px] text-[14px] sm:px-[24px] ${
               active ? "-mb-px border-b-2 font-semibold" : "font-medium"
             }`}
             style={active ? { borderColor: NAVY, color: NAVY } : { color: "rgba(10, 8, 71, 0.6)" }}
@@ -192,10 +195,11 @@ function TabsRow() {
   );
 }
 
+/* Mobile: status on top, then Save draft | Preview side by side, Add Puzzle full width. */
 function BottomBar() {
   const [published, setPublished] = useState(true);
   return (
-    <div className="mt-[48px] flex flex-wrap items-center justify-between gap-[16px]">
+    <div className="mt-[40px] flex flex-col items-stretch gap-[16px] sm:mt-[48px] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
       <div className="flex items-center gap-[12px]">
         <span className="text-[14px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.6)" }}>
           Status
@@ -209,10 +213,10 @@ function BottomBar() {
         </span>
       </div>
 
-      <div className="flex items-center gap-[12px]">
+      <div className="grid grid-cols-2 gap-[12px] sm:flex sm:items-center">
         <button
           type="button"
-          className="flex h-[42px] w-[119px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[119px]"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
@@ -220,7 +224,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-[158px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[158px]"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <Icon src={eyeIcon} w={16} h={12} />
@@ -228,7 +232,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-[196px] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90"
+          className="col-span-2 flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[196px]"
           style={{ backgroundColor: NAVY }}
         >
           <Icon src={arrowRightIcon} w={12} h={11} />
@@ -241,7 +245,7 @@ function BottomBar() {
 
 function PuzzleImageCard() {
   return (
-    <div className={`${cardCls} flex w-[305px] shrink-0 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+    <div className={`${cardCls} flex w-full shrink-0 flex-col p-[16px] xl:w-[305px]`} style={{ borderColor: CARD_BORDER }}>
       <h2 className="text-[14px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
         Puzzle Image
       </h2>
@@ -249,7 +253,7 @@ function PuzzleImageCard() {
       <img
         src={puzzleImg}
         alt="Genesis garden and lake"
-        className="mt-[16px] h-[152px] w-[264px] rounded-[8px] object-cover"
+        className="mt-[16px] h-[152px] w-full rounded-[8px] object-cover sm:h-[200px] xl:h-[152px]"
       />
 
       <div className="mt-[16px] flex items-center justify-between gap-[8px]">
@@ -266,23 +270,23 @@ function PuzzleImageCard() {
         </span>
       </div>
 
-      <div className="mt-[16px] flex h-[32px] items-center gap-[10px]">
+      <div className="mt-[16px] flex flex-wrap items-center gap-[10px]">
         <button
           type="button"
-          className="flex h-[32px] w-[122px] shrink-0 cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[122px]"
           style={{ border: "1px solid #E2DFFC", color: INK }}
         >
           <Icon src={replaceIcon} w={14} />
           Replace Default
         </button>
-          <button
-                type="button"
-                className="flex h-[32px] shrink-0 cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] px-[10px] text-[12px] font-semibold text-white transition-opacity hover:opacity-90"
-                style={{ backgroundColor: NAVY }}
-              >
-                <img src={aiImageIcon} alt="" aria-hidden className="h-[15px] w-[15px] shrink-0" />
-                Generate AI Image
-              </button>
+        <button
+          type="button"
+          className="flex h-[32px] w-full shrink-0 cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] px-[10px] text-[12px] font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
+          style={{ backgroundColor: NAVY }}
+        >
+          <Icon src={aiImageIcon} w={15} />
+          Generate AI Image
+        </button>
       </div>
 
       <button
@@ -308,9 +312,9 @@ function MysteryMiddle() {
 
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-[16px]">
-      <div className={`${cardCls} p-[16px]`} style={{ borderColor: CARD_BORDER }}>
-        <div className="flex items-start gap-[16px]">
-          <div className="min-w-0 flex-1">
+      <div className={`${cardCls} p-[12px] sm:p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+        <div className="flex flex-col items-stretch gap-[16px] sm:flex-row sm:items-start">
+          <div className="w-full min-w-0 sm:flex-1">
             <label className={lbl} style={{ color: "rgba(10, 8, 71, 0.8)" }}>Verse Reference</label>
             <input
               value={reference}
@@ -319,7 +323,7 @@ function MysteryMiddle() {
               style={{ color: INK, borderColor: BORDER }}
             />
           </div>
-          <div className="w-[135px] shrink-0">
+          <div className="w-full min-w-0 shrink-0 sm:w-[135px]">
             <label className={lbl} style={{ color: "rgba(10, 8, 71, 0.8)" }}>Translation</label>
             <Select value={translation} onChange={setTranslation} options={GRID_OPTIONS} className="w-full" />
           </div>
@@ -354,8 +358,8 @@ function MysteryMiddle() {
         </div>
       </div>
 
-      <div className={`${cardCls} flex flex-1 flex-col p-[16px]`} style={{ borderColor: CARD_BORDER }}>
-        <div className="flex items-baseline gap-[6px]">
+      <div className={`${cardCls} flex flex-1 flex-col p-[12px] sm:p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+        <div className="flex flex-wrap items-baseline gap-x-[6px]">
           <h2 className="text-[12px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
             Hint Text
           </h2>
@@ -374,7 +378,7 @@ function MysteryMiddle() {
                 onChange={(e) =>
                   setHints((p) => p.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))
                 }
-                className={`${field} flex-1`}
+                className={`${field} min-w-0 flex-1`}
                 style={{ color: INK, borderColor: BORDER }}
               />
             </div>
@@ -389,7 +393,7 @@ function MysteryRight() {
   const [reveal, setReveal] = useState(true);
   return (
     <div className="flex h-full w-full flex-col gap-[16px]">
-      <div className={`${cardCls} w-full shrink-0 p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+      <div className={`${cardCls} w-full shrink-0 p-[12px] sm:p-[16px]`} style={{ borderColor: CARD_BORDER }}>
         <p className="text-[12px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
           Answer Word List (all hidden words)
         </p>
@@ -400,7 +404,7 @@ function MysteryRight() {
                 {a.n}
               </span>
               <div
-                className="flex min-h-[34px] flex-1 items-center rounded-[8px] border bg-white px-[12px] py-[6px] text-[12px] leading-[15px] font-medium"
+                className="flex min-h-[34px] min-w-0 flex-1 items-center rounded-[8px] border bg-white px-[12px] py-[6px] text-[12px] leading-[15px] font-medium"
                 style={{ borderColor: BORDER, color: "rgba(10, 8, 71, 0.6)" }}
               >
                 {a.value}
@@ -410,7 +414,7 @@ function MysteryRight() {
         </div>
         <button
           type="button"
-          className="mt-[12px] flex h-[32px] w-[104px] cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE]"
+          className="mt-[12px] flex h-[32px] w-full cursor-pointer items-center justify-center gap-[6px] whitespace-nowrap rounded-[8px] bg-white text-[12px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[104px]"
           style={{ border: `1px solid ${NAVY}`, color: NAVY }}
         >
           <Icon src={plusIcon} w={14} h={13} />
@@ -418,7 +422,7 @@ function MysteryRight() {
         </button>
       </div>
 
-      <div className={`${cardCls} mt-auto w-full shrink-0 p-[16px]`} style={{ borderColor: CARD_BORDER }}>
+      <div className={`${cardCls} w-full shrink-0 p-[12px] sm:p-[16px] xl:mt-auto`} style={{ borderColor: CARD_BORDER }}>
         <div className="flex items-center justify-between gap-[12px]">
           <p className="text-[12px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.8)" }}>
             Reveal Reference after completion
@@ -444,16 +448,19 @@ export default function ManualMysteryScripture() {
         fontFamily: "'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
       }}
     >
-      <div className="mx-auto max-w-[1118px] px-[28px] py-[24px]">
-        <nav className="text-[16px] font-medium" style={{ color: "rgba(10, 8, 71, 0.6)" }}>
+      <div className="mx-auto w-full max-w-[1118px] px-[16px] py-[24px] sm:px-[28px]">
+        <nav
+          className="flex flex-wrap items-center text-[14px] font-medium sm:text-[16px]"
+          style={{ color: "rgba(10, 8, 71, 0.6)" }}
+        >
           Word Search <span className="mx-[6px]">&gt;</span> Add <span className="mx-[6px]">&gt;</span> Manual
         </nav>
 
-        <h1 className="mt-[13px] text-[22px] leading-[22px] font-semibold" style={{ color: INK }}>
+        <h1 className="mt-[13px] text-[20px] leading-[1.2] font-semibold sm:text-[22px]" style={{ color: INK }}>
           Add Word Search — Manual Entry
         </h1>
 
-        <p className="mt-[13px] text-[14px] leading-[14px] font-semibold" style={{ color: "rgba(10, 8, 71, 0.6)" }}>
+        <p className="mt-[10px] text-[14px] leading-[1.3] font-semibold" style={{ color: "rgba(10, 8, 71, 0.6)" }}>
           Manual — Mystery Scripture
         </p>
 
@@ -463,12 +470,12 @@ export default function ManualMysteryScripture() {
 
         <TabsRow />
 
-        <div className="mt-[30px]">
-          <div className="flex items-stretch gap-[20px]">
+        <div className="mt-[24px] sm:mt-[30px]">
+          <div className="flex flex-col items-stretch gap-[20px] xl:flex-row">
             <PuzzleImageCard />
-            <div className="flex min-w-0 flex-1 items-stretch gap-[20px]">
+            <div className="flex min-w-0 flex-1 flex-col items-stretch gap-[20px] xl:flex-row">
               <MysteryMiddle />
-              <div className="flex w-[318px] shrink-0 flex-col">
+              <div className="flex w-full min-w-0 shrink-0 flex-col xl:w-[318px]">
                 <MysteryRight />
               </div>
             </div>
