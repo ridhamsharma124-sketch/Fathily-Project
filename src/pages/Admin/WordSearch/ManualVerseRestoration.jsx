@@ -21,11 +21,11 @@ const CARD_BORDER = "#EFECFB";
 const TABS = ["Manual Entry", "CSV Upload", "AI Generate"];
 
 const FILTER_FIELDS = [
-  { id: "testament", label: "Testament", w: "w-full sm:w-[221px]", value: "Old Testament", options: ["Old Testament", "New Testament"] },
-  { id: "book", label: "Book", w: "w-full sm:w-[162px]", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
-  { id: "chapter", label: "Chapter", w: "w-full sm:w-[130px]", value: "1", options: ["1", "2", "3"] },
-  { id: "level", label: "Level", w: "w-full sm:w-[139px]", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
-  { id: "difficulty", label: "Difficulty", w: "w-full sm:w-[159px]", value: "Easy", options: ["Easy", "Medium", "Hard"] },
+  { id: "testament", label: "Testament", value: "Old Testament", options: ["Old Testament", "New Testament"] },
+  { id: "book", label: "Book", value: "Genesis", options: ["Genesis", "Exodus", "Psalms", "John"] },
+  { id: "chapter", label: "Chapter", value: "1", options: ["1", "2", "3"] },
+  { id: "level", label: "Level", value: "Level 1", options: ["Level 1", "Level 2", "Level 3"] },
+  { id: "difficulty", label: "Difficulty", value: "Easy", options: ["Easy", "Medium", "Hard"] },
 ];
 
 const GRID_OPTIONS = ["10 × 10", "12 × 12", "15 × 15", "20 × 20"];
@@ -109,7 +109,7 @@ function Breadcrumb() {
   );
 }
 
-/* Mobile: 2-column grid (3 even rows). sm and up: original fixed-width row. */
+/* Mobile: 2-column grid. sm and up: 5 filters + Reward Points share one row. */
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -117,9 +117,9 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="grid grid-cols-2 items-start gap-x-[12px] gap-y-[16px] sm:flex sm:flex-wrap sm:gap-[24px]">
-      {FILTER_FIELDS.map(({ id, label, w, options }) => (
-        <div key={id} className={`${w} min-w-0`}>
+    <div className="grid grid-cols-2 items-start gap-x-[12px] gap-y-[16px] sm:flex sm:flex-nowrap sm:gap-[16px]">
+      {FILTER_FIELDS.map(({ id, label, options }) => (
+        <div key={id} className="w-full min-w-0 sm:flex-1">
           <label htmlFor={id} className="mb-[8px] block text-[14px] font-medium" style={{ color: HEADING }}>
             {label}
           </label>
@@ -197,28 +197,28 @@ function TabsRow() {
   );
 }
 
-/* Mobile: status on top, then Save draft | Preview side by side, Add Puzzle full width. */
+/* Mobile: status on top, then Save draft | Preview side by side, Add Puzzle full width. Desktop: all in one line. */
 function BottomBar() {
   const [published, setPublished] = useState(true);
   return (
-    <div className="mt-[40px] flex flex-col items-stretch gap-[16px] sm:mt-[48px] sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+    <div className="mt-[40px] flex flex-col items-stretch gap-[16px] sm:mt-[48px] sm:flex-row sm:flex-nowrap sm:items-center sm:justify-between">
       <div className="flex items-center gap-[12px]">
         <span className="text-[14px] font-semibold" style={{ color: MUTED }}>
           Status
         </span>
         <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
         <span
-          className="rounded-[6px] px-[10px] py-[2px] text-[14px] font-medium"
+          className="whitespace-nowrap rounded-[6px] px-[10px] py-[2px] text-[14px] font-medium"
           style={{ backgroundColor: "#E3F7E6", color: GREEN }}
         >
           Published
         </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-[12px] sm:flex sm:items-center">
+      <div className="grid grid-cols-2 gap-[12px] sm:flex sm:flex-nowrap sm:items-center">
         <button
           type="button"
-          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[119px]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[119px] sm:shrink-0"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
@@ -226,7 +226,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[158px]"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border bg-white text-[14px] font-semibold transition-colors hover:bg-[#F7F8FE] sm:w-[158px] sm:shrink-0"
           style={{ borderColor: BORDER, color: NAVY }}
         >
           <img src={eyeIcon} alt="" aria-hidden className="h-[12px] w-[16px] shrink-0" />
@@ -234,7 +234,7 @@ function BottomBar() {
         </button>
         <button
           type="button"
-          className="col-span-2 flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[196px]"
+          className="col-span-2 flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] text-[14px] font-bold text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[196px] sm:shrink-0"
           style={{ backgroundColor: NAVY }}
         >
           <img src={arrowRightIcon} alt="" aria-hidden className="h-[12px] w-[12px]" />

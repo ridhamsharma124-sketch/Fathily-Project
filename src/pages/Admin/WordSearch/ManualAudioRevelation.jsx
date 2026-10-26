@@ -174,7 +174,7 @@ function DistractorChip({ children }) {
 }
 
 
-/* Mobile: 2-column grid (3 even rows). sm and up: original fixed-width row. */
+/* Mobile: 2-column grid. sm and up: one row with Reward Points after Difficulty. */
 function FilterFields() {
   const [values, setValues] = useState(() =>
     FILTER_FIELDS.reduce((acc, f) => ({ ...acc, [f.id]: f.value }), {}),
@@ -182,7 +182,7 @@ function FilterFields() {
   const [reward, setReward] = useState(10);
 
   return (
-    <div className="grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:flex sm:flex-wrap sm:gap-6">
+    <div className="grid grid-cols-2 items-start gap-x-3 gap-y-4 sm:flex sm:flex-nowrap sm:gap-4">
       {FILTER_FIELDS.map(({ id, label, w, options }) => (
         <div key={id} className={`${w} min-w-0`}>
           <label htmlFor={id} className="mb-2 block text-[14px] font-medium text-[#0A0240]">
@@ -237,6 +237,50 @@ function FilterFields() {
   );
 }
 
+/* Bottom bar: Status on the left; Save draft, Preview and Add Puzzle on the right, all in one line on desktop. */
+function BottomBar() {
+  const [published, setPublished] = useState(true);
+  return (
+    <div className="mt-10 flex flex-col gap-4 sm:mt-12 sm:flex-row sm:flex-nowrap sm:items-center sm:justify-between sm:gap-4">
+      <div className="flex items-center gap-3">
+        <span className="text-[14px] font-semibold text-[#0A0847]/60">Status</span>
+        <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
+        <span
+          className="rounded-[6px] px-2.5 py-1 text-[12px] font-medium whitespace-nowrap"
+          style={{ backgroundColor: "#E3F7E6", color: GREEN }}
+        >
+          Published
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-nowrap sm:items-center">
+        <button
+          type="button"
+          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[119px] sm:shrink-0"
+        >
+          <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
+          Save draft
+        </button>
+        <button
+          type="button"
+          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[158px] sm:shrink-0"
+        >
+          <Icon src={eyeIcon} w={16} h={12} />
+          Preview
+        </button>
+        <button
+          type="button"
+          className="col-span-2 flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[190px] sm:shrink-0"
+          style={{ backgroundColor: NAVY }}
+        >
+          <Icon src={arrowRightIcon} w={16} />
+          Add Puzzle
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function TabsRow() {
   return (
     <div className="mt-[30px] flex items-stretch overflow-x-auto border-b border-[#E4E5F0]">
@@ -256,50 +300,6 @@ function TabsRow() {
           </button>
         );
       })}
-    </div>
-  );
-}
-
-/* Mobile: status on top, then Save draft | Preview side by side, Add Puzzle full width. */
-function BottomBar() {
-  const [published, setPublished] = useState(true);
-  return (
-    <div className="mt-10 flex flex-col items-stretch gap-4 sm:mt-12 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-      <div className="flex items-center gap-3">
-        <span className="text-[14px] font-semibold text-[#0A0847]/60">Status</span>
-        <Toggle on={published} onChange={setPublished} label="Toggle status" color={GREEN} />
-        <span
-          className="rounded-[6px] px-2.5 py-1 text-[12px] font-medium"
-          style={{ backgroundColor: "#E3F7E6", color: GREEN }}
-        >
-          Published
-        </span>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
-        <button
-          type="button"
-          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[119px]"
-        >
-          <img src={floppyIcon} alt="" aria-hidden className="h-[16px] w-[16px] shrink-0 object-contain" />
-          Save draft
-        </button>
-        <button
-          type="button"
-          className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E4E5F0] bg-white text-[14px] font-semibold whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F7F8FE] sm:w-[158px]"
-        >
-          <Icon src={eyeIcon} w={16} h={12} />
-          Preview
-        </button>
-        <button
-          type="button"
-          className="col-span-2 flex h-[40px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] text-[14px] font-semibold whitespace-nowrap text-white transition-opacity hover:opacity-90 sm:col-auto sm:w-[190px]"
-          style={{ backgroundColor: NAVY }}
-        >
-          <Icon src={arrowRightIcon} w={16} />
-          Add Puzzle
-        </button>
-      </div>
     </div>
   );
 }
