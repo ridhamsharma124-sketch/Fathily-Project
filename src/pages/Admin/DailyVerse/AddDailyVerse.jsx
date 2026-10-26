@@ -57,6 +57,8 @@ import PublishingIcon from "../../../assets/dailyVerseSvgs/PublishingIcon.svg";
 import RewardsIcon from "../../../assets/dailyVerseSvgs/RewardsIcon.svg";
 import VideoPlay from "../../../assets/dailyVerseSvgs/VideoPlay.svg";
 import TableImg from "../../../assets/dailyVerseSvgs/tableImg.png";
+import CurrencyIcon from "../../../assets/dailyVerseSvgs/CurrencyIcon.svg"
+import GreenTick from "../../../assets/dailyVerseSvgs/GreenTick.svg"
 
 /* ==========================================================================
    REUSABLE ATOMIC & STYLED COMPONENTS
@@ -80,6 +82,8 @@ const UploadSvg2 = (p) => <SvgIcon src={Uploadicon2} {...p} />;
 const PublishingSvg = (p) => <SvgIcon src={PublishingIcon} {...p} />;
 const RewardsSvg = (p) => <SvgIcon src={RewardsIcon} {...p} />;
 const VideoPlaySvg = (p) => <SvgIcon src={VideoPlay} {...p} />;
+const CurrencyIconSvg = (p) => <SvgIcon src={CurrencyIcon} {...p} />;
+const GreenTickSvg = (p) => <SvgIcon src={GreenTick} {...p} />;
 
 
 /** Reusable Input Styling */
@@ -467,7 +471,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
             onClick={() => handleSave("Draft Saved")}
             className="px-4 py-2 bg-white border border-[#E2DFFC] rounded-md text-xs font-semibold text-[#0A0847] hover:bg-gray-50 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
-            <SaveSvg size={18} /> Save draft
+            <SaveSvg size={16} /> Save draft
           </button>
           <button
             onClick={() => handleSave("Preview 3 Screens")}
@@ -487,7 +491,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               onClick={() => handleSave("Schedule / Published")}
               className="px-4 py-2 bg-[#001984] text-white rounded-md text-xs font-semibold hover:bg-[#001266] flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              Schedule Now
+                Next <FiArrowRight size={18} />
             </button>
           )}
         </div>
@@ -729,17 +733,25 @@ export default function AddDailyVerseWizard({ onCancel }) {
               </div>
               <div>
                 <Label>Default Version</Label>
+                <div className="relative">
                 <Select
                   value={formData.defaultVersion}
                   onChange={(e) =>
                     updateField("defaultVersion", e.target.value)
                   }
+                  className="appearance-none"
                 >
                   <option value="NIV">NIV</option>
                   <option value="KJV">KJV</option>
                   <option value="ESV">ESV</option>
                   <option value="NLT">NLT</option>
                 </Select>
+                  <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                  </div>
+                
               </div>
             </div>
 
@@ -930,24 +942,38 @@ export default function AddDailyVerseWizard({ onCancel }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
                 <Label>Read Full Chapter Destination</Label>
+                <div className="relative">
                 <Select
                   value={formData.chapterBook}
                   onChange={(e) => updateField("chapterBook", e.target.value)}
+                  className="appearance-none"
                 >
                   <option>Psalms</option>
                   <option>Proverbs</option>
                 </Select>
+                  <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                  </div>
               </div>
               <div>
                 <Label>Chapter</Label>
+                <div className="relative">
                 <Select
                   value={formData.chapterNum}
                   onChange={(e) => updateField("chapterNum", e.target.value)}
+                  className="appearance-none"
                 >
                   <option>23</option>
                   <option>24</option>
                   <option>25</option>
                 </Select>
+                  <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                  </div>
               </div>
             </div>
 
@@ -969,11 +995,11 @@ export default function AddDailyVerseWizard({ onCancel }) {
           </div>
 
           {/* Step 1 Footer Action Bar */}
-          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 pt-4">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-none gap-3 pt-4">
             <button
               type="button"
               onClick={onCancel}
-              className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
+              className="w-full sm:w-auto px-6 sm:px-12 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-md hover:bg-gray-50 transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -981,14 +1007,14 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <button
                 type="button"
                 onClick={() => handleSave("Draft Saved")}
-                className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-md hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-6 sm:px-12 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-md hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
               >
-                <FiSave size={14} /> Save draft
+                <SaveSvg size={14} /> Save draft
               </button>
               <button
                 type="button"
                 onClick={() => setCurrentStep(2)}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#001984] text-white font-medium text-xs rounded-md hover:bg-[#001266] flex items-center justify-center gap-2 whitespace-nowrap transition-colors cursor-pointer"
+                className="w-full sm:w-auto px-6 sm:px-12 py-2.5 bg-[#001984] text-white font-medium text-xs rounded-md hover:bg-[#001266] flex items-center justify-center gap-2 whitespace-nowrap transition-colors cursor-pointer"
               >
                 Next: Reflection & Prayer <FiArrowRight size={14} />
               </button>
@@ -1003,7 +1029,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
       {currentStep === 2 && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* LEFT COLUMN */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             {/* Card 1: Today's Verse Rotation */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6">
               <SectionHeader
@@ -1016,17 +1042,24 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 <div>
                   <Label required>Question</Label>
                   <div className="flex items-center gap-2">
+                      <div className="relative w-full">
                     <Select
                       value={formData.selectedQuestion}
                       onChange={(e) =>
                         updateField("selectedQuestion", e.target.value)
                       }
+                      className="appearance-none"
                     >
                       <option value="">Select question</option>
                       <option value="q1">
                         What does Psalm 23 mean to you?
                       </option>
                     </Select>
+                      <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                    </div>
                     <button className="p-2.5 bg-[#FEF2F2] text-[#EF4444] rounded-lg hover:bg-red-100 transition-colors">
                       <FiPlus size={16} />
                     </button>
@@ -1035,15 +1068,22 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
                 <div>
                   <Label>Set Rotation</Label>
+                       <div className="relative">
                   <Select
                     value={formData.selectedRotation}
                     onChange={(e) =>
                       updateField("selectedRotation", e.target.value)
                     }
-                    className="mb-3"
+                    className="appearance-none mb-3"
                   >
                     <option>Showing selected rotation (6 of 10 verses)</option>
                   </Select>
+
+                   <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-[22px] -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                  </div>
 
                   {/* Radio Group Items */}
                   <div className="space-y-2">
@@ -1086,13 +1126,15 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
                           {isSelected && (
                             <div className="flex items-center gap-3">
-                              <span className="px-3 py-2 rounded-full bg-[#21AC1C1A] text-[#21AC1C] text-sm font-semibold">
+                              <span className="px-3 py-1 rounded-full bg-[#E6F3E0] text-[#30A764] text-sm font-medium">
                                 Use today
                               </span>
-                              <BsCheckCircleFill
-                                size={18}
+                              <span className="bg-[#E6F3E0] p-2 rounded-full" >                       
+                              <GreenTickSvg
+                                size={15}
                                 className="text-[#21AC1C]"
-                              />
+                                />
+                                </span>
                             </div>
                           )}
                         </div>
@@ -1103,14 +1145,23 @@ export default function AddDailyVerseWizard({ onCancel }) {
 
                 <div>
                   <Label>Screen Selector</Label>
+                  <div className="relative">
                   <Select
                     value={formData.screenSelector}
                     onChange={(e) =>
                       updateField("screenSelector", e.target.value)
                     }
+                    className="appearance-none"
                   >
                     <option>New Feature (Launch App)</option>
                   </Select>
+                  
+                   <FiChevronDown
+                    size={14}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                  />
+                  </div>
+
                 </div>
 
                 <div>
@@ -1357,7 +1408,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             {/* Card 1: Reflection & Prayer Options */}
             <div className="bg-white rounded-lg border border-[#E2DFFC] p-6 space-y-4">
               <SectionHeader
@@ -1449,7 +1500,8 @@ export default function AddDailyVerseWizard({ onCancel }) {
               <div className="mb-8">
                 <Label>Amount</Label>
                 <div className="relative">
-                   <img src={Coin} alt="coin" className="absolute top-1/2 -translate-y-1/2 w-12 h-12 object-contain" />
+                   <img src={CurrencyIcon} alt="coin" className="absolute top-1/2 -translate-y-1/2 left-2 w-6 h-6 object-contain" />
+                  {/* <CurrencyIconSvg /> */}
                   <Input
                     type="number"
                     placeholder="50"
@@ -1546,7 +1598,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               </div>
 
               {/* Visibility To */}
-              <div>
+              <div className="lg:pb-20">
                 <h4 className="text-sm font-semibold text-[#0A0847] mb-3">
                   Visibility To
                 </h4>
@@ -1563,38 +1615,43 @@ export default function AddDailyVerseWizard({ onCancel }) {
           </div>
 
           {/* Step 2 Bottom Full-Width Action Footer */}
-          <div className="lg:col-span-12 flex flex-col sm:flex-row items-center justify-between gap-3 pt-4">
-            <button
-              type="button"
-              onClick={() => setCurrentStep(1)}
-              className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-            >
-              <FiArrowLeft size={14} /> Back
-            </button>
-            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleSave("Draft Saved")}
-                className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-              >
-                <FiSave size={14} /> Save draft
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSave("Preview Single Screen")}
-                className="w-full sm:w-auto px-6 py-2.5 border border-[#E2DFFC] text-[#0A0847] font-medium text-xs rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-              >
-                <FiEye size={14} /> Preview
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSave("Schedule / Published")}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#001984] text-white font-medium text-xs rounded-lg hover:bg-[#001266] flex items-center justify-center gap-2 transition-colors cursor-pointer"
-              >
-                <FiCalendar size={14} /> Schedule Now
-              </button>
-            </div>
-          </div>
+        <div className="col-span-full flex w-full min-w-0 flex-col items-center gap-3 pt-4 sm:flex-row">
+          <button
+            type="button"
+            onClick={() => setCurrentStep(1)}
+            className="flex w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] px-4 py-2.5 text-xs font-medium text-[#0A0847] transition-colors hover:bg-gray-50 cursor-pointer sm:flex-1"
+          >
+            <FiArrowLeft size={14} />
+            Back
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSave("Draft Saved")}
+            className="flex w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] px-4 py-2.5 text-xs font-medium text-[#0A0847] transition-colors hover:bg-gray-50 cursor-pointer sm:flex-1"
+          >
+            <SaveSvg size={14} />
+            Save draft
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSave("Preview Single Screen")}
+            className="flex w-full min-w-0 items-center justify-center gap-2 rounded-lg border border-[#E2DFFC] px-4 py-2.5 text-xs font-medium text-[#0A0847] transition-colors hover:bg-gray-50 cursor-pointer sm:flex-1"
+          >
+            <FiEye size={14} />
+            Preview
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleSave("Schedule / Published")}
+            className="flex w-full min-w-0 items-center justify-center gap-2 rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white transition-colors hover:bg-[#001266] cursor-pointer sm:flex-1"
+          >
+            <FiCalendar size={14} />
+            Schedule Now
+          </button>
+        </div>
         </div>
       )}
     </div>

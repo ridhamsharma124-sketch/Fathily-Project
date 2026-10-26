@@ -347,8 +347,24 @@ export default function Dashboard() {
                   dataKey="month"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "#64748B", fontSize: 12, fontWeight: 500 }}
-                  dy={8}
+                  padding={{left: 20}}
+                  tick={({ x, y, payload, index, visibleTicksCount }) => {
+                    const isFirst = index === 0;
+                    const isLast = index === visibleTicksCount - 1;
+                    return (
+                      <text
+                        x={x + (isFirst ? 12 : isLast ? -12 : 0)}
+                        y={y}
+                        dy={12}
+                        textAnchor="middle"
+                        fill="#64748B"
+                        fontSize={12}
+                        fontWeight={500}
+                      >
+                        {payload.value}
+                      </text>
+                    );
+                  }}
                 />
 
                 <YAxis
@@ -383,9 +399,11 @@ export default function Dashboard() {
                   strokeWidth={1.5}
                   fill="url(#userGrowthFill)"
                   dot={{
-                    r: 4,
-                    fill: "#1E3A8A",
+                    r: 6,
+                    fill: "#001984",
+                    fillOpacity: 1,
                     stroke: "#FFFFFF",
+                    strokeOpacity: 1,
                     strokeWidth: 1.5,
                   }}
                   activeDot={{

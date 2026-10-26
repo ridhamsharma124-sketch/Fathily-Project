@@ -394,7 +394,7 @@ export default function DailyVersesPage() {
                     <StatusBadge status={item.status} />
                   </td>
                   <td className="p-4 font-semibold text-[#222222]">{item.version}</td>
-                  <td className="p-4">
+                  <td className="py-4">
                     <div className="flex items-center text-[#0A0847CC] text-sm font-semibold">
                         <img src={Coin} alt="coin" className="w-12 h-12 object-contain" />
                       {item.reward}

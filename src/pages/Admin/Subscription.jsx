@@ -544,10 +544,10 @@ export default function Subscription() {
                   </div>
 
                   {plan.isPopular ? (
-                    <span className="bg-[#FEFCF7] text-[#ED8D31] border border-[#FEEAB5] text-[10px] font-bold px-2.5 py-1 rounded-md flex items-center gap-1 uppercase tracking-wider">
-                      <FiStar size={12} className="fill-current" />
-                      Most Popular
-                    </span>
+                  <span className="inline-flex items-center justify-center gap-1 rounded-md border border-[#FEEAB5] bg-[#FEFCF7] px-2.5 py-1.5 text-xs font-medium uppercase leading-none tracking-wide text-[#F3B21F]">
+                    <FiStar size={17} className="shrink-0 fill-current" />
+                    <span className="relative text-[#ED8D31] top-[0.5px]">Most Popular</span>
+                  </span>
                   ) : (
                     <button className="flex items-center gap-1 text-xs font-medium text-[#001984] bg-[#F3F7FD] px-3 py-2 rounded-lg border border-[#E2DFFC] hover:bg-[#E2DFFC] transition-colors cursor-pointer">
                       <BiSolidEditAlt size={16} /> Edit Plan
@@ -657,38 +657,44 @@ export default function Subscription() {
       {activeTab === "cancellation" && (
         <div className="space-y-6">
           {/* Top Metrics Cards */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-            <div className="flex h-[145px] w-full max-w-[520px] items-center gap-[10px] rounded-[8px] border border-[var(--cancel-border)] bg-white pl-[20px] pr-[29px]">
-              <div className="flex h-[79px] w-[80px] shrink-0 items-center justify-center rounded-[18px] bg-[var(--cancel-tile-blue)] p-[7px] text-white">
-                <BarTrendIcon width={42} height={38} />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[13px] font-medium text-[#0A0847]/60">
-                  Total Cancellations
-                </p>
-                <p className="mt-[2px] text-[32px] font-bold leading-none text-[#0A0847]">
-                  {cancellationMetrics?.totalCancellations}
-                </p>
-              </div>
-            </div>
+          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+  {/* Total Cancellations */}
+  <div className="flex w-full items-center gap-3 rounded-lg border border-[#E2DFFC] bg-white px-3 py-6">
+    <div className="flex size-13 shrink-0 items-center justify-center rounded-xl bg-[#6897F8] text-white">
+      <BarTrendIcon width={30} height={28} />
+    </div>
 
-            <div className="flex h-[145px] w-full max-w-[520px] items-center gap-[10px] rounded-[8px] border border-[var(--cancel-border)] bg-white pl-[20px] pr-[29px]">
-              <div className="flex h-[79px] w-[80px] shrink-0 items-center justify-center rounded-[18px] bg-[#9E6AF2] p-[7px] text-white">
-                <FiStar size={40} className="fill-white" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[13px] font-medium text-[#0A0847]/60">
-                  Most Common Reason
-                </p>
-                <p className="mt-[2px] text-[26px] font-bold leading-none text-[#0A0847]">
-                  {cancellationMetrics?.mostCommonReason}{" "}
-                  <span className="text-[26px] font-bold text-[#0A0847]">
-                    ({cancellationMetrics?.mostCommonPercentage})
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
+    <div className="min-w-0">
+      <p className="text-xs font-medium text-[#0A0847]/60">
+        Total Cancellations
+      </p>
+
+      <p className="mt-0.5 text-md font-bold leading-tight text-[#001984]">
+        {cancellationMetrics?.totalCancellations}
+      </p>
+    </div>
+  </div>
+
+  {/* Most Common Reason */}
+  <div className="flex w-full items-center gap-3 rounded-lg border border-[#E2DFFC] bg-white px-3 py-6">
+    <div className="flex size-13 shrink-0 items-center justify-center rounded-xl bg-[#9E6AF2] text-white">
+      <FiStar size={26} className="fill-current" />
+    </div>
+
+    <div className="min-w-0">
+      <p className="text-xs font-medium text-[#0A0847]/60">
+        Most Common Reason
+      </p>
+
+      <p className="mt-0.5 break-words text-md font-bold leading-tight text-[#001984]">
+        {cancellationMetrics?.mostCommonReason}{" "}
+        <span className="text-[#0A0847]">
+          ({cancellationMetrics?.mostCommonPercentage})
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
 
           {/* Cancellation Reasons */}
           <div className="bg-white rounded-lg border border-[#E2DFFC] p-4 space-y-4 sm:p-6">
