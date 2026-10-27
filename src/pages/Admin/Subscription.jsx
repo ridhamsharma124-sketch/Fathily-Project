@@ -24,6 +24,8 @@ import GreenPlay from "../../assets/SubscriptionSvgs/GreenPlay.svg";
 import InfoIcon from "../../assets/SubscriptionSvgs/InfoIcon.svg";
 import PurpleEye from "../../assets/SubscriptionSvgs/PurpleEye.svg";
 import FileIcon from "../../assets/SubscriptionSvgs/FileIcon.svg";
+import DragDrop from "../../assets/DragDrop.svg";
+import SaveIconWhite from '../../assets/SaveIconWhite.svg'
 
 const SvgIcon = ({ src, size = 16, className = "" }) => (
   <img src={src} alt="" width={size} height={size} className={`shrink-0 ${className}`} />
@@ -39,6 +41,8 @@ const GreenPlaySvg = (p) => <SvgIcon src={GreenPlay} {...p} />;
 const InfoIconSvg = (p) => <SvgIcon src={InfoIcon} {...p} />;
 const PurpleEyeSvg = (p) => <SvgIcon src={PurpleEye} {...p} />;
 const FileIconSvg = (p) => <SvgIcon src={FileIcon} {...p} />;
+const DragDropSvg = (p) => <SvgIcon src={DragDrop} {...p} />;
+const SaveIconWhiteSvg = (p) => <SvgIcon src={SaveIconWhite} {...p} />;
 
 /* ==========================================================================
    MOCK API FETCH (Returns full page payload)
@@ -166,7 +170,7 @@ const PriceInputRow = ({
 
     {/* Inputs and inline optional tag on XL screens */}
     <div className="flex items-center gap-1.5 min-w-0">
-      <div className="flex items-center border border-[#E2DFFC] rounded-lg px-2.5 py-1.5 bg-white w-16 sm:w-20 md:w-24">
+      <div className="flex items-center border border-[#E2DFFC] rounded-lg px-2.5 py-1.5 bg-white w-20 sm:w-20 md:w-24">
         <span className="text-[#0A0847] font-bold mr-1">
           <BiDollar size={16} />
         </span>
@@ -174,7 +178,7 @@ const PriceInputRow = ({
           type="text"
           value={price || ""}
           onChange={(e) => onChangePrice && onChangePrice(e.target.value)}
-          className="w-full text-xs font-extrabold text-[#0A0847CC] outline-none bg-transparent"
+          className="w-full text-xs font-bold text-[#0A0847CC] outline-none bg-transparent"
         />
       </div>
 
@@ -282,21 +286,7 @@ const ToggleSwitch = ({ enabled, onChange }) => (
 );
 
 const DragHandle = ({ className = "" }) => (
-  <svg
-    width="9.2"
-    height="15.2"
-    viewBox="0 0 9.2 15.2"
-    fill="currentColor"
-    aria-hidden="true"
-    className={`shrink-0 ${className}`}
-  >
-    {[1.6, 7.6, 13.6].map((cy) => (
-      <g key={cy}>
-        <circle cx="1.6" cy={cy} r="1.6" />
-        <circle cx="7.6" cy={cy} r="1.6" />
-      </g>
-    ))}
-  </svg>
+  <DragDropSvg />
 );
 
 const BarTrendIcon = ({ width = 42, height = 38, className = "" }) => (
@@ -614,7 +604,7 @@ export default function Subscription() {
                 className="text-[#001984] mt-0.5 shrink-0"
               />
               <div>
-                <h3 className="font-bold text-base text-[#0A0847] flex items-center gap-1.5">
+                <h3 className="font-semibold text-base text-[#0A0847] flex items-center gap-1.5">
                   Plan Features{" "}
                   <span className="text-sm font-normal text-[#0A0847]">
                     (Applies to All Plans)
@@ -787,7 +777,7 @@ export default function Subscription() {
                         Number(e.target.value),
                       )
                     }
-                    className="w-12 text-center text-xs font-bold text-[#0A0847] py-1 outline-none"
+                    className="w-8 text-center text-xs text-[#0A0847] pl-2 py-1 outline-none"
                   />
                   <span className="bg-[#F8FAFC] border-l border-[#E2DFFC] px-3 py-1 text-xs text-gray-500 font-medium">
                     day
@@ -857,7 +847,7 @@ export default function Subscription() {
       {/* Save Button Bar */}
       <div className="pt-2">
         <button className="flex h-12 w-full items-center justify-center gap-[10px] rounded-lg bg-[#001984] px-[15px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-[var(--cancel-navy-hover)] cursor-pointer">
-          <SaveIcon size={16} />
+          <SaveIconWhiteSvg size={16} />
           Save Plan Changes
         </button>
       </div>

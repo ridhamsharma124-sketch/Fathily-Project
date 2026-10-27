@@ -264,7 +264,7 @@ export default function Dashboard() {
             return (
               <div
                 key={item.key}
-                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC] min-h-[142px] px-4 py-4 flex items-center gap-4 font-[Inter]"
+                className="bg-[#FEFFFF] rounded-lg border border-[#E2DFFC]  px-4 py-8 flex items-center gap-4 font-[Inter]"
               >
                 <div
                   className={`h-[60px] w-[60px] shrink-0 rounded-[18px] flex items-center justify-center ${colorMap[item.color]}`}
@@ -272,26 +272,26 @@ export default function Dashboard() {
                   <img src={icon} alt="" className="h-[50px] w-[50px] shrink-0" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[13px] font-[Inter] font-semibold text-[#001984]">
+                  <p className="text-xs font-[Inter] font-semibold text-[#001984] mb-2">
                     {item.label}
                   </p>
-                  <div className="flex flex-wrap items-center gap-x-6 gap-y-1 mt-1">
-                    <p className="text-[22px] leading-none font-semibold font-[Inter] text-[#0A0847]">
+                  <div className="flex flex-wrap items-center gap-y-1 mt-1">
+                    <p className="text-lg leading-none font-semibold font-[Inter] text-[#0A0847]">
                       {typeof item.value === "number"
                         ? item.value.toLocaleString()
                         : item.value}
                     </p>
                     {item.change !== null ? (
-                      <span className="text-xs font-semibold text-[#4EB179]">
+                      <span className="text-xs ml-4 font-semibold text-[#4EB179]">
                         ↑ {item.change}%
                       </span>
                     ) : (
-                      <span className="text-xs font-semibold text-[#FF9E01]">
+                      <span className="text-xs ml-6 font-semibold text-[#FF9E01]">
                         {item.note}
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-[#0A084799] font-medium mt-0.5">
+                  <p className="text-xs text-[#0A084799] font-medium mt-2">
                     vs last month
                   </p>
                 </div>
@@ -578,15 +578,15 @@ export default function Dashboard() {
         <img
           src={adminDashboardImage}
           alt="Quote background"
-          className="w-full h-auto min-h-[160px] object-cover"
+          className="w-full h-auto min-h-[100px] sm:min-h-[160px] object-fit"
         />
 
         {/* Centered Overlay Text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center sm:p-6">
-          <p className="text-xl md:text-2xl font-bold text-[#0A0847]">
+          <p className="text-sm sm:text-xl md:text-2xl font-bold text-[#0A0847]">
             "Trust in the Lord with all your heart."
           </p>
-          <p className="text-sm md:text-base font-semibold italic text-[#001984] mt-1.5">
+          <p className="text-xs sm:text-sm md:text-base font-semibold italic text-[#001984] mt-1.5">
             – Proverbs 3:5
           </p>
         </div>

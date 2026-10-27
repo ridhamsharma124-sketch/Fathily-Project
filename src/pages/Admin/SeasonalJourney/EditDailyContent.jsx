@@ -11,6 +11,7 @@ import PublishWhiteIcon from "../../../assets/SeasonalJourneys/PublishWhiteIcon.
 import SaveIcon from "../../../assets/SeasonalJourneys/SaveIcon.svg";
 import Calendar2Icon from "../../../assets/SeasonalJourneys/Calendar2Icon.svg";
 import UploadIcon from "../../../assets/SeasonalJourneys/UploadIcon.svg";
+import RichTextEditor from "../../../components/UIComponents/RichTextEditor";
 
 /* ==========================================================================
    ATOMS
@@ -201,7 +202,20 @@ const AudioBlock = ({ fileName, fileUrl, duration, thumbnail, onUploadFile, onUp
         ) : (
           <div
             onClick={() => fileRef.current?.click()}
-            className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-white hover:bg-[#FAFAFF] transition-colors cursor-pointer"
+            // className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-white hover:bg-[#FAFAFF] transition-colors cursor-pointer"
+           className="h-20 flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}
           >
             <UploadIconSvg size={20} className="text-[#001984]" />
             <span className="text-xs font-semibold text-[#0A0847]">Upload Audio</span>
@@ -229,7 +243,20 @@ const AudioBlock = ({ fileName, fileUrl, duration, thumbnail, onUploadFile, onUp
         ) : (
           <div
             onClick={() => thumbRef.current?.click()}
-            className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#E9EAF7] hover:bg-[#E0E1F5] transition-colors cursor-pointer"
+            // className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#E9EAF7] hover:bg-[#E0E1F5] transition-colors cursor-pointer"
+             className="h-20 flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}          
           >
             <UploadIconSvg size={28} className="text-[#001984]" />
             <span className="text-xs font-semibold text-[#0A0847]">Upload / Replace Image</span>
@@ -491,10 +518,23 @@ const [days, setDays] = useState(() =>
             ) : (
               <div
                 onClick={() => dayImageRef.current?.click()}
-                className="border border-dashed border-[#CBC6F8] rounded-lg h-24 flex items-center justify-center gap-3 bg-[#F5F6FF] hover:bg-[#FAFAFF] transition-colors cursor-pointer"
+                // className="border border-dashed border-[#CBC6F8] rounded-lg h-24 flex items-center justify-center gap-3 bg-[#F5F6FF] hover:bg-[#FAFAFF] transition-colors cursor-pointer"
+               className="h-24 flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}
               >
                 <UploadIconSvg size={42} className="text-[#001984]" />
-                <span className="text-sm font-semibold text-[#0A0847]">Upload / Replace Image</span>
+                <span className="text-sm font-normal text-[#0A0847]">Upload / Replace Image</span>
               </div>
             )}
             <p className="text-[11px] text-[#0A084799] font-medium mt-2">
@@ -526,11 +566,21 @@ const [days, setDays] = useState(() =>
         onStart={(v) => updateSection("dailyLesson", "startDate", v)}
         onEnd={(v) => updateSection("dailyLesson", "endDate", v)}
       >
-        <RichTextArea
-          rows={3}
+        <RichTextEditor
           placeholder="Write the main teaching for today..."
           value={activeDay.dailyLesson.text}
           onChange={(v) => updateSection("dailyLesson", "text", v)}
+          minHeight={70}
+          options={[
+            [{ font: [] }, { size: ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            ["link", "image", "video"],
+            ["clean"],
+          ]}
         />
       </SectionCard>
 
@@ -562,11 +612,22 @@ const [days, setDays] = useState(() =>
         onStart={(v) => updateSection("reflectiveThought", "startDate", v)}
         onEnd={(v) => updateSection("reflectiveThought", "endDate", v)}
       >
-        <RichTextArea
-          rows={2}
+      
+           <RichTextEditor
           placeholder="How does today's lesson apply to your life?"
           value={activeDay.reflectiveThought.text}
           onChange={(v) => updateSection("reflectiveThought", "text", v)}
+          minHeight={70}
+          options={[
+            [{ font: [] }, { size: ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            ["link", "image", "video"],
+            ["clean"],
+          ]}
         />
       </SectionCard>
 
@@ -580,11 +641,25 @@ const [days, setDays] = useState(() =>
         onStart={(v) => updateSection("closingPrayer", "startDate", v)}
         onEnd={(v) => updateSection("closingPrayer", "endDate", v)}
       >
-        <RichTextArea
+        {/* <RichTextArea
           rows={2}
+        
+        /> */}
+         <RichTextEditor
           placeholder="Write a closing prayer for today..."
           value={activeDay.closingPrayer.text}
           onChange={(v) => updateSection("closingPrayer", "text", v)}
+          minHeight={70}
+          options={[
+            [{ font: [] }, { size: ["12px", "14px", "16px", "18px", "20px", "24px", "28px", "32px"] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ align: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ indent: "-1" }, { indent: "+1" }],
+            ["link", "image", "video"],
+            ["clean"],
+          ]}
         />
       </SectionCard>
 

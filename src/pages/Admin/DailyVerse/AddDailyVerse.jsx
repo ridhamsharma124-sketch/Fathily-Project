@@ -59,6 +59,8 @@ import VideoPlay from "../../../assets/dailyVerseSvgs/VideoPlay.svg";
 import TableImg from "../../../assets/dailyVerseSvgs/tableImg.png";
 import CurrencyIcon from "../../../assets/dailyVerseSvgs/CurrencyIcon.svg"
 import GreenTick from "../../../assets/dailyVerseSvgs/GreenTick.svg"
+import RichTextEditor from "../../../components/UIComponents/RichTextEditor";
+import UserGroup from "../../../assets/UserGroup.svg";
 
 /* ==========================================================================
    REUSABLE ATOMIC & STYLED COMPONENTS
@@ -84,6 +86,7 @@ const RewardsSvg = (p) => <SvgIcon src={RewardsIcon} {...p} />;
 const VideoPlaySvg = (p) => <SvgIcon src={VideoPlay} {...p} />;
 const CurrencyIconSvg = (p) => <SvgIcon src={CurrencyIcon} {...p} />;
 const GreenTickSvg = (p) => <SvgIcon src={GreenTick} {...p} />;
+const UserGroupSvg = (p) => <SvgIcon src={UserGroup} {...p} />;
 
 
 /** Reusable Input Styling */
@@ -353,7 +356,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
     imageAltText: "",
     scriptureRef: "",
     defaultVersion: "NIV",
-    verseText: "",
+    verseText: "Heavenly Father, You are loving and kind. Help me walk in Your truth by trusting You with each step. Amen.",
     activeTranslations: ["NIV"],
     dailyTakeaway: "",
     audioFile: null,
@@ -661,10 +664,23 @@ export default function AddDailyVerseWizard({ onCancel }) {
                 />
                 <div
                   onClick={() => bgImageRef.current?.click()}
-                  className="border border-dashed border-[#001984] h-26 flex items-center justify-center gap-3 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  // className="border-2 border-dashed border-[#001984] h-26 flex items-center justify-center gap-3 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                className="h-[100px] flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}
                 >
-                  <UploadSvg size={36} />
-                  <span className="text-sm font-semibold text-[#0A0847]">
+                  <UploadSvg size={48} />
+                  <span className="text-sm  text-[#0A0847]">
                     Upload / Replace Image
                   </span>
                 </div>
@@ -1222,7 +1238,7 @@ export default function AddDailyVerseWizard({ onCancel }) {
               {/* Working Interactive Rich Text Editor */}
               <div>
                 <Label>Prayer</Label>
-                <div className="border border-[#E2DFFC] rounded-xl overflow-hidden focus-within:border-[#001984]">
+                {/* <div className="border border-[#E2DFFC] rounded-xl overflow-hidden focus-within:border-[#001984]">
                   <div className="bg-[#F8FAFC] border-b border-[#E2DFFC] p-2 flex items-center gap-2 text-gray-600">
                     <button
                       type="button"
@@ -1291,7 +1307,18 @@ export default function AddDailyVerseWizard({ onCancel }) {
                       textFormatting.underline ? "underline" : ""
                     }`}
                   />
-                </div>
+                </div> */}
+                
+                <RichTextEditor
+                  value={formData.verseText}
+                  onChange={(value) => updateField("verseText", value)}
+                  placeholder="Write your verse..."
+                  options={[
+                    ["bold", "italic", "underline","link",{ list: "bullet" }],
+                  ]}
+                  minHeight={86}
+                />
+
               </div>
 
               {/* Working Apply Media */}
@@ -1365,13 +1392,13 @@ export default function AddDailyVerseWizard({ onCancel }) {
                     key={item.id}
                     className="border border-[#E2DFFC] rounded-md p-2 flex items-center justify-between bg-white"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
                       <img
                         src={TableImg}
                         alt="Media thumb"
                         className="w-12 h-12 rounded-lg object-cover shrink-0"
                       />
-                      <div className="overflow-hidden">
+                      <div className="flex-1 min-w-0 overflow-hidden">
                         <p className="text-[11px] font-bold text-[#0A0847] truncate">
                           {item.name}
                         </p>
@@ -1598,13 +1625,13 @@ export default function AddDailyVerseWizard({ onCancel }) {
               </div>
 
               {/* Visibility To */}
-              <div className="lg:pb-20">
+              <div className="lg:pb-17">
                 <h4 className="text-sm font-semibold text-[#0A0847] mb-3">
                   Visibility To
                 </h4>
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-[#3231DB] text-white flex items-center justify-center shrink-0">
-                    <FiUsers size={14} />
+                    <UserGroupSvg size={18} />
                   </div>
                   <span className="text-xs font-medium text-[#0A0847CC]">
                     {formData.visibilityTo}

@@ -791,7 +791,20 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
             />
             <div
               onClick={() => coverImageRef.current?.click()}
-              className="border border-dashed border-[#CBC6F8] rounded-lg h-22 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
+              // className="border border-dashed border-[#CBC6F8] rounded-lg h-22 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
+               className="h-[100px] flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}
             >
               <UploadIconSvg size={40} className="text-[#001984]" />
               <span className="text-sm text-[#0A0847]">
@@ -932,7 +945,7 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
                   );
                 })}
               </div>
-              <p className="text-lg text-[#0A084799] font-medium mt-2">
+              <p className="text-sm text-[#0A084799] font-medium mt-2">
                 Select the days of the week when content will be released. You
                 can still edit individual release dates in the content section
                 if needed.
@@ -1023,10 +1036,23 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
               ) : (
                 <div
                   onClick={() => audioRef.current?.click()}
-                  className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
+                  // className="border border-dashed border-[#CBC6F8] rounded-lg h-20 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer"
+                 className="h-20 flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}
                 >
-                  <UploadIconSvg size={20} className="text-[#001984]" />
-                  <span className="text-xs font-semibold text-[#0A0847]">
+                  <UploadIconSvg size={30} className="text-[#001984]" />
+                  <span className="text-xs font-medium text-[#0A0847]">
                     Upload Audio
                   </span>
                 </div>
@@ -1060,7 +1086,20 @@ export default function AddSeasonalJourneyWizard({ onCancel }) {
               ) : (
                 <div
                   onClick={() => thumbnailRef.current?.click()}
-                  className="h-24 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer border border-dashed border-[#001984]"
+                  // className="h-24 flex items-center justify-center gap-3 bg-[#FAFAFF] hover:bg-[#F1F2F9] transition-colors cursor-pointer border border-dashed border-[#001984]"
+                className="h-[80px] flex items-center justify-center gap-5 bg-[#F5F5FF] hover:bg-[#EEEEFF] transition-colors cursor-pointer"
+                  style={{
+                    border: "none",
+                    backgroundImage: `
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to right, #001984 0 8px, transparent 8px 20px),
+                      repeating-linear-gradient(to bottom, #001984 0 8px, transparent 8px 20px)
+                    `,
+                    backgroundPosition: "top, right, bottom, left",
+                    backgroundSize: "100% 1px, 1px 100%, 100% 1px, 1px 100%",
+                    backgroundRepeat: "no-repeat",
+                  }}                
                 >
                   <UploadIconSvg size={40} className="text-[#001984]" />
                   <span className="text-sm font-normal text-[#0A0847]">
