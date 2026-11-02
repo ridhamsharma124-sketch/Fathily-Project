@@ -245,7 +245,7 @@ export default function ArticleModal({ mode, article, onClose }) {
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full text-[#001984] transition-opacity hover:opacity-70"
+            className="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full text-[#0926FD] transition-opacity hover:opacity-70"
           >
             <LuCircleX size={20} strokeWidth={2} />
           </button>
@@ -293,19 +293,19 @@ export default function ArticleModal({ mode, article, onClose }) {
 
         <div className="w-full min-w-0 box-border">
           <Label>Story Summary:</Label>
-          <div className="flex h-[216px] w-full min-w-0 box-border flex-col overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
-            <Toolbar />
+<div className="flex min-h-[20px] w-full min-w-0 box-border flex-col overflow-hidden rounded-lg border border-[#E2DFFC] bg-white">
+              <Toolbar />
             <div className="min-h-0 flex-1 overflow-hidden p-4">
-              <p className="text-[13px] font-medium leading-[1.5] text-body-muted">
+              <p className="text-[12px] font-semibold leading-none text-[#0A0847]/60">
                 {SUMMARY_BODY}
               </p>
-              <ol className="mt-2 space-y-1">
+              <ol className="mt-4 space-y-2">
                 {SUMMARY_STEPS.map((step, index) => (
                   <li
                     key={step}
-                    className="flex gap-2 text-[13px] font-medium leading-[1.5] text-counter"
+                    className="flex gap-2 text-[12px] font-semibold leading-[20px] text-[#0A0847]/60"
                   >
-                    <span className="font-bold">{index + 1}.</span>
+                    <span>{index + 1}.</span>
                     <span>{step}</span>
                   </li>
                 ))}
@@ -327,7 +327,7 @@ export default function ArticleModal({ mode, article, onClose }) {
                   type="button"
                   onClick={() => removeChip(chip)}
                   aria-label={`Remove ${chip}`}
-                  className="cursor-pointer text-[#001984] transition-opacity hover:opacity-70"
+                  className="cursor-pointer text-[#0926FD] transition-opacity hover:opacity-70"
                 >
                   <LuCircleX size={16} strokeWidth={2} />
                 </button>

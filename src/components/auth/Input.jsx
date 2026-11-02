@@ -33,7 +33,7 @@ export default function Input({
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
-            className="absolute right-5 top-1/2 -translate-y-1/2 text-[#0A0847]"
+            className="absolute right-5 top-1/2 -translate-y-1/2 text-[#6B7280] transition hover:text-[#0A0847]"
             aria-label={show ? "Hide password" : "Show password"}
           >
             {show ? <PiEye size={18} /> : <PiEyeSlash size={18} />}

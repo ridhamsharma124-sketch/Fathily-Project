@@ -7,31 +7,20 @@ import eyeIcon from "../../../assets/addhistory/eye.png";
 import {
   PiArrowCircleRight,
   PiArrowRight,
-  PiArrowsClockwise,
   PiBookmarkSimple,
   PiCalendarBlank,
   PiCaretDown,
-  PiCheck,
-  PiCheckCircle,
   PiClock,
-  PiClockClockwise,
-  PiEye,
-  PiHeart,
-  PiInfo,
   PiLink,
   PiListBullets,
-  PiLock,
-  PiPencilSimple,
   PiPlay,
-  PiPlayCircle,
-  PiSpeakerHigh,
   PiTextAlignJustify,
   PiTextB,
   PiTextItalic,
   PiTextUnderline,
-  PiTrash,
   PiUploadSimple,
-  PiX,
+  PiWarningCircle,
+  PiXCircle,
 } from "react-icons/pi";
 import replaceIcon from "../../../assets/addhistory/replace.png";
 import trashIcon from "../../../assets/addhistory/trash.png";
@@ -41,36 +30,39 @@ import heartIcon from "../../../assets/addhistory/heart.png";
 import checkIcon from "../../../assets/addhistory/check.png";
 import speedIcon from "../../../assets/addhistory/speed.png";
 import clockIcon from "../../../assets/addhistory/clock.png";
+import speakerIcon from "../../../assets/speaker1.svg";
 
 /* ==========================================================================
    SHARED STYLES
    ========================================================================== */
-// Step 2 (unchanged)
 const inputCls =
   "h-[40px] w-full rounded-[6px] border border-[#E5E7EB] bg-white px-[12px] text-[12px] text-[#0B1250] outline-none transition placeholder:text-[#6B7280] focus:border-[#0B1F7A]";
 
 const s1InputBase =
-  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
+  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
 const s1Input = `h-[46px] ${s1InputBase}`;
-const s1Input52 = `h-[52px] ${s1InputBase}`;
 const s1Ta =
-  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[10px] text-[12px] font-medium text-[#0A0847CC] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
-const s1Label = "mb-[10px] block text-[12px] font-semibold text-[#0A0847CC]";
+  "w-full rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[10px] text-[12px] font-medium text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]";
+const s1Label = "mb-[10px] block text-[12px] font-semibold text-[#0A0847]";
+const prayerLabel =
+  "mb-[6px] block font-inter text-[12px] font-semibold leading-none tracking-[0em] text-[#0A0847CC]";
+
+const schedLabel = "mb-[8px] block text-[13px] font-semibold text-[#0A0847]";
+const schedInput =
+  "h-[48px] w-full rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
 
 /* ==========================================================================
    REUSABLE HELPERS
    ========================================================================== */
 function Card({ className = "", children }) {
   return (
-    <div
-      className={`rounded-[10px] border border-[#E5E7EB] bg-white p-[20px] ${className}`}
-    >
+    <div className={`rounded-[10px] border border-[#E5E7EB] bg-white p-4 sm:p-[20px] ${className}`}>
       {children}
     </div>
   );
 }
 
-function S1Card({ className = "", pad = "p-[28px]", children }) {
+function S1Card({ className = "", pad = "p-4 sm:p-[28px]", children }) {
   return (
     <div
       className={`rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white ${pad} ${className}`}
@@ -132,21 +124,35 @@ function S1Toggle({ checked, onChange, label = "" }) {
           }`}
         />
       </span>
-      {label && (
-        <span className="text-[12px] font-medium text-[#0A0847CC]">{label}</span>
-      )}
+      {label && <span className="text-[12px] font-medium text-[#0A0847]">{label}</span>}
     </button>
   );
 }
 
-function SelectBox({
-  value,
-  onChange,
-  options = [],
-  className = "",
-  compact = false,
-  large = false,
-}) {
+function SchedToggle({ checked, onChange, label }) {
+  return (
+    <button
+      type="button"
+      onClick={() => onChange(!checked)}
+      className="flex cursor-pointer items-center gap-[10px]"
+    >
+      <span
+        className={`inline-flex h-[22px] w-[38px] shrink-0 items-center rounded-full p-[3px] transition ${
+          checked ? "bg-[#001984]" : "bg-[#D9DBEA]"
+        }`}
+      >
+        <span
+          className={`h-[16px] w-[16px] rounded-full bg-white shadow transition ${
+            checked ? "translate-x-[16px]" : "translate-x-0"
+          }`}
+        />
+      </span>
+      <span className="text-[13px] font-semibold text-[#0A0847]">{label}</span>
+    </button>
+  );
+}
+
+function SelectBox({ value, onChange, options = [], className = "", compact = false, large = false }) {
   const hCls = large ? "h-[44px]" : compact ? "h-[32px]" : "h-[40px]";
   const plCls = large ? "pl-[14px]" : "pl-[12px]";
   return (
@@ -183,7 +189,7 @@ function S1Select({
       <select
         value={value}
         onChange={onChange}
-        className={`${height} w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-[12px] pr-[36px] text-[12px] font-medium text-[#0A0847CC] outline-none transition focus:border-[#001984]`}
+        className={`${height} w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white pl-[12px] pr-[36px] text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]`}
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>
@@ -218,9 +224,7 @@ function Checkbox({ checked, onChange, label, labelClass = "" }) {
         onChange={onChange}
         className="h-[16px] w-[16px] cursor-pointer rounded-[3px] border border-[#6B7280] accent-[#0B1F7A]"
       />
-      <span className={`text-[12px] font-medium text-[#0B1250] ${labelClass}`}>
-        {label}
-      </span>
+      <span className={`text-[12px] font-medium text-[#0B1250] ${labelClass}`}>{label}</span>
     </label>
   );
 }
@@ -234,10 +238,27 @@ function S1Checkbox({ checked, onChange, label, labelClass = "" }) {
         onChange={onChange}
         className="h-[20px] w-[20px] shrink-0 cursor-pointer rounded-[3px] border border-[#E2DFFC] accent-[#001984]"
       />
-      <span className={`text-[12px] font-semibold text-[#0A0847CC] ${labelClass}`}>
-        {label}
-      </span>
+      <span className={`text-[12px] font-semibold text-[#0A0847] ${labelClass}`}>{label}</span>
     </label>
+  );
+}
+
+function LockGlyph({ className = "h-[18px] w-[14.34375px]" }) {
+  return (
+    <span
+      aria-hidden
+      className={`inline-block shrink-0 bg-[#0A0847] ${className}`}
+      style={{
+        WebkitMaskImage: `url(${lockIcon})`,
+        maskImage: `url(${lockIcon})`,
+        WebkitMaskSize: "contain",
+        maskSize: "contain",
+        WebkitMaskRepeat: "no-repeat",
+        maskRepeat: "no-repeat",
+        WebkitMaskPosition: "center",
+        maskPosition: "center",
+      }}
+    />
   );
 }
 
@@ -252,7 +273,7 @@ function RichTextBox({ value, onChange, rows = 5 }) {
   ];
   return (
     <div className="overflow-hidden rounded-[6px] border border-[#E5E7EB]">
-      <div className="flex items-center gap-[4px] border-b border-[#E5E7EB] bg-[#F3F4F8] px-[8px] py-[6px]">
+      <div className="flex flex-wrap items-center gap-[4px] border-b border-[#E5E7EB] bg-[#F3F4F8] px-[8px] py-[6px]">
         {tools.map(({ Icon, label }) => (
           <button
             key={label}
@@ -280,7 +301,7 @@ function S1RichTextBox({ value, onChange }) {
     "flex cursor-pointer items-center justify-center text-[#333333] transition hover:bg-[#E4E4E4]";
   return (
     <div className="overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white">
-      <div className="border-b border-[#E2DFFC] px-[21px] py-[11px]">
+      <div className="border-b border-[#E2DFFC] px-[12px] py-[11px] sm:px-[21px]">
         <div className="inline-flex h-[26px] items-stretch divide-x divide-[#C9C9C9] overflow-hidden rounded-[4px] border border-[#B5B5B5] bg-[#EFEFEF]">
           <button type="button" title="Bold" aria-label="Bold" className={`${seg} w-[34px] text-[15px] font-bold`}>
             B
@@ -303,7 +324,7 @@ function S1RichTextBox({ value, onChange }) {
       <textarea
         value={value}
         onChange={onChange}
-        className="block h-[93px] w-full resize-none bg-white px-[20px] pb-[18px] pt-[18px] text-[12px] font-semibold leading-[1.3] text-[#0A084799] outline-none placeholder:text-[#0A084799]"
+        className="block h-[93px] w-full resize-none bg-white px-[16px] pb-[18px] pt-[18px] text-[12px] font-semibold leading-[1.3] text-[#0A084799] outline-none placeholder:text-[#0A084799] sm:px-[20px]"
       />
     </div>
   );
@@ -325,14 +346,12 @@ function AudioPlayer({ time, fill, rightTime = false, s1 = false }) {
         <PiPlay size={14} weight="fill" />
       </button>
       <span className="shrink-0 text-[11px] font-medium text-[#0B1250]">{time}</span>
-      <PiSpeakerHigh size={15} color="#5B5F8C" className="shrink-0" />
+      <img src={speakerIcon} alt="" className="h-[15px] w-[15px] shrink-0" />
       <div className="relative h-[6px] flex-1 rounded-full bg-[#D9D9E6]">
         <div className={fillCls} style={{ width: fill }} />
       </div>
-      <PiSpeakerHigh size={15} color="#0B1250" className="shrink-0" />
-      {rightTime && (
-        <span className="shrink-0 text-[11px] font-medium text-[#0B1250]">{time}</span>
-      )}
+      <img src={speakerIcon} alt="" className="h-[15px] w-[15px] shrink-0" />
+      {rightTime && <span className="shrink-0 text-[11px] font-medium text-[#0B1250]">{time}</span>}
     </div>
   );
 }
@@ -341,16 +360,18 @@ function AudioPlayer({ time, fill, rightTime = false, s1 = false }) {
    TOP HEADER + STEPPER
    ========================================================================== */
 const headerOutlineBtn =
-  "flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[12px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]";
+  "flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[12px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-auto";
 const headerPrimaryBtn =
   "flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] text-[14px] font-semibold text-white transition hover:bg-[#001266] sm:w-[160px]";
 
 function TopHeader({ step, setStep }) {
   return (
     <>
-      <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-[22px] font-semibold text-[#0A0847]">Add Historical Story</h1>
-        <div className="flex flex-wrap items-center gap-[8px]">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <h1 className="text-[20px] font-semibold text-[#0A0847] sm:text-[22px]">
+          Add Historical Story
+        </h1>
+        <div className="grid grid-cols-1 gap-[8px] sm:flex sm:flex-wrap sm:items-center">
           <button type="button" className={`${headerOutlineBtn} !text-[#0A0847CC]`}>
             <img src={floppyIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
             Save draft
@@ -371,23 +392,19 @@ function TopHeader({ step, setStep }) {
         </div>
       </div>
 
-      {/* Stepper */}
-      <div className="flex h-auto min-h-[32px] flex-wrap items-center gap-[12px]">
-        <div className="flex items-center gap-[8px]">
+      {/* Stepper: wraps on mobile, connector shrinks */}
+      <div className="flex flex-wrap items-center gap-x-[12px] gap-y-[10px]">
+        <div className="flex min-w-0 items-center gap-[8px]">
           <span className="flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full bg-[#001984] text-[14px] font-semibold text-white">
             1
           </span>
-          <span className="text-[14px] font-semibold text-[#0A0847]">
-            Homepage & Story
-          </span>
+          <span className="text-[14px] font-semibold text-[#0A0847]">Homepage & Story</span>
         </div>
-        <span className="h-px w-[40px] shrink-0 bg-[#0019841A] sm:w-[135px]" />
-        <div className="flex items-center gap-[8px]">
+        <span className="h-px w-[32px] shrink-0 bg-[#0019841A] sm:w-[135px]" />
+        <div className="flex min-w-0 items-center gap-[8px]">
           <span
             className={`flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full text-[14px] font-semibold transition ${
-              step === 2
-                ? "bg-[#001984] text-white"
-                : "bg-[#E2DFFC] text-[#0A084799]"
+              step === 2 ? "bg-[#001984] text-white" : "bg-[#E2DFFC] text-[#0A084799]"
             }`}
           >
             2
@@ -433,100 +450,135 @@ function StepOne({ v, upd, setStep, navigate }) {
   return (
     <div className="flex flex-col gap-[26px]">
       {/* Card 1: Schedule & Display */}
-      <S1Card>
-        <div className="flex items-center gap-[12px]">
-          <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-[#EEF4FF]">
-            <PiCalendarBlank size={20} color="#3231DB" />
+      <S1Card pad="p-4 sm:p-[30px]">
+        <div className="flex items-center gap-[14px]">
+          <div className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[8px] bg-[#EEEEFB]">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0">
+              <rect x="3" y="4.5" width="18" height="16.5" rx="3" stroke="#2F2FE0" strokeWidth="2" />
+              <path d="M8 2.5V6M16 2.5V6M3 9.5h18" stroke="#2F2FE0" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="8" cy="13.5" r="1.3" fill="#2F2FE0" />
+              <circle cx="12" cy="13.5" r="1.3" fill="#2F2FE0" />
+              <circle cx="16" cy="13.5" r="1.3" fill="#2F2FE0" />
+              <circle cx="8" cy="17.5" r="1.3" fill="#2F2FE0" />
+              <circle cx="12" cy="17.5" r="1.3" fill="#2F2FE0" />
+              <circle cx="16" cy="17.5" r="1.3" fill="#2F2FE0" />
+            </svg>
           </div>
           <div>
-            <h2 className="text-[16px] font-semibold text-[#0A0847]">Schedule & Display</h2>
-            <p className="text-[11px] italic text-[#0A084799]">
-              Set when and how your story will be displayed
+            <h2 className="text-[18px] font-semibold text-[#0A0847]">Schedule & Display</h2>
+            <p className="text-[12px] italic text-[#6E6F9A]">
+              Set when and how your verse will be displayed
             </p>
           </div>
         </div>
 
-        <div className="mt-[20px] flex flex-wrap gap-[16px] sm:gap-[40px]">
-          <Field label="Featured Date:" className="w-full sm:w-[170px]" labelClassName={s1Label}>
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-[16px] sm:mt-[40px] xl:gap-x-[47px]">
+          <Field label="Featured Date:" className="w-full sm:w-[186px]" labelClassName={schedLabel}>
             <div className="relative">
-              <PiCalendarBlank
-                size={15}
-                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
-              />
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2"
+              >
+                <rect x="3" y="4.5" width="18" height="16.5" rx="3" stroke="#2F2FE0" strokeWidth="2" />
+                <path d="M8 2.5V6M16 2.5V6M3 9.5h18" stroke="#2F2FE0" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="8" cy="13.5" r="1.3" fill="#2F2FE0" />
+                <circle cx="12" cy="13.5" r="1.3" fill="#2F2FE0" />
+                <circle cx="16" cy="13.5" r="1.3" fill="#2F2FE0" />
+                <circle cx="8" cy="17.5" r="1.3" fill="#2F2FE0" />
+                <circle cx="12" cy="17.5" r="1.3" fill="#2F2FE0" />
+                <circle cx="16" cy="17.5" r="1.3" fill="#2F2FE0" />
+              </svg>
               <input
                 value={v.featuredDate}
                 onChange={upd("featuredDate")}
-                className={`${s1Input52} pl-[34px] pr-[50px]`}
+                className={`${schedInput} pl-[40px] pr-[14px]`}
               />
             </div>
           </Field>
-          <Field label="Start Time:" className="w-full sm:w-[156px]" labelClassName={s1Label}>
+
+          <Field label="Start Time:" className="w-full sm:w-[172px]" labelClassName={schedLabel}>
             <div className="relative">
               <PiClock
-                size={15}
-                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
+                size={16}
+                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#0A0847CC]"
               />
               <input
                 value={v.startTime}
                 onChange={upd("startTime")}
-                className={`${s1Input52} pl-[34px] pr-[30px]`}
+                className={`${schedInput} pl-[40px] pr-[36px]`}
               />
               <button
                 type="button"
                 aria-label="Clear"
-                className="absolute right-[10px] top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center text-[#9CA3AF] transition hover:text-[#DC2626]"
+                className="absolute right-[12px] top-1/2 flex -translate-y-1/2 cursor-pointer items-center justify-center text-[#6E6F9A] transition hover:text-[#DC2626]"
               >
-                <PiX size={13} />
+                <PiXCircle size={16} />
               </button>
             </div>
           </Field>
-          <Field label="End Time:" className="w-full sm:w-[156px]" labelClassName={s1Label}>
+
+          <Field label="End Time:" className="w-full sm:w-[168px]" labelClassName={schedLabel}>
             <div className="relative">
               <PiClock
-                size={15}
-                className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
+                size={16}
+                className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#0A0847CC]"
               />
               <input
                 value={v.endTime}
                 onChange={upd("endTime")}
-                className={`${s1Input52} pl-[34px] pr-[30px]`}
+                className={`${schedInput} pl-[40px] pr-[14px]`}
               />
             </div>
           </Field>
-          <Field label="Time Zone:" className="w-full sm:w-[225px]" labelClassName={s1Label}>
-            <S1Select
-              height="h-[52px]"
-              arrowRight="right-[30px]"
-              value={v.timeZone}
-              onChange={upd("timeZone")}
-              options={[
-                "America/New_York",
-                "America/Chicago",
-                "America/Los_Angeles",
-                "Europe/London",
-                "Asia/Kolkata",
-                "UTC",
-              ]}
-            />
+
+          <Field label="Time Zone:" className="w-full sm:w-[248px]" labelClassName={schedLabel}>
+            <span className="relative block">
+              <select
+                value={v.timeZone}
+                onChange={upd("timeZone")}
+                className="h-[48px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-[14px] pr-[36px] text-[14px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]"
+              >
+                {[
+                  "America/New_York",
+                  "America/Chicago",
+                  "America/Los_Angeles",
+                  "Europe/London",
+                  "Asia/Kolkata",
+                  "UTC",
+                ].map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              <PiCaretDown
+                size={14}
+                className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[#0A0847CC]"
+              />
+            </span>
           </Field>
         </div>
 
-        <div className="mt-[20px] flex flex-wrap gap-[16px] sm:gap-[24px]">
-          <S1Toggle label="Show on Homepage" checked={v.showHomepage} onChange={upd("showHomepage")} />
-          <S1Toggle label="Show NEW Badge" checked={v.newBadge} onChange={upd("newBadge")} />
-          <S1Toggle label="Keep Available in Archive" checked={v.archive} onChange={upd("archive")} />
+        <div className="mt-[22px] flex flex-wrap gap-x-[32px] gap-y-[12px]">
+          <SchedToggle label="Show on Homepage" checked={v.showHomepage} onChange={upd("showHomepage")} />
+          <SchedToggle label="Show NEW Badge" checked={v.newBadge} onChange={upd("newBadge")} />
+          <SchedToggle label="Keep Available in Archive" checked={v.archive} onChange={upd("archive")} />
         </div>
 
-        <div className="mt-[14px] flex items-center gap-[8px] text-[11px] text-[#0A084799]">
-          <PiInfo size={15} color="#001984" />
-          Featured Date appears on the homepage card and both experience screens.
+        <div className="mt-[18px] flex items-start gap-[8px] text-[13px] text-[#6E6F9A]">
+          <PiWarningCircle size={18} color="#6E6F9A" className="mt-[1px] shrink-0" />
+          <span>Featured Date appears on the homepage card and both experience screens.</span>
         </div>
       </S1Card>
 
       {/* Row 2: Form Card + Live Homepage Preview */}
-      <div className="grid grid-cols-1 items-stretch gap-[26px] lg:grid-cols-[1fr_367px]">
+      <div className="grid grid-cols-1 items-stretch gap-[26px] lg:grid-cols-[1fr_376px]">
         {/* Form Card (9 fields) */}
-        <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[28px] pb-[28px] pt-[106px]">
+        <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pb-6 pt-6 sm:px-[28px] sm:pb-[28px] sm:pt-[106px]">
           <div className="grid grid-cols-1 gap-x-[22px] gap-y-[12px] sm:grid-cols-2">
             {/* Column 1 */}
             <div className="flex flex-col gap-[12px]">
@@ -596,27 +648,27 @@ function StepOne({ v, upd, setStep, navigate }) {
             </span>
             <PiBookmarkSimple size={20} color="#001984" />
           </div>
-          <p className="mt-[14px] text-[22px] font-semibold leading-none text-[#0A0847]">
+          <p className="mt-[14px] break-words text-[22px] font-semibold leading-none text-[#0A0847]">
             {v.sectionLabel}
           </p>
           <img
             src={cardImage}
             alt={v.imageAlt}
-            className="mt-[12px] h-[286px] w-full rounded-[7.47px] object-cover"
+            className="mt-[12px] h-[292px] w-full rounded-[7.47px] object-cover"
           />
-          <p className="mt-[12px] text-[20px] font-semibold leading-none">
+          <p className="mt-[12px] break-words text-[22px] font-semibold leading-none">
             <span className="text-[#0A0847]">{v.dateLabel}: </span>
             <span className="text-[#E11D2E]">{v.shortTitle}</span>
           </p>
-          <p className="mt-[8px] max-w-[220px] text-[14px] font-semibold leading-snug text-[#0A0847CC]">
+          <p className="mt-[8px] max-w-[220px] text-[14px] font-semibold leading-snug text-[#0A0847]">
             {v.cardDesc}
           </p>
           <div className="mt-[10px] flex items-center gap-[36px]">
-            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#001984]">
+            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#0A0847]">
               <PiClock size={19} />
               {v.duration}
             </span>
-            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#001984]">
+            <span className="flex items-center gap-[8px] text-[14px] font-semibold text-[#0A0847]">
               <PiArrowCircleRight size={19} />
               {v.ctaLabel}
             </span>
@@ -625,7 +677,7 @@ function StepOne({ v, upd, setStep, navigate }) {
       </div>
 
       {/* Card 3: Story & Reflection */}
-      <S1Card pad="p-[32px]">
+      <S1Card pad="p-4 sm:p-[32px]">
         <h2 className="text-[16px] font-semibold text-[#0A0847]">Story & Reflection</h2>
 
         <div className="mt-[16px] grid grid-cols-1 gap-[28px] md:grid-cols-3">
@@ -647,7 +699,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           <Field label="Passage:" labelClassName={s1Label}>
             <input value={v.passage} onChange={upd("passage")} className={s1Input} />
           </Field>
-          <div />
+          <div className="hidden md:block" />
         </div>
 
         <div className="mt-[16px] grid grid-cols-1 gap-[24px] lg:grid-cols-2">
@@ -683,9 +735,9 @@ function StepOne({ v, upd, setStep, navigate }) {
         </div>
       </S1Card>
 
-      {/* Row 3: Bottom 3 cards */}
-      <div className="grid grid-cols-1 gap-[20px] lg:grid-cols-[1fr_1fr_1.85fr]">
-        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+      {/* Row 3: Bottom 3 cards — 2 cols on tablet, 3 on xl */}
+      <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 xl:grid-cols-[1fr_1fr_1.85fr]">
+        <S1Card pad="p-4 sm:px-[19px] sm:py-[24px] sm:pl-[17px]">
           <h3 className="text-[16px] font-semibold text-[#0A0847]">Private Reflection</h3>
           <div className="mt-[14px]">
             <S1Toggle label="Enable Private Reflection" checked={v.privateReflection} onChange={upd("privateReflection")} />
@@ -706,7 +758,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           </p>
         </S1Card>
 
-        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+        <S1Card pad="p-4 sm:px-[19px] sm:py-[24px] sm:pl-[17px]">
           <h3 className="text-[16px] font-semibold text-[#0A0847]">Story Media & Actions</h3>
           <div className="mt-[14px]">
             <Field label="Homepage Card Image:" labelClassName={s1Label}>
@@ -737,7 +789,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           </div>
         </S1Card>
 
-        <S1Card pad="pl-[17px] pr-[19px] pt-[24px] pb-[24px]">
+        <S1Card className="md:col-span-2 xl:col-span-1" pad="p-4 sm:px-[19px] sm:py-[24px] sm:pl-[17px]">
           <h3 className="text-[16px] font-semibold text-[#0A0847]">Story Audio</h3>
           <div className="mt-[14px]">
             <p className={s1Label}>File Actions:</p>
@@ -750,10 +802,7 @@ function StepOne({ v, upd, setStep, navigate }) {
                 <img src={replaceIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 Replace
               </button>
-              <button
-                type="button"
-                className={`${audioActionBtn} !text-[#DC2626] hover:!bg-red-50`}
-              >
+              <button type="button" className={`${audioActionBtn} !text-[#DC2626] hover:!bg-red-50`}>
                 <img src={trashIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 Remove
               </button>
@@ -763,11 +812,16 @@ function StepOne({ v, upd, setStep, navigate }) {
           <AudioPlayer s1 time="0:30/2:48" fill="40%" />
 
           <div className="mt-[14px] flex flex-wrap items-center justify-between gap-[10px]">
-            <S1Checkbox label="Transcript / Captions" labelClass="whitespace-nowrap" checked={v.transcript1} onChange={upd("transcript1")} />
+            <S1Checkbox
+              label="Transcript / Captions"
+              labelClass="whitespace-nowrap"
+              checked={v.transcript1}
+              onChange={upd("transcript1")}
+            />
             <div className="flex shrink-0 items-center gap-[10px]">
-              <span className="text-[12px] font-semibold text-[#0A0847CC]">Playback Speed:</span>
+              <span className="text-[12px] font-semibold text-[#0A0847]">Playback Speed:</span>
               <S1Select
-                className="w-full sm:w-[100px]"
+                className="w-[100px]"
                 value={v.playerSpeed1}
                 onChange={upd("playerSpeed1")}
                 options={["0.5x", "1.0x", "1.5x", "2.0x"]}
@@ -802,18 +856,18 @@ function StepOne({ v, upd, setStep, navigate }) {
       </div>
 
       {/* Footer Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-[12px]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="button"
           onClick={() => navigate("/admin/dailyreflection")}
-          className="flex h-[46px] cursor-pointer items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-white px-[32px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
+          className="flex h-[46px] w-full cursor-pointer items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-white px-[32px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-auto"
         >
           Cancel
         </button>
-        <div className="flex flex-wrap items-center gap-[12px]">
+        <div className="grid grid-cols-1 gap-[12px] sm:flex sm:flex-wrap sm:items-center">
           <button
             type="button"
-            className="flex h-[46px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-white px-[28px] text-[14px] font-semibold text-[#001984] transition hover:bg-[#001984]/5"
+            className="flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#001984] bg-white px-[28px] text-[14px] font-semibold text-[#001984] transition hover:bg-[#001984]/5 sm:w-auto"
           >
             <img src={floppyIcon} alt="" className="h-[20px] w-[20px] shrink-0" />
             Save draft
@@ -821,7 +875,7 @@ function StepOne({ v, upd, setStep, navigate }) {
           <button
             type="button"
             onClick={() => setStep(2)}
-            className="flex h-[46px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[#001984] px-[28px] text-[14px] font-semibold text-white transition hover:bg-[#001266]"
+            className="flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] bg-[#001984] px-[28px] text-[14px] font-semibold text-white transition hover:bg-[#001266] sm:w-auto"
           >
             Next: Reflection & Prayer
             <PiArrowRight size={18} />
@@ -833,7 +887,7 @@ function StepOne({ v, upd, setStep, navigate }) {
 }
 
 /* ==========================================================================
-   STEP 2 — PRAYER & COMPLETION  (unchanged)
+   STEP 2 — PRAYER & COMPLETION
    ========================================================================== */
 function StepTwo({ v, upd, setStep }) {
   const audioFileRef = useRef(null);
@@ -850,7 +904,12 @@ function StepTwo({ v, upd, setStep }) {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setAudio2({ name: file.name, size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`, url, duration: null });
+      setAudio2({
+        name: file.name,
+        size: `${(file.size / (1024 * 1024)).toFixed(2)} MB`,
+        url,
+        duration: null,
+      });
       const probe = new Audio(url);
       probe.addEventListener("loadedmetadata", () => {
         setAudio2((s) => (s && s.url === url ? { ...s, duration: probe.duration } : s));
@@ -858,11 +917,12 @@ function StepTwo({ v, upd, setStep }) {
     }
     e.target.value = "";
   };
+
   return (
     <>
       <div className="grid grid-cols-1 items-stretch gap-[24px] lg:grid-cols-[1fr_370px]">
         {/* Left Column */}
-        <div className="flex flex-col gap-[24px]">
+        <div className="flex min-w-0 flex-col gap-[24px]">
           <Card>
             <h3 className="text-[16px] font-semibold text-[#0B1250]">Let's Pray</h3>
             <div className="mt-[16px] grid grid-cols-1 gap-[16px] sm:grid-cols-2">
@@ -918,7 +978,7 @@ function StepTwo({ v, upd, setStep }) {
                   type="button"
                   className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[13px] font-semibold text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
-                  <img src={eyeIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
+                  <img src={replaceIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
                   Preview
                 </button>
                 <button
@@ -932,7 +992,7 @@ function StepTwo({ v, upd, setStep }) {
                 <button
                   type="button"
                   onClick={() => setAudio2(null)}
-                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#E5E7EB] bg-white text-[12px] font-medium text-[#DC2626] transition hover:bg-red-50"
+                  className="flex h-[34px] cursor-pointer items-center justify-center gap-[6px] rounded-[6px] border border-[#FCA5A5] bg-white text-[12px] font-medium text-[#DC2626] transition hover:bg-red-50"
                 >
                   <img src={trashIcon} alt="" className="h-[14px] w-[14px] shrink-0" />
                   Remove
@@ -946,17 +1006,22 @@ function StepTwo({ v, upd, setStep }) {
               rightTime
             />
             {audio2 && (
-              <p className="mt-[8px] text-[11px] text-[#0B1250]">
+              <p className="mt-[8px] break-all text-[11px] text-[#0B1250]">
                 Loaded: <span className="font-semibold">{audio2.name}</span> ({audio2.size})
               </p>
             )}
 
-            <div className="mt-[12px] flex items-center justify-between gap-[10px]">
-              <Checkbox label="Transcript / Captions" checked={v.transcript2} onChange={upd("transcript2")} />
-              <div className="flex shrink-0 items-center gap-[8px]">
-                <span className="text-[11px] text-[#5B5F8C]">Playback Speed:</span>
+            <div className="mt-[12px] flex flex-wrap items-center justify-start gap-x-[14px] gap-y-[10px]">
+              <Checkbox
+                label="Transcript / Captions"
+                labelClass="!text-[#0A084799]"
+                checked={v.transcript2}
+                onChange={upd("transcript2")}
+              />
+              <div className="flex shrink-0 items-center gap-[8px] [&_select]:text-[#0A0847CC]">
+                <span className="text-[11px] font-semibold text-[#0A0847CC]">Playback Speed:</span>
                 <SelectBox
-                  className="w-full sm:w-[72px]"
+                  className="w-[72px]"
                   compact
                   value={v.playerSpeed2}
                   onChange={upd("playerSpeed2")}
@@ -972,17 +1037,17 @@ function StepTwo({ v, upd, setStep }) {
               <Toggle label="Enable Write My Own Prayer" checked={v.enableWriteOwn} onChange={upd("enableWriteOwn")} />
             </div>
             <div className="mt-[16px]">
-              <Field label="Button Label:">
+              <Field label="Button Label:" labelClassName={prayerLabel}>
                 <input value={v.buttonLabel} onChange={upd("buttonLabel")} className={inputCls} />
               </Field>
             </div>
             <div className="mt-[12px]">
-              <Field label="Privacy Message:">
+              <Field label="Privacy Message:" labelClassName={prayerLabel}>
                 <input value={v.privacyMsg2} onChange={upd("privacyMsg2")} className={inputCls} />
               </Field>
             </div>
             <p className="mt-[12px] flex items-center gap-[8px] text-[12px] font-medium text-[#001984]/60">
-              <img src={lockIcon} alt="" className="h-[13px] w-[13px] shrink-0" />
+              <LockGlyph />
               Added notes are private prayers.
             </p>
           </Card>
@@ -991,7 +1056,7 @@ function StepTwo({ v, upd, setStep }) {
             <h3 className="text-[16px] font-semibold text-[#0B1250]">Progress & Completion</h3>
 
             <div className="mt-[14px] grid grid-cols-1 gap-[16px] sm:grid-cols-2">
-              <div>
+              <div className="min-w-0">
                 <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">Progress Settings:</p>
                 <div className="flex h-[40px] items-center justify-between gap-[10px] rounded-[6px] border border-[#E5E7EB] px-[12px]">
                   <span className="truncate text-[11px] text-[#0B1250]">{v.progressText}</span>
@@ -1054,19 +1119,17 @@ function StepTwo({ v, upd, setStep }) {
             </div>
 
             <p className="mt-[12px] flex items-center gap-[8px] text-[12px] font-medium text-[#001984]/60">
-              <img src={lockIcon} alt="" className="h-[13px] w-[13px] shrink-0" />
+              <LockGlyph />
               Added notes are private prayers.
             </p>
           </Card>
         </div>
 
         {/* Right Column */}
-        <div className="flex h-full flex-col gap-[16px]">
+        <div className="flex min-w-0 flex-col gap-[16px]">
           {/* Mobile Preview */}
-          <div className="rounded-[10px] border border-[#E5E7EB] bg-[#F5F8FF] p-[22px]">
-            <h3 className="mb-[14px] text-[14px] font-bold text-[#0B1250]">
-              Mobile Preview
-            </h3>
+          <div className="rounded-[10px] border border-[#E5E7EB] bg-[#F5F8FF] p-4 sm:p-[22px]">
+            <h3 className="mb-[14px] text-[14px] font-bold text-[#0B1250]">Mobile Preview</h3>
 
             {/* Phone Frame */}
             <div className="mx-auto w-full max-w-[332px] rounded-[24px] border-[3px] border-[#D9D3F5] bg-white p-[16px]">
@@ -1081,9 +1144,7 @@ function StepTwo({ v, upd, setStep }) {
               <p className="text-center font-[Poppins] text-[12px] text-[#5B5F8C]">{v.pageSubtitle}</p>
 
               <div className="mt-[12px] rounded-[8px] bg-[#E8ECFB] p-[12px]">
-                <p className="mb-[6px] text-[10px] font-bold text-[#0B1250]">
-                  {v.prayerTypeLabel}
-                </p>
+                <p className="mb-[6px] text-[10px] font-bold text-[#0B1250]">{v.prayerTypeLabel}</p>
                 {v.guidedPrayer.split("\n").map((line, i) =>
                   line ? (
                     <p
@@ -1115,11 +1176,11 @@ function StepTwo({ v, upd, setStep }) {
               </div>
 
               {/* Info + Speed Pill */}
-              <div className="mt-[10px] flex items-center justify-between">
+              <div className="mt-[10px] flex items-center justify-between gap-[8px]">
                 <img src={clockIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
                 <button
                   type="button"
-                  className="flex h-[35px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC] sm:w-[95px]"
+                  className="flex h-[35px] w-[95px] cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0B1250] transition hover:bg-[#F8FAFC]"
                 >
                   <img src={speedIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                   {v.playerSpeed2}
@@ -1139,9 +1200,9 @@ function StepTwo({ v, upd, setStep }) {
               </p>
             </div>
 
-            {/* Completion sub-card (below the phone frame) */}
+            {/* Completion sub-card */}
             <div className="mt-[16px] rounded-[8px] border border-[#E5E7EB] bg-white p-[14px]">
-              <p className="text-[12px] text-[#5B5F8C]">
+              <p className="break-words text-[12px] text-[#5B5F8C]">
                 <span className="font-bold text-[#0B1250]">{v.prayLabel}</span>
                 {" • "}
                 {v.progressText}
@@ -1156,7 +1217,7 @@ function StepTwo({ v, upd, setStep }) {
               <div className="mt-[10px] rounded-[8px] border border-[#A7E3BE] bg-[#ECFDF3] p-[12px]">
                 <div className="flex items-center gap-[12px]">
                   <img src={checkIcon} alt="" className="h-[36px] w-[36px] shrink-0" />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[12px] font-semibold leading-snug text-[#48B02C]">
                       {v.completionMsg}
                     </p>
@@ -1176,7 +1237,7 @@ function StepTwo({ v, upd, setStep }) {
           </div>
 
           {/* Publishing */}
-          <div className="flex flex-1 flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-[22px]">
+          <div className="flex flex-1 flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 sm:p-[22px]">
             <h3 className="text-[16px] font-semibold text-[#0B1250]">Publishing</h3>
 
             <div className="mt-[16px]">
@@ -1192,14 +1253,14 @@ function StepTwo({ v, upd, setStep }) {
             <div className="mt-[12px]">
               <p className="mb-[6px] text-[11px] font-semibold text-[#0B1250]">Schedule Date:</p>
               <div className="relative">
+                <PiCalendarBlank
+                  size={16}
+                  className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#0A0847CC]"
+                />
                 <input
                   value={v.scheduleDate}
                   onChange={upd("scheduleDate")}
-                  className={`${inputCls} pr-[34px]`}
-                />
-                <PiCalendarBlank
-                  size={15}
-                  className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-[#5B5F8C]"
+                  className={`${inputCls} pl-[40px] pr-[14px]`}
                 />
               </div>
             </div>
@@ -1222,11 +1283,11 @@ function StepTwo({ v, upd, setStep }) {
                   </button>
                 </p>
                 <div className="mt-[8px] space-y-[6px] text-[11px] text-[#5B5F8C]">
-                  <p className="flex items-center justify-between">
+                  <p className="flex items-center justify-between gap-2">
                     <span>Last edited by:</span>
                     <span className="font-medium text-[#0B1250]">Admin</span>
                   </p>
-                  <p className="flex items-center justify-between">
+                  <p className="flex items-center justify-between gap-2">
                     <span>Date:</span>
                     <span className="font-medium text-[#0B1250]">May 20, 2025 at 9:45 AM</span>
                   </p>
@@ -1244,10 +1305,7 @@ function StepTwo({ v, upd, setStep }) {
                   "Audio added",
                   "Accessibility ready",
                 ].map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-[8px] text-[12px] text-[#0B1250]"
-                  >
+                  <li key={item} className="flex items-center gap-[8px] text-[12px] text-[#0B1250]">
                     <img src={checkIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                     {item}
                   </li>
@@ -1259,26 +1317,33 @@ function StepTwo({ v, upd, setStep }) {
       </div>
 
       {/* Footer Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-[16px]">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <button
+          type="button"
           onClick={() => setStep(1)}
           className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[6px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-[197px]"
         >
           Back
         </button>
-        <div className="flex flex-wrap items-center gap-[12px]">
-          <button className="flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]">
+        <div className="grid grid-cols-1 gap-[12px] sm:flex sm:flex-wrap sm:items-center">
+          <button
+            type="button"
+            className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-auto"
+          >
             <img src={eyeIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
             Preview
           </button>
           <button
             type="button"
-            className="flex h-[43px] cursor-pointer items-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC]"
+            className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] px-[16px] text-[14px] font-semibold text-[#0A0847] transition hover:bg-[#F8FAFC] sm:w-auto"
           >
             <img src={floppyIcon} alt="" className="h-[18px] w-[18px] shrink-0" />
             Save draft
           </button>
-          <button className="flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68] sm:w-[260px]">
+          <button
+            type="button"
+            className="flex h-[46px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[6px] bg-[#0B1F7A] text-[12px] font-semibold text-white transition hover:bg-[#0a1c68] sm:w-[260px]"
+          >
             <PiCalendarBlank size={16} />
             Schedule Story
           </button>
@@ -1319,9 +1384,8 @@ export default function AddHistoricalStory() {
       "David returns to Ziklag and finds it burned and his people in distress. With the help and guidance of the Lord, David strengthens himself in the Lord and pursues the enemy.",
     verseRef: "1 Samuel 30:6",
     bibleVersion: "KJV",
-    verseText: "\u201cBut David encouraged himself in the LORD his God.\u201d",
-    whyItMatters:
-      "Seek strength and direction from God during difficult moments.",
+    verseText: "“But David encouraged himself in the LORD his God.”",
+    whyItMatters: "Seek strength and direction from God during difficult moments.",
     reflectionPrompt: "How can you strengthen yourself in the Lord today?",
     privateReflection: true,
     privatePlaceholder: "Write a private reflection...",
@@ -1359,10 +1423,8 @@ export default function AddHistoricalStory() {
     scheduleDate: "May 25, 2025",
   });
 
-  const upd =
-    (key) =>
-    (e) =>
-      setV((p) => ({ ...p, [key]: e && e.target ? e.target.value : e }));
+  const upd = (key) => (e) =>
+    setV((p) => ({ ...p, [key]: e && e.target ? e.target.value : e }));
 
   return (
     <div className="flex min-h-screen flex-col gap-[16px] bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">

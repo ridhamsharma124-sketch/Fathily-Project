@@ -97,14 +97,12 @@ function Toggle({ checked, onChange, label }) {
       aria-checked={checked}
       aria-label={label}
       onClick={() => onChange(!checked)}
-      className={`relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors ${
-        checked ? "bg-[#0A4FB5]" : "bg-[#D1D5DB]"
-      }`}
+      className={`relative h-[15px] w-[26px] shrink-0 cursor-pointer rounded-full transition-colors ${checked ? "bg-[#0A4FB5]" : "bg-[#D1D5DB]"
+        }`}
     >
       <span
-        className={`absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white transition-all ${
-          checked ? "left-[13px]" : "left-[2px]"
-        }`}
+        className={`absolute top-[2px] h-[11px] w-[11px] rounded-full bg-white transition-all ${checked ? "left-[13px]" : "left-[2px]"
+          }`}
       />
     </button>
   );
@@ -244,7 +242,7 @@ export default function TiersManagement() {
             </table>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t-[0.75px] border-[#E2DFFC] px-4 py-3">
+          <div className="flex flex-col items-center gap-3 border-t-[0.75px] border-[#E2DFFC] px-4 py-3 sm:flex-row sm:justify-between">
             <div className="flex items-center gap-2 text-[13px] font-medium text-[#0A0847]">
               Display
               <div className="relative">
@@ -268,7 +266,7 @@ export default function TiersManagement() {
               <span className="text-[12px] font-normal text-[#0A0847]/60">Badges</span>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            <nav aria-label="Pagination" className="flex items-center justify-center gap-1.5">
               <button
                 type="button"
                 disabled
@@ -284,11 +282,10 @@ export default function TiersManagement() {
                   type="button"
                   onClick={() => setPage(p)}
                   aria-current={page === p ? "page" : undefined}
-                  className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] text-[12px] font-medium leading-none transition-colors ${
-                    page === p
+                  className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] text-[12px] font-medium leading-none transition-colors ${page === p
                       ? "bg-[#001984] font-semibold text-white"
                       : "text-[#0A0847]/80 hover:bg-[#F1F1F9]"
-                  }`}
+                    }`}
                 >
                   {p}
                 </button>
@@ -302,7 +299,7 @@ export default function TiersManagement() {
               >
                 <LuChevronRight size={14} />
               </button>
-            </div>
+            </nav>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { LuChevronDown, LuChevronRight } from "react-icons/lu";
 import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified (unchanged)
+   MOCK DATA
    ========================================================================== */
 const QUESTION_TYPE_OPTIONS = ["Multiple Choice"];
 const DIFFICULTY_OPTIONS = ["Medium", "Easy", "Hard"];
@@ -30,12 +30,12 @@ const CORRECT_ANSWER_OPTIONS = [
 const REFERENCE = "John 3:1–21";
 
 /* ==========================================================================
-   PAGE-LOCAL PRIMITIVES (quizShared.jsx left untouched for other pages)
+   PAGE-LOCAL STYLES
    ========================================================================== */
 const labelCls = "mb-2 block text-[12px] font-semibold text-[#0A0847]";
 
 const fieldCls =
-  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
+  "h-10 w-full min-w-0 rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[40px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
 
 const outlineButton =
   "flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-white px-4 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9] sm:w-auto";
@@ -43,18 +43,23 @@ const outlineButton =
 const purpleButton =
   "flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4022D1] px-4 py-[10px] text-[13px] font-semibold text-white transition-colors hover:opacity-90 sm:w-[174px]";
 
+/* ==========================================================================
+   SUB-COMPONENTS
+   ========================================================================== */
 function Breadcrumb({ items }) {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] font-medium text-[#0A0847]/60 sm:text-[16px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item} className="flex items-center gap-1.5">
+            <li key={item} className="flex min-w-0 items-center gap-1.5">
               {index > 0 && (
-                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
+                <LuChevronRight size={14} className="shrink-0 text-[#0A0847]/60" aria-hidden />
               )}
-              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+              <span className="break-words" aria-current={isLast ? "page" : undefined}>
+                {item}
+              </span>
             </li>
           );
         })}
@@ -65,17 +70,13 @@ function Breadcrumb({ items }) {
 
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
-    <div className="inline-flex w-fit items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
-      <img
-        src={selectorBookIcon}
-        alt="Book Icon"
-        className="h-4 w-4 shrink-0 object-contain"
-      />
-      <p className="text-[13px] leading-[22px]">
+    <div className="flex w-fit max-w-full items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-[#F7F7F9] px-3 py-3 sm:min-h-[49px] sm:w-[396px] sm:pt-[13px] sm:pr-[12px] sm:pb-[12px] sm:pl-[15px]">
+      <img src={selectorBookIcon} alt="" width={24} height={24} className="h-6 w-6 shrink-0 object-contain" />
+      <p className="flex min-w-0 flex-wrap items-center gap-x-[16px] gap-y-1 text-[14px] font-semibold leading-6 text-[#0A0847]/80 sm:text-[16px]">
         {parts.map((part, index) => (
-          <span key={part}>
-            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
-            <span className="font-bold text-[#0A0847]">{part}</span>
+          <span key={part} className="flex items-center gap-[16px] whitespace-nowrap">
+            {index > 0 && <span aria-hidden>&gt;</span>}
+            <span>{part}</span>
           </span>
         ))}
       </p>
@@ -83,12 +84,9 @@ function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   );
 }
 
-/* ==========================================================================
-   FORM PRIMITIVES
-   ========================================================================== */
 function Field({ label, required, htmlFor, children }) {
   return (
-    <div>
+    <div className="min-w-0">
       <label htmlFor={htmlFor} className={labelCls}>
         {label} {required && <span className="text-[#E11D48]">*</span>}
       </label>
@@ -99,7 +97,7 @@ function Field({ label, required, htmlFor, children }) {
 
 function Select({ id, value, options, onChange, className = "w-full" }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative min-w-0 ${className}`}>
       <select
         id={id}
         value={value}
@@ -121,18 +119,17 @@ function Select({ id, value, options, onChange, className = "w-full" }) {
   );
 }
 
-/* textarea with the character counter sitting INSIDE, bottom-right */
 function TextArea({ id, value, onChange, max, className = "" }) {
   return (
-    <div className="relative">
+    <div className="relative min-w-0">
       <textarea
         id={id}
         value={value}
         maxLength={max}
         onChange={onChange}
-        className={`w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984] ${className}`}
+        className={`w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] pb-6 text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984] ${className}`}
       />
-      <span className="absolute right-3 bottom-2 text-[10px] text-[#0A0847]/60">
+      <span className="pointer-events-none absolute right-3 bottom-2 text-[10px] text-[#0A0847]/60">
         {value.length} / {max}
       </span>
     </div>
@@ -144,9 +141,11 @@ function TextArea({ id, value, onChange, max, className = "" }) {
    ========================================================================== */
 function LivePreview({ question, options, reference }) {
   return (
-    <section className="min-w-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-6">
-      <h2 className="text-[20px] font-semibold text-[#0A0847]">Live Question Preview</h2>
-      <p className="mt-1 text-[14px] text-[#0A0847]/60">
+    <section className="min-w-0 rounded-lg border border-[#E2DFFC] bg-[#F9F9FF] p-4 sm:p-6">
+      <h2 className="text-[18px] font-semibold text-[#0A0847] sm:text-[20px]">
+        Live Question Preview
+      </h2>
+      <p className="mt-1 text-[13px] text-[#0A0847]/60 sm:text-[14px]">
         This is how your question will appear to users.
       </p>
 
@@ -157,29 +156,29 @@ function LivePreview({ question, options, reference }) {
           className="aspect-[402/229] w-full rounded-lg border border-[#E2DFFC] object-cover"
         />
 
-        <p className="text-[14px] font-semibold text-[#0A0847]">Q. {question}</p>
+        <p className="break-words text-[14px] font-semibold text-[#0A0847]">Q. {question}</p>
 
-        <ul>
+        <ul className="space-y-1">
           {options.map((option, index) => (
             <li
               key={index}
-              className="text-[14px] leading-[24px] font-medium text-[#0A0847]/60"
+              className="break-words text-[13px] leading-[22px] font-medium text-[#0A0847]/60 sm:text-[14px] sm:leading-[24px]"
             >
-              <span className="font-bold text-[#0A0847]">
-                {String.fromCharCode(65 + index)}.
-              </span>{" "}
+              <span className="font-bold text-[#0A0847]">{String.fromCharCode(65 + index)}.</span>{" "}
               {option}
             </li>
           ))}
         </ul>
 
         <div className="flex min-h-[95px] flex-col justify-center rounded-lg border border-[#E2DFFC] bg-white p-3">
-          <p className="text-[14px] font-medium text-[#0A0847]/60">
+          <p className="text-[13px] font-medium text-[#0A0847]/60 sm:text-[14px]">
             This is a representative preview.
             <br />
             Final UI may differ from this.
           </p>
-          <p className="mt-2 text-[14px] font-bold italic text-[#001984]">{reference}</p>
+          <p className="mt-2 text-[13px] font-bold italic text-[#001984] sm:text-[14px]">
+            {reference}
+          </p>
         </div>
       </div>
     </section>
@@ -194,12 +193,8 @@ export default function AddQuestionManually() {
   const [question, setQuestion] = useState(
     "What did Nicodemus come to Jesus at night to discuss?",
   );
-  const [options, setOptions] = useState(
-    OPTION_DEFAULTS.map((option) => option.value),
-  );
-  const [correctAnswer, setCorrectAnswer] = useState(
-    "Option B – How to be born again",
-  );
+  const [options, setOptions] = useState(OPTION_DEFAULTS.map((option) => option.value));
+  const [correctAnswer, setCorrectAnswer] = useState("Option B – How to be born again");
   const [explanation, setExplanation] = useState(
     "Nicodemus came to Jesus at night to learn about being born again.",
   );
@@ -212,33 +207,30 @@ export default function AddQuestionManually() {
     setOptions((prev) => prev.map((item, i) => (i === index ? value : item)));
 
   return (
-    <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      {/* ONE container — width 100%, every section a direct child */}
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6">
-        <Breadcrumb
-          items={["Dashboard", "Activities", "John", "Chapter 3", "Quiz"]}
-        />
+        <Breadcrumb items={["Dashboard", "Activities", "John", "Chapter 3", "Quiz"]} />
 
-        <div className="w-full min-w-0">
-          <h1 className="text-[22px] font-semibold text-[#0A0847]">
+        <div className="min-w-0">
+          <h1 className="break-words text-[20px] font-semibold text-[#0A0847] sm:text-[22px]">
             Add Question Manually
           </h1>
-          <p className="mt-1.5 text-[14px] text-[#0A0847]/60">
+          <p className="mt-1.5 text-[13px] text-[#0A0847]/60 sm:text-[14px]">
             Engage and track activities for each chapter.
           </p>
         </div>
 
-        <LocationChip />
+        <div className="flex">
+          <LocationChip />
+        </div>
 
-        {/* two columns — 578 max left, rest right, top-aligned */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,578px)_minmax(0,1fr)]">
+        {/* two columns: stacked below xl (1280px) so tablets get full width */}
+        <div className="grid min-w-0 grid-cols-1 items-start gap-6 xl:grid-cols-[minmax(0,578px)_minmax(0,1fr)]">
           {/* LEFT — create form */}
-          <section className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
+          <section className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 pt-[19px] pb-[30px] sm:pr-[22px] sm:pb-[35px] sm:pl-[16px]">
             <div className="min-w-0">
-              <h2 className="text-[16px] font-semibold text-[#0A0847]">
-                Create a New Question
-              </h2>
-              <p className="mt-1 text-[14px] text-[#0A0847]/60">
+              <h2 className="text-[16px] font-semibold text-[#0A0847]">Create a New Question</h2>
+              <p className="mt-1 text-[13px] text-[#0A0847]/60 sm:text-[14px]">
                 Fill in the details below to create your question manually.
               </p>
             </div>
@@ -263,12 +255,7 @@ export default function AddQuestionManually() {
             </Field>
 
             {OPTION_DEFAULTS.map((option, index) => (
-              <Field
-                key={option.key}
-                label={option.label}
-                required
-                htmlFor={`option-${option.key}`}
-              >
+              <Field key={option.key} label={option.label} required htmlFor={`option-${option.key}`}>
                 <input
                   id={`option-${option.key}`}
                   type="text"
@@ -308,48 +295,42 @@ export default function AddQuestionManually() {
               />
             </Field>
 
-            {/* Difficulty + Reward Points — 2 columns, gap 29 */}
-            <div className="flex gap-[29px]">
-              <div className="min-w-0 flex-1">
-                <Field label="Difficulty" htmlFor="difficulty">
-                  <Select
-                    id="difficulty"
-                    value={difficulty}
-                    options={DIFFICULTY_OPTIONS}
-                    onChange={(e) => setDifficulty(e.target.value)}
-                  />
-                </Field>
-              </div>
-              <div className="min-w-0 flex-1">
-                <Field label="Reward Points" required htmlFor="reward">
-                  <Select
-                    id="reward"
-                    value={rewardPoints}
-                    options={REWARD_POINT_OPTIONS}
-                    onChange={(e) => setRewardPoints(e.target.value)}
-                  />
-                </Field>
-              </div>
+            {/* Difficulty + Reward Points: stacked on mobile, side by side from sm */}
+            <div className="grid grid-cols-1 gap-[10px] sm:grid-cols-2 sm:gap-[29px]">
+              <Field label="Difficulty" htmlFor="difficulty">
+                <Select
+                  id="difficulty"
+                  value={difficulty}
+                  options={DIFFICULTY_OPTIONS}
+                  onChange={(e) => setDifficulty(e.target.value)}
+                />
+              </Field>
+              <Field label="Reward Points" required htmlFor="reward">
+                <Select
+                  id="reward"
+                  value={rewardPoints}
+                  options={REWARD_POINT_OPTIONS}
+                  onChange={(e) => setRewardPoints(e.target.value)}
+                />
+              </Field>
             </div>
 
             {/* Upload Image */}
-            <div>
+            <div className="min-w-0">
               <p className={labelCls}>
                 Upload Image <span className="text-[#E11D48]">*</span>
               </p>
-              <div className="flex flex-col gap-[12px] sm:flex-row sm:gap-[20px]">
+              <div className="flex flex-col gap-3 sm:flex-row sm:gap-5">
                 <img
                   src={liveQuestionImage}
                   alt="JESUS AND NICODEMUS"
-                  className="h-auto w-full max-w-[250px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover sm:h-[112px]"
+                  className="h-auto w-full rounded-lg border border-[#E2DFFC] object-cover sm:h-[112px] sm:w-[200px] sm:shrink-0"
                 />
-                <div className="flex h-auto min-w-0 w-full flex-1 flex-col justify-center rounded-lg border border-[#E2DFFC] bg-[#FAFBFE] p-3 sm:h-[112px]">
-                  <p className="text-[14px] font-semibold text-[#0A0847]">
+                <div className="flex min-w-0 flex-1 flex-col justify-center rounded-lg border border-[#E2DFFC] bg-[#FAFBFE] p-3 sm:h-[112px]">
+                  <p className="break-words text-[14px] font-semibold text-[#0A0847]">
                     JESUS AND NICODEMUS
                   </p>
-                  <p className="mt-1 text-[12px] text-[#0A0847]">
-                    Night conversation with Jesus
-                  </p>
+                  <p className="mt-1 text-[12px] text-[#0A0847]">Night conversation with Jesus</p>
                   <p className="mt-2 text-[12px] font-medium italic text-[#001984]">
                     View / Replace / Delete
                   </p>
@@ -368,28 +349,24 @@ export default function AddQuestionManually() {
                 value={status}
                 options={STATUS_OPTIONS}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full max-w-[249px]"
+                className="w-full sm:max-w-[249px]"
               />
             </Field>
           </section>
 
           {/* RIGHT — live preview */}
-          <LivePreview
-            question={question}
-            options={options}
-            reference={reference}
-          />
+          <LivePreview question={question} options={options} reference={reference} />
         </div>
 
-        {/* FOOTER — full-width row, height 48, space-between */}
-        <div className="flex w-full min-w-0 flex-col items-stretch justify-between gap-4 sm:h-[48px] sm:flex-row sm:items-center">
+        {/* FOOTER */}
+        <div className="flex w-full min-w-0 flex-col gap-4 sm:h-[48px] sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F1F1F9] sm:w-[152px]"
           >
             Cancel
           </button>
-          <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <button type="button" className={outlineButton}>
               Save &amp; Add Another
             </button>

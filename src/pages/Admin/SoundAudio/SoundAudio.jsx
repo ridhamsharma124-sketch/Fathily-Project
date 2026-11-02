@@ -4,33 +4,38 @@ import {
   PiCaretDown,
   PiCaretLeft,
   PiCaretRight,
-  PiCheckCircle,
   PiDownloadSimple,
   PiGift,
   PiInfo,
   PiMagnifyingGlass,
   PiMusicNotes,
   PiPencilSimple,
-  PiPlay,
   PiPlus,
   PiQuestion,
-  PiSlidersHorizontal,
   PiTrash,
   PiTrophy,
   PiXCircle,
 } from "react-icons/pi";
+import checkIcon from "../../../assets/checkicon.svg";
+import disabledIcon from "../../../assets/Disabled.svg";
+import storageIcon from "../../../assets/Storage.svg";
+import audioIcon from "../../../assets/audio.svg";
 
-const NAVY = "#001984";
 const INK = "#0A0847"; // base text colour
 const BORDER = "#E9E9E9"; // table line-color (0.75px)
 
 /* ==========================================================================
    MOCK DATA
    ========================================================================== */
+const statImage = (src) =>
+  function StatImageIcon({ size = 36 }) {
+    return <img src={src} width={size} height={size} alt="" aria-hidden />;
+  };
+
 const ICONS = {
   note: { Icon: PiMusicNotes, bg: "#E8E7FF", color: "#0926FD" },
   quiz: { Icon: PiQuestion, bg: "#E8E7FF", color: "#0926FD" },
-  correct: { Icon: PiCheckCircle, bg: "#E8F7EC", color: "#2BB24C" },
+  correct: { Icon: statImage(checkIcon), bg: "#E8F7EC", color: "#2BB24C" },
   wrong: { Icon: PiXCircle, bg: "#E8E7FF", color: "#0926FD" },
   trophy: { Icon: PiTrophy, bg: "#FDF1E3", color: "#F59E0B" },
   gift: { Icon: PiGift, bg: "#FDF1E3", color: "#F59E0B" },
@@ -84,46 +89,11 @@ function NoteIcon({ size = 36, style }) {
   );
 }
 
-function CheckRingIcon({ size = 36, style }) {
-  return (
-    <svg {...svgProps(size, style)}>
-      <path d="M20.2 7.6A9.3 9.3 0 1 1 16.4 3.8" />
-      <path
-        d="M7 12.3L8.4 10.9L10.8 13L18.9 6L20.2 7.3L10.8 16Z"
-        fill="currentColor"
-        strokeWidth="0.6"
-      />
-    </svg>
-  );
-}
-
-function SpeakerOffIcon({ size = 36, style }) {
-  return (
-    <svg {...svgProps(size, style)}>
-      <path d="M4 9.6H7.4L12 5.6V18.4L7.4 14.4H4Z" />
-      <path d="M15.6 9.2A4 4 0 0 1 15.6 14.8" />
-      <path d="M18.6 6.4A8 8 0 0 1 18.6 17.6" />
-      <path d="M4 3.5L20 20.5" />
-    </svg>
-  );
-}
-
-function StackIcon({ size = 36, style }) {
-  return (
-    <svg {...svgProps(size, style)}>
-      <path d="M12 1.8L21.4 7.2V16.8L12 22.2L2.6 16.8V7.2Z" />
-      <path d="M2.6 7.2L12 12.6L21.4 7.2" />
-      <path d="M2.6 10.9L12 16.3L21.4 10.9" />
-      <path d="M2.6 14.4L12 19.8L21.4 14.4" />
-    </svg>
-  );
-}
-
 const STAT_META = [
   { bg: "#E8E7FF", color: "#0926FD", Icon: NoteIcon, label: "Total Audio" },
-  { bg: "#E8F7EC", color: "#2BA84A", Icon: CheckRingIcon, label: "Enabled" },
-  { bg: "#FBF0E4", color: "#D4570F", Icon: SpeakerOffIcon, label: "Disabled" },
-  { bg: "#E8E7FF", color: "#1D12E0", Icon: StackIcon, label: "Storage Used" },
+  { bg: "#E8F7EC", color: "#2BA84A", Icon: statImage(checkIcon), label: "Enabled" },
+  { bg: "#FBF0E4", color: "#D4570F", Icon: statImage(disabledIcon), label: "Disabled" },
+  { bg: "#E8E7FF", color: "#1D12E0", Icon: statImage(storageIcon), label: "Storage Used" },
 ];
 
 /* ==========================================================================
@@ -252,7 +222,7 @@ export default function SoundAudio() {
             type="button"
             className="flex h-[44px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#E5E4EC] bg-white px-[20px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition hover:border-[#001984] sm:w-auto sm:justify-start"
           >
-            <PiSlidersHorizontal size={18} color={NAVY} />
+            <img src={audioIcon} width={18} height={18} alt="" aria-hidden />
             Audio Settings
           </button>
           <button
@@ -415,9 +385,12 @@ export default function SoundAudio() {
                           <button
                             type="button"
                             aria-label="Play preview"
-                            className="flex h-[20px] w-[20px] shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#001984] text-white transition hover:bg-[#0a1c68]"
+                            className="flex h-[20px] w-[20px] shrink-0 cursor-pointer items-center justify-center text-[#001984] transition hover:opacity-70"
                           >
-                            <PiPlay size={10} weight="fill" />
+                            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+                              <circle cx="10" cy="10" r="10" fill="currentColor" />
+                              <path d="M8 6.5L13.5 10L8 13.5V6.5Z" fill="#FFFFFF" />
+                            </svg>
                           </button>
                           <Waveform />
                         </div>
@@ -632,9 +605,12 @@ function EditDrawer({ row, onClose }) {
               <button
                 type="button"
                 aria-label="Play file"
-                className="flex h-[24px] w-[24px] shrink-0 cursor-pointer items-center justify-center rounded-full border-2 border-[#001984] text-[#001984] transition hover:bg-[#F3F4FB]"
+                className="flex h-[32px] w-[32px] shrink-0 cursor-pointer items-center justify-center text-[#001984] transition hover:opacity-70"
               >
-                <PiPlay size={10} weight="fill" />
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <circle cx="16" cy="16" r="13.5" stroke="currentColor" strokeWidth="2.5" />
+                  <path d="M13 11.5L21 16L13 20.5V11.5Z" fill="currentColor" />
+                </svg>
               </button>
             </div>
           </Field>

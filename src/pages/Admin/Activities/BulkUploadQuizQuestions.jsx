@@ -4,18 +4,16 @@ import uploadCloudIcon from "../../../assets/activities/upload_cloud.svg";
 import {
   LuDownload,
   LuSearch,
-  LuFileSpreadsheet,
   LuFileText,
   LuCircleCheck,
   LuTriangleAlert,
   LuPencil,
   LuTrash2,
   LuChevronDown,
-  LuChevronRight,
 } from "react-icons/lu";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   MOCK DATA
    ========================================================================== */
 const QUESTION_TYPE_OPTIONS = ["Multiple Choice"];
 
@@ -120,20 +118,102 @@ const TABLE_GRID =
   "grid min-w-[760px] grid-cols-[48px_56px_minmax(0,1fr)_120px_130px_100px_104px] items-center gap-3 px-4";
 
 /* ==========================================================================
+   ICONS (matched to Figma)
+   ========================================================================== */
+
+/* Grey document with folded corner and a green "CSV" tag at the bottom */
+function CsvIcon({ className = "" }) {
+  return (
+    <svg viewBox="0 0 28 36" fill="none" aria-hidden className={className}>
+      <path
+        d="M2 1.5h16.5L26 9v23.5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2.5a1 1 0 0 1 0-1Z"
+        fill="#F4F5F7"
+        stroke="#D5D9E0"
+        strokeWidth="1"
+      />
+      <path d="M18.5 1.5V9H26" fill="#E4E7EC" stroke="#D5D9E0" strokeWidth="1" />
+      <rect x="6" y="14" width="13" height="1.4" rx="0.7" fill="#B8C0CC" />
+      <rect x="6" y="18" width="16" height="1.4" rx="0.7" fill="#B8C0CC" />
+      <rect x="6" y="22" width="11" height="1.4" rx="0.7" fill="#B8C0CC" />
+      <rect x="0" y="25" width="28" height="11" rx="2" fill="#21AC1C" />
+      <text
+        x="14"
+        y="33"
+        textAnchor="middle"
+        fontSize="7"
+        fontWeight="700"
+        fontFamily="Inter, sans-serif"
+        fill="#FFFFFF"
+      >
+        CSV
+      </text>
+    </svg>
+  );
+}
+
+/* Outlined green circle with a smaller tick inside */
+function ValidatedIcon({ className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 28 28"
+      fill="none"
+      aria-label="File validated"
+      role="img"
+      className={className}
+    >
+      <circle cx="14" cy="14" r="12.25" stroke="#16A34A" strokeWidth="1.5" />
+      <path
+        d="M9.5 14.2l3 3 6-6.2"
+        stroke="#16A34A"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* Thin navy outline cloud with up-arrow, matches Figma */
+function CloudUploadIcon({ className = "" }) {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden className={className}>
+      <path
+        d="M14 36h-2.5a8.5 8.5 0 0 1-1.1-16.9A12 12 0 0 1 35.6 16.5 9.5 9.5 0 0 1 36 36h-3"
+        stroke="#001984"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M24 42V24m0 0-5 5m5-5 5 5"
+        stroke="#001984"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ==========================================================================
    SUB-COMPONENTS
    ========================================================================== */
 function Breadcrumb({ items }) {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-1.5 text-[16px] font-medium text-[#0A0847]/60">
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] font-medium leading-[20px] text-[#0A0847]/60 sm:text-[16px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item} className="flex items-center gap-1.5">
+            <li key={item} className="flex min-w-0 items-center gap-2">
               {index > 0 && (
-                <LuChevronRight size={14} className="text-[#0A0847]/60" aria-hidden />
+                <span aria-hidden className="text-[#0A0847]/60">
+                  &gt;
+                </span>
               )}
-              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+              <span className="break-words" aria-current={isLast ? "page" : undefined}>
+                {item}
+              </span>
             </li>
           );
         })}
@@ -144,17 +224,13 @@ function Breadcrumb({ items }) {
 
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
-    <div className="inline-flex w-fit max-w-full items-center gap-[10px] self-start rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-[12px] pb-[12px] pl-[15px]">
-      <img
-        src={selectorBookIcon}
-        alt="Book Icon"
-        className="h-4 w-4 shrink-0 object-contain"
-      />
-      <p className="text-[13px] leading-[22px]">
+    <div className="flex min-h-[42px] w-full max-w-[469px] items-center gap-3 rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] px-3 py-2.5 sm:px-4">
+      <img src={selectorBookIcon} alt="" className="h-5 w-5 shrink-0 object-contain" />
+      <p className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 text-[14px] font-semibold leading-[22px] text-[#0A0847] sm:text-[16px]">
         {parts.map((part, index) => (
-          <span key={part}>
-            {index > 0 && <span className="px-1.5 text-[#0A0847]/60">&gt;</span>}
-            <span className="font-bold text-[#0A0847]">{part}</span>
+          <span key={part} className="flex items-center gap-3">
+            {index > 0 && <span className="text-[#0A0847]/60">&gt;</span>}
+            <span>{part}</span>
           </span>
         ))}
       </p>
@@ -164,7 +240,7 @@ function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
 
 function StepRow({ step, title, description, headerRight, children }) {
   return (
-    <section className="flex w-full flex-col gap-3 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
+    <section className="flex w-full min-w-0 flex-col gap-3 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-3.5">
           <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] font-semibold text-white">
@@ -172,9 +248,7 @@ function StepRow({ step, title, description, headerRight, children }) {
           </span>
           <div className="min-w-0">
             <h2 className="text-[14px] font-semibold text-[#0A0847]">{title}</h2>
-            <p className="mt-0.5 text-[12px] font-medium text-[#0A0847]/60">
-              {description}
-            </p>
+            <p className="mt-0.5 text-[12px] font-medium text-[#0A0847]/60">{description}</p>
           </div>
         </div>
         {headerRight}
@@ -210,25 +284,18 @@ export default function BulkUploadQuizQuestions() {
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-6">
         <Breadcrumb
-          items={[
-            "Bible Content",
-            "Activities",
-            "John",
-            "Chapter 3",
-            "Quiz",
-            "Bulk Upload",
-          ]}
+          items={["Bible Content", "Activities", "John", "Chapter 3", "Quiz", "Bulk Upload"]}
         />
 
-        <h1 className="mt-5 text-[22px] font-semibold text-[#0A0847]">
+        <h1 className="mt-4 break-words text-[20px] font-semibold text-[#0A0847] sm:mt-5 sm:text-[22px]">
           Bulk Upload Quiz Questions
         </h1>
 
-        {/* TOP — Location Chip + Question Type Select */}
-        <div className="mt-5">
+        {/* TOP — Location chip + Question Type, same width as Figma (469px) */}
+        <div className="mt-5 flex w-full max-w-[469px] flex-col gap-4">
           <LocationChip />
 
-          <div className="mt-4 w-[535px] max-w-full">
+          <div className="w-full">
             <label htmlFor="q-type" className={labelCls}>
               Question Type <span className="text-[#E11D48]">*</span>
             </label>
@@ -251,7 +318,7 @@ export default function BulkUploadQuizQuestions() {
                 aria-hidden
               />
             </div>
-            <p className="mt-1.5 text-[10px] text-[#0A0847]/60">
+            <p className="mt-1.5 text-[10px] italic text-[#0A0847]/60">
               Choose the question type before uploading.
             </p>
           </div>
@@ -273,16 +340,14 @@ export default function BulkUploadQuizQuestions() {
             title="Download CSV Template"
             description="Download the template file to enter your questions."
             headerRight={
-              <button type="button" className={stepButton}>
+              <button type="button" className={`${stepButton} w-full sm:w-auto`}>
                 <LuDownload size={16} className="shrink-0" />
                 Download Template
               </button>
             }
           />
 
-          {/* STEP 2 — Drag-and-drop dropzone
-              Mobile: content stacks vertically and the Browse button sits below it (no overlap).
-              sm+: content sits centered in the space left of the Browse button. */}
+          {/* STEP 2 — Drag-and-drop dropzone, sized and styled to Figma */}
           <StepRow
             step={2}
             title="Upload Completed CSV"
@@ -321,22 +386,18 @@ export default function BulkUploadQuizQuestions() {
                 setDragActive(false);
                 acceptFiles(e.dataTransfer.files);
               }}
-              className={`relative mx-auto flex min-h-[147px] w-full max-w-[874px] cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-[#001984] px-6 py-6 transition-colors sm:flex-row sm:justify-between sm:px-8 ${
+              className={`relative mx-auto flex min-h-[130px] w-full max-w-[720px] cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-[#001984] px-4 py-6 transition-colors sm:flex-row sm:justify-between sm:px-6 ${
                 dragActive ? "bg-[#E4E4F7]" : "bg-[#F3F4FF] hover:bg-[#EFEDF9]"
               }`}
             >
-              <div className="flex flex-col items-center gap-3 text-center sm:flex-1 sm:flex-row sm:justify-center">
-                <img
-                  src={uploadCloudIcon}
-                  alt=""
-                  className="h-[52px] w-auto shrink-0"
-                />
+              <div className="flex flex-col items-center gap-2 text-center sm:flex-1 sm:flex-row sm:justify-center sm:gap-3">
+<img src={uploadCloudIcon} alt="" className="h-[42px] w-auto shrink-0 sm:h-[46px]" />
                 <div className="text-center">
-                  <p className="text-[16px] font-semibold text-[#0A0847]">
+                  <p className="text-[15px] font-semibold leading-[20px] text-[#0A0847] sm:text-[16px]">
                     Drag and drop your file here
                   </p>
-                  <p className="mt-0.5 text-[12px] text-[#0A0847]/60">or</p>
-                  <p className="mt-0.5 text-[12px] text-[#0A0847]/60">
+                  <p className="text-[12px] leading-[16px] text-[#0A0847]/60">or</p>
+                  <p className="text-[12px] leading-[16px] text-[#0A0847]/60">
                     Supported format: .csv
                   </p>
                 </div>
@@ -348,7 +409,7 @@ export default function BulkUploadQuizQuestions() {
                   e.stopPropagation();
                   openPicker();
                 }}
-                className="flex h-[43px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:w-[217px]"
+                className="flex h-[38px] w-full shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:w-[177px]"
               >
                 Browse File
               </button>
@@ -357,7 +418,7 @@ export default function BulkUploadQuizQuestions() {
         </div>
 
         {/* COMBINED CARD — Validate Results + File Row + Stats + Table */}
-        <section className="mt-4 flex w-full flex-col gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-5">
+        <section className="mt-4 flex w-full min-w-0 flex-col gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 items-center gap-3.5">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#001984] text-[12px] font-semibold text-white">
@@ -370,28 +431,22 @@ export default function BulkUploadQuizQuestions() {
                 </p>
               </div>
             </div>
-            <button type="button" className={stepButton}>
+            <button type="button" className={`${stepButton} w-full sm:w-auto`}>
               <LuSearch size={16} className="shrink-0" />
               Validate CSV
             </button>
           </div>
 
           {/* FILE ROW */}
-          <div className="flex h-[72px] items-center justify-between gap-3 rounded-lg bg-[#F9F9FF] pr-[31px] pl-5">
+          <div className="flex min-h-[72px] items-center justify-between gap-3 rounded-lg bg-[#F9F9FF] px-4 py-3 sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
-              <LuFileSpreadsheet size={20} className="shrink-0 text-[#16A34A]" aria-hidden />
+              <CsvIcon className="h-9 w-7 shrink-0" />
               <div className="min-w-0">
-                <p className="truncate text-[14px] font-semibold text-[#001984]">
-                  {fileName}
-                </p>
+                <p className="truncate text-[14px] font-semibold text-[#001984]">{fileName}</p>
                 <p className="mt-0.5 text-[12px] text-[#0A0847]/60">{fileMeta}</p>
               </div>
             </div>
-            <LuCircleCheck
-              size={20}
-              className="shrink-0 text-[#16A34A]"
-              aria-label="File validated"
-            />
+            <ValidatedIcon className="h-7 w-7 shrink-0" />
           </div>
 
           {/* STAT CARDS */}
@@ -401,18 +456,18 @@ export default function BulkUploadQuizQuestions() {
               return (
                 <div
                   key={stat.key}
-                  className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[22px]"
+                  className="flex min-h-[90px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 py-4 sm:min-h-[106px] sm:p-[22px]"
                 >
                   <span
-                    className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-xl ${stat.iconWrap}`}
+                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] sm:h-[56px] sm:w-[56px] ${stat.iconWrap}`}
                   >
-                    <Icon size={26} className={stat.iconColor} aria-hidden />
+                    <Icon size={22} strokeWidth={1.6} className={stat.iconColor} aria-hidden />
                   </span>
-                  <div className="flex min-w-0 flex-col gap-2.5">
-                    <p className="text-[22px] leading-none font-semibold text-[#0A0847]">
+                  <div className="flex min-w-0 flex-col gap-1.5">
+                    <p className="text-[20px] leading-none font-semibold text-[#0A0847] sm:text-[22px]">
                       {stat.value}
                     </p>
-                    <p className="text-[14px] font-medium text-[#0A0847]/60">
+                    <p className="text-[13px] font-medium text-[#0A0847]/60 sm:text-[14px]">
                       {stat.label}
                     </p>
                   </div>
@@ -492,9 +547,8 @@ export default function BulkUploadQuizQuestions() {
         </section>
 
         {/* BOTTOM ACTION ROW
-            Mobile (2-column grid): Cancel full width · Replace File | Save as Draft · Import full width.
-            sm+: single row — Cancel left, the rest grouped right.
-            `contents` on the group lets its buttons join the parent grid on mobile. */}
+            Mobile: 2-column grid — Cancel full width, Replace | Save as Draft, Import full width.
+            sm+: single row — Cancel left, the rest grouped right. */}
         <div className="mt-6 grid w-full grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-4">
           <button type="button" className={`${outlineButton} col-span-2 sm:col-span-1`}>
             Cancel

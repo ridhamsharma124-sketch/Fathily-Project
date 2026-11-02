@@ -17,7 +17,7 @@ const helperClass = "mt-[6px] text-[10px] font-medium leading-none text-[#0A0847
 
 function FieldSelect({ id, options }) {
   return (
-    <div className="relative w-full [&>svg]:pointer-events-none">
+    <div className="relative w-full">
       <select id={id} className={selectClass}>
         {options.map((option) => (
           <option key={option} value={option}>
@@ -27,7 +27,7 @@ function FieldSelect({ id, options }) {
       </select>
       <LuChevronDown
         size={16}
-        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/80"
+        className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[#0A0847]/80"
       />
     </div>
   );
@@ -71,7 +71,7 @@ function Toggle({ checked, onChange, label }) {
 
 function Card({ title, children, divider = true }) {
   return (
-    <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pb-8 pl-6 pr-7 pt-[27px]">
+    <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pb-8 pt-[27px] sm:pl-6 sm:pr-7">
       <div className={divider ? "border-b border-[#E2DFFC] pb-3" : ""}>
         <h2 className="text-[16px] font-medium leading-none text-[#0A0847]">{title}</h2>
       </div>
@@ -128,6 +128,7 @@ export default function AddBadge() {
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="w-full px-4 py-6 sm:px-7">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
+          {/* Header */}
           <div>
             <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
               Add New Badge
@@ -137,8 +138,10 @@ export default function AddBadge() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[528px_476px] lg:justify-between">
-            <div className="flex flex-col gap-[19px]">
+          {/* Two columns: stacked on mobile, equal on lg, Figma widths on xl */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-4 xl:grid-cols-[528px_476px] xl:justify-start">
+            {/* Left column */}
+            <div className="flex min-w-0 flex-col gap-[19px]">
               <Card title="Badge Information">
                 <div>
                   <label htmlFor="badge-title" className={labelClass}>
@@ -173,7 +176,7 @@ export default function AddBadge() {
                   <button
                     type="button"
                     onClick={() => badgeImageRef.current?.click()}
-                    className="relative flex h-[100px] w-full cursor-pointer flex-row items-center justify-center gap-3 overflow-hidden rounded-[7.5px] border-[1.5px] border-dashed border-[#001984] bg-[#F6F4FE] transition-colors hover:bg-[#EDEFFF]"
+                    className="relative flex h-[100px] w-full cursor-pointer flex-row items-center justify-center gap-3 overflow-hidden rounded-[7.5px] border-[0.75px] border-dashed border-[#001984] bg-[#F6F4FE] transition-colors hover:bg-[#EDEFFF]"
                   >
                     {badgeImage ? (
                       <>
@@ -192,7 +195,7 @@ export default function AddBadge() {
                     )}
                   </button>
                   {badgeImageName && (
-                    <p className="mt-2 text-[12px] font-medium text-[#0A0847]/80">{badgeImageName}</p>
+                    <p className="mt-2 truncate text-[12px] font-medium text-[#0A0847]/80">{badgeImageName}</p>
                   )}
                   <p className="mt-2 text-[12px] font-medium leading-[15px] text-[#0A0847]/80">
                     Recommended size: 1200×628px
@@ -209,7 +212,9 @@ export default function AddBadge() {
                 </div>
 
                 <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="w-full shrink-0 text-[12px] font-semibold text-[#0A0847] sm:w-[244px]">Status</span>
+                  <span className="w-full shrink-0 text-[12px] font-semibold text-[#0A0847] sm:w-[244px]">
+                    Status
+                  </span>
                   <div className="flex items-center gap-2.5">
                     <Toggle checked={active} onChange={setActive} label="Status" />
                     <span className="text-[12px] font-medium text-[#0A0847]">Active</span>
@@ -220,7 +225,7 @@ export default function AddBadge() {
               <Card title="Preview" divider={false}>
                 <div className="flex items-center gap-4">
                   <Medal />
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[24px] font-semibold leading-none text-[#0A0847]">Badge Title</p>
                     <p className="mt-1 text-[16px] font-semibold leading-none text-[#0A0847]/60">
                       Badge description will appear here.
@@ -230,7 +235,8 @@ export default function AddBadge() {
               </Card>
             </div>
 
-            <div className="flex flex-col gap-4">
+            {/* Right column */}
+            <div className="flex min-w-0 flex-col gap-4">
               <Card title="Requirements">
                 <div>
                   <label htmlFor="req-type" className={labelClass}>
@@ -301,7 +307,7 @@ export default function AddBadge() {
 
                 <div className="mt-4">
                   <p className={labelClass}>Badge Color (Optional)</p>
-                  <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
                     {SWATCHES.map((swatch) => {
                       const selected = color === swatch.hex;
                       return (
@@ -311,12 +317,12 @@ export default function AddBadge() {
                           aria-label={`Color ${swatch.hex}`}
                           aria-pressed={selected}
                           onClick={() => setColor(swatch.hex)}
-                          className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-[8px] transition-transform hover:scale-105"
+                          className="flex aspect-square w-full cursor-pointer items-center justify-center rounded-[8px] transition-transform hover:scale-105"
                           style={{ backgroundColor: swatch.hex }}
                         >
                           {selected && (
-                            <span className="flex h-[26px] w-[26px] items-center justify-center rounded-full bg-white">
-                              <LuCheck size={15} className="text-[#001984]" strokeWidth={3} />
+                            <span className="flex h-[22px] w-[22px] items-center justify-center rounded-full bg-white sm:h-[26px] sm:w-[26px]">
+                              <LuCheck size={14} className="text-[#001984]" strokeWidth={3} />
                             </span>
                           )}
                         </button>
@@ -328,7 +334,8 @@ export default function AddBadge() {
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-end gap-4">
+          {/* Actions */}
+          <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={() => navigate("/admin/badges")}

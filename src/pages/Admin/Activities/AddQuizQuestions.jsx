@@ -14,7 +14,6 @@ import { BsBarChart } from "react-icons/bs";
 
 import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
-
 // 4-point concave star ka path
 function starPath(cx, cy, r) {
   const k = r * 0.22;
@@ -79,11 +78,7 @@ function CsvFileIcon({ size = 62, ...props }) {
 }
 
 function FillBlankIcon() {
-  return (
-    <span className="text-[15px] font-bold leading-none tracking-tighter">
-      A...
-    </span>
-  );
+  return <span className="text-[15px] font-bold leading-none tracking-tighter">A...</span>;
 }
 
 function FlipMatchIcon({ size = 18 }) {
@@ -151,12 +146,12 @@ const QUESTION_TYPES = [
    ========================================================================== */
 function Breadcrumb() {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-x-2.5 text-[18px] font-medium leading-[22px] text-[#0A084799]">
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[14px] font-medium leading-[20px] text-[#0A084799] sm:text-[18px] sm:leading-[22px] sm:gap-x-2.5">
         {BREADCRUMBS.map((crumb, index) => {
           const isLast = index === BREADCRUMBS.length - 1;
           return (
-            <li key={crumb} className="flex items-center gap-2.5">
+            <li key={crumb} className="flex items-center gap-2 sm:gap-2.5">
               {index > 0 && <span aria-hidden>&gt;</span>}
               <span aria-current={isLast ? "page" : undefined}>{crumb}</span>
             </li>
@@ -169,15 +164,9 @@ function Breadcrumb() {
 
 function LocationChip() {
   return (
-    <div className="flex h-[49px] w-[396px] max-w-full items-center gap-2.5 rounded-lg border border-[#E5E3EB] bg-[#F7F7F9] pt-[13px] pr-3 pb-3 pl-[15px]">
-      <img
-          src={selectorBookIcon}
-          alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6 shrink-0"
-        />
-      <p className="flex flex-wrap items-center gap-2 text-[16px] font-semibold leading-6 text-[#0A0847CC] sm:gap-4">
+    <div className="flex h-auto min-h-[49px] w-full max-w-[396px] items-center gap-2.5 rounded-lg border border-[#E5E3EB] bg-[#F7F7F9] px-3 py-3 sm:pt-[13px] sm:pr-3 sm:pb-3 sm:pl-[15px]">
+      <img src={selectorBookIcon} alt="" width={24} height={24} className="h-6 w-6 shrink-0" />
+      <p className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[14px] font-semibold leading-6 text-[#0A0847CC] sm:gap-x-4 sm:text-[16px]">
         {LOCATION_PARTS.map((part, index) => (
           <span key={part} className="flex items-center gap-2 sm:gap-4">
             {index > 0 && <span aria-hidden>&gt;</span>}
@@ -191,12 +180,12 @@ function LocationChip() {
 
 function SectionHeader({ title, required, subtitle }) {
   return (
-    <div className="flex flex-col gap-[14px]">
-      <h2 className="text-[22px] font-semibold leading-[27px] text-[#0A0847CC]">
+    <div className="flex flex-col gap-2.5 sm:gap-[14px]">
+      <h2 className="text-[18px] font-semibold leading-[24px] text-[#0A0847CC] sm:text-[22px] sm:leading-[27px]">
         {title}
         {required && <span className="text-[#D4001A]"> *</span>}
       </h2>
-      <p className="text-[16px] font-medium leading-[19px] text-[#0A084799]">
+      <p className="text-[14px] font-medium leading-[18px] text-[#0A084799] sm:text-[16px] sm:leading-[19px]">
         {subtitle}
       </p>
     </div>
@@ -206,7 +195,7 @@ function SectionHeader({ title, required, subtitle }) {
 function QuestionTypeRow({ type, selected, onSelect }) {
   const { Icon } = type;
   return (
-    <label className="flex h-[46.7px] cursor-pointer items-center px-[18px] transition-colors hover:bg-[#FAFAFE]">
+    <label className="flex min-h-[46px] cursor-pointer items-center px-4 transition-colors hover:bg-[#FAFAFE] sm:px-[18px]">
       <input
         type="radio"
         name="question-type"
@@ -215,10 +204,10 @@ function QuestionTypeRow({ type, selected, onSelect }) {
         onChange={() => onSelect(type.id)}
         className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-full border-2 border-[#0A0847B3] bg-white checked:border-[#001984] checked:bg-[#001984] checked:shadow-[inset_0_0_0_3px_#fff]"
       />
-      <span className="ml-[14px] flex h-5 w-6 shrink-0 items-center justify-center text-[#0A0847]">
+      <span className="ml-3 flex h-5 w-6 shrink-0 items-center justify-center text-[#0A0847] sm:ml-[14px]">
         <Icon size={18} aria-hidden />
       </span>
-      <span className="ml-2 text-[14px] font-semibold leading-5 text-[#0A0847CC]">
+      <span className="ml-2 min-w-0 text-[13px] font-semibold leading-5 text-[#0A0847CC] sm:text-[14px]">
         {type.label}
       </span>
     </label>
@@ -228,23 +217,20 @@ function QuestionTypeRow({ type, selected, onSelect }) {
 function MethodCard({ title, description, icon, iconColor, active, children }) {
   return (
     <div
-      className={`flex h-[374px] flex-col items-center rounded-lg border bg-[#F9F8FD] px-5 pt-12 pb-[22px] text-center ${
+      className={`flex min-h-[320px] flex-col items-center rounded-lg border bg-[#F9F8FD] px-5 pt-10 pb-[22px] text-center sm:pt-12 lg:h-[374px] ${
         active ? "border-[#0A54AB]" : "border-[#E4DFFA]"
       }`}
     >
-      <div
-        className="flex h-[60px] items-center justify-center"
-        style={{ color: iconColor }}
-      >
+      <div className="flex h-[56px] items-center justify-center sm:h-[60px]" style={{ color: iconColor }}>
         {icon}
       </div>
-      <h3 className="mt-5 text-[16px] font-semibold leading-4 text-[#0A0847CC]">
+      <h3 className="mt-4 text-[15px] font-semibold leading-5 text-[#0A0847CC] sm:mt-5 sm:text-[16px] sm:leading-4">
         {title}
       </h3>
-      <p className="mt-3 w-full max-w-[200px] text-[14px] font-medium leading-[21px] text-[#0A0847CC]">
+      <p className="mt-3 w-full max-w-[240px] text-[13px] font-medium leading-[20px] text-[#0A0847CC] sm:max-w-[200px] sm:text-[14px] sm:leading-[21px]">
         {description}
       </p>
-      <div className="mt-auto flex w-full flex-col gap-4">{children}</div>
+      <div className="mt-auto flex w-full flex-col gap-3 pt-6 sm:gap-4">{children}</div>
     </div>
   );
 }
@@ -257,16 +243,15 @@ export default function AddQuizQuestions() {
   const selectedType = QUESTION_TYPES.find((type) => type.id === questionType);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FE] font-[Inter] text-[#0A0847]">
-      <div className="w-full max-w-[1067px] px-4 py-6 sm:px-5">
-        {/* header */}
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F8F9FE] font-[Inter] text-[#0A0847]">
+      <div className="w-full min-w-0 max-w-[1067px] px-4 py-6 sm:px-5">
         <Breadcrumb />
 
-        <div className="mt-2.5 flex flex-col gap-[15px]">
-          <h1 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
+        <div className="mt-2.5 flex flex-col gap-2.5 sm:gap-[15px]">
+          <h1 className="text-[20px] font-semibold leading-[26px] text-[#0A0847] sm:text-[22px] sm:leading-[27px]">
             Add Quiz Questions
           </h1>
-          <p className="text-[16px] font-medium leading-[19px] text-[#0A084799]">
+          <p className="text-[14px] font-medium leading-[18px] text-[#0A084799] sm:text-[16px] sm:leading-[19px]">
             Engage and track activities for each chapter.
           </p>
         </div>
@@ -276,17 +261,17 @@ export default function AddQuizQuestions() {
         </div>
 
         {/* section 1 */}
-        <section className="mt-5 rounded-lg border border-[#E2DFFC] bg-white px-[33px] py-[29px]">
+        <section className="mt-5 min-w-0 rounded-lg border border-[#E2DFFC] bg-white px-4 py-6 sm:px-[33px] sm:py-[29px]">
           <SectionHeader
             title="1. Choose Question Type"
             required
             subtitle="Engage and track activities for each chapter."
           />
 
-          <div className="mt-9 w-full sm:w-[540px]">
-            <div className="relative flex h-[39px] w-full items-center rounded-lg border border-[#0A0847] bg-white pl-[23px]">
+          <div className="mt-6 w-full min-w-0 sm:mt-9 sm:w-[540px] sm:max-w-full">
+            <div className="relative flex h-[39px] w-full items-center rounded-lg border border-[#0A0847] bg-white pl-[16px] sm:pl-[23px]">
               <span
-                className={`text-[14px] font-medium ${
+                className={`truncate text-[13px] font-medium sm:text-[14px] ${
                   selectedType ? "text-[#0A0847CC]" : "text-[#0A084799]"
                 }`}
               >
@@ -295,7 +280,7 @@ export default function AddQuizQuestions() {
               <LuChevronDown
                 size={14}
                 aria-hidden
-                className="pointer-events-none absolute top-1/2 right-[19px] -translate-y-1/2 text-[#0A0847]"
+                className="pointer-events-none absolute top-1/2 right-[14px] -translate-y-1/2 text-[#0A0847] sm:right-[19px]"
               />
             </div>
 
@@ -313,22 +298,22 @@ export default function AddQuizQuestions() {
         </section>
 
         {/* section 2 */}
-        <section className="mt-6 rounded-lg border border-[#E2DFFC] bg-white px-[33px] py-[29px]">
+        <section className="mt-6 min-w-0 rounded-lg border border-[#E2DFFC] bg-white px-4 py-6 sm:px-[33px] sm:py-[29px]">
           <SectionHeader
             title="2. Choose How to Add Questions"
             subtitle="You can add questions manually, upload from a file, or generate with AI."
           />
 
-          <div className="mt-10 grid grid-cols-1 gap-[25px] lg:grid-cols-3">
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:mt-10 sm:gap-[25px] lg:grid-cols-3">
             <MethodCard
               title="AI Generation"
               description="Generate questions automatically using AI assistant"
-              icon={<SparklesIcon size={60} />}
+              icon={<SparklesIcon size={56} />}
               iconColor="#4B1ECB"
             >
               <button
                 type="button"
-                className="h-[47px] w-full cursor-pointer rounded-lg bg-[#4B1ECB] text-[14px] font-semibold text-white transition-colors hover:bg-[#3F17AD]"
+                className="h-[44px] w-full cursor-pointer rounded-lg bg-[#4B1ECB] text-[14px] font-semibold text-white transition-colors hover:bg-[#3F17AD] sm:h-[47px]"
               >
                 Run AI Generate ✨
               </button>
@@ -337,12 +322,12 @@ export default function AddQuizQuestions() {
             <MethodCard
               title="Manual or File Upload"
               description="Add questions manually or upload questions from a file"
-              icon={<LuPencil size={46} strokeWidth={1.6} aria-hidden />}
+              icon={<LuPencil size={44} strokeWidth={1.6} aria-hidden />}
               iconColor="#189227"
             >
               <button
                 type="button"
-                className="h-[47px] w-full cursor-pointer rounded-lg bg-[#189227] text-[14px] font-semibold text-white transition-colors hover:bg-[#137A20]"
+                className="h-[44px] w-full cursor-pointer rounded-lg bg-[#189227] text-[14px] font-semibold text-white transition-colors hover:bg-[#137A20] sm:h-[47px]"
               >
                 Add Manually
               </button>
@@ -351,7 +336,7 @@ export default function AddQuizQuestions() {
             <MethodCard
               title="Bulk Upload (CSV)"
               description="Upload a CSV file with your quiz questions"
-              icon={<CsvFileIcon size={62} />}
+              icon={<CsvFileIcon size={58} />}
               iconColor="#0A54AB"
               active
             >

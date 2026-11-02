@@ -1,6 +1,5 @@
 import QuoteBox from "./QuoteBox";
 
-
 export default function AuthCard({
   title,
   subtitle,
@@ -14,7 +13,6 @@ export default function AuthCard({
         aria-hidden
       />
 
-    
       <div className="relative flex h-full max-h-full w-full flex-col overflow-y-auto rounded-[20px] bg-white px-5 py-6 shadow-[0_10px_40px_rgba(0,0,0,0.12)] sm:px-7 sm:py-7 lg:px-20">
         <div className="my-auto w-full">
           {title && (

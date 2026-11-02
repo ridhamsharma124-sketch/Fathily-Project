@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
-// Adjust these paths to where assets/terms/*.png live in your project.
 import CheckMarkIcon from "../../../assets/terms/CheckMarkIcon.svg";
 import warningIconSrc from "../../../assets/terms/warning.svg";
 import docIconSrc from "../../../assets/terms/doc.svg";
@@ -22,13 +21,7 @@ import {
    STAT ICONS
    ========================================================================== */
 function StatIcon({ src, size }) {
-  return (
-    <img
-      src={src}
-      alt=""
-      style={{ height: size, width: "auto" }}
-    />
-  );
+  return <img src={src} alt="" style={{ height: size, width: "auto" }} />;
 }
 
 /* ==========================================================================
@@ -138,10 +131,7 @@ export default function TermsPrivacy() {
 
   useEffect(() => {
     const handler = (e) => {
-      if (
-        !e.target.closest("[data-action-menu]") &&
-        !e.target.closest("[data-menu]")
-      ) {
+      if (!e.target.closest("[data-action-menu]") && !e.target.closest("[data-menu]")) {
         setMenu(null);
       }
     };
@@ -153,35 +143,30 @@ export default function TermsPrivacy() {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
     const width = 104;
-    const x = Math.max(
-      8,
-      Math.min(rect.right - width, window.innerWidth - width - 8),
-    );
+    const x = Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8));
     setMenu({ id, x, y: rect.bottom + 6 });
   };
 
   const handleMenuAction = (key) => {
-    // Edit opens the edit page for the selected document
     if (key === "edit") navigate(`/admin/terms-privacy/edit?id=${menu.id}`);
     setMenu(null);
   };
 
   const visible = DOCUMENTS.filter((doc) => {
     const matchesSearch = doc.name.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus =
-      status === "All statuses" ? true : doc.status === status;
+    const matchesStatus = status === "All statuses" ? true : doc.status === status;
     return matchesSearch && matchesStatus;
   });
 
   return (
-    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
+    <div className="min-h-screen min-w-0 space-y-6 overflow-x-hidden bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
+        <div className="min-w-0">
+          <h1 className="text-[20px] font-semibold leading-tight text-[#0A0847] sm:text-[22px]">
             Terms &amp; Privacy
           </h1>
-          <p className="mt-2 text-[16px] font-medium text-[#0A084799]">
+          <p className="mt-2 text-[14px] font-medium text-[#0A084799] sm:text-[16px]">
             Manage legal documents shown to users.
           </p>
         </div>
@@ -189,61 +174,60 @@ export default function TermsPrivacy() {
         {/* Add Document: onClick removed, so it does not open any page for now.
             To enable create mode later, add:
             onClick={() => navigate("/admin/terms-privacy/edit?mode=create")} */}
-        <button className="flex cursor-pointer items-center gap-2 self-start rounded-[8px] bg-[#001984] px-6 py-3 text-[14px] font-semibold leading-none text-white shadow-sm transition-colors hover:bg-[#001266] sm:self-auto">
+        <button
+          type="button"
+          className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-2 self-start rounded-[8px] bg-[#001984] px-6 text-[14px] font-semibold leading-none text-white shadow-sm transition-colors hover:bg-[#001266] sm:w-auto sm:self-auto"
+        >
           <LuPlus size={16} />
           Add Document
         </button>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
-        {STATS.map((stat) => {
-          return (
+      <div className="grid grid-cols-1 gap-[12px] sm:grid-cols-2 sm:gap-[18px] lg:grid-cols-3">
+        {STATS.map((stat) => (
+          <div
+            key={stat.label}
+            className="flex h-[96px] min-w-0 items-center gap-3 rounded-[8px] border border-[#E2DFFC] bg-white pl-4 pr-4 sm:h-[123px] sm:gap-4 sm:pr-6"
+          >
             <div
-              key={stat.label}
-              className="flex h-[123px] items-center gap-4 rounded-[8px] border border-[#E2DFFC] bg-white pl-4 pr-6"
+              className={`flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-[14px] sm:h-[62px] sm:w-[62px] sm:rounded-[16px] ${stat.badge}`}
             >
-              <div
-                className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[16px] ${stat.badge}`}
-              >
-                <StatIcon src={stat.iconSrc} size={stat.iconSize} />
-              </div>
-              <div className="flex min-w-0 flex-col gap-2.5">
-                <p className="text-[14px] font-semibold leading-[17px] text-[#001984]">
-                  {stat.label}
-                </p>
-                <p
-                  className={`text-[24px] font-semibold leading-[25px] ${stat.valueClass}`}
-                >
-                  {stat.value}
-                </p>
-              </div>
+              <StatIcon src={stat.iconSrc} size={stat.iconSize} />
             </div>
-          );
-        })}
+            <div className="flex min-w-0 flex-col gap-2 sm:gap-2.5">
+              <p className="truncate text-[13px] font-semibold leading-[17px] text-[#001984] sm:text-[14px]">
+                {stat.label}
+              </p>
+              <p className={`text-[20px] font-semibold leading-[25px] sm:text-[24px] ${stat.valueClass}`}>
+                {stat.value}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Filter row */}
-      <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-        <div className="relative w-full sm:w-[406px]">
+      {/* Filter row: search and status stay on one line on every screen size */}
+      <div className="flex w-full min-w-0 items-center gap-3 sm:justify-between sm:gap-6">
+        <div className="relative min-w-0 flex-1 sm:w-[406px] sm:flex-none">
           <LuSearch
             size={16}
-            className="pointer-events-none absolute left-[13px] top-1/2 -translate-y-1/2 text-[#0A084799]"
+            className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799] sm:left-[13px]"
           />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search documents"
-            className="h-[42px] w-full rounded-[8px] border border-[#E2DFFC] bg-white pl-[38px] pr-3 text-[14px] text-[#0A084799] outline-none transition-colors placeholder:text-[#0A084799] focus:border-[#001984]"
+            className="h-[40px] w-full rounded-[8px] border border-[#E2DFFC] bg-white pl-[36px] pr-3 text-[13px] text-[#0A084799] outline-none transition-colors placeholder:text-[#0A084799] focus:border-[#001984] sm:h-[42px] sm:pl-[38px] sm:text-[14px]"
           />
         </div>
 
-        <div className="relative w-full sm:w-[127px]">
+        <div className="relative w-[130px] shrink-0 sm:w-[127px]">
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
-            className="h-[42px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-3.5 pr-8 text-[14px] font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984]"
+            className="h-[40px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-3 pr-7 text-[13px] font-medium text-[#0A0847CC] outline-none transition-colors focus:border-[#001984] sm:h-[42px] sm:pl-3.5 sm:pr-8 sm:text-[14px]"
           >
             {STATUS_OPTIONS.map((option) => (
               <option key={option} value={option}>
@@ -253,33 +237,33 @@ export default function TermsPrivacy() {
           </select>
           <LuChevronDown
             size={16}
-            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[#0A0847CC]"
+            className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#0A0847CC] sm:right-3"
           />
         </div>
       </div>
 
       {/* Table card */}
-      <div className="overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-[14px]">
+      <div className="min-w-0 overflow-hidden rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-[10px] sm:p-[14px]">
         <div className="overflow-x-auto" onScroll={() => setMenu(null)}>
           <table className="w-full min-w-[820px] border-collapse">
             <thead>
               <tr className="bg-[#F3F7FD]">
-                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-left text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   Document
                 </th>
-                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-left text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   Version
                 </th>
-                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-left text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   Effective Date
                 </th>
-                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-left text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   Status
                 </th>
-                <th className="h-[50px] px-5 text-left text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-left text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   User Acceptance
                 </th>
-                <th className="h-[50px] px-5 text-center text-[14px] font-medium text-[#0A0847CC]">
+                <th className="h-[50px] px-4 text-center text-[13px] font-medium text-[#0A0847CC] sm:px-5 sm:text-[14px]">
                   Actions
                 </th>
               </tr>
@@ -290,19 +274,20 @@ export default function TermsPrivacy() {
                   key={doc.id}
                   className="border-b-[0.75px] border-[#E2DFFC] text-[12px] font-medium text-[#0A0847] transition-colors last:border-b-0 hover:bg-gray-50/50"
                 >
-                  <td className="h-[82px] px-5 align-middle">{doc.name}</td>
-                  <td className="h-[82px] px-5 align-middle">{doc.version}</td>
-                  <td className="h-[82px] whitespace-nowrap px-5 align-middle">
+                  <td className="h-[72px] px-4 align-middle sm:h-[82px] sm:px-5">{doc.name}</td>
+                  <td className="h-[72px] px-4 align-middle sm:h-[82px] sm:px-5">{doc.version}</td>
+                  <td className="h-[72px] whitespace-nowrap px-4 align-middle sm:h-[82px] sm:px-5">
                     {doc.effective}
                   </td>
-                  <td className="h-[82px] px-5 align-middle">
+                  <td className="h-[72px] px-4 align-middle sm:h-[82px] sm:px-5">
                     <StatusPill status={doc.status} />
                   </td>
-                  <td className="h-[82px] whitespace-nowrap px-5 align-middle">
+                  <td className="h-[72px] whitespace-nowrap px-4 align-middle sm:h-[82px] sm:px-5">
                     {doc.acceptance}
                   </td>
-                  <td className="h-[82px] px-5 text-center align-middle">
+                  <td className="h-[72px] px-4 text-center align-middle sm:h-[82px] sm:px-5">
                     <button
+                      type="button"
                       onClick={(e) => openMenu(e, doc.id)}
                       data-action-menu
                       aria-label={`Actions for ${doc.name}`}
@@ -316,10 +301,7 @@ export default function TermsPrivacy() {
 
               {visible.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-5 py-10 text-center text-[12px] font-medium text-[#0A084799]"
-                  >
+                  <td colSpan={6} className="px-5 py-10 text-center text-[12px] font-medium text-[#0A084799]">
                     No documents found.
                   </td>
                 </tr>
@@ -330,12 +312,12 @@ export default function TermsPrivacy() {
       </div>
 
       {/* Footer note */}
-      <div className="-mt-2 flex items-center gap-2 text-[12px] font-medium text-[#0A084799]">
-        <LuHistory size={18} className="shrink-0 text-[#001984]" />
-        All published changes are saved to version history.
+      <div className="-mt-2 flex items-start gap-2 text-[12px] font-medium text-[#0A084799]">
+        <LuHistory size={18} className="mt-[1px] shrink-0 text-[#001984]" />
+        <span>All published changes are saved to version history.</span>
       </div>
 
-      {/* Row actions menu  */}
+      {/* Row actions menu */}
       {menu &&
         createPortal(
           <div
@@ -348,8 +330,9 @@ export default function TermsPrivacy() {
               return (
                 <button
                   key={item.key}
+                  type="button"
                   onClick={() => handleMenuAction(item.key)}
-                  className={`flex h-9 w-full cursor-pointer items-center gap-2 px-3 text-left text-[10.5px] font-medium transition-colors ${
+                  className={`flex h-9 w-full cursor-pointer items-center gap-2 px-3 text-left text-[11px] font-medium transition-colors ${
                     item.danger
                       ? "text-[#C0264A] hover:bg-[#F8EAEC]"
                       : "text-[#0A0847CC] hover:bg-gray-50"

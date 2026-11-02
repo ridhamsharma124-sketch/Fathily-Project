@@ -3,7 +3,6 @@ import bookImage from "../../../assets/activities/book.webp";
 import {
   LuEye,
   LuSettings,
-  LuBookOpen,
   LuFileText,
   LuCircleHelp,
   LuHeadphones,
@@ -19,23 +18,17 @@ import {
   LuTrash2,
   LuEllipsis,
   LuChevronDown,
-  LuLightbulb,
 } from "react-icons/lu";
-import { WordSearchGlyph, MemoryVerseGlyph } from "./activityGlyphs";
 import quizIcon from "../../../assets/activities/quiz.png";
 import wordSearchIcon from "../../../assets/activities/icon-grid-green.svg";
-import audioTileIcon from "../../../assets/activities/icon-headphones-tile.svg";
 import memoryTileIcon from "../../../assets/activities/memory_verse_tile.svg";
-import memoryTableIcon from "../../../assets/activities/memory_verse_tile.svg";
-import statHeadphones from "../../../assets/activities/icon-headphones.svg";
+import microphoneIcon from "../../../assets/activities/microphone.svg";
+import audioHeadphones from "../../../assets/activities/icon-headphones-outline.svg";
+import selectorBook from "../../../assets/activities/icon-book-purple.svg";
 import statClock from "../../../assets/activities/icon-clock.svg";
-import statBookmark from "../../../assets/activities/icon-bookmark-orange.svg";
-import statCheck from "../../../assets/activities/icon-check-circle-orange.svg";
 import btnEye from "../../../assets/activities/icon-eye.svg";
 import btnExternal from "../../../assets/activities/btn_external.svg";
 import tipBulb from "../../../assets/activities/icon-lightbulb-orange.svg";
-import audioHeadphones from "../../../assets/activities/icon-headphones-outline.svg";
-import selectorBook from "../../../assets/activities/icon-book-purple.svg";
 import infoIcon from "../../../assets/activities/icon-info.svg";
 import statQuizActive from "../../../assets/activities/stat_quiz_active.png";
 import statQuizQuestions from "../../../assets/activities/stat_quiz_questions.png";
@@ -45,25 +38,21 @@ import statWsWords from "../../../assets/activities/icon-meeting-green.svg";
 const btnImage = (label) =>
   label.startsWith("View") ? btnEye : label.startsWith("Preview") ? btnExternal : null;
 
-
 /* ==========================================================================
-   MOCK DATA — text kept exactly as before
+   MOCK DATA
    ========================================================================== */
 const SELECTORS = [
-  { label: "Testament", value: "New Testament", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen, icon: selectorBook },
-  { label: "Book", value: "John", tint: "bg-[#5B0FEE]/10", iconColor: "#5B0FEE", Glyph: LuBookOpen, icon: selectorBook },
-  { label: "Book", value: "John", tint: "bg-[#F97316]/10", iconColor: "#F97316", Glyph: LuFileText },
+  { label: "Testament", value: "New Testament", tileBg: "#F1EBFF", img: selectorBook },
+  { label: "Book", value: "John", tileBg: "#F1EBFF", img: selectorBook },
+  { label: "Book", value: "John", tileBg: "#FFF1E3", iconColor: "#F97316", Glyph: LuFileText },
 ];
 
 const ACTIVITY_CARDS = [
   {
     id: "quiz",
-    icon: quizIcon,
     title: "Quiz",
     description: "Test knowledge with multiple question types.",
-    tint: "bg-[#001984]/10",
-    iconColor: "#001984",
-    Glyph: LuCircleHelp,
+    icon: quizIcon,
     stats: [
       { label: "Active", value: "12", Glyph: LuLayers, img: statQuizActive },
       { label: "Questions", value: "12", Glyph: LuCircleHelp, img: statQuizQuestions },
@@ -75,12 +64,9 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "word-search",
-    icon: wordSearchIcon,
     title: "Word Search",
     description: "Test knowledge with multiple question types.",
-    tint: "bg-[#21AC1C]/10",
-    iconColor: "#21AC1C",
-    Glyph: WordSearchGlyph,
+    icon: wordSearchIcon,
     stats: [
       { label: "Active", value: "8", Glyph: LuUsers, img: statWsActive, tileBg: "#E8F3EA" },
       { label: "Words", value: "96", Glyph: LuPuzzle, img: statWsWords, tileBg: "#E8F3EA" },
@@ -92,15 +78,12 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "audio-stream",
-    icon: audioHeadphones,
-    tileBg: "#E5E8F3",
     title: "Chapter Audio Stream",
     description: "Listen to engaging audio content.",
-    tint: "bg-[#001984]/10",
-    iconColor: "#001984",
-    Glyph: LuHeadphones,
+    icon: microphoneIcon,
+    tileBg: "#E5E8F3",
     stats: [
-      { label: "Sessions", value: "5", Glyph: LuHeadphones, img: statHeadphones },
+      { label: "Sessions", value: "5", Glyph: LuHeadphones, img: audioHeadphones },
       { label: "Duration", value: "25m", Glyph: LuClock, img: statClock },
     ],
     buttons: [
@@ -110,15 +93,12 @@ const ACTIVITY_CARDS = [
   },
   {
     id: "memory-verse",
-    icon: memoryTileIcon,
     title: "Memory Verse",
     description: "Learn and memorize key Bible verses.",
-    tint: "bg-[#F97316]/10",
-    iconColor: "#F97316",
-    Glyph: MemoryVerseGlyph,
+    icon: memoryTileIcon,
     stats: [
-      { label: "Verses", value: "6", Glyph: LuBookmark, img: statBookmark },
-      { label: "Practiced", value: "24", Glyph: LuCircleCheck, img: statCheck },
+      { label: "Verses", value: "6", Glyph: LuBookmark, iconColor: "#F97316", tileBg: "#FBEEE3" },
+      { label: "Practiced", value: "24", Glyph: LuCircleCheck, iconColor: "#F97316", tileBg: "#FBEEE3" },
     ],
     buttons: [
       { label: "Manage Memory Verse", Glyph: LuSettings },
@@ -130,52 +110,40 @@ const ACTIVITY_CARDS = [
 const TABLE_ROWS = [
   {
     id: "1",
-    icon: quizIcon,
     name: "Quiz",
     description: "Knowledge quiz with multiple question types",
     status: "Enabled",
     content: "12 active • 96 questions",
     updated: "May 12, 2024",
-    tint: "bg-[#001984]/10",
-    iconColor: "#001984",
-    Glyph: LuCircleHelp,
+    icon: quizIcon,
   },
   {
     id: "2",
-    icon: wordSearchIcon,
     name: "Word Search",
     description: "Word search puzzle game",
     status: "Enabled",
     content: "8 puzzles • 96 words",
     updated: "May 12, 2024",
-    tint: "bg-[#21AC1C]/10",
-    iconColor: "#21AC1C",
-    Glyph: WordSearchGlyph,
+    icon: wordSearchIcon,
   },
   {
     id: "3",
-    icon: audioHeadphones,
-    tileBg: "#E5E8F3",
     name: "Chapter Audio Stream",
     description: "Audio narration of the chapter",
     status: "Enabled",
     content: "5 sessions • 25 min",
     updated: "May 12, 2024",
-    tint: "bg-[#001984]/10",
-    iconColor: "#001984",
-    Glyph: LuHeadphones,
+    icon: microphoneIcon,
+    tileBg: "#E5E8F3",
   },
   {
     id: "4",
-    icon: memoryTableIcon,
     name: "Memory Verse",
     description: "Key verses for memorization and practice",
     status: "Enabled",
     content: "6 verses • 24 practiced",
     updated: "May 12, 2024",
-    tint: "bg-[#F97316]/10",
-    iconColor: "#F97316",
-    Glyph: MemoryVerseGlyph,
+    icon: memoryTileIcon,
   },
 ];
 
@@ -201,15 +169,6 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* 40x40 toggle box area at the top right of an activity card */
-function ToggleBox({ checked, onChange, label }) {
-  return (
-    <span className="flex h-[40px] w-[40px] shrink-0 items-center justify-center">
-      <Toggle checked={checked} onChange={onChange} label={label} />
-    </span>
-  );
-}
-
 function CheckBox({ label }) {
   return (
     <input
@@ -220,24 +179,44 @@ function CheckBox({ label }) {
   );
 }
 
+/* Shared icon renderer for selector, card header, stats and table.
+   - img only                -> image shown bare at `size`
+   - img + tileBg            -> tile at `size`, image at `imgSize` inside
+   - Glyph (no img)          -> react-icons glyph inside the tile */
+function IconTile({ img, Glyph, tileBg, iconColor = "#001984", size = 53, imgSize = 36, radius = "rounded-[10px]" }) {
+  if (img && !tileBg) {
+    return <img src={img} alt="" className="shrink-0" style={{ width: size, height: size }} />;
+  }
+  return (
+    <span
+      className={`flex shrink-0 items-center justify-center ${radius}`}
+      style={{ width: size, height: size, backgroundColor: tileBg }}
+    >
+      {img ? (
+        <img src={img} alt="" style={{ width: imgSize, height: imgSize }} />
+      ) : (
+        <Glyph size={imgSize * 0.72} strokeWidth={1.5} style={{ color: iconColor }} aria-hidden />
+      )}
+    </span>
+  );
+}
+
 function SelectorCard({ selector }) {
-  const { label, value, tint, iconColor, Glyph, icon } = selector;
+  const { label, value, tileBg, img, Glyph, iconColor } = selector;
   return (
     <button
       type="button"
       className="flex h-[106px] min-w-0 items-center gap-4 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-[18px] py-[22px] text-left transition-colors hover:border-[#001984]/40"
     >
-      {icon ? (
-        <span className="flex h-[66px] w-[66px] shrink-0 items-center justify-center rounded-[16px] bg-[#EEE6FF]">
-          <img src={icon} alt="" className="h-[36px] w-[36px]" />
-        </span>
-      ) : (
-        <span
-          className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
-        >
-          <Glyph size={24} style={{ color: iconColor }} />
-        </span>
-      )}
+      <IconTile
+        img={img}
+        Glyph={Glyph}
+        tileBg={tileBg}
+        iconColor={iconColor}
+        size={66}
+        imgSize={36}
+        radius="rounded-[16px]"
+      />
       <span className="min-w-0 flex-1">
         <span className="block text-[12px] leading-none text-[#0A0847]/60">{label}</span>
         <span className="mt-2 block truncate text-[18px] leading-none font-semibold text-[#0A0847]">
@@ -250,39 +229,22 @@ function SelectorCard({ selector }) {
 }
 
 function ActivityCard({ card, enabled, onToggle }) {
-  const { title, description, tint, iconColor, Glyph, icon, tileBg, stats, buttons } = card;
+  const { title, description, tileBg, icon, stats, buttons } = card;
   return (
-    <article className="flex h-auto min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[18px] sm:pt-[22px] sm:pb-[26px] sm:pl-[17px]">
+    <article className="flex min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[18px] sm:pt-[22px] sm:pb-[26px] sm:pl-[17px]">
       <div className="flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3">
-          {tileBg ? (
-            <span
-              className="flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px]"
-              style={{ backgroundColor: tileBg }}
-            >
-              <img src={icon} alt="" className="h-[36px] w-[36px]" />
-            </span>
-          ) : icon ? (
-            <img src={icon} alt="" className="h-[53px] w-[53px] shrink-0" />
-          ) : (
-            <span
-              className={`flex h-[53px] w-[53px] shrink-0 items-center justify-center rounded-[10px] ${tint}`}
-            >
-              <Glyph size={24} style={{ color: iconColor }} />
-            </span>
-          )}
-          <div className="min-w-0">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
+          <IconTile img={icon} tileBg={tileBg} size={53} imgSize={36} />
+          <div className="min-w-0 flex-1">
             <h3 className="text-[16px] leading-none font-semibold text-[#0A0847]">{title}</h3>
             <p className="mt-2 text-[12px] leading-[16px] font-medium text-[#0A0847]/60">
               {description}
             </p>
           </div>
         </div>
-        <ToggleBox
-          checked={enabled}
-          onChange={onToggle}
-          label={`Toggle ${title}`}
-        />
+        <span className="flex h-[40px] w-[40px] shrink-0 items-center justify-center">
+          <Toggle checked={enabled} onChange={onToggle} label={`Toggle ${title}`} />
+        </span>
       </div>
 
       <div className="grid grid-cols-1 gap-[10px] sm:grid-cols-2">
@@ -291,16 +253,15 @@ function ActivityCard({ card, enabled, onToggle }) {
             key={stat.label}
             className="flex min-h-[77px] min-w-0 items-center gap-[10px] rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-[#FAF9FE] p-[12px]"
           >
-            <span
-              className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-lg"
-              style={{ backgroundColor: stat.tileBg || "#E5E8F3" }}
-            >
-              {stat.img ? (
-                <img src={stat.img} alt="" className="h-[28px] w-[28px]" />
-              ) : (
-                <stat.Glyph size={22} style={{ color: iconColor }} aria-hidden />
-              )}
-            </span>
+            <IconTile
+              img={stat.img}
+              Glyph={stat.Glyph}
+              tileBg={stat.tileBg || "#E5E8F3"}
+              iconColor={stat.iconColor}
+              size={46}
+              imgSize={28}
+              radius="rounded-lg"
+            />
             <div className="min-w-0">
               <p className="text-[12px] leading-none text-[#0A0847]/60">{stat.label}</p>
               <p className="mt-1.5 text-[18px] leading-none font-semibold text-[#0A0847]">
@@ -347,12 +308,10 @@ export default function Activities() {
     Object.fromEntries(ACTIVITY_CARDS.map((card) => [card.id, true])),
   );
 
-  const setToggle = (id) =>
-    setToggles((prev) => ({ ...prev, [id]: !prev[id] }));
+  const setToggle = (id) => setToggles((prev) => ({ ...prev, [id]: !prev[id] }));
 
   return (
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
-      {/* ONE container — every section is a direct child, full width, min-w-0 */}
       <div className="flex w-full min-w-0 flex-col gap-6 px-4 py-6 sm:px-6">
         {/* HEADER */}
         <div className="flex w-full min-w-0 flex-wrap items-start justify-between gap-4">
@@ -380,21 +339,18 @@ export default function Activities() {
           </div>
         </div>
 
-        {/* SELECTORS — 3 equal cards, gap 16 */}
+        {/* SELECTORS */}
         <div className="grid w-full min-w-0 grid-cols-1 gap-4 md:grid-cols-3">
           {SELECTORS.map((selector, i) => (
-            <SelectorCard
-              key={`${selector.label}-${selector.value}-${i}`}
-              selector={selector}
-            />
+            <SelectorCard key={`${selector.label}-${selector.value}-${i}`} selector={selector} />
           ))}
         </div>
 
-        {/* SELECTED LOCATION — full width, same edges as selector row */}
-        <section className="flex h-auto min-h-[175px] w-full min-w-0 flex-col items-start justify-between gap-6 overflow-hidden rounded-lg border border-[#E2DFFC] bg-gradient-to-r from-[#FBF8FF] to-[#F6F1FF] px-4 py-6 sm:flex-row sm:items-center sm:px-6">
+        {/* SELECTED LOCATION */}
+        <section className="flex w-full min-w-0 flex-col items-center gap-4 overflow-hidden rounded-lg border border-[#E2DFFC] bg-gradient-to-r from-[#FBF8FF] to-[#F6F1FF] px-5 py-6 text-center sm:flex-row sm:justify-between sm:gap-6 sm:px-6 sm:text-left">
           <div className="min-w-0">
             <p className="text-[16px] font-semibold text-[#0A0847]">Selected Location</p>
-            <p className="mt-2 text-[13px] text-[#0A0847]/60">
+            <p className="mt-2 break-words text-[13px] text-[#0A0847]/60">
               New Testament &gt; John &gt; Chapter 3
             </p>
             <p className="mt-1.5 text-[13px] text-[#0A0847]/60">Total Activities: 6</p>
@@ -402,11 +358,11 @@ export default function Activities() {
           <img
             src={bookImage}
             alt="Open book illustration"
-            className="h-auto w-full max-w-[220px] shrink-0 object-contain sm:h-[110px]"
+            className="h-[110px] w-auto max-w-full shrink-0 object-contain"
           />
         </section>
 
-        {/* INFO BANNER — height 38px (hug) */}
+        {/* INFO BANNER */}
         <section className="flex w-full min-w-0 items-center gap-[10px] rounded-[8px] border border-[#E5E2FC] bg-[#F4F4FE] px-[13px] py-[14px]">
           <img src={infoIcon} alt="" className="h-[24px] w-[24px] shrink-0" />
           <div className="min-w-0">
@@ -420,7 +376,7 @@ export default function Activities() {
           </div>
         </section>
 
-        {/* ACTIVITY CARDS — 2 columns, gap 24 */}
+        {/* ACTIVITY CARDS */}
         <div className="grid w-full min-w-0 grid-cols-1 gap-6 lg:grid-cols-2">
           {ACTIVITY_CARDS.map((card) => (
             <ActivityCard
@@ -473,81 +429,65 @@ export default function Activities() {
                 </tr>
               </thead>
               <tbody>
-                {TABLE_ROWS.map((row) => {
-                  const { Glyph } = row;
-                  return (
-                    <tr
-                      key={row.id}
-                      className="h-[61px] border-b-[0.75px] border-[#E2DFFC] transition-colors hover:bg-[#FAFAFE]"
-                    >
-                      <td className="px-5 py-[10px]">
-                        <CheckBox label={`Select ${row.name}`} />
-                      </td>
-                      <td className="px-5 py-[10px]">
-                        <div className="flex items-center gap-2.5">
-                          {row.tileBg ? (
-                            <span
-                              className="flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[8px]"
-                              style={{ backgroundColor: row.tileBg }}
-                            >
-                              <img src={row.icon} alt="" className="h-[24px] w-[24px]" />
-                            </span>
-                          ) : row.icon ? (
-                            <img src={row.icon} alt="" className="h-[36px] w-[36px] shrink-0" />
-                          ) : (
-                            <span
-                              className={`flex h-[41px] w-[41px] shrink-0 items-center justify-center rounded-[10px] ${row.tint}`}
-                            >
-                              <Glyph size={18} style={{ color: row.iconColor }} aria-hidden />
-                            </span>
-                          )}
-                          <span className="text-[12px] font-medium text-[#0A0847]">
-                            {row.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-5 py-[10px] text-[12px] text-[#0A0847]/60">
-                        {row.description}
-                      </td>
-                      <td className="px-5 py-[10px]">
-                        <StatusBadge status={row.status} />
-                      </td>
-                      <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
-                        {row.content}
-                      </td>
-                      <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
-                        {row.updated}
-                      </td>
-                      <td className="px-5 py-[10px]">
-                        <div className="flex items-center gap-[10px]">
-                          <div className="flex items-center gap-[10px]">
-                            <button
-                              type="button"
-                              aria-label={`Edit ${row.name}`}
-                              className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#001984] transition-colors hover:bg-[#001984]/5"
-                            >
-                              <LuPencil size={18} />
-                            </button>
-                            <button
-                              type="button"
-                              aria-label={`Delete ${row.name}`}
-                              className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#DC2626] transition-colors hover:bg-[#DC2626]/5"
-                            >
-                              <LuTrash2 size={18} />
-                            </button>
-                          </div>
-                          <button
-                            type="button"
-                            aria-label={`More actions for ${row.name}`}
-                            className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[3px] bg-[#0A0847]/10 text-[#0A0847] transition-colors hover:bg-[#0A0847]/15"
-                          >
-                            <LuEllipsis size={18} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {TABLE_ROWS.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="h-[61px] border-b-[0.75px] border-[#E2DFFC] transition-colors hover:bg-[#FAFAFE]"
+                  >
+                    <td className="px-5 py-[10px]">
+                      <CheckBox label={`Select ${row.name}`} />
+                    </td>
+                    <td className="px-5 py-[10px]">
+                      <div className="flex items-center gap-2.5">
+                        <IconTile
+                          img={row.icon}
+                          tileBg={row.tileBg}
+                          size={40}
+                          imgSize={24}
+                          radius="rounded-[8px]"
+                        />
+                        <span className="text-[12px] font-medium text-[#0A0847]">{row.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-[10px] text-[12px] text-[#0A0847]/60">
+                      {row.description}
+                    </td>
+                    <td className="px-5 py-[10px]">
+                      <StatusBadge status={row.status} />
+                    </td>
+                    <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
+                      {row.content}
+                    </td>
+                    <td className="px-5 py-[10px] text-[12px] font-medium whitespace-nowrap text-[#0A0847]/60">
+                      {row.updated}
+                    </td>
+                    <td className="px-5 py-[10px]">
+                      <div className="flex items-center gap-[10px]">
+                        <button
+                          type="button"
+                          aria-label={`Edit ${row.name}`}
+                          className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#001984] transition-colors hover:bg-[#001984]/5"
+                        >
+                          <LuPencil size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label={`Delete ${row.name}`}
+                          className="flex h-[32px] w-[31px] cursor-pointer items-center justify-center rounded-md text-[#DC2626] transition-colors hover:bg-[#DC2626]/5"
+                        >
+                          <LuTrash2 size={18} />
+                        </button>
+                        <button
+                          type="button"
+                          aria-label={`More actions for ${row.name}`}
+                          className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[3px] bg-[#0A0847]/10 text-[#0A0847] transition-colors hover:bg-[#0A0847]/15"
+                        >
+                          <LuEllipsis size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

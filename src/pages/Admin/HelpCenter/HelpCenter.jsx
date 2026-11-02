@@ -23,7 +23,7 @@ import {
   LuLock,
 } from "react-icons/lu";
 import ArticleModal from "./ArticleModal";
-
+import checkIcon from "../../../assets/checkicon.svg";
 
 const svgBase = (size) => ({
   width: size,
@@ -47,16 +47,7 @@ function BarsIcon({ size = 26 }) {
 }
 
 function CheckRingIcon({ size = 26 }) {
-  return (
-    <svg {...svgBase(size)}>
-      <path d="M20.2 7.6A9.3 9.3 0 1 1 16.4 3.8" />
-      <path
-        d="M7 12.3L8.4 10.9L10.8 13L18.9 6L20.2 7.3L10.8 16Z"
-        fill="currentColor"
-        strokeWidth="0.6"
-      />
-    </svg>
-  );
+  return <img src={checkIcon} alt="" width={size} height={size} className="block" />;
 }
 
 function DraftIcon({ size = 26 }) {
@@ -82,82 +73,18 @@ function ThumbIcon({ size = 26 }) {
    MOCK DATA
    ========================================================================== */
 const STATS = [
-  {
-    label: "Total articles",
-    value: 48,
-    icon: BarsIcon,
-    badge: "bg-[#F0E6FF] text-[#6A0DDB]",
-    valueClass: "text-[#6A0DDB]",
-  },
-  {
-    label: "Published",
-    value: 42,
-    icon: CheckRingIcon,
-    badge: "bg-[#E8F7EE] text-[#2BA84A]",
-    valueClass: "text-[#0A0847]",
-  },
-  {
-    label: "Drafts",
-    value: 6,
-    icon: DraftIcon,
-    badge: "bg-[#F9ECE3] text-[#C65406]",
-    valueClass: "text-[#C65406]",
-  },
-  {
-    label: "Scheduled",
-    value: "91%",
-    icon: ThumbIcon,
-    badge: "bg-[#E8E5FA] text-[#1D12E0]",
-    valueClass: "text-[#1D12B0]",
-  },
+  { label: "Total articles", value: 48, icon: BarsIcon, badge: "bg-[#F0E6FF] text-[#6A0DDB]", valueClass: "text-[#6A0DDB]" },
+  { label: "Published", value: 42, icon: CheckRingIcon, badge: "bg-[#E8F7EE] text-[#2BA84A]", valueClass: "text-[#0A0847]" },
+  { label: "Drafts", value: 6, icon: DraftIcon, badge: "bg-[#F9ECE3] text-[#C65406]", valueClass: "text-[#C65406]" },
+  { label: "Scheduled", value: "91%", icon: ThumbIcon, badge: "bg-[#E8E5FA] text-[#1D12E0]", valueClass: "text-[#1D12B0]" },
 ];
 
 const ARTICLES = [
-  {
-    id: "1",
-    title: "Managing Your Subscription",
-    category: "Subscription & Billing",
-    views: "2,847",
-    helpful: "94%",
-    status: "Published",
-    updated: "May 12, 2024",
-  },
-  {
-    id: "2",
-    title: "Update Payment Method",
-    category: "Subscription & Billing",
-    views: "2,847",
-    helpful: "94%",
-    status: "Published",
-    updated: "Apr 28, 2024",
-  },
-  {
-    id: "3",
-    title: "Redeem Gift Code",
-    category: "Gift Codes",
-    views: "2,847",
-    helpful: "94%",
-    status: "Published",
-    updated: "Apr 22, 2024",
-  },
-  {
-    id: "4",
-    title: "Set Reading Plan Goals",
-    category: "Account Settings",
-    views: "2,847",
-    helpful: "94%",
-    status: "Draft",
-    updated: "May 12, 2024",
-  },
-  {
-    id: "5",
-    title: "Reset Password",
-    category: "Account Settings",
-    views: "2,847",
-    helpful: "94%",
-    status: "Published",
-    updated: "May 12, 2024",
-  },
+  { id: "1", title: "Managing Your Subscription", category: "Subscription & Billing", views: "2,847", helpful: "94%", status: "Published", updated: "May 12, 2024" },
+  { id: "2", title: "Update Payment Method", category: "Subscription & Billing", views: "2,847", helpful: "94%", status: "Published", updated: "Apr 28, 2024" },
+  { id: "3", title: "Redeem Gift Code", category: "Gift Codes", views: "2,847", helpful: "94%", status: "Published", updated: "Apr 22, 2024" },
+  { id: "4", title: "Set Reading Plan Goals", category: "Account Settings", views: "2,847", helpful: "94%", status: "Draft", updated: "May 12, 2024" },
+  { id: "5", title: "Reset Password", category: "Account Settings", views: "2,847", helpful: "94%", status: "Published", updated: "May 12, 2024" },
 ];
 
 const CATEGORIES = [
@@ -194,40 +121,21 @@ const COLUMNS = [
   { label: "Actions", w: "14.2%", align: "text-center" },
 ];
 
+const STATUS_OPTIONS = ["All Statuses", "Published", "Draft", "Scheduled"];
+const AUTHOR_OPTIONS = ["All Authors", "John Doe", "Jane Smith"];
+
 /* ==========================================================================
    SMALL PIECES
    ========================================================================== */
 function StatusPill({ status }) {
   return (
     <span
-      className={`inline-flex h-[26px] min-w-[54px] items-center justify-center whitespace-nowrap rounded-[8px] border px-[15px] text-[12px] font-medium leading-none ${
+      className={`inline-flex h-[26px] min-w-[54px] items-center justify-center whitespace-nowrap rounded-[8px] border px-[12px] text-[12px] font-medium leading-none sm:px-[15px] ${
         STATUS_PILL[status] || "border-gray-200 bg-gray-100 text-gray-700"
       }`}
     >
       {status}
     </span>
-  );
-}
-
-function FilterSelect({ value, onChange, options }) {
-  return (
-    <div className="relative w-full sm:w-[125px]">
-      <select
-        value={value}
-        onChange={onChange}
-        className="h-[36px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-[14px] pr-[32px] text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors focus:border-[#001984]"
-      >
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      <LuChevronDown
-        size={14}
-        className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-[#0A0847]/80"
-      />
-    </div>
   );
 }
 
@@ -244,10 +152,7 @@ export default function HelpCenter() {
 
   useEffect(() => {
     const handler = (e) => {
-      if (
-        !e.target.closest("[data-action-menu]") &&
-        !e.target.closest("[data-menu]")
-      ) {
+      if (!e.target.closest("[data-action-menu]") && !e.target.closest("[data-menu]")) {
         setMenu(null);
       }
     };
@@ -266,18 +171,13 @@ export default function HelpCenter() {
 
   const openMenu = (e, id) => {
     e.stopPropagation();
-    /* clicking the same 3-dot again closes the menu */
     if (menu?.id === id) {
       setMenu(null);
       return;
     }
     const rect = e.currentTarget.getBoundingClientRect();
     const width = 130;
-    const x = Math.max(
-      8,
-      Math.min(rect.right - width, window.innerWidth - width - 8),
-    );
-    /* always opens downward */
+    const x = Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8));
     setMenu({ id, x, y: rect.bottom + 6 });
   };
 
@@ -292,24 +192,30 @@ export default function HelpCenter() {
     const matchesSearch =
       article.title.toLowerCase().includes(search.toLowerCase()) ||
       article.category.toLowerCase().includes(search.toLowerCase());
-    const matchesStatus =
-      status === "All Statuses" ? true : article.status === status;
+    const matchesStatus = status === "All Statuses" ? true : article.status === status;
     return matchesSearch && matchesStatus;
   });
 
+  const filters = [
+    { value: status, set: setStatus, options: STATUS_OPTIONS },
+    { value: visibility, set: setVisibility, options: STATUS_OPTIONS },
+    { value: author, set: setAuthor, options: AUTHOR_OPTIONS },
+  ];
+
   return (
-    <div className="min-h-screen space-y-6 bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
+    <div className="min-h-screen min-w-0 space-y-6 overflow-x-hidden bg-[#F8FAFC] p-4 font-[Inter] sm:p-6">
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
+        <div className="min-w-0">
+          <h1 className="text-[20px] font-semibold leading-tight text-[#0A0847] sm:text-[22px]">
             Help Center Management
           </h1>
-          <p className="mt-[18px] text-[16px] font-medium leading-none text-[#0A0847]/60">
+          <p className="mt-[10px] text-[14px] font-medium leading-snug text-[#0A0847]/60 sm:mt-[18px] sm:text-[16px]">
             Create, organize, and manage help content.
           </p>
         </div>
         <button
+          type="button"
           onClick={() => setModal({ mode: "create", article: null })}
           className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-[8px] self-start rounded-[8px] bg-[#001984] text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[152px] sm:self-auto"
         >
@@ -318,26 +224,25 @@ export default function HelpCenter() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
+      {/* Stats */}
+      <div className="grid grid-cols-1 gap-[12px] min-[420px]:grid-cols-2 sm:gap-[18px] lg:grid-cols-4">
         {STATS.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.label}
-              className="flex h-[154px] items-center gap-[16px] rounded-[10px] border border-[#E2DFFC] bg-white px-[16px]"
+              className="flex h-[110px] min-w-0 items-center gap-[12px] rounded-[10px] border border-[#E2DFFC] bg-white px-[14px] sm:h-[154px] sm:gap-[16px] sm:px-[16px]"
             >
               <div
-                className={`flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-[16px] ${stat.badge}`}
+                className={`flex h-[48px] w-[48px] shrink-0 items-center justify-center rounded-[14px] sm:h-[60px] sm:w-[60px] sm:rounded-[16px] ${stat.badge}`}
               >
-                <Icon size={26} />
+                <Icon size={22} />
               </div>
               <div className="min-w-0">
-                <p
-                  className={`text-[26px] font-bold leading-none ${stat.valueClass}`}
-                >
+                <p className={`text-[20px] font-bold leading-none sm:text-[26px] ${stat.valueClass}`}>
                   {stat.value}
                 </p>
-                <p className="mt-[10px] text-[14px] font-semibold leading-none text-[#001984]">
+                <p className="mt-[8px] truncate text-[12px] font-semibold leading-none text-[#001984] sm:mt-[10px] sm:text-[14px]">
                   {stat.label}
                 </p>
               </div>
@@ -346,10 +251,10 @@ export default function HelpCenter() {
         })}
       </div>
 
-      {/* Filter row — search 408x42 (r 7.5) · selects 125x36 · button 161x36 */}
-      <div className="flex flex-col items-start justify-between gap-4 xl:flex-row xl:items-center">
-        <div className="flex flex-col items-start gap-[16px] sm:flex-row sm:items-center">
-          <div className="relative w-full sm:w-[408px]">
+      {/* Filter row: search + 3 dropdowns in one line (swipes on mobile), Manage Categories beside on xl */}
+      <div className="flex w-full min-w-0 flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+        <div className="-mx-4 flex min-w-0 items-center gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-3 sm:px-0">
+          <div className="relative w-[220px] shrink-0 sm:w-[260px] md:w-[320px] xl:w-[408px]">
             <LuSearch
               size={16}
               className="pointer-events-none absolute left-[14px] top-1/2 -translate-y-1/2 text-[#0A0847]/60"
@@ -359,41 +264,45 @@ export default function HelpCenter() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search journeys..."
-              className="h-[42px] w-full rounded-[7.5px] border border-[#E2DFFC] bg-white pl-[42px] pr-[50px] text-[14px] font-normal leading-none text-[#0A0847] outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]"
+              className="h-[40px] w-full rounded-[7.5px] border border-[#E2DFFC] bg-white pl-[38px] pr-[14px] text-[13px] font-normal leading-none text-[#0A0847] outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984] sm:h-[42px] sm:pl-[42px] sm:text-[14px]"
             />
           </div>
 
-          <FilterSelect
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            options={["All Statuses", "Published", "Draft", "Scheduled"]}
-          />
-          <FilterSelect
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value)}
-            options={["All Statuses", "Published", "Draft", "Scheduled"]}
-          />
-          <FilterSelect
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            options={["All Authors", "John Doe", "Jane Smith"]}
-          />
+          {filters.map((f, i) => (
+            <div key={i} className="relative w-[130px] shrink-0 sm:w-[140px] md:w-[125px]">
+              <select
+                value={f.value}
+                onChange={(e) => f.set(e.target.value)}
+                className="h-[36px] w-full cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-[12px] pr-[30px] text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors focus:border-[#001984] sm:pl-[14px]"
+              >
+                {f.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+              <LuChevronDown
+                size={14}
+                className="pointer-events-none absolute right-[10px] top-1/2 -translate-y-1/2 text-[#0A0847]/80"
+              />
+            </div>
+          ))}
         </div>
 
         <button
           type="button"
           className="flex h-[36px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border border-[#E2DFFC] bg-white px-[12px] text-[12px] font-medium leading-none text-[#0A0847]/80 transition-colors hover:bg-gray-50 xl:w-[161px]"
         >
-          <LuSettings size={18} className="shrink-0" />
+          <LuSettings size={16} className="shrink-0" />
           Manage Categories
         </button>
       </div>
 
       {/* Articles table card */}
-      <div className="overflow-hidden rounded-[10px] border border-[#E2DFFC] bg-white p-[14px]">
+      <div className="min-w-0 overflow-hidden rounded-[10px] border border-[#E2DFFC] bg-white p-[12px] sm:p-[14px]">
         <div className="mb-[12px] flex items-center gap-[8px] px-[4px]">
           <LuFileText size={16} className="text-[#001984]" />
-          <h2 className="text-[14px] font-semibold leading-none text-[#001984]">
+          <h2 className="text-[13px] font-semibold leading-none text-[#001984] sm:text-[14px]">
             Total articles
           </h2>
         </div>
@@ -410,7 +319,7 @@ export default function HelpCenter() {
                 {COLUMNS.map((c) => (
                   <th
                     key={c.label}
-                    className={`px-[20px] text-[14px] font-medium leading-none text-[#0A0847]/80 ${c.align}`}
+                    className={`px-[20px] text-[13px] font-medium leading-none text-[#0A0847]/80 sm:text-[14px] ${c.align}`}
                   >
                     {c.label}
                   </th>
@@ -443,6 +352,7 @@ export default function HelpCenter() {
                   </td>
                   <td className="px-[20px] text-center align-middle">
                     <button
+                      type="button"
                       onClick={(e) => openMenu(e, article.id)}
                       data-action-menu
                       aria-label={`Actions for ${article.title}`}
@@ -458,10 +368,7 @@ export default function HelpCenter() {
 
               {visible.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={7}
-                    className="px-[20px] py-[40px] text-center text-[12px] font-medium text-[#0A0847]/60"
-                  >
+                  <td colSpan={7} className="px-[20px] py-[40px] text-center text-[12px] font-medium text-[#0A0847]/60">
                     No articles found.
                   </td>
                 </tr>
@@ -471,15 +378,15 @@ export default function HelpCenter() {
         </div>
       </div>
 
-      {/* Categories card — rows 62px, count/edit/more boxes 30px, gap 12 */}
-      <div className="overflow-hidden rounded-[10px] border border-[#E2DFFC] bg-white p-[14px]">
+      {/* Categories card */}
+      <div className="min-w-0 overflow-hidden rounded-[10px] border border-[#E2DFFC] bg-white p-[12px] sm:p-[14px]">
         <div className="flex flex-col items-start justify-between gap-3 border-b border-[#EEEDF8] px-[4px] pb-[14px] sm:flex-row sm:items-center">
-          <h2 className="text-[16px] font-semibold leading-none text-[#0A0847]">
+          <h2 className="text-[15px] font-semibold leading-none text-[#0A0847] sm:text-[16px]">
             Categories
           </h2>
           <button
             type="button"
-            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-white text-[14px] font-semibold leading-none text-[#0A0847] transition-colors hover:bg-gray-50 sm:w-[166px]"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-white text-[13px] font-semibold leading-none text-[#0A0847] transition-colors hover:bg-gray-50 sm:w-[166px] sm:text-[14px]"
           >
             <LuPlus size={16} />
             Add Category
@@ -492,23 +399,23 @@ export default function HelpCenter() {
             return (
               <div
                 key={category.name}
-                className="flex h-[62px] items-center justify-between gap-3 border-b border-[#EEEDF8] pl-[20px] pr-[24px] last:border-b-0"
+                className="flex min-h-[56px] items-center justify-between gap-3 border-b border-[#EEEDF8] py-[8px] pl-[8px] pr-[4px] last:border-b-0 sm:h-[62px] sm:pl-[20px] sm:pr-[24px] sm:py-0"
               >
-                <div className="flex min-w-0 items-center gap-[30px]">
-                  <Icon size={18} className="shrink-0 text-[#0A0847]" />
+                <div className="flex min-w-0 items-center gap-[12px] sm:gap-[30px]">
+                  <Icon size={18} className="shrink-0 text-[#001984]" />
                   <span className="truncate text-[12px] font-medium leading-none text-[#0A0847]/80">
                     {category.name}
                   </span>
                 </div>
 
-                <div className="flex shrink-0 items-center gap-[12px]">
-                  <span className="flex h-[30px] w-[30px] items-center justify-center rounded-[6px] bg-[#F3F4FB] text-[16px] font-medium leading-none text-[#0A0847]/80">
+                <div className="flex shrink-0 items-center gap-[8px] sm:gap-[12px]">
+                  <span className="flex h-[30px] w-[30px] items-center justify-center rounded-[6px] bg-[#F3F4FB] text-[14px] font-semibold leading-none text-[#0A0847]/80 sm:text-[16px]">
                     {category.count}
                   </span>
                   <button
                     type="button"
                     aria-label={`Edit ${category.name}`}
-                    className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[6px] border border-[#EEEDF8] bg-white text-[#0A0847]/80 transition-colors hover:bg-gray-50"
+                    className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[6px] border border-[#EEEDF8] bg-white text-[#001984] transition-colors hover:bg-gray-50"
                   >
                     <LuPencil size={14} />
                   </button>
@@ -539,6 +446,7 @@ export default function HelpCenter() {
               return (
                 <button
                   key={item.key}
+                  type="button"
                   onClick={() => handleMenuAction(item.key, menu.id)}
                   className={`flex h-10 w-full cursor-pointer items-center gap-2.5 px-3.5 text-left text-[12px] font-medium transition-colors ${
                     item.danger
@@ -548,9 +456,7 @@ export default function HelpCenter() {
                 >
                   <ItemIcon
                     size={16}
-                    className={`shrink-0 ${
-                      item.danger ? "text-[#C44552]" : "text-[#0A0847]/60"
-                    }`}
+                    className={`shrink-0 ${item.danger ? "text-[#C44552]" : "text-[#0A0847]/60"}`}
                   />
                   {item.label}
                 </button>

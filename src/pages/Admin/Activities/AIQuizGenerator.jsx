@@ -6,9 +6,8 @@ import { LuPencil, LuExternalLink, LuRefreshCw } from "react-icons/lu";
 
 import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 
-
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified (unchanged)
+   MOCK DATA
    ========================================================================== */
 const BREADCRUMBS = ["Bible Content", "Articles", "John", "Chapter 3", "Quiz"];
 const LOCATION_PARTS = ["New Testament", "John", "Chapter 3"];
@@ -71,17 +70,16 @@ const GENERATED_QUESTIONS = [
 ];
 
 /* label: Inter 600 / 12px / lh 15 */
-const labelCls =
-  "block text-[12px] font-semibold leading-[15px] text-[#0A0847]";
+const labelCls = "block text-[12px] font-semibold leading-[15px] text-[#0A0847]";
 
-/* input / select: 336 x 40, radius 7.47, Inter 500 / 12px, #0A0847 @ 80% */
+/* input / select: full width, radius 7.47, Inter 500 / 12px */
 const fieldCls =
   "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-10 text-[12px] font-medium leading-[15px] text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
 
 /* helper text: Inter 500 / 10px, #0A0847 @ 60% */
 const helperCls = "text-[10px] font-medium leading-[12px] text-[#0A0847]/60";
 
-/* soft action button inside question cards: Inter 600 / 12px, h 38, r 8 */
+/* soft action button inside question cards */
 const actionButton =
   "flex h-[38px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#9CAFF4] bg-[#F3F7FD] text-[12px] font-semibold leading-[15px] text-[#0A0847] transition-colors hover:bg-[#E8EEFB]";
 
@@ -92,14 +90,16 @@ const requiredMark = <span className="text-[#D4001A]"> *</span>;
    ========================================================================== */
 function Breadcrumb({ items }) {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-x-1.5 text-[16px] font-medium leading-[20px] text-[#0A0847]/60">
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[13px] font-medium leading-[18px] text-[#0A0847]/60 sm:text-[16px] sm:leading-[20px]">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item} className="flex items-center gap-1.5">
+            <li key={item} className="flex min-w-0 items-center gap-1.5">
               {index > 0 && <span aria-hidden>&gt;</span>}
-              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+              <span className="break-words" aria-current={isLast ? "page" : undefined}>
+                {item}
+              </span>
             </li>
           );
         })}
@@ -107,20 +107,13 @@ function Breadcrumb({ items }) {
     </nav>
   );
 }
-
 function LocationChip({ parts }) {
   return (
-    <div className="flex h-[49px] w-[396px] max-w-full items-center gap-3 rounded-lg border border-[#E2DFFC] bg-[#F7F7F9] pt-[13px] pr-3 pb-3 pl-[15px]">
-      <img
-          src={selectorBookIcon}
-          alt=""
-          width={24}
-          height={24}
-          className="h-6 w-6 shrink-0"
-        />
-      <p className="flex items-center gap-4 text-[16px] font-semibold leading-6 text-[#0A0847]/80">
+    <div className="inline-flex max-w-full items-center gap-[10px] self-start rounded-[8px] border border-[#E2DFFC] bg-[#F7F7F9] px-3 py-3 sm:w-[396px] sm:pt-[13px] sm:pr-[12px] sm:pb-[12px] sm:pl-[15px]">
+      <img src={selectorBookIcon} alt="" width={24} height={24} className="h-6 w-6 shrink-0" />
+      <p className="flex min-w-0 flex-wrap items-center gap-x-[10px] gap-y-1 text-[14px] font-semibold leading-6 text-[#0A0847]/80 sm:text-[16px]">
         {parts.map((part, index) => (
-          <span key={part} className="flex items-center gap-4">
+          <span key={part} className="flex items-center gap-[12px] whitespace-nowrap">
             {index > 0 && <span aria-hidden>&gt;</span>}
             <span>{part}</span>
           </span>
@@ -129,8 +122,6 @@ function LocationChip({ parts }) {
     </div>
   );
 }
-
-/* 26 x 15 pill, blue (#0A54AB) when on, white knob with ring */
 function Toggle({ checked, onChange, label }) {
   return (
     <button
@@ -152,7 +143,6 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-/* 16px navy square checkbox with white tick */
 function Checkbox({ checked, onChange, label }) {
   return (
     <label className="relative inline-flex h-4 w-4 shrink-0 cursor-pointer">
@@ -163,13 +153,8 @@ function Checkbox({ checked, onChange, label }) {
         aria-label={label}
         className="peer sr-only"
       />
-      <span className="flex h-4 w-4 items-center justify-center rounded-[3px] border border-[#0A0847]/70 bg-white transition-colors peer-checked:border-[#001984] peer-checked:bg-[#001984] peer-checked:[&_svg]:opacity-100 peer-focus-visible:ring-2 peer-focus-visible:ring-[#001984]/40">
-        <svg
-          viewBox="0 0 12 12"
-          className="h-3 w-3 opacity-0"
-          fill="none"
-          aria-hidden
-        >
+      <span className="flex h-4 w-4 items-center justify-center rounded-[3px] border border-[#001984] bg-white transition-colors peer-checked:bg-[#001984] peer-focus-visible:ring-2 peer-focus-visible:ring-[#001984]/40">
+        <svg viewBox="0 0 12 12" className="h-3 w-3 opacity-0 peer-checked:opacity-100" fill="none" aria-hidden>
           <path
             d="M2.5 6.3 5 8.8l4.5-5"
             stroke="#fff"
@@ -185,14 +170,7 @@ function Checkbox({ checked, onChange, label }) {
 
 function SmallChevron({ className = "" }) {
   return (
-    <svg
-      width="8"
-      height="5"
-      viewBox="0 0 8 5"
-      fill="none"
-      aria-hidden
-      className={className}
-    >
+    <svg width="8" height="5" viewBox="0 0 8 5" fill="none" aria-hidden className={className}>
       <path
         d="M.75.75 4 4l3.25-3.25"
         stroke="currentColor"
@@ -206,7 +184,7 @@ function SmallChevron({ className = "" }) {
 
 function CompactSelect({ id, value, options, onChange }) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full min-w-0">
       <select
         id={id}
         value={value}
@@ -224,14 +202,11 @@ function CompactSelect({ id, value, options, onChange }) {
   );
 }
 
-/* toggle row: title Inter 600 / 13px, description 10px */
 function ToggleRow({ title, description, checked, onChange }) {
   return (
-    <div className="flex h-[32px] items-center justify-between gap-4">
+    <div className="flex min-h-[32px] items-center justify-between gap-4">
       <div className="min-w-0">
-        <p className="text-[13px] font-semibold leading-[16px] text-[#0A0847]">
-          {title}
-        </p>
+        <p className="text-[13px] font-semibold leading-[16px] text-[#0A0847]">{title}</p>
         <p className={`mt-[2px] ${helperCls}`}>{description}</p>
       </div>
       <Toggle checked={checked} onChange={onChange} label={title} />
@@ -245,45 +220,37 @@ function Divider() {
 
 function QuestionCard({ question, selected, onSelect }) {
   return (
-    <article className="flex min-w-0 flex-col rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[13px] pb-[20px] pl-[13px]">
-      <div className="flex items-start gap-5">
-        {/* checkbox sits in its own column, left of the image */}
-        <div className="mt-[2px] ml-[2px]">
-          <Checkbox
-            checked={selected}
-            onChange={onSelect}
-            label={`Select question ${question.id}`}
-          />
+    <article className="flex min-w-0 flex-col rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-3 pt-[19px] pb-5">
+      <div className="flex items-start gap-3 sm:gap-5">
+        <div className="mt-[2px] shrink-0 sm:ml-[2px]">
+          <Checkbox checked={selected} onChange={onSelect} label={`Select question ${question.id}`} />
         </div>
 
-        <div className="flex min-w-0 flex-1 flex-col gap-6 sm:flex-row sm:gap-8">
+        <div className="flex min-w-0 flex-1 flex-col gap-5 sm:flex-row sm:gap-8">
           <img
             src={LEVEL_IMAGES[question.level]}
             alt={`${question.level} illustration`}
             width={194}
             height={229}
-            className="h-auto w-full max-w-[194px] shrink-0 rounded-lg border border-[#E2DFFC] object-cover sm:h-[229px] sm:w-[194px]"
+            className="h-auto w-full rounded-lg border border-[#E2DFFC] object-cover sm:h-[229px] sm:w-[194px] sm:shrink-0"
           />
 
-          {/* tag, question, options */}
           <div className="flex min-w-0 flex-1 flex-col gap-[15px]">
             <span className="inline-flex h-[26px] w-fit items-center rounded-[4px] border border-[#E2DFFC] bg-[#F3F4FC] px-[7px] text-[12px] font-semibold leading-[15px] text-[#0A0847]">
               {question.level}
             </span>
 
-            <div className="flex w-full max-w-[260px] flex-col gap-[18px] sm:max-w-none">
-              <p className="text-[14px] font-semibold leading-[18px] text-[#0A0847]">
+            <div className="flex min-w-0 flex-col gap-[18px]">
+              <p className="break-words text-[14px] font-semibold leading-[18px] text-[#0A0847]">
                 {question.text}
               </p>
               <ul>
                 {question.options.map((option, index) => (
                   <li
                     key={option}
-                    className="text-[12px] font-medium leading-[22px] text-[#0A0847]/60"
+                    className="break-words text-[12px] font-medium leading-[22px] text-[#0A0847]/60"
                   >
-                    <span className="font-bold text-[#0A0847]">
-                      {String.fromCharCode(65 + index)}.
-                    </span>{" "}
+                    <span className="font-bold text-[#0A0847]">{String.fromCharCode(65 + index)}.</span>{" "}
                     {option}
                   </li>
                 ))}
@@ -293,8 +260,7 @@ function QuestionCard({ question, selected, onSelect }) {
         </div>
       </div>
 
-      {/* action buttons row: aligned with the card's left padding */}
-      <div className="mt-[24px] flex flex-wrap items-center gap-3">
+      <div className="mt-6 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap sm:items-center">
         <button type="button" className={`${actionButton} w-full sm:w-[101px]`}>
           <LuPencil size={16} aria-hidden />
           Edit
@@ -328,38 +294,32 @@ export default function AIQuizGenerator() {
   const [verseRefs, setVerseRefs] = useState(true);
   const [avoidDuplicates, setAvoidDuplicates] = useState(true);
   const [instructions, setInstructions] = useState("");
-  const [selectedIds, setSelectedIds] = useState(
-    GENERATED_QUESTIONS.map((q) => q.id),
-  );
+  const [selectedIds, setSelectedIds] = useState(GENERATED_QUESTIONS.map((q) => q.id));
 
   const allSelected = selectedIds.length === GENERATED_QUESTIONS.length;
 
   const toggleLevel = (id) =>
     setLevels((prev) =>
-      prev.map((level) =>
-        level.id === id ? { ...level, selected: !level.selected } : level,
-      ),
+      prev.map((level) => (level.id === id ? { ...level, selected: !level.selected } : level)),
     );
 
   const toggleQuestion = (id, checked) =>
-    setSelectedIds((prev) =>
-      checked ? [...prev, id] : prev.filter((x) => x !== id),
-    );
+    setSelectedIds((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
 
   const toggleAll = (checked) =>
     setSelectedIds(checked ? GENERATED_QUESTIONS.map((q) => q.id) : []);
 
   return (
-    <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-7">
-        {/* ---------- header ---------- */}
+        {/* header */}
         <Breadcrumb items={BREADCRUMBS} />
 
-        <div className="mt-3 w-full min-w-0">
-          <h1 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
+        <div className="mt-3 min-w-0">
+          <h1 className="break-words text-[20px] font-semibold leading-[26px] text-[#0A0847] sm:text-[22px] sm:leading-[27px]">
             AI Quiz Generator
           </h1>
-          <p className="mt-[14px] text-[16px] font-medium leading-[19px] text-[#0A0847]/60">
+          <p className="mt-2 text-[14px] font-medium leading-[18px] text-[#0A0847]/60 sm:mt-[14px] sm:text-[16px] sm:leading-[19px]">
             Engage and track activities for each chapter.
           </p>
         </div>
@@ -368,15 +328,14 @@ export default function AIQuizGenerator() {
           <LocationChip parts={LOCATION_PARTS} />
         </div>
 
-        {/* ---------- two columns ---------- */}
-        <div className="mt-[30px] grid grid-cols-1 items-stretch gap-6 lg:grid-cols-[376px_minmax(0,1fr)]">
+        {/* two columns: stacked below xl (1280px) */}
+        <div className="mt-6 grid min-w-0 grid-cols-1 items-stretch gap-6 sm:mt-[30px] xl:grid-cols-[376px_minmax(0,1fr)]">
           {/* LEFT — configure */}
-          <section className="flex min-w-0 flex-col gap-[14px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[35px] pl-[16px]">
+          <section className="flex min-w-0 flex-col gap-[14px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 pt-[19px] pb-[30px] sm:pr-[22px] sm:pl-[16px] sm:pb-[35px] xl:h-full">
             <h2 className="text-[16px] font-semibold leading-[20px] text-[#0A0847]">
               Configure Your Quiz
             </h2>
 
-            {/* Question Type */}
             <div className="flex flex-col gap-2">
               <label htmlFor="q-type" className={labelCls}>
                 Question Type{requiredMark}
@@ -389,7 +348,6 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* Bible Passage */}
             <div className="flex flex-col gap-2">
               <label htmlFor="passage" className={labelCls}>
                 Bible Passage{requiredMark}
@@ -403,7 +361,6 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* Number of Questions */}
             <div className="flex flex-col gap-2">
               <label htmlFor="q-count" className={labelCls}>
                 Number of Questions{requiredMark}
@@ -417,7 +374,6 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* Difficulty */}
             <div className="flex flex-col gap-2">
               <label htmlFor="difficulty" className={labelCls}>
                 Difficulty{requiredMark}
@@ -430,7 +386,6 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* AI image toggle */}
             <ToggleRow
               title="Generate an AI Image for Every Question"
               description="Each generated question includes a unique image."
@@ -442,7 +397,7 @@ export default function AIQuizGenerator() {
             {/* Level Setup */}
             <div className="flex flex-col gap-2">
               <p className={labelCls}>Level Setup{requiredMark}</p>
-              <div className="flex overflow-x-auto">
+              <div className="grid grid-cols-2">
                 {LEVEL_TABS.map((tab, index) => {
                   const active = levelSetup === tab.id;
                   return (
@@ -450,24 +405,22 @@ export default function AIQuizGenerator() {
                       key={tab.id}
                       type="button"
                       onClick={() => setLevelSetup(tab.id)}
-                      className={`flex h-[33px] cursor-pointer items-center justify-center px-2 py-1 text-[12px] font-medium leading-[15px] transition-colors ${
-                        index === 0
-                          ? "w-[150px] shrink-0 rounded-l-[7.47px] sm:w-[169px]"
-                          : "w-[150px] shrink-0 rounded-r-[7.47px] sm:w-[172px]"
+                      className={`flex h-[33px] min-w-0 cursor-pointer items-center justify-center px-2 py-1 text-[12px] font-medium leading-[15px] transition-colors ${
+                        index === 0 ? "rounded-l-[7.47px]" : "rounded-r-[7.47px]"
                       } ${
                         active
                           ? "z-10 border border-[#001984] bg-[#001984]/10 text-[#0A0847]"
                           : "border border-[#E2DFFC] bg-white text-[#0A0847]/80"
                       }`}
                     >
-                      {tab.label}
+                      <span className="truncate">{tab.label}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_169px]">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="flex min-w-0 flex-col gap-2">
                 <label htmlFor="level-count" className={labelCls}>
                   Number of Levels{requiredMark}
@@ -498,35 +451,30 @@ export default function AIQuizGenerator() {
             <Divider />
 
             {/* Existing levels */}
-            <div>
-              <p className="text-[12px] font-semibold leading-[15px] text-[#0A0847]">
-                Existing Levels
-              </p>
+            <div className="min-w-0">
+              <p className="text-[12px] font-semibold leading-[15px] text-[#0A0847]">Existing Levels</p>
               <p className={`mt-1 max-w-[268px] ${helperCls}`}>
                 Choose multiple levels and set the number of questions for each.
               </p>
-              <div className="mt-3 flex gap-3">
+              <div className="mt-3 grid grid-cols-5 gap-2 sm:gap-3">
                 {levels.map((level) => (
                   <button
                     key={level.id}
                     type="button"
                     onClick={() => toggleLevel(level.id)}
-                    className={`flex h-[28px] w-[58px] cursor-pointer items-center justify-center rounded-[6px] border text-[12px] font-semibold leading-[15px] transition-colors ${
+                    className={`flex h-[28px] min-w-0 cursor-pointer items-center justify-center rounded-[6px] border px-1 text-[11px] font-semibold leading-[15px] transition-colors sm:text-[12px] ${
                       level.selected
                         ? "border-[#001984] bg-[#001984] text-white"
                         : "border-[#E2DFFC] bg-white text-[#0A0847]/80"
                     }`}
                   >
-                    Level {level.id}
+                    <span className="truncate">Level {level.id}</span>
                   </button>
                 ))}
               </div>
-              <div className="mt-3 h-[90px] w-full rounded-lg border border-[#E2DFFC] bg-[#FAF9FE] py-2 pr-3 pl-[14px]">
+              <div className="mt-3 min-h-[90px] w-full rounded-lg border border-[#E2DFFC] bg-[#FAF9FE] py-2 pr-3 pl-[14px]">
                 {LEVEL_SUMMARY.map((line) => (
-                  <p
-                    key={line}
-                    className="text-[12px] font-semibold leading-[24px] text-[#0A0847]/80"
-                  >
+                  <p key={line} className="text-[12px] font-semibold leading-[24px] text-[#0A0847]/80">
                     {line}
                   </p>
                 ))}
@@ -534,7 +482,6 @@ export default function AIQuizGenerator() {
             </div>
             <Divider />
 
-            {/* Verse refs + duplicates */}
             <div className="flex flex-col gap-4">
               <ToggleRow
                 title="Include Verse References"
@@ -550,7 +497,6 @@ export default function AIQuizGenerator() {
               />
             </div>
 
-            {/* AI instructions: fills remaining height so both cards align */}
             <div className="flex flex-col">
               <label
                 htmlFor="ai-instructions"
@@ -578,25 +524,19 @@ export default function AIQuizGenerator() {
           </section>
 
           {/* RIGHT — preview */}
-          <section className="flex min-w-0 flex-col rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[29px] pr-6 pb-6 pl-[29px]">
+          <section className="flex min-w-0 flex-col rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 pt-6 pb-6 sm:pt-[29px] sm:pr-6 sm:pl-[29px]">
             <div className="min-w-0">
-              <h2 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
+              <h2 className="text-[18px] font-semibold leading-[24px] text-[#0A0847] sm:text-[22px] sm:leading-[27px]">
                 Generated Questions Preview
               </h2>
-              <p className="mt-3 max-w-[490px] text-[16px] font-medium leading-[20px] text-[#0A0847]/60">
-                Review the AI generated questions below and select the ones to
-                keep.
+              <p className="mt-2 text-[14px] font-medium leading-[18px] text-[#0A0847]/60 sm:mt-3 sm:max-w-[490px] sm:text-[16px] sm:leading-[20px]">
+                Review the AI generated questions below and select the ones to keep.
               </p>
             </div>
 
-            {/* select-all row */}
-            <div className="mt-[18px] flex flex-wrap items-center justify-between gap-3">
+            <div className="mt-[18px] flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
               <label className="flex cursor-pointer items-center gap-2 text-[12px] font-semibold leading-[15px] text-[#0A0847]">
-                <Checkbox
-                  checked={allSelected}
-                  onChange={toggleAll}
-                  label="Select all questions"
-                />
+                <Checkbox checked={allSelected} onChange={toggleAll} label="Select all questions" />
                 Select All (15)
               </label>
               <button
@@ -608,7 +548,6 @@ export default function AIQuizGenerator() {
               </button>
             </div>
 
-            {/* question stack */}
             <div className="mt-[10px] flex flex-col gap-6">
               {GENERATED_QUESTIONS.map((question) => (
                 <QuestionCard
@@ -622,8 +561,8 @@ export default function AIQuizGenerator() {
           </section>
         </div>
 
-        {/* ---------- bottom bar ---------- */}
-        <div className="mt-10 flex w-full min-w-0 flex-col items-stretch justify-between gap-4 sm:h-[48px] sm:flex-row sm:items-center">
+        {/* bottom bar */}
+        <div className="mt-8 flex w-full min-w-0 flex-col gap-4 sm:mt-10 sm:h-[48px] sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#4B1ECB] px-4 text-[13px] font-semibold text-white transition-colors hover:bg-[#3F17AD] sm:w-[309px]"
@@ -631,7 +570,7 @@ export default function AIQuizGenerator() {
             <span aria-hidden>✨</span>
             Generate Questions &amp; Images
           </button>
-          <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center">
+          <div className="grid grid-cols-1 gap-4 sm:flex sm:items-center">
             <button
               type="button"
               className="flex h-[48px] w-full cursor-pointer items-center justify-center rounded-lg border border-[#001984] bg-white text-[13px] font-semibold text-[#0A0847] transition-colors hover:bg-[#F9FAFE] sm:w-[152px]"

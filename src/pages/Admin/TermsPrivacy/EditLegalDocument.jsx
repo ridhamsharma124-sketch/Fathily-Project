@@ -65,9 +65,8 @@ const DOC_DEFAULTS = {
 const FONT_FAMILIES = ["Inter", "Poppins", "Georgia", "Arial"];
 const FONT_SIZES = ["14", "16", "18", "20", "24", "32"];
 
-
 /* ==========================================================================
-   ICONS 
+   ICONS
    ========================================================================== */
 function SaveIcon({ size = 16 }) {
   return (
@@ -91,13 +90,13 @@ function SaveIcon({ size = 16 }) {
 function InfoDot() {
   return (
     <svg
-      width="22"
-      height="22"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       stroke="#001984"
       strokeLinecap="round"
-      className="shrink-0 cursor-help"
+      className="shrink-0 cursor-help sm:h-[22px] sm:w-[22px]"
       aria-label="More info"
     >
       <title>More info</title>
@@ -123,7 +122,7 @@ function FieldLabel({ children, htmlFor }) {
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-[10px] block text-[12px] font-semibold leading-[15px] text-[#0A0847]/80"
+      className="mb-[8px] block text-[12px] font-semibold leading-[15px] text-[#0A0847]/80 sm:mb-[10px]"
     >
       {children}
     </label>
@@ -131,7 +130,7 @@ function FieldLabel({ children, htmlFor }) {
 }
 
 const inputBase =
-  "h-[45px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]";
+  "h-[42px] w-full min-w-0 rounded-[7.47px] border border-[#E2DFFC] bg-white text-[12px] font-medium leading-none text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984] sm:h-[45px]";
 
 function TextInput({ className = "", ...props }) {
   return <input className={`${inputBase} px-[12px] ${className}`} {...props} />;
@@ -141,11 +140,11 @@ function IconInput({ icon: Icon, ...props }) {
   return (
     <div className="relative">
       <Icon
-        size={24}
+        size={22}
         strokeWidth={1.5}
         className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A0847]/70"
       />
-      <input className={`${inputBase} pl-[46px] pr-[12px]`} {...props} />
+      <input className={`${inputBase} pl-[42px] pr-[12px] sm:pl-[46px]`} {...props} />
     </div>
   );
 }
@@ -156,7 +155,7 @@ function SelectField({ value, onChange, options }) {
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className={`${inputBase} cursor-pointer appearance-none py-[10px] pl-[12px] pr-[50px]`}
+        className={`${inputBase} cursor-pointer appearance-none py-[10px] pl-[12px] pr-[40px] sm:pr-[50px]`}
       >
         {options.map((option) => (
           <option key={option} value={option}>
@@ -167,7 +166,7 @@ function SelectField({ value, onChange, options }) {
       <LuChevronRight
         size={14}
         strokeWidth={3}
-        className="pointer-events-none absolute right-[17px] top-1/2 -translate-y-1/2 text-[#0A0847]/70"
+        className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-[#0A0847]/70 sm:right-[17px]"
       />
     </div>
   );
@@ -196,7 +195,7 @@ function Toggle({ checked, onChange, label }) {
 
 function SegmentedControl({ options, value, onChange }) {
   return (
-    <div className="flex h-[44px] w-full overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white">
+    <div className="flex h-[42px] w-full overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white sm:h-[44px]">
       {options.map((option, index) => (
         <button
           key={option}
@@ -229,15 +228,13 @@ function Checkbox({ checked, onChange, label }) {
           className="pointer-events-none absolute left-[2.5px] top-1/2 -translate-y-1/2 text-white opacity-0 transition-opacity peer-checked:opacity-100"
         />
       </span>
-      <span className="text-[12px] font-medium leading-[15px] text-[#0A0847]/80">
-        {label}
-      </span>
+      <span className="text-[12px] font-medium leading-[15px] text-[#0A0847]/80">{label}</span>
     </label>
   );
 }
 
 /* ==========================================================================
-   RICH TEXT TOOLBAR 
+   RICH TEXT TOOLBAR
    ========================================================================== */
 function ToolSelect({ value, onChange, options, className = "" }) {
   return (
@@ -261,8 +258,7 @@ function ToolSelect({ value, onChange, options, className = "" }) {
   );
 }
 
-/* A joined group of buttons: 27px high, 1px #CCC border, radius 3.25, grey bg */
-function ToolGroup({ children, width = "w-[88px]" }) {
+function ToolGroup({ children, width = "" }) {
   return (
     <div
       className={`inline-flex h-[27px] shrink-0 items-stretch divide-x divide-[#CCCCCC] overflow-hidden rounded-[3.25px] border border-[#CCCCCC] bg-[#EFEFEF] ${width}`}
@@ -277,7 +273,7 @@ function ToolBtn({ title, children }) {
     <button
       type="button"
       title={title}
-      className="flex flex-1 cursor-pointer items-center justify-center gap-[3px] text-[#444444] transition-colors hover:bg-[#E3E3EA]"
+      className="flex flex-1 cursor-pointer items-center justify-center gap-[3px] px-[6px] text-[#444444] transition-colors hover:bg-[#E3E3EA]"
     >
       {children}
     </button>
@@ -289,21 +285,11 @@ function Toolbar() {
   const [size, setSize] = useState("20");
 
   return (
-    <div className="flex shrink-0 flex-col gap-[9px] overflow-x-auto">
+    <div className="flex min-w-0 shrink-0 flex-col gap-[9px] overflow-x-auto pb-1">
       {/* Row 1 */}
-      <div className="flex items-center gap-[13px]">
-        <ToolSelect
-          value={family}
-          onChange={setFamily}
-          options={FONT_FAMILIES}
-          className="w-[188px]"
-        />
-        <ToolSelect
-          value={size}
-          onChange={setSize}
-          options={FONT_SIZES}
-          className="w-[88px]"
-        />
+      <div className="flex w-max items-center gap-[10px] sm:gap-[13px]">
+        <ToolSelect value={family} onChange={setFamily} options={FONT_FAMILIES} className="w-[130px] sm:w-[188px]" />
+        <ToolSelect value={size} onChange={setSize} options={FONT_SIZES} className="w-[72px] sm:w-[88px]" />
         <ToolGroup>
           <ToolBtn title="Bulleted list">
             <LuList size={14} />
@@ -344,8 +330,8 @@ function Toolbar() {
         </ToolGroup>
       </div>
 
-      {/* Row 2 : starts under the size dropdown (188 + 13 = 201px) */}
-      <div className="flex items-center gap-[13px] pl-[201px]">
+      {/* Row 2 */}
+      <div className="flex w-max items-center gap-[10px] sm:gap-[13px] sm:pl-[201px]">
         <ToolGroup>
           <ToolBtn title="Bold">
             <LuBold size={13} strokeWidth={3} />
@@ -358,13 +344,13 @@ function Toolbar() {
             <Caret />
           </ToolBtn>
         </ToolGroup>
-        <ToolGroup width="w-[88px]">
+        <ToolGroup>
           <ToolBtn title="Insert table">
             <LuTable size={14} />
             <Caret />
           </ToolBtn>
         </ToolGroup>
-        <ToolGroup width="w-[64px]">
+        <ToolGroup>
           <ToolBtn title="Insert link">
             <LuLink size={12} />
           </ToolBtn>
@@ -378,7 +364,7 @@ function Toolbar() {
             <LuEraser size={12} />
           </ToolBtn>
         </ToolGroup>
-        <ToolGroup width="w-[40px]">
+        <ToolGroup>
           <ToolBtn title="Insert image">
             <LuImage size={12} />
           </ToolBtn>
@@ -414,35 +400,42 @@ export default function EditLegalDocument() {
   const goBack = () => navigate("/admin/terms-privacy");
 
   const headerBtn =
-    "flex h-[42px] cursor-pointer items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[13px] text-[14px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB]";
+    "flex h-[40px] flex-1 cursor-pointer items-center justify-center gap-[8px] rounded-[8px] border border-[#E2DFFC] bg-white px-[10px] text-[13px] font-semibold leading-none whitespace-nowrap text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB] sm:h-[42px] sm:flex-none sm:gap-[10px] sm:px-[13px] sm:text-[14px]";
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 font-[Inter] leading-[100%] sm:p-6">
-      {/* ------------------------------ Header ------------------------------ */}
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <div className="flex flex-wrap items-center gap-5">
-          <h1 className="text-[22px] font-semibold leading-[27px] text-[#0A0847]">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F8FAFC] p-4 font-[Inter] leading-[100%] sm:p-6">
+      {/* Header */}
+           {/* Header */}
+      <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <h1 className="text-[20px] font-semibold leading-tight text-[#0A0847] sm:text-[22px]">
             Edit Legal Document
           </h1>
-          <span className="rounded-[4px] bg-[#EEEEF3] px-[8px] py-[5px] text-[12px] font-medium leading-[15px] text-[#0A0847]/60">
+          <span className="rounded-[4px] bg-[#EEEEF3] px-[8px] py-[4px] text-[12px] font-medium leading-[15px] text-[#0A0847]/60">
             {status}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-[12px]">
-          <button type="button" className={headerBtn}>
+        <div className="grid w-full grid-cols-2 gap-[10px] sm:flex sm:w-auto sm:flex-wrap sm:items-center sm:gap-[12px]">
+          <button
+            type="button"
+            className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border border-[#E2DFFC] bg-white px-[10px] text-[13px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB] sm:h-[42px] sm:w-auto sm:gap-[10px] sm:px-[13px] sm:text-[14px]"
+          >
             <span className="text-[#001984]">
               <SaveIcon size={16} />
             </span>
             Save draft
           </button>
-          <button type="button" className={headerBtn}>
+          <button
+            type="button"
+            className="flex h-[40px] w-full cursor-pointer items-center justify-center gap-[8px] whitespace-nowrap rounded-[8px] border border-[#E2DFFC] bg-white px-[10px] text-[13px] font-semibold leading-none text-[#0A0847]/80 transition-colors hover:bg-[#F3F4FB] sm:h-[42px] sm:w-auto sm:gap-[10px] sm:px-[13px] sm:text-[14px]"
+          >
             <LuEye size={18} className="text-[#001984]" />
             Preview
           </button>
           <button
             type="button"
-            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[178px]"
+            className="col-span-2 flex h-[44px] w-full cursor-pointer items-center justify-center gap-[10px] whitespace-nowrap rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:h-[42px] sm:w-[178px]"
           >
             <LuPlus size={20} strokeWidth={1.8} />
             Publish Update
@@ -450,18 +443,14 @@ export default function EditLegalDocument() {
         </div>
       </div>
 
-      {/* ------------------------- Two column layout ------------------------ */}
-      <div className="mt-6 grid grid-cols-1 items-stretch gap-[29px] lg:grid-cols-[663fr_379fr]">
-        {/* ---------- LEFT CARD ---------- */}
-        <div className="flex min-h-[671px] flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[20px] py-[23px]">
+      {/* Two column layout: stacked below xl (1280px) */}
+      <div className="mt-6 grid min-w-0 grid-cols-1 items-stretch gap-[20px] xl:grid-cols-[663fr_379fr] xl:gap-[29px]">
+        {/* LEFT CARD */}
+        <div className="flex min-w-0 flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 py-5 sm:px-[20px] sm:py-[23px] xl:min-h-[671px]">
           <div>
             <FieldLabel htmlFor="doc-type">Document type</FieldLabel>
             <div id="doc-type">
-              <SelectField
-                value={docType}
-                onChange={setDocType}
-                options={DOCUMENT_TYPES}
-              />
+              <SelectField value={docType} onChange={setDocType} options={DOCUMENT_TYPES} />
             </div>
           </div>
 
@@ -475,18 +464,18 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div>
+          <div className="min-w-0">
             <FieldLabel>Document content</FieldLabel>
-            <div className="flex h-[397px] flex-col gap-4 overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px]">
+            <div className="flex min-w-0 flex-col gap-4 overflow-hidden rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[10px] xl:h-[397px]">
               <Toolbar />
-              <div className="min-h-0 flex-1 overflow-auto pr-[38px]">
+              <div className="min-h-[220px] min-w-0 flex-1 overflow-auto pr-2 sm:pr-[38px] xl:min-h-0">
                 <div className="flex flex-col gap-3">
                   {SECTIONS.map((section) => (
                     <div key={section.title}>
-                      <h3 className="text-[14px] font-medium leading-[17px] text-[#0A0847]">
+                      <h3 className="text-[13px] font-medium leading-[17px] text-[#3B396C] sm:text-[14px]">
                         {section.title}
                       </h3>
-                      <p className="mt-[6px] text-[12px] font-medium leading-[15px] text-[#0A0847]/70">
+                      <p className="mt-[6px] text-[12px] font-medium leading-[16px] break-words text-[#0A0847]/70">
                         {section.body}
                       </p>
                     </div>
@@ -497,10 +486,9 @@ export default function EditLegalDocument() {
           </div>
         </div>
 
-        {/* ---------- RIGHT CARD ---------- */}
-        
-        <div className="flex flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-[12px] pb-[22px] pt-[23px]">
-          <div className="pr-[10px]">
+        {/* RIGHT CARD */}
+        <div className="flex min-w-0 flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white px-4 pb-[22px] pt-5 sm:px-[12px] sm:pt-[23px]">
+          <div className="sm:pr-[10px]">
             <FieldLabel htmlFor="doc-version">Version</FieldLabel>
             <TextInput
               id="doc-version"
@@ -510,7 +498,7 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div className="pr-[10px]">
+          <div className="sm:pr-[10px]">
             <FieldLabel htmlFor="doc-date">Effective date</FieldLabel>
             <IconInput
               id="doc-date"
@@ -521,18 +509,14 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div className="pr-[10px]">
+          <div className="sm:pr-[10px]">
             <FieldLabel>Status</FieldLabel>
-            <SegmentedControl
-              options={["Draft", "Published"]}
-              value={status}
-              onChange={setStatus}
-            />
+            <SegmentedControl options={["Draft", "Published"]} value={status} onChange={setStatus} />
           </div>
 
-          <div className="flex h-[24px] items-center justify-between gap-3 pr-[10px]">
-            <span className="flex items-center gap-[10px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80">
-              Require user acceptance again
+          <div className="flex min-h-[24px] items-center justify-between gap-3 sm:pr-[10px]">
+            <span className="flex min-w-0 items-center gap-[8px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80 sm:gap-[10px]">
+              <span className="break-words">Require user acceptance again</span>
               <InfoDot />
             </span>
             <Toggle
@@ -542,20 +526,16 @@ export default function EditLegalDocument() {
             />
           </div>
 
-          <div className="flex h-[24px] items-center justify-between gap-3 pr-[10px]">
-            <span className="flex items-center gap-[10px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80">
-              Show update notice
+          <div className="flex min-h-[24px] items-center justify-between gap-3 sm:pr-[10px]">
+            <span className="flex min-w-0 items-center gap-[8px] text-[12px] font-semibold leading-[15px] text-[#0A0847]/80 sm:gap-[10px]">
+              <span className="break-words">Show update notice</span>
               <InfoDot />
             </span>
-            <Toggle
-              checked={showNotice}
-              onChange={setShowNotice}
-              label="Show update notice"
-            />
+            <Toggle checked={showNotice} onChange={setShowNotice} label="Show update notice" />
           </div>
 
           <div>
-            <p className="text-[14px] font-semibold leading-[17px] text-[#0A0847]">
+            <p className="text-[13px] font-semibold leading-[17px] text-[#0A0847] sm:text-[14px]">
               Applies to
             </p>
             <div className="mt-[9px] flex flex-col gap-[10px]">
@@ -572,14 +552,14 @@ export default function EditLegalDocument() {
             </div>
           </div>
 
-          <div className="mt-5">
+          <div className="mt-2 sm:mt-5 sm:pr-[10px]">
             <FieldLabel htmlFor="doc-summary">Summary of changes</FieldLabel>
             <textarea
               id="doc-summary"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
               placeholder="Describe what changed in this version"
-              className="h-[79px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium leading-[15px] text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]"
+              className="h-[79px] w-full resize-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-[12px] py-[10px] text-[12px] font-medium leading-[15px] text-[#0A0847]/80 outline-none transition-colors placeholder:text-[#0A0847]/60 focus:border-[#001984]"
             />
           </div>
 
@@ -593,7 +573,7 @@ export default function EditLegalDocument() {
         </div>
       </div>
 
-      {/* ------------------------------ Footer ------------------------------ */}
+      {/* Footer */}
       <div className="mt-8 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center sm:px-3">
         <button
           type="button"
@@ -606,14 +586,14 @@ export default function EditLegalDocument() {
         <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center sm:gap-8">
           <button
             type="button"
-            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#001984] bg-white px-4 text-[14px] font-semibold leading-none text-[#001984] transition-colors hover:bg-[#F3F4FB] sm:w-[212px]"
+            className="flex h-[42px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#001984] bg-white px-4 text-[14px] font-semibold leading-none whitespace-nowrap text-[#001984] transition-colors hover:bg-[#F3F4FB] sm:w-[212px]"
           >
             <SaveIcon size={16} />
             Save draft
           </button>
           <button
             type="button"
-            className="h-[42px] w-full cursor-pointer rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none text-white transition-colors hover:bg-[#001266] sm:w-[317px]"
+            className="h-[42px] w-full cursor-pointer rounded-[8px] bg-[#001984] px-4 text-[14px] font-semibold leading-none whitespace-nowrap text-white transition-colors hover:bg-[#001266] sm:w-[317px]"
           >
             Publish Updates
           </button>

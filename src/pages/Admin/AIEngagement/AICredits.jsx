@@ -1,26 +1,24 @@
 import { useState } from "react";
 import biblicalHistoryImage from "../../../assets/Biblical History.webp";
 import IconBadge from "../../../components/shared/IconBadge";
-import {
-  PiCaretRight,
-  PiPlus,
-  PiStar,
-  PiX,
-} from "react-icons/pi";
+import { PiCaretRight, PiPlus, PiStar, PiX } from "react-icons/pi";
 
 const inputCls =
-  "h-[40px] w-full rounded-[8px] border border-edge-input bg-white px-[14px] text-[13px] font-semibold text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
+  "h-[40px] w-full min-w-0 rounded-[8px] border border-edge-input bg-white px-[14px] text-[13px] font-semibold text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
 const taCls =
-  "w-full resize-none rounded-[8px] border border-edge-input bg-white px-[14px] py-[12px] text-[13px] font-medium leading-[1.5] text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
+  "w-full min-w-0 resize-none rounded-[8px] border border-edge-input bg-white px-[14px] py-[12px] text-[13px] font-medium leading-[1.5] text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
+const introTextCls =
+  "block h-[79px] w-full min-w-0 resize-none rounded-[7.47px] border border-edge-input bg-white px-[12px] py-[10px] font-[Inter] text-[12px] font-medium leading-[1.4] text-ink-body outline-none transition placeholder:text-ink-muted focus:border-ink focus:ring-2 focus:ring-ink/10";
 const labelCls = "mb-[6px] block text-[12px] font-semibold text-ink-body";
-const headingCls = "block text-[16px] font-bold leading-[1.25] text-ink";
-const groupHeadingCls = "mb-[10px] block text-[16px] font-bold leading-[1.25] text-ink";
+const headingCls = "block text-[14px] font-bold leading-[1.25] text-ink sm:text-[16px]";
+const groupHeadingCls =
+  "mb-[10px] block text-[14px] font-bold leading-[1.25] text-ink sm:text-[16px]";
 const formCardCls =
-  "flex h-full flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-[16px] shadow-[0_1px_3px_rgba(15,23,42,0.04)]";
+  "flex h-full min-w-0 flex-col rounded-[10px] border border-[#E5E7EB] bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.04)] sm:p-[16px]";
 
 function Field({ label, htmlFor, heading = false, labelClassName, children }) {
   return (
-    <div>
+    <div className="min-w-0">
       <label
         htmlFor={htmlFor}
         className={labelClassName || (heading ? headingCls : labelCls)}
@@ -65,12 +63,12 @@ function DraggableList({
   const add = () => setItems((previous) => [...previous, ""]);
 
   return (
-    <div className="mt-[14px]">
+    <div className="mt-[14px] min-w-0">
       <div className="space-y-[16px]">
         {items.map((item, index) => (
-          <div key={index} className="flex items-center gap-[10px]">
+          <div key={index} className="flex min-w-0 items-center gap-[10px]">
             <DragHandle />
-            <div className="flex h-[43px] min-w-0 flex-1 items-center rounded-[5px] border border-edge-row bg-white px-[14px]">
+            <div className="flex h-[43px] min-w-0 flex-1 items-center rounded-[5px] border border-edge-row bg-white px-[12px] sm:px-[14px]">
               <input
                 id={`${inputIdPrefix}-${index}`}
                 value={item}
@@ -104,20 +102,17 @@ function DraggableList({
 
 function ConversionRow({ prefix, numberValue, inputId, unit }) {
   return (
-    <div className="grid grid-cols-1 items-center gap-[10px] sm:grid-cols-[268px_97px_auto]">
-      <label
-        htmlFor={inputId}
-        className="truncate text-[13px] font-medium text-ink-body"
-      >
+    <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-[10px] gap-y-[8px] sm:grid-cols-[minmax(0,1fr)_97px_auto]">
+      <label htmlFor={inputId} className="min-w-0 text-[13px] font-medium leading-snug text-ink-body">
         {prefix}
       </label>
       <input
         id={inputId}
         type="number"
         defaultValue={numberValue}
-        className="h-[33px] w-full rounded-[8px] border border-edge-input bg-white px-[12px] text-[14px] font-semibold text-ink-body outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10 sm:w-[97px]"
+        className="h-[33px] w-[80px] rounded-[8px] border border-edge-input bg-white px-[12px] text-[14px] font-semibold text-ink-body outline-none transition focus:border-ink focus:ring-2 focus:ring-ink/10 sm:w-[97px]"
       />
-      <span className="text-left text-[12px] font-medium text-ink-muted">
+      <span className="col-span-2 text-left text-[12px] font-medium text-ink-muted sm:col-span-1">
         {unit}
       </span>
     </div>
@@ -179,45 +174,30 @@ const JourneyLeafIcon = ({ size = 24 }) => (
   </svg>
 );
 
+const QuestionIcon = ({ size = 24, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M9.2 9.2a2.8 2.8 0 1 1 3.9 2.6c-.7.3-1.1.9-1.1 1.7v.5" />
+    <circle cx="12" cy="17.6" r="0.6" fill={color} />
+  </svg>
+);
+
+const LockIcon = ({ size = 24, color = "currentColor" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke={color} strokeWidth="2.2" />
+    <rect x="5" y="11" width="14" height="10" rx="2" fill={color} />
+    <path d="M12 14.5v2.5" stroke="#EEF0FF" strokeWidth="1.8" />
+  </svg>
+);
+
 const EARN_BADGE_BACKGROUND = "#EEF0FF";
 
 const EARN_LIST = [
-  {
-    label: "Complete Bible Quizzes",
-    Icon: BookCrossIcon,
-    color: "#F59E0B",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
-  {
-    label: "Study Memory Verse",
-    Icon: BookCrossIcon,
-    color: "#7C3AED",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
-  {
-    label: "Play Word Search",
-    Icon: MagnifierIcon,
-    color: "#4F46E5",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
-  {
-    label: "Join Group Play",
-    Icon: GroupPersonIcon,
-    color: "#EC4899",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
-  {
-    label: "Finish Daily Activities",
-    Icon: CalendarGridIcon,
-    color: "#F97316",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
-  {
-    label: "Go on Seasonal Journey",
-    Icon: JourneyLeafIcon,
-    color: "#22C55E",
-    backgroundColor: EARN_BADGE_BACKGROUND,
-  },
+  { label: "Complete Bible Quizzes", Icon: BookCrossIcon, color: "#F59E0B", backgroundColor: EARN_BADGE_BACKGROUND },
+  { label: "Study Memory Verse", Icon: BookCrossIcon, color: "#7C3AED", backgroundColor: EARN_BADGE_BACKGROUND },
+  { label: "Play Word Search", Icon: MagnifierIcon, color: "#4F46E5", backgroundColor: EARN_BADGE_BACKGROUND },
+  { label: "Join Group Play", Icon: GroupPersonIcon, color: "#EC4899", backgroundColor: EARN_BADGE_BACKGROUND },
+  { label: "Finish Daily Activities", Icon: CalendarGridIcon, color: "#F97316", backgroundColor: EARN_BADGE_BACKGROUND },
+  { label: "Go on Seasonal Journey", Icon: JourneyLeafIcon, color: "#22C55E", backgroundColor: EARN_BADGE_BACKGROUND },
 ];
 
 const PACKS = [
@@ -233,43 +213,23 @@ const INFO_DESCRIPTIONS = [
   "Your conversations are private and protected.",
 ];
 
-const QuestionIcon = ({ size = 24, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9.2 9.2a2.8 2.8 0 1 1 3.9 2.6c-.7.3-1.1.9-1.1 1.7v.5" />
-    <circle cx="12" cy="17.6" r="0.6" fill={color} />
-  </svg>
-);
-
-const LockIcon = ({ size = 24, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke={color} strokeWidth="2.2" />
-    <rect x="5" y="11" width="14" height="10" rx="2" fill={color} />
-    <path d="M12 14.5v2.5" stroke="#FFFFFF" strokeWidth="1.8" />
-  </svg>
-);
-
 const INFO_ICONS = [
   { Icon: PiStar, backgroundColor: "#FDF6E3", color: "#F5C518" },
-  { Icon: QuestionIcon, backgroundColor: "#EEF0FF", color: "#4F46E5" },
-  { Icon: LockIcon, backgroundColor: "#EEF0FF", color: "#4F46E5" },
+  { Icon: QuestionIcon, backgroundColor: "#EEF0FF", color: "#3231DB" },
+  { Icon: LockIcon, backgroundColor: "#EEF0FF", color: "#3231DB" },
 ];
 
 function LivePreview({ intro, items }) {
   return (
     <div
-      className="flex h-full w-full flex-col gap-[10px] rounded-[7.5px] border border-[#E5E7EB] bg-[#F7F8FC] p-[28px_27px_29px]"
+      className="flex h-full w-full min-w-0 flex-col gap-[10px] overflow-hidden rounded-[7.5px] border border-[#E5E7EB] bg-[#F7F8FC] p-4 sm:p-[24px]"
       style={{ borderWidth: "0.75px" }}
     >
       <div
-        className="-mx-[27px] -mt-[28px] flex flex-col gap-[10px] rounded-t-[7.5px] px-[27px] pt-[28px]"
-        style={{
-          backgroundImage: "linear-gradient(180deg, #F3F0FF 0%, #FCFBFF 100%)",
-        }}
+        className="-mx-4 -mt-4 flex min-w-0 flex-col gap-[10px] rounded-t-[7.5px] px-4 pt-4 sm:-mx-[24px] sm:-mt-[24px] sm:px-[24px] sm:pt-[24px]"
+        style={{ backgroundImage: "linear-gradient(180deg, #F3F0FF 0%, #FCFBFF 100%)" }}
       >
-        <div
-          className="mx-auto w-full max-w-[482px]"
-          style={{ aspectRatio: "482 / 296" }}
-        >
+        <div className="mx-auto w-full max-w-[482px]" style={{ aspectRatio: "482 / 296" }}>
           <img
             src={biblicalHistoryImage}
             alt="Biblical History"
@@ -277,33 +237,35 @@ function LivePreview({ intro, items }) {
           />
         </div>
 
-        <h3 className="text-center text-[20px] font-bold text-[#1A1B4B]">
+        <h3 className="text-center text-[18px] font-bold text-[#1A1B4B] sm:text-[20px]">
           Today in Biblical History
         </h3>
-        <p className="mt-[10px] text-center text-[13px] leading-snug text-[#6B7280]">
+        <p className="mt-[10px] break-words text-center text-[12px] leading-snug text-[#6B7280] sm:text-[13px]">
           {intro}
         </p>
       </div>
 
-      <div className="mt-[10px] flex flex-col gap-[10px]">
+      <div className="mt-[10px] flex min-w-0 flex-col gap-[10px]">
         {(items.length ? items : [""]).map((item, index) => {
           const meta = INFO_ICONS[index] || INFO_ICONS[0];
+          const { Icon } = meta;
           return (
             <div
               key={index}
-              className="flex h-[118px] w-full items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[20px]"
+              className="flex min-h-[96px] w-full min-w-0 items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[12px] sm:h-[118px] sm:px-[20px]"
               style={{ borderWidth: "0.75px" }}
             >
-              <IconBadge
-                Icon={meta.Icon}
-                color={meta.color}
-                backgroundColor={meta.backgroundColor}
-              />
+              <span
+                className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[10px] sm:h-[56px] sm:w-[56px]"
+                style={{ backgroundColor: meta.backgroundColor }}
+              >
+                <Icon size={24} color={meta.color} />
+              </span>
               <div className="flex min-w-0 flex-1 flex-col justify-center gap-[4px]">
-                <p className="line-clamp-2 text-[14px] font-bold leading-[1.3] text-[#1E1B4B]">
+                <p className="line-clamp-2 break-words text-[13px] font-bold leading-[1.3] text-[#1E1B4B] sm:text-[14px]">
                   {item || "(empty item)"}
                 </p>
-                <p className="line-clamp-2 text-[13px] font-normal leading-[1.4] text-[#6B7280]">
+                <p className="line-clamp-2 break-words text-[12px] font-normal leading-[1.4] text-[#6B7280] sm:text-[13px]">
                   {INFO_DESCRIPTIONS[index] || INFO_DESCRIPTIONS[0]}
                 </p>
               </div>
@@ -312,13 +274,15 @@ function LivePreview({ intro, items }) {
         })}
       </div>
 
-      <h4 className="mt-[10px] text-[15px] font-bold text-[#1A1B4B]">How to Earn More Points</h4>
+      <h4 className="mt-[10px] text-[14px] font-bold text-[#1A1B4B] sm:text-[15px]">
+        How to Earn More Points
+      </h4>
       <div aria-hidden="true" className="h-px w-full bg-[#E5E7EB]" />
-      <div className="flex flex-1 flex-col gap-[16px]">
+      <div className="flex flex-1 flex-col gap-[12px] sm:gap-[16px]">
         {EARN_LIST.map(({ label, Icon, color, backgroundColor }) => (
           <div
             key={label}
-            className="flex min-h-[77px] w-full flex-1 items-center gap-[12px] rounded-[7.5px] border border-[#E5E7EB] bg-white px-[12px] py-[10px] shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+            className="flex min-h-[64px] w-full min-w-0 flex-1 items-center gap-[12px] rounded-[7.5px] border border-[#E5E7EB] bg-white px-[12px] py-[8px] shadow-[0_1px_3px_rgba(0,0,0,0.08)] sm:min-h-[77px] sm:py-[10px]"
           >
             <IconBadge Icon={Icon} color={color} backgroundColor={backgroundColor} />
             <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-[#1A1B4B]">
@@ -341,13 +305,11 @@ function LivePreview({ intro, items }) {
 
 function CreditPacksPreview({ onManage }) {
   return (
-    <div className="rounded-[12px] border border-[#E5E7EB] bg-white p-[20px] shadow-[0_1px_3px_rgba(15,23,42,0.04)]">
-      <div className="flex flex-wrap items-center justify-between gap-[16px]">
-        <div>
-          <h2 className="text-[16px] font-bold text-[#1A1B4B]">
-            AI Credit Packs &amp; Bonuses (Admin View)
-          </h2>
-        </div>
+    <div className="min-w-0 rounded-[12px] border border-[#E5E7EB] bg-white p-4 shadow-[0_1px_3px_rgba(15,23,42,0.04)] sm:p-[20px]">
+      <div className="flex flex-wrap items-center justify-between gap-[12px]">
+        <h2 className="text-[15px] font-bold text-[#1A1B4B] sm:text-[16px]">
+          AI Credit Packs &amp; Bonuses (Admin View)
+        </h2>
         <button
           type="button"
           onClick={onManage}
@@ -357,11 +319,11 @@ function CreditPacksPreview({ onManage }) {
         </button>
       </div>
 
-      <div className="mt-[20px] grid grid-cols-1 gap-[16px] sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-[16px] grid grid-cols-1 gap-[12px] min-[420px]:grid-cols-2 sm:mt-[20px] sm:gap-[16px] xl:grid-cols-4">
         {PACKS.map((pack) => (
           <div
             key={pack.name}
-            className={`relative rounded-[10px] p-[16px] text-center shadow-[0_1px_3px_rgba(15,23,42,0.04)] ${
+            className={`relative min-w-0 rounded-[10px] p-[14px] text-center shadow-[0_1px_3px_rgba(15,23,42,0.04)] sm:p-[16px] ${
               pack.popular
                 ? "border-2 border-[#F5C518] bg-[#FFFDF5]"
                 : "border border-[#E5E7EB] bg-white"
@@ -374,15 +336,13 @@ function CreditPacksPreview({ onManage }) {
             )}
             <p className="text-[12px] font-medium text-[#6B7280]">{pack.name}</p>
             <p
-              className={`mt-[8px] text-[16px] font-bold ${
+              className={`mt-[8px] break-words text-[15px] font-bold sm:text-[16px] ${
                 pack.popular ? "text-[#F5C518]" : "text-[#1A1B4B]"
               }`}
             >
               {pack.credits}
             </p>
-            <p className="mt-[6px] text-[12px] font-semibold text-[#6B7280]">
-              {pack.price}
-            </p>
+            <p className="mt-[6px] text-[12px] font-semibold text-[#6B7280]">{pack.price}</p>
           </div>
         ))}
       </div>
@@ -396,9 +356,7 @@ export default function AICredits() {
   const [intro, setIntro] = useState(
     "AI Credits power smart and meaningful answers. Use your credits to ask questions and grow in faith.",
   );
-  const [cardDesc, setCardDesc] = useState(
-    "See what happened on this day in Scripture.",
-  );
+  const [cardDesc, setCardDesc] = useState("See what happened on this day in Scripture.");
   const [infoItems, setInfoItems] = useState([
     "1 AI Credit = 50 Points",
     "1 AI Question = 1 AI Credit",
@@ -417,12 +375,12 @@ export default function AICredits() {
   ]);
 
   return (
-    <div className="min-h-screen space-y-[16px] bg-[#F7F8FC] p-4 font-[Inter] text-[#1A1B4B] sm:p-6">
-      <div>
-        <h1 className="text-[22px] font-bold text-[#1A1B4B]">
+    <div className="min-h-screen min-w-0 space-y-[16px] overflow-x-hidden bg-[#F7F8FC] p-4 font-[Inter] text-[#1A1B4B] sm:p-6">
+      <div className="min-w-0">
+        <h1 className="text-[20px] font-bold leading-tight text-[#1A1B4B] sm:text-[22px]">
           AI Credits &amp; Info Page Manager
         </h1>
-        <p className="mt-[4px] text-[16px] text-[#6B7280]">
+        <p className="mt-[4px] text-[14px] text-[#6B7280] sm:text-[16px]">
           Configure the user-facing AI credit education and rewards.
         </p>
       </div>
@@ -433,7 +391,7 @@ export default function AICredits() {
             key={tabName}
             type="button"
             onClick={() => setTab(tabName)}
-            className={`-mb-px flex h-[41px] w-[196px] shrink-0 cursor-pointer items-center justify-center whitespace-nowrap border-b-2 text-[13px] transition ${
+            className={`-mb-px flex h-[41px] min-w-[150px] shrink-0 cursor-pointer items-center justify-center whitespace-nowrap border-b-2 px-3 text-[13px] transition sm:w-[196px] ${
               tab === tabName
                 ? "rounded-t-[8px] border-transparent bg-[#E4E7F4] font-semibold text-[#1E1B4B]"
                 : "border-transparent font-medium text-[#6B7280] hover:text-[#1E1B4B]"
@@ -446,9 +404,10 @@ export default function AICredits() {
 
       {tab === "Configuration" ? (
         <>
-          <div className="grid grid-cols-1 gap-[16px] lg:grid-cols-[1.08fr_0.92fr] lg:items-stretch">
+          {/* Stacked below xl (1280px) so the sidebar layout never gets squeezed */}
+          <div className="grid min-w-0 grid-cols-1 gap-[16px] xl:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] xl:items-stretch">
             <FormCard>
-              <div className="flex flex-1 flex-col justify-between gap-[16px]">
+              <div className="flex min-w-0 flex-1 flex-col justify-between gap-[16px]">
                 <Field label="About AI Credits Title" htmlFor="credits-title">
                   <input
                     id="credits-title"
@@ -463,8 +422,7 @@ export default function AICredits() {
                     id="credits-intro"
                     value={intro}
                     onChange={(event) => setIntro(event.target.value)}
-                    rows={2}
-                    className={taCls}
+                    className={introTextCls}
                   />
                 </Field>
 
@@ -487,11 +445,8 @@ export default function AICredits() {
                   />
                 </Field>
 
-                <div className="space-y-[10px]">
-                  <Field
-                    label="Points to Credit Conversion"
-                    labelClassName={groupHeadingCls}
-                  >
+                <div className="min-w-0 space-y-[10px]">
+                  <Field label="Points to Credit Conversion" labelClassName={groupHeadingCls}>
                     <ConversionRow
                       prefix="1 AI Credit="
                       numberValue={50}
@@ -509,10 +464,7 @@ export default function AICredits() {
                     />
                   </Field>
 
-                  <Field
-                    label="AI Session Cost (Optional)"
-                    labelClassName={groupHeadingCls}
-                  >
+                  <Field label="AI Session Cost (Optional)" labelClassName={groupHeadingCls}>
                     <ConversionRow
                       prefix="1 Session (Continuous Chat) Uses"
                       numberValue={2}
@@ -543,7 +495,7 @@ export default function AICredits() {
               </div>
             </FormCard>
 
-            <div className="h-full min-w-0 self-stretch [@media(min-width:1024px)_and_(min-height:960px)]:sticky [@media(min-width:1024px)_and_(min-height:960px)]:top-6">
+            <div className="min-w-0">
               <LivePreview intro={intro} items={infoItems} />
             </div>
           </div>

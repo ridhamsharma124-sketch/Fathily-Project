@@ -17,11 +17,10 @@ import faithfulFriendIcon from "../../../assets/badges/faithful-friend.webp";
 import bibleScholarIcon from "../../../assets/badges/bible-scholar.webp";
 import communityLeaderIcon from "../../../assets/badges/community-leader.webp";
 
-
 const TIER_CLASS = {
-  Seed: "border-[#3A9A45] bg-[#E9FAE7] text-[#3A9A45]",
-  Sprout: "border-[#B9A4E8] bg-[#F3EEFF] text-[#5B2FA8]",
-  Tree: "border-[#3A9FAA] bg-[#E6FAFB] text-[#3A9FAA]",
+  Seed: "border-[#B7E4B0] bg-[#E9FAE7] text-[#2EA043]",
+  Sprout: "border-[#CFC2F5] bg-[#F1EBFF] text-[#5B2FA8]",
+  Tree: "border-[#A9E3EA] bg-[#E6FAFB] text-[#2A9AA6]",
 };
 
 const BADGES = [
@@ -90,7 +89,6 @@ const BADGES = [
   },
 ];
 
-
 function Toggle({ checked, onChange, label }) {
   return (
     <button
@@ -112,11 +110,30 @@ function Toggle({ checked, onChange, label }) {
   );
 }
 
-const TH_CLASS =
-  "px-4 text-[14px] font-medium leading-none text-[#0A0847]/80";
+const TH_CLASS = "px-4 text-[14px] font-medium leading-none text-[#0A0847]/80";
 const TD_CLASS =
   "px-4 text-[12px] font-medium leading-none text-[#0A0847]/80 align-middle";
 
+const INPUT_BASE =
+  "rounded-lg border border-[#E2DFFC] bg-white text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#E2DFFC] focus:ring-2 focus:ring-[#001984]/10";
+
+const FILTERS = [
+  {
+    id: "badge-tier",
+    width: "w-[118px] sm:w-[129px]",
+    options: ["All Tiers", "Seed", "Sprout", "Tree"],
+  },
+  {
+    id: "badge-status",
+    width: "w-[118px] sm:w-[129px]",
+    options: ["All Statuses", "Active", "Inactive"],
+  },
+  {
+    id: "badge-sort",
+    width: "w-[128px] sm:w-[144px]",
+    options: ["Sort Newest", "Sort Oldest", "A-Z"],
+  },
+];
 
 export default function Badges() {
   const navigate = useNavigate();
@@ -137,7 +154,8 @@ export default function Badges() {
     <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="w-full px-4 py-6 sm:px-7">
         <div className="mx-auto w-full max-w-[1072px] space-y-6">
-          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
+          {/* Header */}
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-6">
             <div>
               <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
                 Badges Management
@@ -149,15 +167,16 @@ export default function Badges() {
             <button
               type="button"
               onClick={() => navigate("/admin/badges/add")}
-              className="flex h-[42px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#001984] text-[16px] font-semibold text-white transition-colors hover:bg-[#001984]/90 sm:w-[163px]"
+              className="flex h-[48px] w-full shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-xl bg-[#001984] px-6 text-[16px] font-semibold text-white transition-colors hover:bg-[#001984]/90 sm:w-auto"
             >
-              <LuPlus size={16} />
+              <LuPlus size={20} strokeWidth={1.5} />
               Add New Badge
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="relative w-full sm:w-[407px]">
+          {/* Filters: search + 3 dropdowns in one line */}
+          <div className="-mx-4 flex items-center gap-2.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-3 sm:px-0 lg:justify-between">
+            <div className="relative w-[200px] shrink-0 sm:w-[260px] lg:w-[407px]">
               <LuSearch
                 size={15}
                 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#0A0847]/60"
@@ -167,46 +186,33 @@ export default function Badges() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search badges..."
-                className="h-[42px] w-full rounded-lg border border-[#E2DFFC] bg-white pl-9 pr-3 text-[12px] font-medium text-[#0A0847]/80 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#041581]"
+                className={`${INPUT_BASE} h-[42px] w-full pl-9 pr-3 placeholder:text-[#0A0847]/60`}
               />
             </div>
 
-            <div className="flex w-full flex-wrap items-center gap-[10px] sm:w-auto">
-              {[
-                { id: "badge-tier", w: "w-[129px]", options: ["All Tiers", "Seed", "Sprout", "Tree"] },
-                {
-                  id: "badge-status",
-                  w: "w-[129px]",
-                  options: ["All Statuses", "Active", "Inactive"],
-                },
-                {
-                  id: "badge-sort",
-                  w: "w-[144px]",
-                  options: ["Sort Newest", "Sort Oldest", "A-Z"],
-                },
-              ].map((select) => (
-                <div key={select.id} className={`relative ${select.w}`}>
-                  <select
-                    id={select.id}
-                    className="h-[42px] w-full cursor-pointer appearance-none rounded-lg border border-[#E2DFFC] bg-white pl-3 pr-8 text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#041581]"
-                  >
-                    {select.options.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  <LuChevronDown
-                    size={15}
-                    className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#0A0847]/80"
-                  />
-                </div>
-              ))}
-            </div>
+            {FILTERS.map((select) => (
+              <div key={select.id} className={`relative shrink-0 ${select.width}`}>
+                <select
+                  id={select.id}
+                  className={`${INPUT_BASE} h-[42px] w-full cursor-pointer appearance-none pl-3 pr-7 sm:pr-8`}
+                >
+                  {select.options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <LuChevronDown
+                  size={15}
+                  className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#0A0847]/80"
+                />
+              </div>
+            ))}
           </div>
 
-          <div className="overflow-x-auto rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white">
-            <div className="min-w-[880px] px-[13px] pt-[13px]">
+          {/* Table */}
+          <div className="overflow-hidden rounded-[10px] border border-[#E2DFFC] bg-white">
+            <div className="overflow-x-auto">
               <table className="w-full min-w-[880px] border-collapse">
                 <thead>
                   <tr className="h-[50px] bg-[#EFEDF8]">
@@ -231,71 +237,65 @@ export default function Badges() {
                   </tr>
                 </thead>
                 <tbody>
-                  {visible.map((badge) => {
-                    return (
-                      <tr
-                        key={badge.id}
-                        className="h-[61px] border-t border-[#EFEDF8] transition-colors hover:bg-[#F9FAFE]"
-                      >
-                        <td className="px-4 align-middle">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={badge.iconSrc}
-                              alt=""
-                              className="h-10 w-10 shrink-0"
-                            />
-                            <div>
-                              <p className="text-[14px] font-medium leading-none text-[#0A0847]/80">
-                                {badge.title}
-                              </p>
-                              <p className="mt-1 text-[10px] font-medium leading-none text-[#0A0847]/60">
-                                {badge.subtitle}
-                              </p>
-                            </div>
+                  {visible.map((badge) => (
+                    <tr
+                      key={badge.id}
+                      className="h-[64px] border-t border-[#EFEDF8] transition-colors hover:bg-[#F9FAFE]"
+                    >
+                      <td className="px-4 align-middle">
+                        <div className="flex items-center gap-3">
+                          <img src={badge.iconSrc} alt="" className="h-10 w-10 shrink-0" />
+                          <div>
+                            <p className="text-[14px] font-medium leading-none text-[#0A0847]/80">
+                              {badge.title}
+                            </p>
+                            <p className="mt-1 text-[10px] font-medium leading-none text-[#0A0847]/60">
+                              {badge.subtitle}
+                            </p>
                           </div>
-                        </td>
-                        <td className="px-4 text-center align-middle">
-                          <span
-                            className={`inline-block rounded-lg border px-3 py-1 text-[12px] font-medium leading-none ${TIER_CLASS[badge.tier]}`}
-                          >
-                            {badge.tier}
+                        </div>
+                      </td>
+                      <td className="px-4 text-center align-middle">
+                        <span
+                          className={`inline-flex items-center justify-center rounded-xl border px-5 py-2 text-[14px] font-medium leading-none ${TIER_CLASS[badge.tier]}`}
+                        >
+                          {badge.tier}
+                        </span>
+                      </td>
+                      <td className={TD_CLASS}>{badge.points}</td>
+                      <td className={TD_CLASS}>{badge.requirement}</td>
+                      <td className="px-4 align-middle">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[12px] font-medium leading-none text-[#0A0847]/80">
+                            Active
                           </span>
-                        </td>
-                        <td className={TD_CLASS}>{badge.points}</td>
-                        <td className={TD_CLASS}>{badge.requirement}</td>
-                        <td className="px-4 align-middle">
-                          <div className="flex items-center gap-2">
-                            <span className="text-[12px] font-medium leading-none text-[#0A0847]/80">
-                              Active
-                            </span>
-                            <Toggle
-                              checked={activeStates[badge.id] ?? true}
-                              onChange={() => toggleActive(badge.id)}
-                              label={`Toggle ${badge.title}`}
-                            />
-                          </div>
-                        </td>
-                        <td className="px-4 align-middle">
-                          <div className="flex items-center justify-center gap-2">
-                            <button
-                              type="button"
-                              aria-label={`Edit ${badge.title}`}
-                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#001984] transition-colors hover:bg-[#F9FAFE]"
-                            >
-                              <LuPencil size={15} />
-                            </button>
-                            <button
-                              type="button"
-                              aria-label={`Delete ${badge.title}`}
-                              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-[6px] border border-[#E2DFFC] bg-white text-[#E11D48] transition-colors hover:bg-[#F9FAFE]"
-                            >
-                              <LuTrash2 size={15} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                          <Toggle
+                            checked={activeStates[badge.id] ?? true}
+                            onChange={() => toggleActive(badge.id)}
+                            label={`Toggle ${badge.title}`}
+                          />
+                        </div>
+                      </td>
+                      <td className="px-4 align-middle">
+                        <div className="flex items-center justify-center gap-2">
+                          <button
+                            type="button"
+                            aria-label={`Edit ${badge.title}`}
+                            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-[#E2DFFC] bg-white text-[#001984] transition-colors hover:bg-[#F9FAFE]"
+                          >
+                            <LuPencil size={15} />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label={`Delete ${badge.title}`}
+                            className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-[#E2DFFC] bg-white text-[#E11D48] transition-colors hover:bg-[#F9FAFE]"
+                          >
+                            <LuTrash2 size={15} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
 
                   {visible.length === 0 && (
                     <tr>
@@ -311,11 +311,16 @@ export default function Badges() {
               </table>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#EFEDF8] px-[13px] py-3">
+            {/* Pagination */}
+            <div className="flex flex-col items-center gap-3 border-t border-[#EFEDF8] px-4 py-3 sm:flex-row sm:justify-between sm:px-[13px]">
+              {/* Display */}
               <div className="flex items-center gap-2 text-[12px] font-normal leading-none text-[#0A0847]/60">
-                Display
+                <span>Display</span>
                 <div className="relative">
-                  <select className="h-[32px] w-[64px] cursor-pointer appearance-none rounded-md border border-[#E2DFFC] bg-white pl-2 pr-6 text-[12px] font-normal text-[#0A0847]/80 outline-none">
+                  <select
+                    aria-label="Rows per page"
+                    className={`${INPUT_BASE} h-[32px] w-[64px] cursor-pointer appearance-none rounded-md pl-2 pr-6 font-semibold`}
+                  >
                     <option>10</option>
                     <option>20</option>
                     <option>50</option>
@@ -325,40 +330,43 @@ export default function Badges() {
                     className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-[#0A0847]/80"
                   />
                 </div>
-                Badges
+                <span>Badges</span>
               </div>
 
-              <div className="flex items-center gap-1.5">
+              {/* Page controls */}
+              <nav aria-label="Pagination" className="flex items-center justify-center gap-1.5">
                 <button
                   type="button"
                   disabled
                   aria-label="Previous page"
-                  className="flex h-6 w-6 cursor-not-allowed items-center justify-center rounded-[3px] border border-[#E2DFFC] text-[#0A0847]/30"
+                  className="flex h-8 w-8 shrink-0 cursor-not-allowed items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#0A0847]/30"
                 >
                   <LuChevronLeft size={14} />
                 </button>
+
                 {[1, 2, 3, 4, 5].map((page) => (
                   <button
                     key={page}
                     type="button"
                     aria-current={page === 1 ? "page" : undefined}
-                    className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] text-[12px] leading-none ${
+                    className={`flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-[12px] leading-none transition-colors ${
                       page === 1
                         ? "bg-[#001984] font-semibold text-white"
-                        : "border border-[#E2DFFC] font-medium text-[#0A0847]/80 transition-colors hover:bg-[#F9FAFE]"
+                        : "border border-[#E2DFFC] bg-white font-medium text-[#0A0847]/80 hover:bg-[#F9FAFE]"
                     }`}
                   >
                     {page}
                   </button>
                 ))}
+
                 <button
                   type="button"
                   aria-label="Next page"
-                  className="flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3px] border border-[#001984] text-[#001984] transition-colors hover:bg-[#F1F1F9]"
+                  className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-[#E2DFFC] bg-white text-[#0A0847]/80 transition-colors hover:bg-[#F9FAFE]"
                 >
                   <LuChevronRight size={14} />
                 </button>
-              </div>
+              </nav>
             </div>
           </div>
         </div>

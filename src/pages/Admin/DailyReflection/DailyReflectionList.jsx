@@ -18,28 +18,16 @@ import {
   PiSquaresFour,
   PiTrash,
 } from "react-icons/pi";
+import signalStreamIcon from "../../../assets/signal-stream.svg";
+import draftIconSrc from "../../../assets/DraftIcon.svg";
+import speakerIcon from "../../../assets/speaker.svg";
 
-const LiveIcon = ({ size = 32, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="1.8" fill={color} />
-    <path d="M9.2 9.2a4 4 0 0 0 0 5.6M14.8 9.2a4 4 0 0 1 0 5.6" />
-    <path d="M6.4 6.4a8 8 0 0 0 0 11.2M17.6 6.4a8 8 0 0 1 0 11.2" />
-  </svg>
+const LiveIcon = ({ size = 32 }) => (
+  <img src={signalStreamIcon} width={size} height={size} alt="" aria-hidden />
 );
 
-const DraftIcon = ({ size = 32, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M12 4H7.5A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5V12" />
-    <path d="M16.6 3.6a2.1 2.1 0 0 1 3 3L12.4 14.8 8.4 15.6l.8-4z" />
-  </svg>
-);
-
-const AudioIcon = ({ size = 24, color = "currentColor" }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2.5 8.8h3.6L11 5v14l-4.9-3.8H2.5z" fill={color} />
-    <path d="M15 8.6a4.6 4.6 0 0 1 0 6.8" strokeWidth="2.2" />
-    <path d="M18.2 5.6a9 9 0 0 1 0 12.8" strokeWidth="2.2" />
-  </svg>
+const DraftIcon = ({ size = 32 }) => (
+  <img src={draftIconSrc} width={size} height={size} alt="" aria-hidden />
 );
 
 /* ==========================================================================
@@ -54,9 +42,9 @@ const STORIES = [
 ];
 
 const STATS = [
-  { label: "All Stories", value: 48, caption: "Total stories", box: "bg-[#EFE9FB]", icon: PiSquaresFour, iconColor: "#7C4DDB" },
+  { label: "All Stories", value: 48, caption: "Total stories", box: "bg-[#EFE9FB]", icon: PiSquaresFour, iconColor: "#7C4DDB", weight: "regular" },
   { label: "Live", value: 1, caption: "Currently live", box: "bg-[#E8F7EE]", icon: LiveIcon, iconColor: "#22A45D" },
-  { label: "Scheduled", value: 3, caption: "Upcoming", box: "bg-[#1617E31A]", icon: PiClockCountdown, iconColor: "#1617E3" },
+  { label: "Scheduled", value: 3, caption: "Upcoming", box: "bg-[#1617E31A]", icon: PiClockCountdown, iconColor: "#1617E3", weight: "regular" },
   { label: "Drafts", value: 2, caption: "In progress", box: "bg-[#FBEDE1]", icon: DraftIcon, iconColor: "#D9601A" },
 ];
 
@@ -76,10 +64,11 @@ const MENU_ITEMS = [
 
 const TXT = "text-[#0A0847CC]";
 const TH =
-  "h-[48px] bg-[#F1F3FB] px-[12px] text-left text-[14px] font-medium leading-none whitespace-nowrap " +
+  "h-[48px] bg-[#F1F3FB] px-[12px] text-left text-[13px] font-medium leading-none whitespace-nowrap " +
   TXT;
+const TD = "px-[12px] py-[10px] align-middle text-[13px] font-medium";
 const FILTER_BTN =
-  "flex h-[36px] cursor-pointer items-center gap-[7px] rounded-[7.47px] border border-[#E5E7EB] bg-white px-[12px] text-[12px] font-medium leading-none " +
+  "flex h-[36px] cursor-pointer items-center justify-between gap-[7px] rounded-[7.47px] border border-[#E5E7EB] bg-white px-[12px] text-[13px] font-medium leading-none sm:justify-start " +
   TXT;
 
 /* ==========================================================================
@@ -88,7 +77,7 @@ const FILTER_BTN =
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex h-[25px] items-center whitespace-nowrap rounded-[8px] px-[12px] text-[12px] font-medium leading-none ${
+      className={`inline-flex h-[26px] items-center whitespace-nowrap rounded-[8px] px-[12px] text-[12px] font-medium leading-none ${
         STATUS_STYLES[status] || "bg-gray-100 text-gray-700"
       }`}
     >
@@ -124,10 +113,7 @@ export default function DailyReflectionList() {
 
   useEffect(() => {
     const handler = (e) => {
-      if (
-        !e.target.closest("[data-action-menu]") &&
-        !e.target.closest("[data-menu]")
-      ) {
+      if (!e.target.closest("[data-action-menu]") && !e.target.closest("[data-menu]")) {
         setMenu(null);
       }
     };
@@ -138,11 +124,8 @@ export default function DailyReflectionList() {
   const openMenu = (e, id) => {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
-    const width = 105;
-    const x = Math.max(
-      8,
-      Math.min(rect.right - width, window.innerWidth - width - 8),
-    );
+    const width = 120;
+    const x = Math.max(8, Math.min(rect.right - width, window.innerWidth - width - 8));
     setMenu({ id, x, y: rect.bottom + 8 });
   };
 
@@ -157,45 +140,39 @@ export default function DailyReflectionList() {
   return (
     <div className="flex min-h-screen flex-col gap-[20px] bg-[#F8FAFC] p-4 font-['Inter',sans-serif] sm:p-6">
       {/* Header */}
-      <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-[#0A0847]">
-            Today in Biblical History
-          </h1>
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-xl font-bold text-[#0A0847]">Today in Biblical History</h1>
           <p className="mt-2 text-sm font-medium text-[#0A084799]">
             Create, schedule, and manage daily biblical history experiences.
           </p>
         </div>
         <button
           onClick={() => navigate("/admin/dailyreflection/add")}
-          className="flex cursor-pointer items-center justify-center gap-2 self-start rounded-lg bg-[#001984] px-4 py-2.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[#001266] md:self-auto"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#001984] px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#001266] sm:w-auto"
         >
           <PiPlus size={16} />
           Add Historical Story
         </button>
       </div>
 
+      {/* Stats */}
       <div className="grid grid-cols-1 gap-[16px] min-[560px]:grid-cols-2 lg:grid-cols-4">
         {STATS.map((stat) => {
           const Icon = stat.icon;
           return (
             <div
               key={stat.label}
-              className="flex h-[145px] items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white pl-[16px] pr-[16px]"
+              className="flex h-[145px] items-center gap-[10px] rounded-[8px] border border-[#E2DFFC] bg-white px-[16px]"
             >
-              {/* icon box 62 x 62, radius 18, padding 7, icon 32 */}
               <div
                 className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] p-[7px] ${stat.box}`}
               >
-                <Icon size={32} color={stat.iconColor} />
+                <Icon size={32} color={stat.iconColor} weight={stat.weight} />
               </div>
               <div className="flex min-w-0 flex-col gap-[10px]">
-                <p className="text-[14px] font-semibold leading-none text-[#001984]">
-                  {stat.label}
-                </p>
-                <p className="text-[22px] font-semibold leading-none text-[#0A0847]">
-                  {stat.value}
-                </p>
+                <p className="text-[14px] font-semibold leading-none text-[#001984]">{stat.label}</p>
+                <p className="text-[22px] font-semibold leading-none text-[#0A0847]">{stat.value}</p>
                 <p className="text-[12px] font-semibold leading-none text-[#0A084799]">
                   {stat.caption}
                 </p>
@@ -205,9 +182,9 @@ export default function DailyReflectionList() {
         })}
       </div>
 
-      {/* Filter Row — search 273 x 42, filters h-36, radius 7.47 */}
-      <div className="flex flex-wrap items-center justify-between gap-[12px]">
-        <div className="relative h-[42px] w-full sm:w-[273px]">
+      {/* Filter row: mobile = search full width, filters in 2-col grid; sm+ = one row */}
+      <div className="flex flex-col gap-[12px] lg:flex-row lg:items-center lg:justify-between">
+        <div className="relative h-[42px] w-full lg:w-[273px]">
           <PiMagnifyingGlass
             size={16}
             className="pointer-events-none absolute left-[12px] top-1/2 -translate-y-1/2 text-[#0A084799]"
@@ -215,11 +192,11 @@ export default function DailyReflectionList() {
           <input
             type="text"
             placeholder="Search stories.."
-            className="h-[42px] w-full rounded-[7.47px] border border-[#E5E7EB] bg-white py-[10px] pl-[36px] pr-[12px] text-[12px] font-medium text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]"
+            className="h-[42px] w-full rounded-[7.47px] border border-[#E5E7EB] bg-white py-[10px] pl-[36px] pr-[12px] text-[13px] font-medium text-[#0A0847] outline-none transition placeholder:text-[#0A084799] focus:border-[#001984]"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-[10px]">
+        <div className="grid grid-cols-2 gap-[10px] sm:flex sm:flex-wrap sm:items-center">
           <button className={FILTER_BTN}>
             Status (All)
             <PiCaretDown size={18} />
@@ -236,42 +213,38 @@ export default function DailyReflectionList() {
             Audio (All)
             <PiCaretDown size={18} />
           </button>
-          <button className="flex h-[36px] cursor-pointer items-center rounded-[7.47px] border border-[#001984] bg-white px-[22px] text-[12px] font-medium leading-none text-[#001984] transition hover:bg-[#001984]/5">
+          <button className="col-span-2 flex h-[36px] cursor-pointer items-center justify-center rounded-[7.47px] border border-[#001984] bg-white px-[22px] text-[13px] font-medium leading-none text-[#001984] transition hover:bg-[#001984]/5 sm:col-span-1 sm:justify-start">
             Reset
           </button>
         </div>
       </div>
 
+      {/* Table card */}
       <div className="rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-[14px]">
-        <div
-          className="overflow-x-auto"
-          onScroll={() => setMenu((m) => (m ? null : m))}
-        >
-          <table className="w-full min-w-[1120px] table-auto border-collapse">
+        <div className="overflow-x-auto" onScroll={() => setMenu((m) => (m ? null : m))}>
+          <table className="w-full table-auto border-collapse">
             <thead>
               <tr>
                 <th className={`${TH} w-[44px] rounded-l-[6px] pl-[14px] pr-[12px]`}>
                   <TableCheckbox checked={allChecked} onChange={toggleAll} />
                 </th>
-                <th className={`${TH} min-w-[130px]`}>Featured Date</th>
-                <th className={`${TH} min-w-[140px]`}>Homepage Title</th>
-                <th className={`${TH} min-w-[190px]`}>Full Story Title</th>
-                <th className={`${TH} min-w-[110px]`}>Scripture</th>
-                <th className={`${TH} min-w-[110px]`}>Status</th>
-                <th className={`${TH} min-w-[70px]`}>Audio</th>
-                <th className={`${TH} min-w-[110px]`}>Reward</th>
-                <th className={`${TH} min-w-[80px]`}>Views</th>
-                <th className={`${TH} min-w-[110px]`}>Completions</th>
-                <th className={`${TH} min-w-[80px] rounded-r-[6px] text-center`}>
-                  Actions
-                </th>
+                <th className={`${TH} min-w-[120px]`}>Featured Date</th>
+                <th className={`${TH} min-w-[130px]`}>Homepage Title</th>
+                <th className={`${TH} min-w-[180px]`}>Full Story Title</th>
+                <th className={`${TH} min-w-[100px]`}>Scripture</th>
+                <th className={`${TH} min-w-[100px]`}>Status</th>
+                <th className={`${TH} min-w-[60px]`}>Audio</th>
+                <th className={`${TH} min-w-[100px]`}>Reward</th>
+                <th className={`${TH} min-w-[70px]`}>Views</th>
+                <th className={`${TH} min-w-[100px]`}>Completions</th>
+                <th className={`${TH} min-w-[70px] rounded-r-[6px] text-center`}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {STORIES.map((story) => (
                 <tr
                   key={story.id}
-                  className="h-[62px] border-b border-[#EEF0F5] text-[12px] font-medium"
+                  className="h-[62px] border-b border-[#EEF0F5] text-[13px] font-medium"
                 >
                   <td className="w-[44px] px-[12px] py-[10px] align-middle">
                     <TableCheckbox
@@ -280,48 +253,42 @@ export default function DailyReflectionList() {
                     />
                   </td>
 
-                  <td className={`min-w-[130px] whitespace-nowrap px-[12px] py-[10px] align-middle text-[12px] font-medium ${TXT}`}>
+                  <td className={`whitespace-nowrap ${TD} ${TXT}`}>
                     <p className="leading-[1.3]">{story.date}</p>
                     <p className="leading-[1.3]">{story.day}</p>
                   </td>
 
-                  <td className={`min-w-[140px] px-[12px] py-[10px] align-middle text-[12px] font-medium ${TXT}`}>
-                    <p className="line-clamp-2 leading-[1.3]">{story.homepageTitle}</p>
+                  <td className={`min-w-[130px] ${TD} ${TXT}`}>
+                    <p className="leading-[1.3]">{story.homepageTitle}</p>
                   </td>
 
-                  <td className={`min-w-[190px] px-[12px] py-[10px] align-middle text-[12px] font-medium ${TXT}`}>
-                    <p className="line-clamp-3 leading-[1.3]">{story.fullTitle}</p>
+                  <td className={`min-w-[180px] ${TD} ${TXT}`}>
+                    <p className="leading-[1.3]">{story.fullTitle}</p>
                   </td>
 
-                  <td className={`min-w-[110px] whitespace-nowrap px-[12px] py-[10px] align-middle text-[12px] font-medium ${TXT}`}>
-                    {story.scripture}
-                  </td>
+                  <td className={`whitespace-nowrap ${TD} ${TXT}`}>{story.scripture}</td>
 
-                  <td className="min-w-[110px] whitespace-nowrap px-[12px] py-[10px] align-middle">
+                  <td className="whitespace-nowrap px-[12px] py-[10px] align-middle">
                     <StatusBadge status={story.status} />
                   </td>
 
-                  <td className="min-w-[70px] px-[12px] py-[10px] align-middle">
-                    <AudioIcon size={24} color="#1617E3" />
+                  <td className="px-[12px] py-[10px] align-middle">
+                    <img src={speakerIcon} alt="" className="h-[26px] w-[26px]" />
                   </td>
 
-                  <td className="min-w-[110px] whitespace-nowrap px-[12px] py-[10px] align-middle text-[12px] font-semibold text-[#16A34A]">
+                  <td className={`whitespace-nowrap ${TD} font-semibold text-[#16A34A]`}>
                     {story.reward}
                   </td>
 
-                  <td className="min-w-[80px] whitespace-nowrap px-[12px] py-[10px] align-middle text-[12px] font-semibold text-[#222222]">
-                    {story.views ?? (
-                      <span className="font-normal text-[#9CA3AF]">—</span>
-                    )}
+                  <td className={`whitespace-nowrap ${TD} font-semibold text-[#222222]`}>
+                    {story.views ?? <span className="font-normal text-[#9CA3AF]">—</span>}
                   </td>
 
-                  <td className="min-w-[110px] whitespace-nowrap px-[12px] py-[10px] align-middle text-[12px] font-semibold text-[#222222]">
-                    {story.completions ?? (
-                      <span className="font-normal text-[#9CA3AF]">—</span>
-                    )}
+                  <td className={`whitespace-nowrap ${TD} font-semibold text-[#222222]`}>
+                    {story.completions ?? <span className="font-normal text-[#9CA3AF]">—</span>}
                   </td>
 
-                  <td className="min-w-[80px] px-[12px] py-[10px] text-center align-middle">
+                  <td className="px-[12px] py-[10px] text-center align-middle">
                     <button
                       onClick={(e) => openMenu(e, story.id)}
                       data-action-menu
@@ -337,11 +304,12 @@ export default function DailyReflectionList() {
           </table>
         </div>
 
-        <div className="mt-[14px] flex flex-col gap-3 px-[6px] text-[12px] text-[#0A0847CC] sm:flex-row sm:items-center sm:justify-between">
+        {/* Pagination: centered on mobile, split left/right from sm */}
+        <div className="mt-[14px] flex flex-col items-center gap-3 px-[6px] text-[13px] text-[#0A0847CC] sm:flex-row sm:justify-between">
           <div className="flex items-center gap-2 font-normal">
             Display
             <span className="relative">
-              <select className="h-[24px] w-[48px] cursor-pointer appearance-none rounded-[4px] border border-[#E5E7EB] bg-white pl-2 pr-5 text-[12px] font-medium outline-none">
+              <select className="h-[26px] w-[52px] cursor-pointer appearance-none rounded-[4px] border border-[#E5E7EB] bg-white pl-2 pr-5 text-[13px] font-medium outline-none">
                 <option>05</option>
                 <option>10</option>
                 <option>25</option>
@@ -354,18 +322,19 @@ export default function DailyReflectionList() {
             Entries
           </div>
 
-          <div className="flex items-center gap-[8px]">
+          <nav aria-label="Pagination" className="flex items-center justify-center gap-[8px]">
             <button
               disabled
               aria-label="Previous page"
-              className="flex h-[24px] w-[24px] items-center justify-center rounded-[4px] bg-[#E5E7EB] text-[#9CA3AF]"
+              className="flex h-[26px] w-[26px] items-center justify-center rounded-[4px] bg-[#E5E7EB] text-[#9CA3AF]"
             >
               <PiCaretLeft size={12} />
             </button>
             {[1, 2, 3, 4, 5].map((num) => (
               <button
                 key={num}
-                className={`flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-[4px] text-[12px] ${
+                aria-current={num === 1 ? "page" : undefined}
+                className={`flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-[4px] text-[13px] ${
                   num === 1
                     ? "bg-[#001984] font-semibold text-white"
                     : "bg-white font-medium text-[#0A0847CC]"
@@ -376,11 +345,11 @@ export default function DailyReflectionList() {
             ))}
             <button
               aria-label="Next page"
-              className="flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-[4px] border-[0.75px] border-[#001984] text-[#001984] transition hover:bg-[#001984] hover:text-white"
+              className="flex h-[26px] w-[26px] cursor-pointer items-center justify-center rounded-[4px] border-[0.75px] border-[#001984] text-[#001984] transition hover:bg-[#001984] hover:text-white"
             >
               <PiCaretRight size={12} />
             </button>
-          </div>
+          </nav>
         </div>
       </div>
 
@@ -388,7 +357,7 @@ export default function DailyReflectionList() {
         createPortal(
           <div
             data-menu
-            className="fixed z-[60] flex h-[162px] w-[105px] flex-col gap-[12px] rounded-[4px] border border-[#E5E7EB] bg-white pb-[12px] pl-[12px] pr-[20px] pt-[12px] shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            className="fixed z-[60] flex w-[120px] flex-col gap-[12px] rounded-[4px] border border-[#E5E7EB] bg-white py-[12px] pl-[12px] pr-[16px] shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
             style={{ left: menu.x, top: menu.y }}
           >
             {MENU_ITEMS.map((item) => {
@@ -397,7 +366,7 @@ export default function DailyReflectionList() {
                 <button
                   key={item.key}
                   onClick={() => setMenu(null)}
-                  className={`flex w-full cursor-pointer items-center gap-[8px] text-left text-[10.5px] font-medium leading-none transition ${
+                  className={`flex w-full cursor-pointer items-center gap-[8px] text-left text-[12px] font-medium leading-none transition ${
                     item.danger
                       ? "text-[#D0103A] hover:opacity-80"
                       : "text-[#0A0847CC] hover:text-[#0A0847]"

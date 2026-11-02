@@ -11,20 +11,19 @@ import {
 } from "react-icons/lu";
 import TicketModal from "./TicketModal";
 import coverImg from "../../../assets/cover-img.webp";
-// Adjust these paths to where src/assets/support/*.png live in your project.
 import mailIconSrc from "../../../assets/support/mail.png";
 import clockIconSrc from "../../../assets/support/clock.png";
 import urgentIconSrc from "../../../assets/support/urgent.png";
 import barsIconSrc from "../../../assets/support/bars.png";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   MOCK DATA
    ========================================================================== */
 const STATS = [
   {
     tileClass: "bg-[rgba(98,8,253,0.1)]",
     iconSrc: mailIconSrc,
-    iconStyle: { width: 36, height: "auto" },
+    iconStyle: { width: 30, height: "auto" },
     value: "24",
     valueClass: "text-[#6208FD]",
     label: "Total articles",
@@ -32,7 +31,7 @@ const STATS = [
   {
     tileClass: "bg-[rgba(198,84,6,0.1)]",
     iconSrc: clockIconSrc,
-    iconStyle: { height: 36, width: "auto" },
+    iconStyle: { height: 30, width: "auto" },
     value: "7",
     valueClass: "text-[#C65406]",
     label: "Waiting",
@@ -40,7 +39,7 @@ const STATS = [
   {
     tileClass: "bg-[rgba(210,48,51,0.1)]",
     iconSrc: urgentIconSrc,
-    iconStyle: { height: 30, width: "auto" },
+    iconStyle: { height: 26, width: "auto" },
     value: "3",
     valueClass: "text-[#D23033]",
     label: "Urgent",
@@ -48,7 +47,7 @@ const STATS = [
   {
     tileClass: "bg-[rgba(24,23,227,0.1)]",
     iconSrc: barsIconSrc,
-    iconStyle: { height: 30, width: "auto" },
+    iconStyle: { height: 26, width: "auto" },
     value: null,
     valueClass: "",
     label: "Avg. Response",
@@ -77,8 +76,7 @@ const TICKETS = [
     customerTime: "12 min ago",
     agentTime: "9 min ago",
     agent: "Maya (Admin)",
-    customerMsg:
-      "Manage your subscription, payments, and billing information.",
+    customerMsg: "Manage your subscription, payments, and billing information.",
     agentMsg:
       "Hi Sarah, thanks for reaching out. I'm sorry to hear about the issue. I'm looking into this for you now.",
     attachment: { file: "receipt-may-2024.png", size: "245 KB" },
@@ -230,9 +228,7 @@ function Checkbox({ checked, onChange, label }) {
       aria-label={label}
       onClick={onChange}
       className={`flex h-4 w-4 cursor-pointer items-center justify-center rounded-[4px] border transition-colors ${
-        checked
-          ? "border-[#001984] bg-[#001984]"
-          : "border-[#D1D5DB] bg-white"
+        checked ? "border-[#001984] bg-[#001984]" : "border-[#D1D5DB] bg-white"
       }`}
     >
       {checked && (
@@ -255,14 +251,7 @@ const fieldSelectClass =
 const bulkSelectClass =
   "h-[36px] w-full cursor-pointer appearance-none rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 pr-8 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
 
-function Select({
-  id,
-  value,
-  onChange,
-  children,
-  className = "",
-  selectClass = fieldSelectClass,
-}) {
+function Select({ id, value, onChange, children, className = "", selectClass = fieldSelectClass }) {
   return (
     <div className={`relative ${className}`}>
       <select
@@ -275,7 +264,7 @@ function Select({
       </select>
       <LuChevronDown
         size={15}
-        className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 text-gray-400"
+        className="pointer-events-none absolute right-[12px] top-1/2 -translate-y-1/2 text-gray-400"
       />
     </div>
   );
@@ -283,10 +272,7 @@ function Select({
 
 function FieldLabel({ htmlFor, children }) {
   return (
-    <label
-      htmlFor={htmlFor}
-      className="mb-[6px] block text-[12px] font-semibold text-[#0A0847]/80"
-    >
+    <label htmlFor={htmlFor} className="mb-[6px] block text-[12px] font-semibold text-[#0A0847]/80">
       {children}
     </label>
   );
@@ -298,23 +284,11 @@ const settingsInput =
 const settingsSelect =
   "h-[44px] w-full min-w-0 cursor-pointer appearance-none rounded-[8px] border border-[#E2DFFC] bg-white pl-3 pr-10 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
 
-const inputClass =
-  "h-[46px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pl-3 pr-[50px] text-[14px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]";
-
 const appearanceButton =
   "flex h-[33px] cursor-pointer items-center justify-center gap-2 rounded-[7.47px] border border-[#E2DFFC] bg-white px-3.5 text-[12px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50";
 
-function ToggleRow({ label, checked, onChange }) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <span className="text-[14px] font-semibold text-[#0A0847]">{label}</span>
-      <Switch checked={checked} onChange={onChange} label={label} />
-    </div>
-  );
-}
-
 /* ==========================================================================
-   USER AVATAR — 38×38 rounded square photo (Monica = gradient placeholder)
+   USER AVATAR
    ========================================================================== */
 function UserAvatar({ ticket }) {
   if (ticket.avatar) {
@@ -337,7 +311,7 @@ function UserAvatar({ ticket }) {
 }
 
 /* ==========================================================================
-   COVER IMAGE THUMBNAIL — from src/assets/cover-img.png
+   COVER IMAGE THUMBNAIL
    ========================================================================== */
 function CoverThumb() {
   return (
@@ -364,16 +338,12 @@ export default function SupportInbox() {
     confirmation: true,
     emailNotifications: true,
     inAppNotifications: true,
-    internalNote: true,
   });
 
-  const toggleRow = (key) =>
-    setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleRow = (key) => setToggles((prev) => ({ ...prev, [key]: !prev[key] }));
 
   const toggleSelected = (id) =>
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    );
+    setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
 
   const visible = TICKETS.filter((ticket) => {
     const q = search.toLowerCase();
@@ -385,22 +355,29 @@ export default function SupportInbox() {
     );
   });
 
+  const settingsId = (tab) => `settings-${tab.toLowerCase().replace(/\s+/g, "-")}`;
+
+  const settingsCardCls = (tab) =>
+    `flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${
+      settingsTab === tab ? "border-[#001984]" : "border-[#E2DFFC]"
+    }`;
+
   return (
-    <div className="min-h-screen w-full bg-[#F8FAFC] font-[Inter] text-[#0A0847]">
+    <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#F8FAFC] font-[Inter] text-[#0A0847]">
       <div className="w-full min-w-0 space-y-6 px-4 py-6 sm:px-5">
         {/* ================= PAGE HEADER ================= */}
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:gap-6">
-          <div>
-            <h1 className="text-[22px] font-semibold leading-none text-[#0A0847]">
+          <div className="min-w-0">
+            <h1 className="text-[20px] font-semibold leading-tight text-[#0A0847] sm:text-[22px]">
               Support Inbox &amp; Settings
             </h1>
-            <p className="mt-[6px] text-[16px] font-medium text-[#0A0847]/60">
+            <p className="mt-[6px] text-[14px] font-medium text-[#0A0847]/60 sm:text-[16px]">
               Review requests, reply to users, and control support option
             </p>
           </div>
           <button
             type="button"
-            className="flex h-[42px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#001266]"
+            className="flex h-[42px] w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[8px] bg-[#001984] px-6 text-[14px] font-semibold text-white transition-colors hover:bg-[#001266] sm:w-auto"
           >
             <LuPlus size={16} />
             New Article
@@ -408,28 +385,24 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= STAT CARDS ================= */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-[repeat(4,minmax(0,1fr))]">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
           {STATS.map((stat) => (
             <div
               key={stat.label}
-              className="flex h-[153px] items-center gap-4 rounded-[12px] border border-[#E2DFFC] bg-[#FEFFFF] pl-4 pr-4"
+              className="flex h-[108px] min-w-0 items-center gap-3 rounded-[12px] border border-[#E2DFFC] bg-[#FEFFFF] px-3 sm:h-[153px] sm:gap-4 sm:px-4"
             >
               <div
-                className={`flex h-[62px] w-[62px] shrink-0 items-center justify-center rounded-[18px] ${stat.tileClass}`}
+                className={`flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[14px] sm:h-[62px] sm:w-[62px] sm:rounded-[18px] ${stat.tileClass}`}
               >
-                <img
-                  src={stat.iconSrc}
-                  alt=""
-                  style={stat.iconStyle}
-                />
+                <img src={stat.iconSrc} alt="" style={stat.iconStyle} className="max-h-[70%] max-w-[70%]" />
               </div>
-              <div className="flex min-w-0 flex-col gap-2">
+              <div className="flex min-w-0 flex-col gap-1.5 sm:gap-2">
                 {stat.value ? (
-                  <p className={`text-[22px] font-semibold leading-none ${stat.valueClass}`}>
+                  <p className={`text-[18px] font-semibold leading-none sm:text-[22px] ${stat.valueClass}`}>
                     {stat.value}
                   </p>
                 ) : null}
-                <p className="text-[14px] font-semibold text-[#001984]">
+                <p className="truncate text-[12px] font-semibold text-[#001984] sm:text-[14px]">
                   {stat.label}
                 </p>
               </div>
@@ -438,10 +411,10 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= SEARCH + FILTER ================= */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="relative w-full sm:w-[408px]">
+        <div className="flex items-center gap-3">
+          <div className="relative min-w-0 flex-1 sm:w-[408px] sm:flex-none">
             <LuSearch
-              size={17}
+              size={16}
               className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
             />
             <input
@@ -449,12 +422,12 @@ export default function SupportInbox() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search journeys..."
-              className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pl-[41px] pr-3 text-[14px] text-[#0A0847]/60 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984]"
+              className="h-[40px] w-full rounded-[7.47px] border border-[#E2DFFC] bg-white pl-[38px] pr-3 text-[13px] text-[#0A0847]/60 outline-none transition placeholder:text-[#0A0847]/60 focus:border-[#001984] sm:pl-[41px] sm:text-[14px]"
             />
           </div>
           <button
             type="button"
-            className="flex h-[38px] w-[87px] shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 py-[9px] text-[14px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50"
+            className="flex h-[40px] shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[7.47px] border border-[#E2DFFC] bg-white px-3 text-[13px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50 sm:h-[38px] sm:w-[87px] sm:text-[14px]"
           >
             <LuFilter size={15} />
             Filter
@@ -462,13 +435,15 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= STATUS PILL TABS ================= */}
-        <div className="flex flex-wrap gap-2.5">
-          {STATUS_TABS.map((tab) => (
+        <div className="grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap">
+          {STATUS_TABS.map((tab, index) => (
             <button
               key={tab}
               type="button"
               onClick={() => setActiveTab(tab)}
-              className={`flex h-[34px] w-full cursor-pointer items-center justify-center rounded-[7.47px] text-[12px] font-medium transition-colors sm:w-[130px] ${
+              className={`flex h-[36px] w-full cursor-pointer items-center justify-center whitespace-nowrap rounded-[7.47px] px-2 text-[12px] font-medium transition-colors sm:h-[34px] sm:w-[130px] ${
+                index === 0 ? "col-span-2 sm:col-span-1" : ""
+              } ${
                 activeTab === tab
                   ? "border border-[#001984] bg-[#001984] text-white"
                   : "border border-[#E2DFFC] bg-white text-[#0A0847]/80 hover:bg-gray-50"
@@ -480,9 +455,9 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= TABLE CARD ================= */}
-        <div className="flex w-full flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-5">
-          {/* bulk actions */}
-          <div className="flex flex-wrap items-center gap-3">
+        <div className="flex w-full min-w-0 flex-col gap-5 rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white p-4 sm:p-5">
+          {/* bulk actions: 2 columns on mobile, one row from sm */}
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
             <Select id="bulk-assign" className="w-full sm:w-[130px]" selectClass={bulkSelectClass}>
               <option>Assign</option>
               <option>Maya</option>
@@ -496,7 +471,7 @@ export default function SupportInbox() {
             </Select>
             <button
               type="button"
-              className="flex h-[36px] w-full cursor-pointer items-center justify-center rounded-[7.47px] border border-[#D23033] bg-white px-3 text-[12px] font-medium text-[#D23033] transition-colors hover:bg-[#FEF2F2] sm:w-[130px]"
+              className="col-span-2 flex h-[36px] w-full cursor-pointer items-center justify-center rounded-[7.47px] border border-[#D23033] bg-white px-3 text-[12px] font-medium text-[#D23033] transition-colors hover:bg-[#FEF2F2] sm:w-[130px]"
             >
               Delete / Archive
             </button>
@@ -510,11 +485,7 @@ export default function SupportInbox() {
                     <Checkbox
                       checked={selected.length === TICKETS.length}
                       onChange={() =>
-                        setSelected(
-                          selected.length === TICKETS.length
-                            ? []
-                            : TICKETS.map((t) => t.id),
-                        )
+                        setSelected(selected.length === TICKETS.length ? [] : TICKETS.map((t) => t.id))
                       }
                       label="Select all tickets"
                     />
@@ -538,7 +509,7 @@ export default function SupportInbox() {
                     onClick={() => setOpenTicket(ticket)}
                     className="h-[63px] cursor-pointer border-b-[0.75px] border-[#E9E9E9] transition-colors hover:bg-gray-50/50"
                   >
-                    <td className="px-5 align-middle">
+                    <td className="px-5 align-middle" onClick={(e) => e.stopPropagation()}>
                       <Checkbox
                         checked={selected.includes(ticket.id)}
                         onChange={() => toggleSelected(ticket.id)}
@@ -584,10 +555,7 @@ export default function SupportInbox() {
 
                 {visible.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={8}
-                      className="px-5 py-10 text-center text-[12px] text-[#0A0847]/60"
-                    >
+                    <td colSpan={8} className="px-5 py-10 text-center text-[12px] text-[#0A0847]/60">
                       No results found.
                     </td>
                   </tr>
@@ -598,9 +566,9 @@ export default function SupportInbox() {
         </div>
 
         {/* ================= SETTINGS ================= */}
-        <div className="w-full rounded-[8px] border border-[#E2DFFC] bg-white px-5 pb-6 pt-0">
-          {/* tab bar — 4 equal columns, full-width divider, underline per tab */}
-          <div className="grid w-full grid-cols-2 border-b-[2px] border-[#E8E8E8] sm:grid-cols-[repeat(4,minmax(0,1fr))]">
+        <div className="w-full min-w-0 rounded-[8px] border border-[#E2DFFC] bg-white px-4 pb-6 pt-0 sm:px-5">
+          {/* tab bar: 2 columns on mobile, 4 from sm */}
+          <div className="grid w-full grid-cols-2 border-b-[2px] border-[#E8E8E8] sm:grid-cols-4">
             {SETTINGS_TABS.map((tab) => (
               <button
                 key={tab}
@@ -608,11 +576,11 @@ export default function SupportInbox() {
                 onClick={() => {
                   setSettingsTab(tab);
                   document
-                    .getElementById(`settings-${tab.toLowerCase().replace(/\s+/g, "-")}`)
+                    .getElementById(settingsId(tab))
                     ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
                 }}
                 aria-pressed={settingsTab === tab}
-                className={`-mb-[2px] cursor-pointer border-b-[3px] py-5 text-center text-[16px] font-medium leading-none transition-colors ${
+                className={`-mb-[2px] cursor-pointer border-b-[3px] py-4 text-center text-[14px] font-medium leading-none transition-colors sm:py-5 sm:text-[16px] ${
                   settingsTab === tab
                     ? "border-[#001984] text-[#001984]"
                     : "border-transparent text-[#0A0847]/60 hover:text-[#0A0847]"
@@ -623,12 +591,14 @@ export default function SupportInbox() {
             ))}
           </div>
 
-          {/* settings columns — each one is a bordered card */}
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-[repeat(4,minmax(0,1fr))] 2xl:gap-10">
-            {/* ---- COLUMN 1: General (Help Center Enabled — navy border) ---- */}
-            <div id="settings-general" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "General" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
+          {/* settings columns: stacked on mobile, 2 on sm, 4 on xl */}
+          <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:gap-10">
+            {/* COLUMN 1: General */}
+            <div id="settings-general" className={settingsCardCls("General")}>
               <div className="flex items-center justify-between gap-3 border-b border-[#E2DFFC] pb-3">
-                <span className="text-[14px] font-semibold text-[#0A0847]">Help Center Enabled</span>
+                <span className="text-[13px] font-semibold text-[#0A0847] sm:text-[14px]">
+                  Help Center Enabled
+                </span>
                 <Switch
                   checked={toggles.helpCenter}
                   onChange={() => toggleRow("helpCenter")}
@@ -668,9 +638,9 @@ export default function SupportInbox() {
               </div>
             </div>
 
-            {/* ---- COLUMN 2: Contact Form ---- */}
-            <div id="settings-contact-form" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Contact Form" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
-              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+            {/* COLUMN 2: Contact Form */}
+            <div id="settings-contact-form" className={settingsCardCls("Contact Form")}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[13px] font-semibold text-[#0A0847] sm:text-[14px]">
                 Contact Form
               </h3>
 
@@ -724,9 +694,9 @@ export default function SupportInbox() {
               </div>
             </div>
 
-            {/* ---- COLUMN 3: Automation ---- */}
-            <div id="settings-automation" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Automation" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
-              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+            {/* COLUMN 3: Automation */}
+            <div id="settings-automation" className={settingsCardCls("Automation")}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[13px] font-semibold text-[#0A0847] sm:text-[14px]">
                 Automation
               </h3>
 
@@ -779,9 +749,9 @@ export default function SupportInbox() {
               </div>
             </div>
 
-            {/* ---- COLUMN 4: Appearance ---- */}
-            <div id="settings-appearance" className={`flex min-h-[470px] flex-col rounded-[8px] border bg-white p-4 ${settingsTab === "Appearance" ? "border-[#001984]" : "border-[#E2DFFC]"}`}>
-              <h3 className="border-b border-[#E2DFFC] pb-3 text-[14px] font-semibold text-[#0A0847]">
+            {/* COLUMN 4: Appearance */}
+            <div id="settings-appearance" className={settingsCardCls("Appearance")}>
+              <h3 className="border-b border-[#E2DFFC] pb-3 text-[13px] font-semibold text-[#0A0847] sm:text-[14px]">
                 Appearance
               </h3>
 
@@ -795,9 +765,7 @@ export default function SupportInbox() {
                       rows={3}
                       className="w-full resize-none rounded-[8px] border border-[#E2DFFC] bg-white px-[10px] py-2 pr-12 text-[12px] font-medium text-[#0A0847] outline-none transition focus:border-[#001984]"
                     />
-                    <span className="absolute bottom-2 right-2.5 text-[10px] text-[#0A0847]/60">
-                      63/160
-                    </span>
+                    <span className="absolute bottom-2 right-2.5 text-[10px] text-[#0A0847]/60">63/160</span>
                   </div>
                 </div>
 
@@ -818,7 +786,7 @@ export default function SupportInbox() {
                   <CoverThumb />
                 </div>
 
-                <button
+                            <button
                   type="button"
                   className="flex h-[43px] w-full cursor-pointer items-center justify-center rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50"
                 >
@@ -826,7 +794,7 @@ export default function SupportInbox() {
                 </button>
                 <button
                   type="button"
-                  className="flex h-[43px] w-full max-w-[207px] cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50"
+                  className="flex h-[43px] w-full cursor-pointer items-center justify-center gap-2 rounded-[8px] border border-[#E2DFFC] bg-[#FEFEFE] text-[12px] font-medium text-[#0A0847]/80 transition-colors hover:bg-gray-50"
                 >
                   Preview User View
                   <LuExternalLink size={14} />
@@ -838,9 +806,7 @@ export default function SupportInbox() {
       </div>
 
       {/* ================= TICKET DETAIL MODAL ================= */}
-      {openTicket && (
-        <TicketModal ticket={openTicket} onClose={() => setOpenTicket(null)} />
-      )}
+      {openTicket && <TicketModal ticket={openTicket} onClose={() => setOpenTicket(null)} />}
     </div>
   );
 }

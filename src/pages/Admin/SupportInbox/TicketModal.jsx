@@ -5,9 +5,10 @@ import {
   LuPaperclip,
   LuSend,
   LuCheck,
-  LuImage,
   LuUser,
 } from "react-icons/lu";
+import agentAvatarImg from "../../../assets/support/Maya admin.png";
+import receiptThumbImg from "../../../assets/support/receipt.svg";
 
 const ASSIGNEES = ["Maya", "Unassigned", "Peter", "Alex"];
 const STATUSES = ["Open", "Waiting", "Resolved"];
@@ -41,9 +42,6 @@ export default function TicketModal({ ticket, onClose }) {
   const [reply, setReply] = useState("");
   const [internalNote, setInternalNote] = useState(ticket.note);
   const [noteOn, setNoteOn] = useState(true);
-
-  const agentInitials =
-    ticket.agent.replace(" (Admin)", "").charAt(0).toUpperCase() + "A";
 
   /* lock page scroll while the dialog is open */
   useEffect(() => {
@@ -162,9 +160,7 @@ export default function TicketModal({ ticket, onClose }) {
                   <span className="text-[16px] font-semibold leading-[1.2] text-[#0A0847]">
                     {ticket.name}
                   </span>
-                  <span className="text-[11px] text-[#0A0847]/60">
-                    {ticket.customerTime}
-                  </span>
+                  <span className="text-[11px] text-[#0A0847]/60">{ticket.customerTime}</span>
                 </div>
                 <p className="mt-1 text-[12px] font-medium leading-[15px] text-[#0A0847]/80">
                   {ticket.customerMsg}
@@ -174,8 +170,8 @@ export default function TicketModal({ ticket, onClose }) {
 
             {ticket.attachment && (
               <div className="mt-3 flex items-center gap-3 pl-[50px]">
-                <span className="flex h-[54px] w-[38px] shrink-0 items-center justify-center rounded-[4px] border border-[#E2DFFC] bg-white text-[#6B7280]">
-                  <LuImage size={16} />
+                <span className="flex h-[54px] w-[38px] shrink-0 overflow-hidden rounded-[4px] border border-[#E2DFFC] bg-white">
+                  <img src={receiptThumbImg} alt="" className="h-full w-full object-cover" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[16px] font-medium leading-[1.2] text-[#0A0847]">
@@ -199,17 +195,17 @@ export default function TicketModal({ ticket, onClose }) {
           {/* message card 2 — agent */}
           <div className="rounded-[8px] bg-[#EEF0FF] p-3">
             <div className="flex items-start gap-3">
-              <span className="flex h-[38px] w-[38px] shrink-0 items-center justify-center rounded-[8px] bg-[#FDE68A] text-[12px] font-bold text-[#92400E]">
-                {agentInitials}
-              </span>
+              <img
+                src={agentAvatarImg}
+                alt={ticket.agent}
+                className="h-[38px] w-[38px] shrink-0 rounded-[8px] object-cover"
+              />
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-1.5">
                   <span className="text-[16px] font-semibold leading-[1.2] text-[#0A0847]">
                     {ticket.agent}
                   </span>
-                  <span className="text-[11px] text-[#0A0847]/60">
-                    {ticket.agentTime}
-                  </span>
+                  <span className="text-[11px] text-[#0A0847]/60">{ticket.agentTime}</span>
                 </div>
                 <p className="mt-1 text-[12px] font-medium leading-[15px] text-[#0A0847]/80">
                   {ticket.agentMsg}
@@ -223,9 +219,7 @@ export default function TicketModal({ ticket, onClose }) {
             <div className="mb-[6px] flex items-center justify-between gap-2">
               <label htmlFor="internal-note" className="text-[12px] font-semibold text-[#0A0847]">
                 Internal Note{" "}
-                <span className="font-normal text-[#0A0847]/60">
-                  (visible to agents only)
-                </span>
+                <span className="font-normal text-[#0A0847]/60">(visible to agents only)</span>
               </label>
               <button
                 type="button"

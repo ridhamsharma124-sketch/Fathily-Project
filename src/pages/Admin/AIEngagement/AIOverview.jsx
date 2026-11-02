@@ -7,7 +7,6 @@ import {
   PiPlusBold,
 } from "react-icons/pi";
 
-// "bg" is the colour of the icon box (#3231DB at 10% on white) used for cut-outs.
 const BG = "#ECEBFB";
 
 const base = (size) => ({
@@ -127,7 +126,6 @@ const CoinsIcon = ({ size = 24 }) => (
 
 
 /* ---------- Switch ------------------------------------------------------- */
-// sm = AI Assistant cards (track 20 x 12), md = Search / Credit rows (track 26 x 15)
 const SWITCH_SIZES = {
   sm: { w: 20, h: 12, k: 10, m: 1 },
   md: { w: 26, h: 15, k: 13, m: 1 },
@@ -158,7 +156,6 @@ function Switch({ checked, onChange, size = "md" }) {
   );
 }
 
-/* ---------- Input / Select boxes (109 x 38, radius 8) --------------------- */
 const boxCls =
   "h-[38px] rounded-[8px] border border-[#E2DFFC] bg-white px-[12px] text-center text-[12px] font-medium text-[#0A0847]/60 outline-none transition focus:border-[#001984]";
 
@@ -205,7 +202,7 @@ function UnitSelect({ options = [], value, width }) {
 }
 
 /* ---------- Section card (Assistant Status / Search / Credit) ------------ */
-function SectionCard({ Icon, title, subtitle, children }) {
+function SectionCard({ Icon, title, subtitle, divider = false, children }) {
   return (
     <div className="flex flex-col rounded-[7.5px] border-[0.75px] border-[#E2DFFC] bg-white pb-[20px] pl-[16px] pr-[16px] pt-[20px] sm:pb-[29px] sm:pl-[27px] sm:pr-[27px] sm:pt-[28px]">
       <div className="flex items-center gap-[12px]">
@@ -221,8 +218,8 @@ function SectionCard({ Icon, title, subtitle, children }) {
           </p>
         </div>
       </div>
-      <div className="my-[20px] h-px w-full bg-[#001984]/10" />
-      {children}
+      {divider && <div className="my-[20px] h-px w-full bg-[#001984]/10" />}
+      <div className={divider ? "" : "mt-[20px]"}>{children}</div>
     </div>
   );
 }
@@ -348,7 +345,7 @@ export default function AIOverview() {
         ))}
       </div>
 
-      {/* AI Assistant Status */}
+      {/* AI Assistant Status (no divider) */}
       <SectionCard
         Icon={AssistantStatusIcon}
         title="AI Assistant Status"
@@ -384,11 +381,12 @@ export default function AIOverview() {
         </div>
       </SectionCard>
 
-      {/* Search Engine */}
+      {/* Search Engine (divider under subtitle) */}
       <SectionCard
         Icon={PiMagnifyingGlassBold}
         title="Search Engine"
         subtitle="Configure search slots and limit per time"
+        divider
       >
         <div>
           {SEARCH_ROWS.map((row, i) => (
@@ -471,18 +469,18 @@ export default function AIOverview() {
             </div>
           ))}
 
-        {/* Reverse Rules */}
-<div className="flex items-center justify-between gap-[16px] border-b border-[#001984]/10 py-[16px]">
-  <div className="min-w-0 flex-1">
-    <p className="truncate text-[14px] font-semibold leading-[17px] text-[#0A0847]/80">
-      Reverse Rules
-    </p>
-    <p className="text-[10px] font-medium leading-[12px] text-[#0A0847]/60">
-      If the fetched result is not as per Search deduct credit
-    </p>
-  </div>
-  <Switch checked={reverseRules} onChange={setReverseRules} />
-</div>
+          {/* Reverse Rules */}
+          <div className="flex items-center justify-between gap-[16px] border-b border-[#001984]/10 py-[16px]">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[14px] font-semibold leading-[17px] text-[#0A0847]/80">
+                Reverse Rules
+              </p>
+              <p className="text-[10px] font-medium leading-[12px] text-[#0A0847]/60">
+                If the fetched result is not as per Search deduct credit
+              </p>
+            </div>
+            <Switch checked={reverseRules} onChange={setReverseRules} />
+          </div>
         </div>
       </SectionCard>
     </div>

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import selectorBookIcon from "../../../assets/activities/icon-book-purple.svg";
 import chevronIcon from "../../../assets/activities/icon-chevron-down.svg";
-import chipXIcon from "../../../assets/activities/ws_chip_x.svg";
 import plusIcon from "../../../assets/activities/ws_plus.svg";
 import downloadIcon from "../../../assets/activities/icon-download.svg";
 
 /* ==========================================================================
-   MOCK DATA — hardcoded exactly as specified
+   MOCK DATA
    ========================================================================== */
 const PUZZLE_SIZE_OPTIONS = ["12 × 12", "10 × 10", "14 × 14", "16 × 16"];
 const DIFFICULTY_OPTIONS = ["Easy", "Medium", "Hard"];
@@ -78,15 +77,15 @@ const HIGHLIGHTS = [
 ];
 
 /* ==========================================================================
-   PAGE-LOCAL STYLES (activityFormShared.jsx left untouched for other pages)
+   PAGE-LOCAL STYLES
    ========================================================================== */
 const cardClass =
-  "flex w-full min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[16px] pr-[16px] pb-[24px] pl-[16px] sm:pr-[22px] sm:pb-[35px] sm:pl-[24px]";
+  "flex w-full min-w-0 flex-col gap-[10px] rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 pt-4 pb-6 sm:px-[22px] sm:pt-[16px] sm:pb-[35px] sm:pl-[24px]";
 
 const labelCls = "mb-2 block text-[12px] font-semibold text-[#0A0847]";
 
 const fieldCls =
-  "h-10 w-full rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[50px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984]";
+  "h-10 w-full min-w-0 rounded-[7.47px] border border-[#E2DFFC] bg-white py-[10px] pl-[12px] pr-[40px] text-[12px] font-medium text-[#0A0847]/80 outline-none transition focus:border-[#001984] sm:pr-[50px]";
 
 const dividerCls = "h-px w-full bg-[#0A0847]/10";
 
@@ -97,21 +96,40 @@ const purpleButton =
   "flex h-12 w-full shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#4022D1] px-4 py-[10px] text-[14px] font-medium text-white transition-colors hover:opacity-90 sm:w-[174px]";
 
 const stepButton =
-  "flex h-[43px] shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[14px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9]";
+  "flex h-[43px] shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-[#001984] bg-[#FEFEFE] px-3 text-[13px] font-medium text-[#001984] transition-colors hover:bg-[#F1F1F9] sm:text-[14px]";
+
+/* ==========================================================================
+   ICONS
+   ========================================================================== */
+function ChipCloseIcon({ size = 14 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 14 14" fill="none" aria-hidden>
+      <circle cx="7" cy="7" r="6.25" stroke="#0926FD" strokeWidth="1.5" />
+      <path
+        d="M4.8 4.8L9.2 9.2M9.2 4.8L4.8 9.2"
+        stroke="#0926FD"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 /* ==========================================================================
    SUB-COMPONENTS
    ========================================================================== */
 function Breadcrumb({ items }) {
   return (
-    <nav aria-label="Breadcrumb">
-      <ol className="flex flex-wrap items-center gap-[6px] text-[16px] font-medium text-[#0A0847]/60">
+    <nav aria-label="Breadcrumb" className="min-w-0">
+      <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[14px] font-medium leading-[20px] text-[#0A0847]/60 sm:gap-x-[6px] sm:text-[16px] sm:leading-normal">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return (
-            <li key={item} className="flex items-center gap-[6px]">
+            <li key={item} className="flex min-w-0 items-center gap-1.5 sm:gap-[6px]">
               {index > 0 && <span aria-hidden>&gt;</span>}
-              <span aria-current={isLast ? "page" : undefined}>{item}</span>
+              <span className="break-words" aria-current={isLast ? "page" : undefined}>
+                {item}
+              </span>
             </li>
           );
         })}
@@ -122,12 +140,14 @@ function Breadcrumb({ items }) {
 
 function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
   return (
-    <div className="inline-flex h-[49px] w-[396px] max-w-full items-center gap-[12px] self-start rounded-[8px] border border-[#E2DFFC] bg-[#F7F7F9] pl-[15px] pr-[12px]">
+    <div className="inline-flex h-auto min-h-[49px] w-full max-w-[396px] items-center gap-3 self-start rounded-[8px] border border-[#E2DFFC] bg-[#F7F7F9] px-3 py-2.5 sm:gap-[12px] sm:pl-[15px] sm:pr-[12px]">
       <img src={selectorBookIcon} alt="" className="h-[19px] w-[24px] shrink-0" />
-      <p className="text-[14px] font-semibold text-[#0A0847]">
+      <p className="flex min-w-0 flex-wrap items-center gap-y-0.5 text-[13px] font-semibold text-[#0A0847] sm:text-[14px]">
         {parts.map((part, index) => (
-          <span key={part}>
-            {index > 0 && <span className="px-[8px] font-medium text-[#0A0847]/60">&gt;</span>}
+          <span key={part} className="flex items-center">
+            {index > 0 && (
+              <span className="px-[6px] font-medium text-[#0A0847]/60 sm:px-[8px]">&gt;</span>
+            )}
             <span>{part}</span>
           </span>
         ))}
@@ -138,7 +158,7 @@ function LocationChip({ parts = ["New Testament", "John", "Chapter 3"] }) {
 
 function Field({ label, required, htmlFor, children }) {
   return (
-    <div>
+    <div className="min-w-0">
       {label && (
         <label htmlFor={htmlFor} className={labelCls}>
           {label} {required && <span className="text-[#E11D48]">*</span>}
@@ -151,16 +171,10 @@ function Field({ label, required, htmlFor, children }) {
 
 function TextInput({ id, value, onChange, adornment }) {
   return (
-    <div className="relative w-full">
-      <input
-        id={id}
-        type="text"
-        value={value}
-        onChange={onChange}
-        className={fieldCls}
-      />
+    <div className="relative w-full min-w-0">
+      <input id={id} type="text" value={value} onChange={onChange} className={fieldCls} />
       {adornment && (
-        <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[12px] text-[#0A0847]/60">
+        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[12px] text-[#0A0847]/60">
           {adornment}
         </span>
       )}
@@ -170,7 +184,7 @@ function TextInput({ id, value, onChange, adornment }) {
 
 function Select({ id, value, options, onChange }) {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full min-w-0">
       <select
         id={id}
         value={value}
@@ -193,16 +207,15 @@ function Select({ id, value, options, onChange }) {
 }
 
 /* ==========================================================================
-   LIVE PUZZLE PREVIEW (right card)
+   LIVE PUZZLE PREVIEW
    ========================================================================== */
-/* grid metrics — used to place each highlight pill behind a whole word */
 const GRID_COLS = 12;
 const CELL_H = 36; // h-9
 const ROW_GAP = 20; // gap-y-5
 
 function PuzzleGrid() {
   return (
-    <div className="w-full rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-[12px] sm:p-[26px]">
+    <div className="w-full rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] p-3 sm:p-[26px]">
       <div className="overflow-x-auto">
         <div className="relative min-w-[330px]">
           {/* highlight pills — one rounded rectangle behind each whole word */}
@@ -228,7 +241,7 @@ function PuzzleGrid() {
                   key={`${rowIndex}-${colIndex}`}
                   className="relative flex h-9 items-center justify-center"
                 >
-                  <span className="relative z-[1] text-[16px] font-medium text-[#0A0847]">
+                  <span className="relative z-[1] text-[14px] font-medium text-[#0A0847] sm:text-[16px]">
                     {letter}
                   </span>
                 </div>
@@ -243,14 +256,14 @@ function PuzzleGrid() {
 
 function WordsToFind({ words }) {
   return (
-    <div className="rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] pt-[19px] pr-[22px] pb-[19px] pl-[22px]">
-      <h3 className="text-[22px] font-semibold text-[#0A0847]">Words to Find</h3>
+    <div className="rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-4 pt-4 pb-4 sm:px-[22px] sm:pt-[19px] sm:pb-[19px]">
+      <h3 className="text-[18px] font-semibold text-[#0A0847] sm:text-[22px]">Words to Find</h3>
 
-      <ul className="mt-4 grid grid-cols-1 gap-y-3 sm:grid-cols-2 sm:gap-x-6">
+      <ul className="mt-4 grid grid-cols-1 gap-y-3 min-[420px]:grid-cols-2 sm:gap-x-6">
         {words.map((word) => (
           <li
             key={word}
-            className="flex items-center gap-3 text-[14px] font-semibold whitespace-nowrap text-[#0A0847] uppercase"
+            className="flex min-w-0 items-center gap-3 text-[13px] font-semibold whitespace-nowrap text-[#0A0847] uppercase sm:text-[14px]"
           >
             <span
               style={{ background: WORD_DOT_COLORS[word] }}
@@ -285,26 +298,17 @@ export default function AddWordSearch() {
         : [...prev, direction],
     );
 
-  const removeWord = (word) =>
-    setWords((prev) => prev.filter((item) => item !== word));
+  const removeWord = (word) => setWords((prev) => prev.filter((item) => item !== word));
 
   return (
-    <div className="min-h-screen bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
+    <div className="min-h-screen min-w-0 overflow-x-hidden bg-[#F9FAFE] font-[Inter] text-[#0A0847]">
       <div className="flex w-full min-w-0 flex-col px-4 py-6 sm:px-5">
-        <Breadcrumb
-          items={[
-            "Bible Content",
-            "Activities",
-            "John",
-            "Chapter 3",
-            "Word Search",
-          ]}
-        />
+        <Breadcrumb items={["Bible Content", "Activities", "John", "Chapter 3", "Word Search"]} />
 
-        <h1 className="mt-5 text-[22px] font-semibold text-[#0A0847]">
+        <h1 className="mt-4 break-words text-[20px] font-semibold text-[#0A0847] sm:mt-5 sm:text-[22px]">
           Add Word Search
         </h1>
-        <p className="mt-2 text-[16px] font-medium text-[#0A0847]/60">
+        <p className="mt-2 text-[14px] font-medium text-[#0A0847]/60 sm:text-[16px]">
           Engage and track activities for each chapter.
         </p>
 
@@ -312,53 +316,35 @@ export default function AddWordSearch() {
           <LocationChip />
         </div>
 
-        {/* TWO COLUMNS — equal, fluid, equal heights (bottoms aligned) */}
-        <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        {/* TWO COLUMNS — stacked below xl (1280px), equal columns from xl */}
+        <div className="mt-5 grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
           {/* LEFT — configure form */}
           <section className={cardClass}>
-            <h2 className="text-[14px] font-semibold text-[#001984]">
-              Configure Your Quiz
-            </h2>
+            <h2 className="text-[14px] font-semibold text-[#001984]">Configure Your Quiz</h2>
 
             <Field label="Puzzle Title" required htmlFor="puzzle-title">
-              <TextInput
-                id="puzzle-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+              <TextInput id="puzzle-title" value={title} onChange={(e) => setTitle(e.target.value)} />
             </Field>
 
             <Field label="Puzzle Size" required htmlFor="puzzle-size">
-              <Select
-                id="puzzle-size"
-                value={puzzleSize}
-                options={PUZZLE_SIZE_OPTIONS}
-                onChange={setPuzzleSize}
-              />
+              <Select id="puzzle-size" value={puzzleSize} options={PUZZLE_SIZE_OPTIONS} onChange={setPuzzleSize} />
             </Field>
 
             <Field label="Difficulty" required htmlFor="difficulty">
-              <Select
-                id="difficulty"
-                value={difficulty}
-                options={DIFFICULTY_OPTIONS}
-                onChange={setDifficulty}
-              />
+              <Select id="difficulty" value={difficulty} options={DIFFICULTY_OPTIONS} onChange={setDifficulty} />
             </Field>
 
             <div className={dividerCls} />
 
             {/* WORD DIRECTION CHECKBOXES */}
             <div>
-              <p className="text-[14px] font-semibold text-[#0A0847]">
-                Word Direction
-              </p>
+              <p className="text-[14px] font-semibold text-[#0A0847]">Word Direction</p>
 
-              <div className="mt-2.5 flex w-full max-w-[245px] flex-col gap-4">
+              <div className="mt-2.5 flex w-full max-w-[245px] flex-col gap-3 sm:gap-4">
                 {WORD_DIRECTIONS.map((direction) => (
                   <label
                     key={direction}
-                    className="flex cursor-pointer items-center gap-2.5 text-[14px] font-medium text-[#0A0847]"
+                    className="flex cursor-pointer items-center gap-2.5 text-[13px] font-medium text-[#0A0847] sm:text-[14px]"
                   >
                     <input
                       type="checkbox"
@@ -376,38 +362,36 @@ export default function AddWordSearch() {
 
             {/* WORDS */}
             <div>
-              <div className="flex items-center justify-between">
-                <p className="text-[14px] font-semibold text-[#0A0847]">
-                  Word Direction
-                </p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[14px] font-semibold text-[#0A0847]">Words</p>
                 <p className="text-[12px] font-medium text-[#0A0847]/60">
                   {words.length} / {MAX_WORDS}
                 </p>
               </div>
 
-              <div className="mt-3 flex flex-wrap gap-2.5">
+              <div className="mt-3 flex flex-wrap gap-2 sm:gap-2.5">
                 {words.map((word) => (
                   <span
                     key={word}
-                    className="flex h-[35px] items-center gap-2 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-[13px]"
+                    className="flex h-[35px] max-w-full items-center gap-2 rounded-lg border border-[#E2DFFC] bg-[#FEFFFF] px-3 sm:px-[13px]"
                   >
-                    <span className="text-[12px] font-medium uppercase text-[#001984]">
+                    <span className="truncate text-[12px] font-medium uppercase text-[#001984]">
                       {word}
                     </span>
                     <button
                       type="button"
                       aria-label={`Remove ${word}`}
                       onClick={() => removeWord(word)}
-                      className="flex cursor-pointer items-center"
+                      className="flex shrink-0 cursor-pointer items-center"
                     >
-                      <img src={chipXIcon} alt="" className="h-[14px] w-[14px]" />
+                      <ChipCloseIcon size={14} />
                     </button>
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2.5">
+            <div className="grid grid-cols-1 gap-2.5 sm:flex sm:flex-wrap">
               <button type="button" className={`${stepButton} w-full font-semibold sm:w-[164px]`}>
                 <img src={plusIcon} alt="" className="h-[16px] w-[16px] shrink-0" />
                 Add New Book
@@ -454,23 +438,18 @@ export default function AddWordSearch() {
             </Field>
 
             <Field label="Status" htmlFor="status">
-              <Select
-                id="status"
-                value={status}
-                options={STATUS_OPTIONS}
-                onChange={setStatus}
-              />
+              <Select id="status" value={status} options={STATUS_OPTIONS} onChange={setStatus} />
             </Field>
           </section>
 
           {/* RIGHT — live puzzle preview */}
           <section className={cardClass}>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4 sm:gap-5">
               <div>
-                <h2 className="text-[22px] font-semibold text-[#0A0847]">
+                <h2 className="text-[18px] font-semibold text-[#0A0847] sm:text-[22px]">
                   Live Puzzle Preview
                 </h2>
-                <p className="mt-1 max-w-[330px] text-[16px] leading-[1.4] font-medium text-[#0A0847]/60">
+                <p className="mt-1 max-w-[330px] text-[14px] leading-[1.4] font-medium text-[#0A0847]/60 sm:text-[16px]">
                   This is how your word search puzzle will appear to users.
                 </p>
               </div>

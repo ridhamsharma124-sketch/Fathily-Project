@@ -677,6 +677,7 @@ export default function DashboardLayout() {
   const resolvedActive =
     NAV_QUERY_MAP[`${location.pathname}${location.search}`] ??
     NAV_PATH_MAP[location.pathname] ??
+    Object.entries(NAV_PATH_MAP).find(([path]) => path !== "/admin" && location.pathname.startsWith(path + "/") || path !== "/admin" && location.pathname === path)?.[1] ??
     active;
 
   const handleNavigate = (item) => {
